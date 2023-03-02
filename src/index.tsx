@@ -1,20 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './n1-main/m1-ui/App';
 import reportWebVitals from './reportWebVitals';
-import {HashRouter} from "react-router-dom";
+import {RouterProvider} from "react-router-dom";
+import router from "./n1-main/m1-ui/routes/Routes";
+import {Provider} from "react-redux";
+import {store} from "./n1-main/m1-ui/store";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
-    <HashRouter>
-        <React.StrictMode>
-            <App/>
-        </React.StrictMode>
+    <React.StrictMode>
+        <Provider store={store}>
+            <RouterProvider router={router}/>
+        </Provider>
 
-    </HashRouter>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
