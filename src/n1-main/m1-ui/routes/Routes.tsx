@@ -16,7 +16,7 @@ export const PATH = {
     pageNotFound: '/404',
     passwordRecovery: '/password-recovery',
     newPassword: '/new-password',
-    test: '/test'
+    test: '/test',
 }
 
 
@@ -24,32 +24,36 @@ const router = createHashRouter([
     {
         path: "/",
         element: <App/>,
-        errorElement: <ErrorPage/>
+        errorElement: <ErrorPage/>,
+        children:[
+            {index: true, path: '/'},
+            {
+                path: PATH.login,
+                element: <Login/>
+            },
+            {
+                path: PATH.register,
+                element: <Register/>
+            },
+            {
+                path: PATH.profile,
+                element: <Profile/>
+            },
+            {
+                path: PATH.passwordRecovery,
+                element: <RecoveryPassword/>
+            },
+            {
+                path: PATH.newPassword,
+                element: <NewPassword/>
+            },
+            {
+                path: PATH.test,
+                element: <Test/>
+            }
+        ]
     },
-    {
-        path: PATH.login,
-        element: <Login/>
-    },
-    {
-        path: PATH.register,
-        element: <Register/>
-    },
-    {
-        path: PATH.profile,
-        element: <Profile/>
-    },
-    {
-        path: PATH.passwordRecovery,
-        element: <RecoveryPassword/>
-    },
-    {
-        path: PATH.newPassword,
-        element: <NewPassword/>
-    },
-    {
-        path: PATH.test,
-        element: <Test/>
-    }
+
 
 ]);
 
