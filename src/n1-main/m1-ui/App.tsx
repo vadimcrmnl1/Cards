@@ -10,11 +10,15 @@ import {Register} from "../../n2-features/f1-auth/a2-register/Register/Register"
 import {RecoveryPassword} from "../../n2-features/f1-auth/a3-recovery-password/RecoveryPassword/RecoveryPassword";
 import {NewPassword} from "../../n2-features/f1-auth/a4-new-password/NewPassword/NewPassword";
 import {Profile} from "../../n2-features/f3-profile/Profile/Profile";
+import {Outlet} from "react-router-dom";
 
 function App() {
+    console.log('app')
     return (
         <div className="App">
+
             <Header/>
+            <Outlet/>
             {/*<Routes>*/}
             {/*<Route path={PATH.login} element={<Login/>}/>*/}
             {/*<Route path={PATH.register} element={<Register/>}/>*/}
