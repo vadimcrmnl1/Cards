@@ -27,6 +27,13 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsTyp
                 dispatch(setAuthAC(true))
             }
         })
+        .catch((e) => {
+            const error = e.response
+                ? e.response.data.error
+                : (e.message + ', more details in the console');
+            console.log('Error', {...e})
+        })
+
 }
 // types
 type ActionsType = ReturnType<typeof setAuthAC>

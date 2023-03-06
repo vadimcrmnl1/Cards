@@ -6,8 +6,10 @@ import {Button, Checkbox, FormControlLabel} from "@material-ui/core";
 import {IconButton, InputAdornment,} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import TextField from '@mui/material/TextField'
-import {NavLink} from "react-router-dom";
+import {Navigate, NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
+import {useAppDispatch, useAppSelector} from "../../../app/store";
+import {loginTC} from "../auth-reducer";
 
 
 const validationSchema = yup.object({
@@ -25,6 +27,8 @@ const validationSchema = yup.object({
 });
 
 export const Login = () => {
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -33,7 +37,8 @@ export const Login = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values => {
-            alert(JSON.stringify(values))
+            dispatch(loginTC(values))
+            formik.resetForm()
         })
     })
 
@@ -46,7 +51,9 @@ export const Login = () => {
         textDecoration: 'none'
     }
 
-
+    if (isLoggedIn) {
+        return <Navigate to={PATH.profile}/>
+    }
     return (
         <div className={s.container}>
             <h1>Sign in</h1>
@@ -108,7 +115,7 @@ export const Login = () => {
                 </form>
                 <div className={s.forgotPassBlock}>
                     <span><NavLink to={PATH.passwordRecovery}
-                                   style={({ isActive }) =>
+                                   style={({isActive}) =>
                                        isActive ? activeStyle : activeStyle
                                    }
                     >Forgot password?</NavLink></span>
