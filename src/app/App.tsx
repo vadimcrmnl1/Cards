@@ -1,15 +1,18 @@
 import React from 'react';
-import './App.css';
+import s from './App.module.css';
 import {Header} from "../common/components/Header/Header";
 import {Outlet} from "react-router-dom";
 
 function App() {
     console.log('app')
     return (
-        <div className="App">
+        <div className={s.App}>
 
             <Header/>
-            <Outlet/>
+            <div className={s.appWrapper}>
+                <Outlet/>
+            </div>
+
             {/*<Routes>*/}
             {/*<Route path={PATH.login} element={<Login/>}/>*/}
             {/*<Route path={PATH.register} element={<Register/>}/>*/}

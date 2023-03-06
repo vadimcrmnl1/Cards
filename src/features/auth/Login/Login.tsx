@@ -1,48 +1,128 @@
 import React from "react";
 import s from './Login.module.css'
-import {Field, Form, Formik, FormikHelpers} from 'formik';
-import {Title} from "../../../common/components/Title/Title";
+import {useFormik} from 'formik';
+import * as yup from 'yup';
+import {Button, Checkbox, FormControlLabel} from "@material-ui/core";
+import {IconButton, InputAdornment,} from "@mui/material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
+import TextField from '@mui/material/TextField'
+import {NavLink} from "react-router-dom";
+import {PATH} from "../../../common/utils/routes/Routes";
 
 
-interface Values {
-    email: string;
-    password: string;
-    rememberMe: boolean;
-}
+const validationSchema = yup.object({
+    email: yup
+        .string()
+        .email('Enter a valid email')
+        .required('Email is required'),
+    password: yup
+        .string()
+        .min(3, 'Password should be of minimum 3 characters length')
+        .required('Password is required'),
+    rememberMe: yup
+        .string()
+
+});
 
 export const Login = () => {
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+            rememberMe: false
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values => {
+            alert(JSON.stringify(values))
+        })
+    })
+
+    const [showPassword, setShowPassword] = React.useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+    const activeStyle = {
+        textDecoration: 'none'
+    }
+
+
     return (
-        <div>
-            <Title title={'login'}/>
-            <Formik
-                initialValues={{
-                    email: '',
-                    password: '',
-                    rememberMe: false
-                }}
-                onSubmit={(
-                    values: Values,
-                    {setSubmitting}: FormikHelpers<Values>
-                ) => {
-                    setTimeout(() => {
-                        alert(JSON.stringify(values));
-                        setSubmitting(false);
-                    }, 500);
-                }}
-            >
-                <Form className={s.form}>
-                    <Field style={{marginTop: '10px', width: '300px', height: '30px', fontSize: '18px'}} id="email" name="email" placeholder="Email"/>
-                    <Field style={{marginTop: '10px', width: '300px', height: '30px', fontSize: '18px'}} id="password" type='password' name="password" placeholder="Password"/>
+        <div className={s.container}>
+            <h1>Sign in</h1>
+            <div className={s.loginWrapper}>
+                <form onSubmit={formik.handleSubmit} className={s.form}>
+                    <TextField
+                        fullWidth
+                        variant={'standard'}
+                        id={'email'}
+                        name={'email'}
+                        label={'Email'}
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}
+                    />
+                    <TextField
+                        fullWidth
+                        style={{marginTop: '15px'}}
+                        variant={'standard'}
+                        id={'password'}
+                        type={showPassword ? 'text' : 'password'}
+                        name={'password'}
+                        label={'Password'}
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        error={formik.touched.password && Boolean(formik.errors.password)}
+                        helperText={formik.touched.password && formik.errors.password}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                    >
+                                        {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
+                    />
                     <div className={s.rememberBlock}>
-                        <label style={{marginTop: '10px', width: '300px', height: '30px', fontSize: '18px'}} htmlFor={'rememberMe'}>Remember me</label>
-                        <Field style={{marginTop: '10px', width: '20px', height: '20px'}} id="rememberMe" name="rememberMe" type='checkbox'/>
+                        <FormControlLabel
+                            style={{marginTop: '10px'}}
+                            control={<Checkbox
+                                id={'rememberMe'}
+                                name={'rememberMe'}
+                                onChange={formik.handleChange}
+                                color={'primary'}
+                            />} label={'Remember me'}/>
                     </div>
+                    <Button color={'primary'}
+                            fullWidth
+                            style={{marginTop: '20px', borderRadius: '20px'}}
+                            variant={'contained'}
+                            type={"submit"}
+                    >Sign in</Button>
+                </form>
+                <div className={s.forgotPassBlock}>
+                    <span><NavLink to={PATH.passwordRecovery}
+                                   style={({ isActive }) =>
+                                       isActive ? activeStyle : activeStyle
+                                   }
+                    >Forgot password?</NavLink></span>
+                </div>
+                <div className={s.questionBlock}>
+                    Don't have an account yet?
+                </div>
+                <div className={s.link}>
+                    <NavLink to={PATH.register}
 
+                    >Sign up</NavLink>
+                </div>
+            </div>
 
-
-                    <button style={{marginTop: '10px', width: '300px', height: '30px', fontSize: '18px'}} type="submit">Sign in</button>
-                </Form>
-            </Formik>
         </div>
     )
 }
