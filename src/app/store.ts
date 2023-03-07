@@ -1,16 +1,22 @@
-import {applyMiddleware, combineReducers, legacy_createStore} from "redux";
+import {AnyAction, applyMiddleware, combineReducers, legacy_createStore} from "redux";
 import {authReducer} from "../features/auth/auth-reducer";
-import thunk from "redux-thunk";
+import thunk, {ThunkDispatch} from "redux-thunk";
+import {profileReducer} from "../features/profile/profileReducer";
+import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 
 const rootReducer = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    profile: profileReducer
 
 })
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
 
 export type AppRootStateType = ReturnType<typeof rootReducer>
+export type AppThunkDispatch = ThunkDispatch<AppRootStateType, unknown, AnyAction>
 
+export const useAppDispatch = () => useDispatch<AppThunkDispatch>();
+export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector
 // @ts-ignore
 window.store = store;
 

@@ -1,6 +1,4 @@
 import React, { ChangeEvent } from 'react'
-
-
 import s from './SuperPagination.module.css'
 import SuperSelect from "../SuperSelect/SuperSelect";
 import {Pagination} from "@mui/material";
