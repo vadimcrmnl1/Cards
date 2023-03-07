@@ -10,13 +10,12 @@ function App() {
 
             <Header/>
             <div className={s.appWrapper}>
-                <h1>Hello!</h1>
                 <Outlet/>
             </div>
 
             {/*<Routes>*/}
             {/*<Route path={PATH.login} element={<Login/>}/>*/}
-            {/*<Route path={PATH.register} element={<Register/>}/>*/}
+            {/*<Route path={PATH.register} element={<SignUp/>}/>*/}
             {/*<Route path={PATH.profile} element={<Profile/>}/>*/}
             {/*<Route path={PATH.passwordRecovery} element={<RecoveryPassword/>}/>*/}
             {/*<Route path={PATH.newPassword} element={<NewPassword/>}/>*/}

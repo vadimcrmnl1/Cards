@@ -10,7 +10,7 @@ export const Header = () => {
         <div className={s.container}>
             <div className={s.buttonsBlock}>
                 <NavLink to={PATH.login}><Button title={'Login'}/></NavLink>
-                <NavLink to={PATH.register}><Button title={'Register'}/></NavLink>
+                <NavLink to={PATH.signUp}><Button title={'Sign Up'}/></NavLink>
                 <NavLink to={PATH.profile}><Button title={'Profile'}/></NavLink>
                 <NavLink to={PATH.pageNotFound}><Button title={'Error'}/></NavLink>
                 <NavLink to={PATH.passwordRecovery}><Button title={'Recovery password'}/></NavLink>

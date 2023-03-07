@@ -124,7 +124,7 @@ export const Login = () => {
                     Don't have an account yet?
                 </div>
                 <div className={s.link}>
-                    <NavLink to={PATH.register}
+                    <NavLink to={PATH.signUp}
 
                     >Sign up</NavLink>
                 </div>

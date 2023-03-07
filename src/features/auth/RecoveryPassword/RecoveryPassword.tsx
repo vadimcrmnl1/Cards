@@ -1,7 +1,7 @@
 import React from "react";
 import {Title} from "../../../common/components/Title/Title";
 import {Field, Form, Formik, FormikHelpers} from "formik";
-import s from "../Register/Register.module.css";
+import s from "../SignUp/SignUp.module.css";
 
 interface Values {
     email: string;
