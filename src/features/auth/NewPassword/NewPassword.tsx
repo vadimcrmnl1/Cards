@@ -1,49 +1,100 @@
 import React from "react";
-import {Title} from "../../../common/components/Title/Title";
-import {Field, Form, Formik, FormikHelpers} from "formik";
-import s from "../Register/Register.module.css";
+import {useFormik} from "formik";
+import s from "./../Login/Login.module.css";
+import {Box, IconButton, InputAdornment, Paper} from "@mui/material";
+import TextField from "@mui/material/TextField";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {Button} from "@material-ui/core";
+import * as yup from "yup";
+import {useAppDispatch, useAppSelector} from "../../../app/store";
+import st from "../RecoveryPassword/RecoveryPassword.module.css";
 
-interface Values {
-    password: string;
-    confirmPassword: string
-}
+const validationSchema = yup.object({
+    password: yup
+        .string()
+        .min(3, 'Password should be of minimum 3 characters length')
+        .required('Password is required'),
+});
 
 export const NewPassword = () => {
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
+    const formik = useFormik({
+        initialValues: {
+            password: ''
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values => {
+            formik.resetForm()
+        })
+    })
+
+    const [showPassword, setShowPassword] = React.useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+    const activeStyle = {
+        textDecoration: 'none'
+    }
     return (
-        <div>
-            <Title title={'new password'}/>
-            <Formik
-                initialValues={{
-                    password: '',
-                    confirmPassword: ''
-                }}
-                onSubmit={(
-                    values: Values,
-                    {setSubmitting}: FormikHelpers<Values>
-                ) => {
-                    setTimeout(() => {
-                        if (values.password !== values.confirmPassword) {
-                            alert('Password and Confirm password !==')
-                        } else {
-                            alert(JSON.stringify(values));
-                            setSubmitting(false);
-                        }
+        <Box
+            sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                '& > :not(style)': {
+                    m: 1,
+                    width: 413,
+                    height: 420,
+                },
+            }}
+        >
 
-                    }, 500);
-                }}
-            >
-                <Form className={s.form}>
+            <Paper>
+                <div>
+                    <Paper/>
+                    <h1>Create new password</h1>
+                    <div className={s.loginWrapper}>
+                        <form onSubmit={formik.handleSubmit} className={s.form}>
+                            <TextField
+                                fullWidth
+                                variant={'standard'}
+                                id={'password'}
+                                type={showPassword ? 'text' : 'password'}
+                                name={'password'}
+                                label={'Password'}
+                                value={formik.values.password}
+                                onChange={formik.handleChange}
+                                error={formik.touched.password && Boolean(formik.errors.password)}
+                                helperText={formik.touched.password && formik.errors.password}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                            >
+                                                {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                            <div className={st.descriptionBlock}>
+                                Create new password and we will send you further instructions to email
+                            </div>
+                            <Button color={'primary'}
+                                    fullWidth
+                                    style={{marginTop: '57px', borderRadius: '20px'}}
+                                    variant={'contained'}
+                                    type={"submit"}
+                            >Create new password</Button>
+                        </form>
+                    </div>
+                </div>
+            </Paper>
 
-                    <Field style={{marginTop: '10px', width: '300px', height: '30px', fontSize: '18px'}} id="password"
-                           name="password" type='password' placeholder="Password"/>
-                    <Field style={{marginTop: '10px', width: '300px', height: '30px', fontSize: '18px'}} id="confirmPassword"
-                           name="confirmPassword" type='password' placeholder="Confirm Password"/>
-
-                    <button style={{marginTop: '10px', width: '300px', height: '30px', fontSize: '18px'}}
-                            type="submit">Change password
-                    </button>
-                </Form>
-            </Formik>
-        </div>
+        </Box>
     )
 }

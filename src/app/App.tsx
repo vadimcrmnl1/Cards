@@ -10,7 +10,7 @@ function App() {
 
             <Header/>
             <div className={s.appWrapper}>
-                <h1>Hello!</h1>
+
                 <Outlet/>
             </div>
 
