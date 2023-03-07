@@ -1,0 +1,100 @@
+.profile {
+    width: 100%;
+    height: 100%;
+    color: #282c34;
+    font-family: "Montserrat Thin", sans-serif;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.link {
+    width: 30%;
+    margin-top: 35px;
+    margin-bottom: 35px;
+    text-align: start;
+}
+
+.navLink {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    color: #282c34;
+}
+
+.informBlock {
+    width: 50%;
+    min-height: 400px;
+    margin: 0 auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 0px 5px 3px #00bbc0;
+    border: 2px solid #00bbc0;
+    border-radius: 5px;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    background-color: #61dafb;
+    border-radius: 50%;
+}
+
+.changeName {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+
+}
+
+.nickNameField {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: end;
+
+}
+
+.profileError {
+    color: #f13333;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.informBlock span {
+    opacity: 0.5;
+}
+
+.buttonLogout {
+    font-family: "Montserrat Thin", sans-serif;
+    font-size: 22px;
+    font-weight: bold;
+    width: max-content;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    background: #00bbc0;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+/*
+.logoutImg{
+    width: 22px;
+    height: 22px;
+}
+.logoutImg img{
+    width: 100%;
+    height: 100%;
+}*/

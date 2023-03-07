@@ -1,8 +1,12 @@
 import {Dispatch} from "redux";
 import {profileAPI} from "./profileAPI";
+import {handleServerNetworkError} from "../../common/utils/errorUtils";
+import {AppActionsType, setAppStatusAC} from "../../app/AppReducer";
+
 
 const initialState = {
     isAuth: false
+
 }
 
 export type InitialStateType = typeof initialState
@@ -35,14 +39,16 @@ const ChangeNameAC=(name:string)=> {
     }as const
 }
 export const LogoutTC = () => async (dispatch: Dispatch<ActionsType>) => {
-    //dispatch(setAppStatusAC('loading'))
+    dispatch(setAppStatusAC('loading'))
     try {
         const result = await profileAPI.logout()
-        console.log(result)
+
                 dispatch(LogoutAC(false))
 
     } catch (e:any) {
-        /*handleServerNetworkError(e, dispatch)*/
+        handleServerNetworkError(e.response, dispatch)
+    }finally {
+        dispatch(setAppStatusAC('succeeded'))
     }
 }
 
@@ -50,11 +56,12 @@ export const ChangeNameTC = (newName:string) => async (dispatch: Dispatch<Action
 
     try {
         const result = await profileAPI.changeName(newName)
-        console.log(result)
-            // dispatch(ChangeNameAC())
+        dispatch(ChangeNameAC(result.data))
 
     } catch (e:any) {
-        /*handleServerNetworkError(e, dispatch)*/
+        handleServerNetworkError(e.response, dispatch)
+    }finally {
+        dispatch(setAppStatusAC('succeeded'))
     }
 }
 // thunks
@@ -62,4 +69,4 @@ export const ChangeNameTC = (newName:string) => async (dispatch: Dispatch<Action
 // types
 type LogoutType=ReturnType<typeof LogoutAC>
 type ChangeNameType=ReturnType<typeof ChangeNameAC>
-type ActionsType = LogoutType | ChangeNameType
+type ActionsType = LogoutType | ChangeNameType | AppActionsType
