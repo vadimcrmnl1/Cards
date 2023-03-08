@@ -79,8 +79,8 @@ export const Header = () => {
                             </Menu>
                         </Box>
                     }
-                        </Toolbar>
-                        </Container>
-                        </AppBar>
-                        );
-                    }
+                </Toolbar>
+            </Container>
+        </AppBar>
+    )
+}

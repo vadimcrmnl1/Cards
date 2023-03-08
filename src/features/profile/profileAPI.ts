@@ -10,7 +10,7 @@ export const profileAPI={
     logout(){
         return instance.delete('auth/me')
     },
-    changeName(newName:string){
-        return instance.put('auth/me',{newName})
+    changeName(name:string){
+        return instance.put('auth/me',{name})
     }
 }

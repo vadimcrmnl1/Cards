@@ -52,10 +52,10 @@ export const LogoutTC = () => async (dispatch: Dispatch<ActionsType>) => {
     }
 }
 
-export const ChangeNameTC = (newName:string) => async (dispatch: Dispatch<ActionsType>) => {
+export const ChangeNameTC = (name:string) => async (dispatch: Dispatch<ActionsType>) => {
 
     try {
-        const result = await profileAPI.changeName(newName)
+        const result = await profileAPI.changeName(name)
         dispatch(ChangeNameAC(result.data))
 
     } catch (e:any) {
