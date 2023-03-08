@@ -3,15 +3,15 @@ import App from "../../../app/App";
 import {ErrorPage} from "../../components/ErrorPage/ErrorPage";
 import {Profile} from "../../../features/profile/Profile";
 import {Login} from "../../../features/auth/Login/Login";
-import {Register} from "../../../features/auth/Register/Register";
 import {RecoveryPassword} from "../../../features/auth/RecoveryPassword/RecoveryPassword";
 import {NewPassword} from "../../../features/auth/NewPassword/NewPassword";
 import {Test} from "../../components/Test/Test";
+import {SignUp} from "../../../features/auth/SignUp/SignUp";
 
 
 export const PATH = {
     login: '/login',
-    register: '/register',
+    signUp:'/sign-up',
     profile: '/profile',
     pageNotFound: '/404',
     passwordRecovery: '/password-recovery',
@@ -37,8 +37,8 @@ const router = createHashRouter([
 
                     },
                     {
-                        path: PATH.register,
-                        element: <Register/>
+                        path:PATH.signUp,
+                        element:<SignUp/>
                     },
                     {
                         path: PATH.profile,

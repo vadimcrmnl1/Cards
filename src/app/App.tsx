@@ -10,7 +10,6 @@ function App() {
 
             <Header/>
             <div className={s.appWrapper}>
-
                 <Outlet/>
             </div>
 
