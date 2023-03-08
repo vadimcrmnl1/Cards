@@ -15,7 +15,7 @@ export const PATH = {
     profile: '/profile',
     pageNotFound: '/404',
     passwordRecovery: '/password-recovery',
-    newPassword: '/new-password',
+    newPassword: '/set-new-password',
     test: '/test'
 }
 
