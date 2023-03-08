@@ -1,17 +1,65 @@
-
-
+/*в фигме документ 1280px, мы это можем задать в App.css. А далее лучше всё указывать в относительных величинах(%),
+легче потом будет делать адоптацию. А высота у компонент вообще меняется, поэтому нет смысла её задавать*/
+.container {
+    width: 27%;
+    border: 1px solid gray;
+    background: white;
+    border-radius: 5px;
+    padding: 33px;
+}
+h1{
+    font-family: 'Montserrat',sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 32px;
+    color: #000000;
+}
+/*почему не все свойства шрифта взял?*/
+/*.container h1 {*/
+/*    font-family: Montserrat, sans-serif;*/
+/*    font-weight: bold;*/
+/*    font-size: 26px;*/
+/*}*/
+/*Свойством row-gap задаётся интервал между тексфилдами, поэтому не нужно у каждого в JSX прописывать
+style={margin-top: 15px}*/
 .form {
-    width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    padding-top: 150px;
+    padding-top: 30px;
+    /*width: 350px;*/
+    row-gap: 15px;
 }
-.rememberBlock {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+/*Для кнопки отдельно можно увеличить отступ так. JSX теперь ещё меньше нагружен*/
+.form > button{
+    margin-top: 20px;
+    border-radius: 20px;
+}
+
+
+.questionBlock {
+    margin-top: 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: #000000;
+    opacity: 0.5;
+}
+
+.link {
+    margin-top: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    text-decoration-line: underline;
+    color: #366EFF;
 }

@@ -35,5 +35,14 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsTyp
         })
 
 }
+export const signUpTC = (email: string, password: string) => (dispatch: Dispatch<ActionsType>) => {
+    authAPI.signUp(email, password)
+        .then(res => {
+                       console.log(res)
+        })
+        .catch(err=> {
+            console.log(err)
+        })
+}
 // types
 type ActionsType = ReturnType<typeof setAuthAC>

@@ -1,13 +1,20 @@
 import React from "react";
 import s from './SignUp.module.css'
-import {useFormik} from 'formik';
-import {Title} from "../../../common/components/Title/Title";
+import {FormikHelpers, useField, useFormik} from 'formik';
 import * as yup from "yup";
-import {TextField} from "@mui/material";
+import {IconButton, InputAdornment, TextField} from "@mui/material";
 import {Button} from "@material-ui/core";
+import {FieldInputProps, FormikConfig, FormikErrors, FormikTouched} from "formik/dist/types";
+import {VisibilityOff} from "@mui/icons-material";
+import Visibility from '@mui/icons-material/Visibility';
+import {NavLink} from "react-router-dom";
+import {PATH} from "../../../common/utils/routes/Routes";
+import {useAppDispatch, useAppSelector} from "../../../app/store";
+import {selectIsLoggedIn} from "../selectors";
+import {signUpTC} from "../auth-reducer";
 
 
-interface Values {
+export interface Values {
     email: string;
     password: string;
     confirmPassword: string
@@ -33,43 +40,65 @@ const validationSchema = yup.object({
 });
 
 export const SignUp = () => {
-    console.log('process.env: ', process.env)
 
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+
+    const initialValues = {
+        email: '',
+        password: '',
+        confirmPassword: '',
+    }
+    const onSubmit = (values: Values, {setSubmitting}: FormikHelpers<Values>) => {
+        dispatch(signUpTC(values.email, values.password))
+        alert(JSON.stringify(values, null, 2));
+        setSubmitting(false);
+    }
 
     const formik = useFormik({
-        initialValues: {
-            email: '',
-            password: '',
-            confirmPassword: '',
-        },
-        onSubmit: values => {
-            alert(JSON.stringify(values, null, 2))
-        },
+        initialValues,
+        onSubmit,
         validationSchema,
     })
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+    const inputProps = {
+        endAdornment:
+            <InputAdornment position="end">
+                <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                >
+                    {showPassword ? <VisibilityOff/> : <Visibility/>}
+                </IconButton>
+            </InputAdornment>
+    }
 
     return (
-        <div>
-            <Title title={'register'}/>
+        <div className={s.container}>
+            <h1>Sign up</h1>
             <form onSubmit={formik.handleSubmit} className={s.form}>
-              {/*  не использовал formik.getFieldProps для наглядности*/}
-                <TextField onChange={formik.handleChange}
-                           value={formik.values.email}
-                           id={'email'}
-                           name={'email'}
-                           label={'email'}
+                <TextField id={'email'}
+                           label={'Email'}
                            fullWidth
                            variant={'standard'}
                            type={'email'}
-                           onBlur={formik.handleBlur}
+                           {...formik.getFieldProps('email')}
                 />
                 {formik.errors.email && formik.touched.email && <span>{formik.errors.email}</span>}
 
                 <TextField id={'password'}
-                           label={'password'}
+                           label={'Password'}
                            fullWidth
                            variant={'standard'}
-                           type={'password'}
+                           type={showPassword ? 'text' : 'password'}
+                           InputProps={inputProps}
                            {...formik.getFieldProps('password')}
                 />
                 {formik.errors.password && formik.touched.password && <span>{formik.errors.password}</span>}
@@ -78,7 +107,8 @@ export const SignUp = () => {
                            label={'Confirm password'}
                            fullWidth
                            variant={'standard'}
-                           type={'password'}
+                           type={showPassword ? 'text' : 'password'}
+                           InputProps={inputProps}
                            {...formik.getFieldProps('confirmPassword')}
                 />
                 {formik.errors.confirmPassword && formik.touched.confirmPassword &&
@@ -86,12 +116,23 @@ export const SignUp = () => {
 
                 <Button color={'primary'}
                         fullWidth
-                        style={{marginTop: '20px', borderRadius: '20px'}}
                         variant={'contained'}
                         type={"submit"}
                 >Sign up </Button>
 
             </form>
+            <div className={s.questionBlock}>
+                Don't have an account yet?
+            </div>
+            <div className={s.link}>
+                <NavLink to={PATH.login}
+
+                >Sign in</NavLink>
+            </div>
         </div>
     )
 }
+
+
+
+
