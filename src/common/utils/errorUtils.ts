@@ -24,8 +24,13 @@ type ErrorType = Error | AxiosError<{ error: string }>
 export const errorUtils = (e: ErrorType, dispatch: Dispatch<SetAppErrorActionType>) => {
     const err = e as ErrorType
     if (axios.isAxiosError(err)) {
-        const error = err.response?.data ? err.response.data.error : err.message
-        dispatch(setAppErrorAC(error))
+        const error = err.response?.data ? err.response.data : err.message
+        if (!error.isEmailValid        ) {
+            dispatch(setAppErrorAC('Email wrong'))
+        } else if (!error.isPassValid       ) {
+            dispatch(setAppErrorAC('Password wrong'))
+        }
+
     } else {
         dispatch(setAppErrorAC(`${err.name}: ${err.message}`))
     }

@@ -38,7 +38,7 @@ export const NavbarTemperary = () => {
 
     return (
         <div className={navBarClassName}>
-            <a id={'menu'} href={'#'} className={s.cdNavTrigger} onClick={onClickHandler} ref={ref}>
+            <a id={'menu'} className={s.cdNavTrigger} onClick={onClickHandler} ref={ref}>
                 <span aria-hidden> </span>
             </a>
             <ul id={s.nav}>

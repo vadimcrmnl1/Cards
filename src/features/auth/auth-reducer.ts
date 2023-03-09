@@ -1,6 +1,6 @@
-import {authAPI, LoginParamsType, ResponseDataType} from "../../api/cards-api";
+import {authAPI, LoginParamsType, ResponseDataType} from "../../api/api";
 import {Dispatch} from "redux";
-import {AppActionsType, setAppStatusAC} from "../../app/AppReducer";
+import {AppActionsType, setAppInfoAC, SetAppInfoActionType, setAppStatusAC} from "../../app/AppReducer";
 import {AppThunk} from "../../app/store";
 import {errorUtils} from "../../common/utils/errorUtils";
 import {profileAPI} from "../profile/profileAPI";
@@ -12,20 +12,19 @@ const initialState = {
         _id: '',
         email: '',
         name: '',
-        avatar: '' as string | undefined,
+        avatar: '' as string | null,
         publicCardPacksCount: null as null | number,
         created: 1 as Date | number,
         updated: 1 as Date | number,
         isAdmin: false,
         verified: false,
         rememberMe: false,
-        error: ''
+        error: '' as string | undefined
     },
     isLoggedIn: false,
-    recoveryEmail: ''
-    isSignedUp: false
+    isSignedUp: false,
+    resetMailToken: null as null | string
 }
-
 export type InitialStateType = typeof initialState
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -34,10 +33,10 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
             return {...state, isLoggedIn: action.isLoggedIn}
         case 'login/SET-LOGIN-DATA':
             return {...state, ...action.data}
-        case "SET_NAME":
-            return {...state, data: {...action.data, avatar: undefined, error: undefined}}
-        /*case "CHANGE-NAME":
-            return {...state, data.name:action.}*/
+        case "SET_PROFILE":
+            return {...state, data: {...state.data, ...action.data}}
+        case "CHANGE-NAME":
+            return {...state, data: {...state.data, name: action.name}}
         case 'login/SET-IS-SIGNED-UP':
             return {...state, isSignedUp: action.isSignedUp}
         default:
@@ -50,7 +49,7 @@ export const setAuthAC = (isLoggedIn: boolean) =>
 export const setLoginAC = (data: ResponseDataType) => ({type: 'login/SET-LOGIN-DATA', data} as const)
 export const setSignedUpAC = (isSignedUp: boolean) => ({type: 'login/SET-IS-SIGNED-UP', isSignedUp} as const)
 
-export const setNameAC = (data: ResponseDataType) => ({type: 'SET_NAME', data} as const)
+export const setNameAC = (data: ResponseDataType) => ({type: 'SET_PROFILE', data} as const)
 export const ChangeNameAC = (name: string) => ({type: "CHANGE-NAME", name} as const)
 
 // thunks
@@ -61,7 +60,6 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsTyp
                 dispatch(setAuthAC(true))
                 dispatch(setLoginAC(res.data))
                 console.log(res)
-                console.log('state', initialState.isLoggedIn)
             } else {
 
             }
@@ -79,10 +77,10 @@ export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
     authAPI.logout()
         .then(res => {
             if (res) {
-                console.log(res.data)
-                dispatch(setLoginAC(res.data))
-
-                dispatch(setAuthAC(true))
+                console.log(res)
+                dispatch(setLoginAC({} as ResponseDataType))
+                dispatch(setAuthAC(false))
+                dispatch(setSignedUpAC(false))
             }
         })
         .catch((e) => {
@@ -112,19 +110,33 @@ export const signUpTC = (email: string, password: string): AppThunk<ActionsType 
             dispatch(setAppStatusAC('succeeded'))
         })
 }
-export const ForgotPassTC = (email: string) => (dispatch: Dispatch<ActionsType>) => {
+export const forgotPassTC = (email: string) => (dispatch: Dispatch<ActionsType | SetAppInfoActionType>) => {
 
-    const from = "test-front-admin <vadzimkaprenka@gmail.com>"
+    const from = "test-front-admin <ai73a@yandex.by>"
     const message = `<div style="background-color: lime; padding: 15px">
                     password recovery link: 
-                    <a href='http://localhost:3000/#/set-new-password/$token$'>
+                    <a href='http://localhost:3000/Cards#/set-new-password/$token$'>
                     link</a>
                     </div>`
     authAPI.forgotPass(email, from, message)
         .then(res => {
             if (res) {
                 console.log(res)
+                dispatch(setSignedUpAC(false))
+                // dispatch(setAppInfoAC(`${res.data.info}, Check your email: ${email}`))
             }
+        })
+}
+export const resetPasswordTC = (newPassword: string, token: string): AppThunk<ActionsType> => (dispatch) => {
+    authAPI.resetPass(newPassword, token)
+        .then(res => {
+            if (res) {
+                console.log(res)
+                dispatch(setSignedUpAC(true))
+            }
+        })
+        .catch(err=> {
+            console.log(err)
         })
 }
 //Получение данных
@@ -158,12 +170,12 @@ export const ChangeNameTC = (name: string) => async (dispatch: Dispatch<ActionsT
     try {
         const result = await profileAPI.changeName(name)
         console.log(result)
-        dispatch(ChangeNameAC(result.data))
-
+        //тут не то свойство в ЭК шло
+        dispatch(ChangeNameAC(result.data.updatedUser.name))
+// dispatch(setAppInfoAC(result))
     } catch (e: any) {
         handleServerNetworkError(e.response, dispatch)
     } finally {
-        /*dispatch(setAppStatusAC('succeeded'))*/
     }
 }
 

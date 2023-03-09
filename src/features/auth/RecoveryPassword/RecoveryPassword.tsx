@@ -9,14 +9,13 @@ import {NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import * as yup from "yup";
-import {ForgotPassTC} from "../auth-reducer";
+import {forgotPassTC} from "../auth-reducer";
 
 const validationSchema = yup.object({
     email: yup
         .string()
         .email('Enter a valid email')
         .required('Email is required'),
-
 });
 
 export const RecoveryPassword = () => {
@@ -28,8 +27,7 @@ export const RecoveryPassword = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values => {
-            // ForgotPassTC(values)
-            dispatch(ForgotPassTC(values.email))
+            dispatch(forgotPassTC(values.email))
             console.log(values.email)
             formik.resetForm()
         })
@@ -39,6 +37,7 @@ export const RecoveryPassword = () => {
     const activeStyle = {
         textDecoration: 'none'
     }
+
     return (
         <Box
             sx={{
@@ -54,7 +53,7 @@ export const RecoveryPassword = () => {
 
             <Paper>
                 <div>
-                    <Paper />
+                    <Paper/>
                     <h1>Forgot your password?</h1>
                     <div className={s.loginWrapper}>
                         <form onSubmit={formik.handleSubmit} className={s.form}>
@@ -69,9 +68,9 @@ export const RecoveryPassword = () => {
                                 error={formik.touched.email && Boolean(formik.errors.email)}
                                 helperText={formik.touched.email && formik.errors.email}
                             />
-                           <div className={st.descriptionBlock}>
-                               Enter your email address and we will send you further instructions
-                           </div>
+                            <div className={st.descriptionBlock}>
+                                Enter your email address and we will send you further instructions
+                            </div>
                             <Button color={'primary'}
                                     fullWidth
                                     style={{marginTop: '57px', borderRadius: '20px'}}

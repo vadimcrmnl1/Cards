@@ -3,7 +3,7 @@ import {NavLink, Navigate} from "react-router-dom";
 import arrow from "../images/Group 240.svg"
 import s from "./Profile.module.css"
 import {useFormik} from "formik";
-import {ChangeNameTC, LogoutTC} from "./profileReducer";
+import {LogoutTC} from "./profileReducer";
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import editIcon from "../../common/components/SuperEditableSpan/editIcon.svg";
 import {Button, TextField} from "@mui/material";
@@ -20,13 +20,13 @@ export const Profile = () => {
     const name = useAppSelector(state => state.auth.data.name)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const dispatch = useAppDispatch()
-    //
+
     useEffect(() => {
         if (isLoggedIn) {
             dispatch(getDataTC())
         }
 
-    }, [])
+    }, [dispatch])
     const formik = useFormik({
         initialValues: {
             nickName: ''
@@ -41,6 +41,7 @@ export const Profile = () => {
 
         onSubmit: values => {
             dispatch(ChangeNameTC(values.nickName))
+            setEditMode(false)
             formik.resetForm()
         },
 
@@ -53,7 +54,7 @@ export const Profile = () => {
     }
 
     if (!isLoggedIn) {
-       return <Navigate to={PATH.login}/>
+        return <Navigate to={PATH.login}/>
     }
 
     return (
@@ -70,8 +71,9 @@ export const Profile = () => {
                     <div className={s.avatar}>
                         {/* <img src={'*'} alt={'avatar'}/>*/}
                     </div>
-                    <form onSubmit={formik.handleSubmit}>
-                        {editMode ? (
+
+                    {editMode ?
+                        (<form onSubmit={formik.handleSubmit}>
                             <div className={s.changeName}>
                                 <div className={s.nickNameField}>
                                     <TextField label="nickName"
@@ -107,26 +109,26 @@ export const Profile = () => {
                                     {error && <div>{error}</div>}
                                 </div>
                             </div>
-                        ) : (
-                            <div className={s.spanBlock}>
-                                {name}
-                                <img
+                        </form>)
+                         : (<div className={s.spanBlock}>
+                                 {name}
+                                 <img
                                     onClick={onClickCallBack}
                                     src={editIcon}
                                     className={s.pen}
                                     alt={'edit'}
                                 />
-                            </div>
-                        )}
-                    </form>
-                    <span>{name}</span>
-                    <button onClick={logoutHandler}
-                            className={s.buttonLogout}>
-                        {/*<div className={s.logoutImg}><img src={logOut} alt={'logout'}/></div>*/}
+                             </div>
+                         )}
+
+                        < span > {name}</span>
+                        <button onClick={logoutHandler}
+                        className={s.buttonLogout}>
+                    {/*<div className={s.logoutImg}><img src={logOut} alt={'logout'}/></div>*/}
                         Log out
-                    </button>
-                </div>
-            </div>
-        </div>
-    )
-}
+                        </button>
+                        </div>
+                        </div>
+                        </div>
+                        )
+                    }

@@ -8,6 +8,9 @@ import {Button} from "@material-ui/core";
 import * as yup from "yup";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import st from "../RecoveryPassword/RecoveryPassword.module.css";
+import {PATH} from "../../../common/utils/routes/Routes";
+import {Navigate, useLocation, useSearchParams} from 'react-router-dom'
+import {resetPasswordTC} from "../auth-reducer";
 
 const validationSchema = yup.object({
     password: yup
@@ -17,14 +20,19 @@ const validationSchema = yup.object({
 });
 
 export const NewPassword = () => {
+
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
+    const location = useLocation()
+    const token = location.pathname.slice(18)
+    const isSignedUp = useAppSelector<boolean>(state => state.auth.isSignedUp)
     const formik = useFormik({
         initialValues: {
             password: ''
         },
         validationSchema: validationSchema,
         onSubmit: (values => {
+            console.log(values.password, token)
+            dispatch(resetPasswordTC(values.password, token))
             formik.resetForm()
         })
     })
@@ -36,6 +44,12 @@ export const NewPassword = () => {
     };
     const activeStyle = {
         textDecoration: 'none'
+    }
+    // if (!resetMailToken) {
+    //     return <Navigate to={PATH.passwordRecovery}/>
+    // }
+    if (isSignedUp) {
+        return <Navigate to={PATH.login}/>
     }
     return (
         <Box

@@ -6,7 +6,8 @@ import {handleServerAppError, handleServerNetworkError} from "../common/utils/er
 const initialState: InitialStateType = {
     status: 'idle',
     error: null,
-    isInitialized: false
+    isInitialized: false,
+    appInfo: '',
 }
 
 export const AppReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
@@ -17,6 +18,8 @@ export const AppReducer = (state: InitialStateType = initialState, action: AppAc
             return {...state, error: action.error}
         case 'APP-IS-INITIALIZED':
             return {...state, isInitialized: action.isInitialized}
+        case 'APP-INFO':
+            return {...state, appInfo: action.appInfo}
         default:
             return state
     }
@@ -27,9 +30,11 @@ export type InitialStateType = {
     status: RequestStatusType
     error: string | null
     isInitialized: boolean
+    appInfo: string | null
 }
 
 export const setAppErrorAC = (error: string | null) => ({type: 'APP-ERROR', error} as const)
+export const setAppInfoAC = (appInfo: string | null) => ({type: 'APP-INFO', appInfo} as const)
 export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP-STATUS', status} as const)
 export const setIsInitializedAC = (isInitialized: boolean) => ({type: 'APP-IS-INITIALIZED', isInitialized} as const)
 
@@ -49,6 +54,7 @@ export const InitializeAppTC = () => (dispatch: Dispatch) => {
 }
 
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
+export type SetAppInfoActionType = ReturnType<typeof setAppInfoAC>
 type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 type SetIsInitializedAT = ReturnType<typeof setIsInitializedAC>
 
@@ -56,3 +62,4 @@ export type AppActionsType =
     | SetAppErrorActionType
     | SetAppStatusActionType
     | SetIsInitializedAT
+    | SetAppInfoActionType

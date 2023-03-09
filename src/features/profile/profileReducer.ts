@@ -3,6 +3,7 @@ import {profileAPI} from "./profileAPI";
 import {handleServerNetworkError} from "../../common/utils/errorUtils";
 import {AppActionsType, setAppStatusAC} from "../../app/AppReducer";
 import {setAuthAC} from "../auth/auth-reducer";
+import {authAPI} from "../../api/api";
 
 
 const initialState = {
@@ -65,7 +66,7 @@ export const setNameAC = (data: ResponseDataType) => ({type: 'SET_NAME', data} a
 export const LogoutTC = () => async (dispatch: Dispatch<ActionsType|ReturnType<typeof setAuthAC>>) => {
     dispatch(setAppStatusAC('loading'))
     try {
-        const result = await profileAPI.logout()
+        const result = await authAPI.logout()
         console.log(result)
         return dispatch(setAuthAC(false))
 

@@ -49,7 +49,7 @@ const router = createHashRouter([
                         element: <RecoveryPassword/>
                     },
                     {
-                        path: PATH.newPassword,
+                        path: PATH.newPassword+'/*',
                         element: <NewPassword/>
                     },
                     {

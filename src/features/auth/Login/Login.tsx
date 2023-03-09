@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import s from './Login.module.css'
 import {useFormik} from 'formik';
 import * as yup from 'yup';
@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField'
 import {Navigate, NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {loginTC} from "../auth-reducer";
+import {loginTC, setSignedUpAC} from "../auth-reducer";
 
 
 const validationSchema = yup.object({
@@ -27,6 +27,9 @@ const validationSchema = yup.object({
 });
 
 export const Login = () => {
+    useEffect(() => {
+        dispatch(setSignedUpAC(false))
+    }, [])
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
 
@@ -69,12 +72,12 @@ export const Login = () => {
         >
 
             <Paper>
-                 <div>
-                     <Paper />
-                     <h1>Sign in</h1>
-                     <div className={s.loginWrapper}>
-                         <form onSubmit={formik.handleSubmit} className={s.form}>
-                             <TextField
+                <div>
+                    <Paper/>
+                    <h1>Sign in</h1>
+                    <div className={s.loginWrapper}>
+                        <form onSubmit={formik.handleSubmit} className={s.form}>
+                            <TextField
                                 fullWidth
                                 variant={'standard'}
                                 id={'email'}

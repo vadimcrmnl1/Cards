@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const instance = axios.create({
-    baseURL: process.env.NODE_ENV === 'development'
+    baseURL:  process.env.NODE_ENV === 'development'
         ? 'http://localhost:7542/2.0/'
         : 'https://neko-back.herokuapp.com/2.0/',
     withCredentials: true
@@ -11,7 +11,7 @@ export const authAPI = {
     login(data: LoginParamsType) {
         return instance.post<ResponseDataType>('auth/login', data)
     },
-    logout(){
+    logout() {
         return instance.delete<object>('auth/me')
     },
     signUp(email: string, password: string) {
@@ -19,11 +19,22 @@ export const authAPI = {
     },
     getData() {
         return instance.post<ResponseDataType>('auth/me')
-        me() {
+    },
+    me() {
         return instance.post('auth/me', {})
     },
     forgotPass(email: string, from: string, message: string) {
-        return instance.post('auth/forgot', `${email}`)
+        return instance.post('auth/forgot', {
+            email,
+            from,
+            message
+        }, {withCredentials: true})
+    },
+    resetPass(password: string, resetPasswordToken: string) {
+        return instance.post('auth/set-new-password', {
+            password,
+            resetPasswordToken
+        }, {withCredentials: true})
     }
 }
 
@@ -36,7 +47,7 @@ export type ResponseDataType = {
     _id: string;
     email: string;
     name: string;
-    avatar?: string |null;
+    avatar?: string | null;
     publicCardPacksCount: number;
     created: Date;
     updated: Date;
