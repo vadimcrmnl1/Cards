@@ -33,14 +33,14 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
             return {...state, isLoggedIn: action.isLoggedIn}
         case 'login/SET-LOGIN-DATA':
             return {...state, ...action.data}
-        case "SET_PROFILE":
+        case "SET_NAME":
             return {...state, data: {...state.data, ...action.data}}
         case "CHANGE-NAME":
             return {...state, data: {...state.data, name: action.name}}
         case 'login/SET-IS-SIGNED-UP':
             return {...state, isSignedUp: action.isSignedUp}
         default:
-            return {...state}
+            return state
     }
 }
 
@@ -54,6 +54,7 @@ export const ChangeNameAC = (name: string) => ({type: "CHANGE-NAME", name} as co
 
 // thunks
 export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsType>) => {
+
     authAPI.login(data)
         .then(res => {
             if (res.status === 200) {
@@ -141,42 +142,39 @@ export const resetPasswordTC = (newPassword: string, token: string): AppThunk<Ac
 }
 //Получение данных
 export const getDataTC = () => (dispatch: Dispatch<ActionsType>) => {
-    authAPI.getData()
-        .then((res) => {
-            console.log(res)
-            dispatch(setNameAC(res.data))
-        })
-        .catch((e: any) => {
-            handleServerNetworkError(e.response, dispatch)
-        })
-        .finally(/*dispatch(setAppStatusAC('succeeded'))*/)
+
+    authAPI.getData().then((res)=>{
+        console.log(res)
+        dispatch(setNameAC(res.data))
+    }).catch((e:any)=>{
+        console.log(e)
+        handleServerNetworkError(e.response, dispatch)
+    }).finally(/*dispatch(setAppStatusAC('succeeded'))*/)
 }
-/* try {
+   /* try {
 
-     const result = await profileAPI.getData()
-     console.log(result)
-     dispatch(setNameAC(result.data))
+        const result = await profileAPI.getData()
+        console.log(result)
+        dispatch(setNameAC(result.data))
 
- } catch (e:any) {
-     handleServerNetworkError(e.response, dispatch)
- }finally {
-     /!*dispatch(setAppStatusAC('succeeded'))*!/
- }
+    } catch (e:any) {
+        handleServerNetworkError(e.response, dispatch)
+    }finally {
+        /!*dispatch(setAppStatusAC('succeeded'))*!/
+    }
 }*/
 
 //Изменение nickName
-export const ChangeNameTC = (name: string) => async (dispatch: Dispatch<ActionsType>) => {
+export const ChangeNameTC = (name:string) => (dispatch: Dispatch<ActionsType>) => {
 
-    try {
-        const result = await profileAPI.changeName(name)
-        console.log(result)
-        //тут не то свойство в ЭК шло
-        dispatch(ChangeNameAC(result.data.updatedUser.name))
-// dispatch(setAppInfoAC(result))
-    } catch (e: any) {
-        handleServerNetworkError(e.response, dispatch)
-    } finally {
-    }
+    authAPI.changeName(name).then((res)=>{
+            console.log(res.data.updatedUser.name)
+            dispatch(ChangeNameAC(res.data.updatedUser.name))
+
+        }).catch((e:any)=>{
+            console.log(e.response.data.error)
+           handleServerNetworkError(e.response, dispatch)
+        })
 }
 
 // types
@@ -198,5 +196,3 @@ export type ForgotPasswordType = {
     from: string
     message: string
 }
-
-

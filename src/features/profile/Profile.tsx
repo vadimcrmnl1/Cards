@@ -1,32 +1,34 @@
 import React, {useEffect, useState} from "react";
-import {NavLink, Navigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import arrow from "../images/Group 240.svg"
 import s from "./Profile.module.css"
 import {useFormik} from "formik";
-import {LogoutTC} from "./profileReducer";
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import editIcon from "../../common/components/SuperEditableSpan/editIcon.svg";
 import {Button, TextField} from "@mui/material";
-import {ChangeNameTC, getDataTC} from "../auth/auth-reducer";
-import {PATH} from "../../common/utils/routes/Routes";
+import {ChangeNameTC, getDataTC, LogoutTC} from "../auth/auth-reducer";
 
 export type FormikErrorType = {
     nickName?: string
 }
 
 export const Profile = () => {
+    const navigation=useNavigate()
     const [editMode, setEditMode] = useState(false)
     const error = useAppSelector(state => state.app.error)
-    const name = useAppSelector(state => state.auth.data.name)
-    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-    const dispatch = useAppDispatch()
+    const userData=useAppSelector(state => state.auth.data)
+    const isLoggedIn=useAppSelector(state => state.auth.isLoggedIn)
 
-    useEffect(() => {
-        if (isLoggedIn) {
+
+    const dispatch = useAppDispatch()
+   //
+    useEffect(()=>{
+
+        if(isLoggedIn){
             dispatch(getDataTC())
         }
 
-    }, [dispatch])
+    },[])
     const formik = useFormik({
         initialValues: {
             nickName: ''
@@ -40,22 +42,20 @@ export const Profile = () => {
         },
 
         onSubmit: values => {
-            dispatch(ChangeNameTC(values.nickName))
+             dispatch(ChangeNameTC(values.nickName))
+             formik.resetForm()
             setEditMode(false)
-            formik.resetForm()
         },
 
     })
     const logoutHandler = () => {
-        dispatch(LogoutTC())
+       dispatch(LogoutTC())
+        navigation('login')
     }
     const onClickCallBack = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
         setEditMode(true)
     }
 
-    if (!isLoggedIn) {
-        return <Navigate to={PATH.login}/>
-    }
 
     return (
         <div className={s.profile}>
@@ -71,9 +71,8 @@ export const Profile = () => {
                     <div className={s.avatar}>
                         {/* <img src={'*'} alt={'avatar'}/>*/}
                     </div>
-
-                    {editMode ?
-                        (<form onSubmit={formik.handleSubmit}>
+                    <form onSubmit={formik.handleSubmit}>
+                        {editMode ? (
                             <div className={s.changeName}>
                                 <div className={s.nickNameField}>
                                     <TextField label="nickName"
@@ -109,26 +108,26 @@ export const Profile = () => {
                                     {error && <div>{error}</div>}
                                 </div>
                             </div>
-                        </form>)
-                         : (<div className={s.spanBlock}>
-                                 {name}
-                                 <img
+                        ) : (
+                            <div className={s.spanBlock}>
+                              <div>{userData.name}</div>
+                                <img
                                     onClick={onClickCallBack}
                                     src={editIcon}
                                     className={s.pen}
                                     alt={'edit'}
                                 />
-                             </div>
-                         )}
-
-                        < span > {name}</span>
-                        <button onClick={logoutHandler}
-                        className={s.buttonLogout}>
-                    {/*<div className={s.logoutImg}><img src={logOut} alt={'logout'}/></div>*/}
+                            </div>
+                        )}
+                    </form>
+                    <span>{userData.email}</span>
+                    <button onClick={logoutHandler}
+                            className={s.buttonLogout}>
+                        {/*<div className={s.logoutImg}><img src={logOut} alt={'logout'}/></div>*/}
                         Log out
-                        </button>
-                        </div>
-                        </div>
-                        </div>
-                        )
-                    }
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
