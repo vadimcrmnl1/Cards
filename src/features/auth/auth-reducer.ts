@@ -1,6 +1,5 @@
 import {authAPI, LoginParamsType} from "../../api/cards-api";
 import {Dispatch} from "redux";
-import {profileAPI} from "../profile/profileAPI";
 import {handleServerNetworkError} from "../../common/utils/errorUtils";
 import {setAppStatusAC} from "../../app/AppReducer";
 
@@ -9,14 +8,14 @@ const initialState = {
         _id: '',
         email: '',
         name: '',
-        avatar: '',
-        publicCardPacksCount: null,
-        created: Date,
-        updated: Date,
+        avatar: '' as String | null,
+        publicCardPacksCount: null as null | number,
+        created: 1 as Date | number,
+        updated: 1 as Date | number,
         isAdmin: false,
         verified: false,
         rememberMe: false,
-        error: ''
+        error: '' as String | undefined
     },
     isLoggedIn: false
 }
@@ -24,27 +23,27 @@ export type ResponseDataType = {
     _id: string
     email: string
     name: string
-    avatar?: string
+    avatar?: string | null
     publicCardPacksCount: number | null
-    created: Date
-    updated: Date
+    created: Date | number
+    updated: Date | number
     isAdmin: boolean
     verified: boolean
     rememberMe: boolean
-    error?: string
+    error?: string| undefined
 }
-export type InitialStateType = typeof initialState
+//export type InitialStateType = typeof initialState
 
-export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+export const authReducer = (state = initialState, action: ActionsType) => {
     switch (action.type) {
         case 'login/SET-IS-LOGGED-IN':
             return {...state, isLoggedIn: action.isLoggedIn}
         case 'login/SET-LOGIN-DATA':
             return {...state, ...action.data}
-        /*case "SET_NAME":
-            return {...state, ...action.data, isLoggedIn: true}*/
-        /*case "CHANGE-NAME":
-            return {...state, data.name:action.}*/
+        case "SET_NAME":
+            return {...state, data: {...state.data, ...action.data}}
+        case "CHANGE-NAME":
+            return {...state, data: {...state.data, name: action.name}}
         default:
             return state
     }
@@ -58,13 +57,12 @@ export const ChangeNameAC=(name:string)=> ({type: "CHANGE-NAME", name} as const)
 
 // thunks
 export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsType>) => {
-    debugger
+
     authAPI.login(data)
         .then(res => {
             if (res) {
                 console.log(res.data)
-               dispatch(setLoginAC(res.data))
-
+               dispatch(setNameAC(res.data))
                dispatch(setAuthAC(true))
             }
         })
@@ -77,24 +75,32 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsTyp
 
 }
 export const signUpTC = (email: string, password: string) => (dispatch: Dispatch<ActionsType>) => {
-    debugger
-    authAPI.signUp(email, password)
+       authAPI.signUp(email, password)
         .then(res => {
+            dispatch(setNameAC(res.data))
             console.log(res)
-
-
         })
         .catch(err=> {
             console.log(err)
         })
 }
+
+export const LogoutTC=()=>(dispatch:Dispatch<ActionsType>)=>{
+    authAPI.logout().then((res)=>{
+        dispatch(setAuthAC(false))
+    }).catch((e:any)=>{
+        handleServerNetworkError(e.response, dispatch)
+    })
+     }
+
 //Получение данных
 export const getDataTC = () => (dispatch: Dispatch<ActionsType>) => {
-   debugger
+
     authAPI.getData().then((res)=>{
         console.log(res)
         dispatch(setNameAC(res.data))
     }).catch((e:any)=>{
+        console.log(e)
         handleServerNetworkError(e.response, dispatch)
     }).finally(/*dispatch(setAppStatusAC('succeeded'))*/)
 }
@@ -112,18 +118,16 @@ export const getDataTC = () => (dispatch: Dispatch<ActionsType>) => {
 }*/
 
 //Изменение nickName
-export const ChangeNameTC = (name:string) => async (dispatch: Dispatch<ActionsType>) => {
+export const ChangeNameTC = (name:string) => (dispatch: Dispatch<ActionsType>) => {
 
-    try {
-        const result = await profileAPI.changeName(name)
-        console.log(result)
-        dispatch(ChangeNameAC(result.data))
+    authAPI.changeName(name).then((res)=>{
+            console.log(res.data.updatedUser.name)
+            dispatch(ChangeNameAC(res.data.updatedUser.name))
 
-    } catch (e:any) {
-        handleServerNetworkError(e.response, dispatch)
-    }finally {
-        /*dispatch(setAppStatusAC('succeeded'))*/
-    }
+        }).catch((e:any)=>{
+            console.log(e.response.data.error)
+           handleServerNetworkError(e.response, dispatch)
+        })
 }
 
 // types

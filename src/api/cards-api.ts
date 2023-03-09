@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'http://neko-back.herokuapp.com/2.0/',
+    baseURL: 'http://localhost:7542/2.0/',
     withCredentials: true
 })
 
@@ -16,9 +16,12 @@ export const authAPI = {
         return instance.post('auth/register',{email,password})
     },
     getData(){
-        return instance.get<ResponseDataType>('auth/me')
-    }
+        return instance.post<ResponseDataType>('auth/me', {})
+    },
+    changeName(name:string){
 
+        return instance.put('auth/me',{name})
+    }
 }
 
 export type LoginParamsType = {
