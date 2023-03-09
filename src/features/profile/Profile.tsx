@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {NavLink} from "react-router-dom";
+import {Navigate, NavLink} from "react-router-dom";
 import arrow from "../images/Group 240.svg"
 import s from "./Profile.module.css"
 import {useFormik} from "formik";
@@ -7,6 +7,7 @@ import {ChangeNameTC, LogoutTC} from "./profileReducer";
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import editIcon from "../../common/components/SuperEditableSpan/editIcon.svg";
 import {Button, TextField} from "@mui/material";
+import {PATH} from "../../common/utils/routes/Routes";
 
 export type FormikErrorType = {
     nickName?: string
@@ -15,6 +16,8 @@ export type FormikErrorType = {
 export const Profile = () => {
     const [editMode, setEditMode] = useState(false)
     const error = useAppSelector(state => state.app.error)
+    const name = useAppSelector(state => state.auth.data.name)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const dispatch = useAppDispatch()
     const formik = useFormik({
         initialValues: {
@@ -41,6 +44,9 @@ export const Profile = () => {
         setEditMode(true)
     }
 
+    if (!isLoggedIn) {
+       return <Navigate to={PATH.login}/>
+    }
 
     return (
         <div className={s.profile}>
@@ -104,7 +110,7 @@ export const Profile = () => {
                             </div>
                         )}
                     </form>
-                    <span>j&johnson@gmail.com</span>
+                    <span>{name}</span>
                     <button onClick={logoutHandler}
                             className={s.buttonLogout}>
                         {/*<div className={s.logoutImg}><img src={logOut} alt={'logout'}/></div>*/}
