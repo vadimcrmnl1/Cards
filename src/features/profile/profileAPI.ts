@@ -1,12 +1,11 @@
-import axios from "axios";
+import {instance} from "../../api/cards-api";
 
-const instance = axios.create({
-    baseURL: 'http://localhost:7542/2.0/',
-    withCredentials: true,
 
-})
 
 export const profileAPI={
+    /*getData(){
+        return instance.post('auth/me')
+    },*/
     logout(){
         return instance.delete('auth/me')
     },

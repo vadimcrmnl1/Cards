@@ -1,12 +1,14 @@
-import React, {useState} from "react";
-import {NavLink} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {NavLink, Navigate} from "react-router-dom";
 import arrow from "../images/Group 240.svg"
 import s from "./Profile.module.css"
 import {useFormik} from "formik";
-import {ChangeNameTC, LogoutTC} from "./profileReducer";
+import {LogoutTC} from "./profileReducer";
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import editIcon from "../../common/components/SuperEditableSpan/editIcon.svg";
 import {Button, TextField} from "@mui/material";
+import {ChangeNameTC, getDataTC} from "../auth/auth-reducer";
+import {PATH} from "../../common/utils/routes/Routes";
 
 export type FormikErrorType = {
     nickName?: string
@@ -15,7 +17,18 @@ export type FormikErrorType = {
 export const Profile = () => {
     const [editMode, setEditMode] = useState(false)
     const error = useAppSelector(state => state.app.error)
+    const name = useAppSelector(state => state.auth.data.name)
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    console.log(name)
+
     const dispatch = useAppDispatch()
+    //
+    useEffect(() => {
+        if (isLoggedIn) {
+            dispatch(getDataTC())
+        }
+
+    }, [])
     const formik = useFormik({
         initialValues: {
             nickName: ''
@@ -41,7 +54,7 @@ export const Profile = () => {
         setEditMode(true)
     }
 
-
+    if (!isLoggedIn) return <Navigate to={PATH.login}/>
     return (
         <div className={s.profile}>
             <div className={s.container}>
@@ -95,6 +108,7 @@ export const Profile = () => {
                             </div>
                         ) : (
                             <div className={s.spanBlock}>
+                                {name}
                                 <img
                                     onClick={onClickCallBack}
                                     src={editIcon}
@@ -104,7 +118,7 @@ export const Profile = () => {
                             </div>
                         )}
                     </form>
-                    <span>j&johnson@gmail.com</span>
+                    <span>{name}</span>
                     <button onClick={logoutHandler}
                             className={s.buttonLogout}>
                         {/*<div className={s.logoutImg}><img src={logOut} alt={'logout'}/></div>*/}
