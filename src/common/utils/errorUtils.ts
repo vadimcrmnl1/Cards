@@ -7,6 +7,16 @@ export const handleServerNetworkError = (error: { message: string }, dispatch: D
     dispatch(setAppErrorAC(error.message ? error.message : 'Some error occurred'))
     dispatch(setAppStatusAC('failed'))
 }
+export const handleServerAppError = (error: string, dispatch: Dispatch<AppActionsType>) => {
+
+    if (error.length) {
+        dispatch(setAppErrorAC(error[0]))
+    } else {
+        dispatch(setAppErrorAC('Some error occurred'))
+    }
+    dispatch(setAppStatusAC('failed'))
+    console.log('App:', error)
+}
 
 
 type ErrorType = Error | AxiosError<{ error: string }>

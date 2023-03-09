@@ -3,7 +3,7 @@ import {NavLink, Navigate} from "react-router-dom";
 import arrow from "../images/Group 240.svg"
 import s from "./Profile.module.css"
 import {useFormik} from "formik";
-import {LogoutTC} from "./profileReducer";
+import {ChangeNameTC, LogoutTC} from "./profileReducer";
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import editIcon from "../../common/components/SuperEditableSpan/editIcon.svg";
 import {Button, TextField} from "@mui/material";
@@ -19,8 +19,6 @@ export const Profile = () => {
     const error = useAppSelector(state => state.app.error)
     const name = useAppSelector(state => state.auth.data.name)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-    console.log(name)
-
     const dispatch = useAppDispatch()
     //
     useEffect(() => {
@@ -54,7 +52,10 @@ export const Profile = () => {
         setEditMode(true)
     }
 
-    if (!isLoggedIn) return <Navigate to={PATH.login}/>
+    if (!isLoggedIn) {
+       return <Navigate to={PATH.login}/>
+    }
+
     return (
         <div className={s.profile}>
             <div className={s.container}>

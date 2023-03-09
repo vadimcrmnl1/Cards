@@ -9,6 +9,7 @@ import {NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import * as yup from "yup";
+import {ForgotPassTC} from "../auth-reducer";
 
 const validationSchema = yup.object({
     email: yup
@@ -23,12 +24,13 @@ export const RecoveryPassword = () => {
     const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
     const formik = useFormik({
         initialValues: {
-            email: '',
-
+            email: ''
         },
         validationSchema: validationSchema,
         onSubmit: (values => {
-
+            // ForgotPassTC(values)
+            dispatch(ForgotPassTC(values.email))
+            console.log(values.email)
             formik.resetForm()
         })
     })

@@ -1,7 +1,10 @@
-import MuiAlert, { AlertProps } from "@mui/material/Alert";
-import React from "react";
+import React from 'react';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {Snackbar} from "@mui/material";
+import {setAppErrorAC} from "../../../app/AppReducer";
+
+
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props, ref) {
@@ -9,17 +12,14 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 
-export function ErrorSnackbar() {
-
-    const error = useAppSelector<boolean>(state => state.auth.isLoggedIn)
-
-    // const dispatch = useAppDispatch();
-
+export const ErrorSnackbar = () => {
+    const error = useAppSelector<string | null>(state => state.app.error)
+    const dispatch = useAppDispatch();
     const handleClose = (event?: React.SyntheticEvent<any> | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
         }
-        // dispatch(setAppErrorAC(null))
+        dispatch(setAppErrorAC(null))
     };
 
     return (

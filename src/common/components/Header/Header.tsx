@@ -5,7 +5,9 @@ import {PATH} from "../../utils/routes/Routes";
 import {AppBar, Avatar, Box, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography} from "@mui/material";
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import {Button} from "@material-ui/core";
-import {useAppSelector} from "../../../app/store";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {useAppDispatch, useAppSelector} from "../../../app/store";
+import {logoutTC} from "../../../features/auth/auth-reducer";
 import {NavbarTemperary} from "../NavbarTemperary/NavbarTemperary";
 
 
@@ -13,33 +15,34 @@ const settings = ['Profile', 'Logout'];
 
 export const Header = () => {
     const isLoggedId = useAppSelector(state => state.auth.isLoggedIn)
+    const dispatch = useAppDispatch()
 
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
+    // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-    const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorElNav(event.currentTarget);
-    };
+    // const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
+    //     setAnchorElNav(event.currentTarget);
+    // };
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseNavMenu = () => {
-        setAnchorElNav(null);
-    };
+    // const handleCloseNavMenu = () => {
+    //     setAnchorElNav(null);
+    // };
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+    const handleLogout = () => {
+        dispatch(logoutTC())
+    }
 
     return (
         <AppBar position="static" color={'default'}>
             <Container maxWidth="xl">
                 <Toolbar style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <NavLink to={'/'}>
-                        {/*<img src={logo} alt={'logo'}/>*/}
-                        <WorkspacesIcon style={{color: 'black'}}/>
-                    </NavLink>
+                    <NavLink to={'/'}><WorkspacesIcon style={{color: 'black'}}/></NavLink>
                     {!isLoggedId
                         ?
                         <div>
@@ -74,11 +77,9 @@ export const Header = () => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                        <Typography textAlign="center">{setting}</Typography>
-                                    </MenuItem>
-                                ))}
+                                <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
+                                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+
                             </Menu>
                         </Box>
                     }

@@ -11,17 +11,20 @@ export const authAPI = {
     login(data: LoginParamsType) {
         return instance.post<ResponseDataType>('auth/login', data)
     },
-    logout() {
+    logout(){
         return instance.delete<object>('auth/me')
     },
     signUp(email: string, password: string) {
         return instance.post<{ error?: string }>('auth/register', {email, password})
-        return instance.post('auth/register', {email, password})
     },
     getData() {
         return instance.post<ResponseDataType>('auth/me')
+        me() {
+        return instance.post('auth/me', {})
+    },
+    forgotPass(email: string, from: string, message: string) {
+        return instance.post('auth/forgot', `${email}`)
     }
-
 }
 
 export type LoginParamsType = {

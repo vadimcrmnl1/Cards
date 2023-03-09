@@ -5,6 +5,7 @@ import {AppThunk} from "../../app/store";
 import {errorUtils} from "../../common/utils/errorUtils";
 import {profileAPI} from "../profile/profileAPI";
 import {handleServerNetworkError} from "../../common/utils/errorUtils";
+import {AxiosError} from "axios";
 
 const initialState = {
     data: {
@@ -18,25 +19,13 @@ const initialState = {
         isAdmin: false,
         verified: false,
         rememberMe: false,
-        error: '' as string | undefined
+        error: ''
     },
     isLoggedIn: false,
+    recoveryEmail: ''
     isSignedUp: false
 }
-//типы ответов храним тут или в файле api?
-// export type ResponseDataType = {
-//     _id: string
-//     email: string
-//     name: string
-//     avatar?: string
-//     publicCardPacksCount: number | null
-//     created: Date
-//     updated: Date
-//     isAdmin: boolean
-//     verified: boolean
-//     rememberMe: boolean
-//     error?: string
-// }
+
 export type InitialStateType = typeof initialState
 
 export const authReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
@@ -52,7 +41,7 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
         case 'login/SET-IS-SIGNED-UP':
             return {...state, isSignedUp: action.isSignedUp}
         default:
-            return state
+            return {...state}
     }
 }
 
@@ -67,6 +56,27 @@ export const ChangeNameAC = (name: string) => ({type: "CHANGE-NAME", name} as co
 // thunks
 export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsType>) => {
     authAPI.login(data)
+        .then(res => {
+            if (res.status === 200) {
+                dispatch(setAuthAC(true))
+                dispatch(setLoginAC(res.data))
+                console.log(res)
+                console.log('state', initialState.isLoggedIn)
+            } else {
+
+            }
+        })
+        .catch((err: AxiosError<{ error: string | null }>) => {
+            const error = err.response
+                ? err.response.data.error
+                : err.message
+
+            console.log('Error', error)
+        })
+
+}
+export const logoutTC = () => (dispatch: Dispatch<ActionsType>) => {
+    authAPI.logout()
         .then(res => {
             if (res) {
                 console.log(res.data)
@@ -100,6 +110,21 @@ export const signUpTC = (email: string, password: string): AppThunk<ActionsType 
         })
         .finally(() => {
             dispatch(setAppStatusAC('succeeded'))
+        })
+}
+export const ForgotPassTC = (email: string) => (dispatch: Dispatch<ActionsType>) => {
+
+    const from = "test-front-admin <vadzimkaprenka@gmail.com>"
+    const message = `<div style="background-color: lime; padding: 15px">
+                    password recovery link: 
+                    <a href='http://localhost:3000/#/set-new-password/$token$'>
+                    link</a>
+                    </div>`
+    authAPI.forgotPass(email, from, message)
+        .then(res => {
+            if (res) {
+                console.log(res)
+            }
         })
 }
 //Получение данных
@@ -151,6 +176,15 @@ type ActionsType = ReturnType<typeof setAuthAC>
     | ChangeNameType
     | setNameACType
 
-
+export type ResponseErrorDataType = {
+    error: string | undefined
+    in: string | undefined
+    password: string | undefined
+}
+export type ForgotPasswordType = {
+    email: string
+    from: string
+    message: string
+}
 
 
