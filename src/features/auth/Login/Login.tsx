@@ -9,7 +9,8 @@ import TextField from '@mui/material/TextField'
 import {Navigate, NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {loginTC, setSignedUpAC} from "../auth-reducer";
+import {loginTC} from "../auth-reducer";
+import {setSignedUpAC} from "../actions";
 
 
 const validationSchema = yup.object({
@@ -147,87 +148,8 @@ export const Login = () => {
                             >Sign up</NavLink>
                         </div>
                     </div>
-
                 </div>
             </Paper>
-
         </Box>
-        // <div className={s.container}>
-        //     <Paper />
-        //     <h1>Sign in</h1>
-        //     <div className={s.loginWrapper}>
-        //         <form onSubmit={formik.handleSubmit} className={s.form}>
-        //             <TextField
-        //                 fullWidth
-        //                 variant={'standard'}
-        //                 id={'email'}
-        //                 name={'email'}
-        //                 label={'Email'}
-        //                 value={formik.values.email}
-        //                 onChange={formik.handleChange}
-        //                 error={formik.touched.email && Boolean(formik.errors.email)}
-        //                 helperText={formik.touched.email && formik.errors.email}
-        //             />
-        //             <TextField
-        //                 fullWidth
-        //                 style={{marginTop: '15px'}}
-        //                 variant={'standard'}
-        //                 id={'password'}
-        //                 type={showPassword ? 'text' : 'password'}
-        //                 name={'password'}
-        //                 label={'Password'}
-        //                 value={formik.values.password}
-        //                 onChange={formik.handleChange}
-        //                 error={formik.touched.password && Boolean(formik.errors.password)}
-        //                 helperText={formik.touched.password && formik.errors.password}
-        //                 InputProps={{
-        //                     endAdornment: (
-        //                         <InputAdornment position="end">
-        //                             <IconButton
-        //                                 aria-label="toggle password visibility"
-        //                                 onClick={handleClickShowPassword}
-        //                                 onMouseDown={handleMouseDownPassword}
-        //                             >
-        //                                 {showPassword ? <VisibilityOff/> : <Visibility/>}
-        //                             </IconButton>
-        //                         </InputAdornment>
-        //                     )
-        //                 }}
-        //             />
-        //             <div className={s.rememberBlock}>
-        //                 <FormControlLabel
-        //                     style={{marginTop: '10px'}}
-        //                     control={<Checkbox
-        //                         id={'rememberMe'}
-        //                         name={'rememberMe'}
-        //                         onChange={formik.handleChange}
-        //                         color={'primary'}
-        //                     />} label={'Remember me'}/>
-        //             </div>
-        //             <Button color={'primary'}
-        //                     fullWidth
-        //                     style={{marginTop: '20px', borderRadius: '20px'}}
-        //                     variant={'contained'}
-        //                     type={"submit"}
-        //             >Sign in</Button>
-        //         </form>
-        //         <div className={s.forgotPassBlock}>
-        //             <span><NavLink to={PATH.passwordRecovery}
-        //                            style={({isActive}) =>
-        //                                isActive ? activeStyle : activeStyle
-        //                            }
-        //             >Forgot password?</NavLink></span>
-        //         </div>
-        //         <div className={s.questionBlock}>
-        //             Don't have an account yet?
-        //         </div>
-        //         <div className={s.link}>
-        //             <NavLink to={PATH.register}
-        //
-        //             >Sign up</NavLink>
-        //         </div>
-        //     </div>
-        //
-        // </div>
     )
 }

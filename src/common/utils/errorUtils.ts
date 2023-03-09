@@ -1,6 +1,8 @@
 import {Dispatch} from "redux";
-import {AppActionsType, setAppErrorAC, SetAppErrorActionType, setAppStatusAC} from "../../app/AppReducer";
+
 import axios, {AxiosError} from "axios";
+import { AppActionsType } from "../../app/types";
+import { setAppErrorAC, setAppStatusAC } from "../../app/actions";
 
 
 export const handleServerNetworkError = (error: { message: string }, dispatch: Dispatch<AppActionsType>) => {
@@ -21,7 +23,7 @@ export const handleServerAppError = (error: string, dispatch: Dispatch<AppAction
 
 type ErrorType = Error | AxiosError<{ error: string }>
 
-export const errorUtils = (e: ErrorType, dispatch: Dispatch<SetAppErrorActionType>) => {
+export const errorUtils = (e: ErrorType, dispatch: Dispatch<AppActionsType>) => {
     const err = e as ErrorType
     if (axios.isAxiosError(err)) {
         const error = err.response?.data ? err.response.data : err.message

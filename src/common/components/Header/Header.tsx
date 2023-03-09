@@ -1,35 +1,23 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 import {PATH} from "../../utils/routes/Routes";
-
-import {AppBar, Avatar, Box, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography} from "@mui/material";
+import logo from './incubator-logo.png'
+import {AppBar, Avatar, Box, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip} from "@mui/material";
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import {Button} from "@material-ui/core";
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {logoutTC} from "../../../features/auth/auth-reducer";
-import {NavbarTemperary} from "../NavbarTemperary/NavbarTemperary";
 
-
-const settings = ['Profile', 'Logout'];
 
 export const Header = () => {
     const isLoggedId = useAppSelector(state => state.auth.isLoggedIn)
     const dispatch = useAppDispatch()
-
-    // const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
-    // const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    //     setAnchorElNav(event.currentTarget);
-    // };
+
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
-
-    // const handleCloseNavMenu = () => {
-    //     setAnchorElNav(null);
-    // };
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
@@ -42,7 +30,7 @@ export const Header = () => {
         <AppBar position="static" color={'default'}>
             <Container maxWidth="xl">
                 <Toolbar style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <NavLink to={'/'}><WorkspacesIcon style={{color: 'black'}}/></NavLink>
+                    <NavLink to={'/'}><img src={logo} alt={'logo'}/> </NavLink>
                     {!isLoggedId
                         ?
                         <div>
@@ -85,7 +73,7 @@ export const Header = () => {
                     }
                 </Toolbar>
             </Container>
-            <NavbarTemperary/>
+
         </AppBar>
     )
 }
