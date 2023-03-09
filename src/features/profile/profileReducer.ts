@@ -2,10 +2,14 @@ import {Dispatch} from "redux";
 import {profileAPI} from "./profileAPI";
 import {handleServerNetworkError} from "../../common/utils/errorUtils";
 import {AppActionsType, setAppStatusAC} from "../../app/AppReducer";
+import {ResponseDataType} from "../auth/auth-reducer";
 
 
 const initialState = {
-    isAuth: false
+    isAuth: false,
+    email: '',
+    name: '',
+    avatar: ''
 
 }
 
@@ -13,8 +17,10 @@ export type InitialStateType = typeof initialState
 
 export const profileReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
-        case "CHANGE-NAME":
-            return {...state, }
+        /*case "SET_NAME":
+            return {...state, name:action.data.name, email: action.data.email}*/
+        /*case "CHANGE-NAME":
+            return {...state, }*/
         case 'LOG-OUT':
             return {...state, isAuth: action.payload.value}
         default:
@@ -30,29 +36,47 @@ const LogoutAC=(value:boolean)=> {
         }
     }as const
 }
-const ChangeNameAC=(name:string)=> {
+/*
+export const setNameAC = (data: ResponseDataType) => ({type: 'SET_NAME', data} as const)
+*/
+/*export const getDataTC = () => async (dispatch: Dispatch<ActionsType>) => {
+    debugger
+
+    try {
+
+        const result = await profileAPI.getData()
+        console.log(result)
+        dispatch(setNameAC(result.data))
+
+    } catch (e:any) {
+        handleServerNetworkError(e.response, dispatch)
+    }finally {
+        /!*dispatch(setAppStatusAC('succeeded'))*!/
+    }
+}*/
+/*const ChangeNameAC=(name:string)=> {
     return {
         type: "CHANGE-NAME",
         payload:{
             name
         }
     }as const
-}
+}*/
 export const LogoutTC = () => async (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
     try {
         const result = await profileAPI.logout()
 
-                dispatch(LogoutAC(false))
+         return dispatch(LogoutAC(false))
 
     } catch (e:any) {
-        handleServerNetworkError(e.response, dispatch)
+        return handleServerNetworkError(e.response, dispatch)
     }finally {
-        dispatch(setAppStatusAC('succeeded'))
+        return dispatch(setAppStatusAC('succeeded'))
     }
 }
 
-export const ChangeNameTC = (name:string) => async (dispatch: Dispatch<ActionsType>) => {
+/*export const ChangeNameTC = (name:string) => async (dispatch: Dispatch<ActionsType>) => {
 
     try {
         const result = await profileAPI.changeName(name)
@@ -63,10 +87,11 @@ export const ChangeNameTC = (name:string) => async (dispatch: Dispatch<ActionsTy
     }finally {
         dispatch(setAppStatusAC('succeeded'))
     }
-}
-// thunks
+}*/
+
 
 // types
 type LogoutType=ReturnType<typeof LogoutAC>
-type ChangeNameType=ReturnType<typeof ChangeNameAC>
-type ActionsType = LogoutType | ChangeNameType | AppActionsType
+/*type setNameACType=ReturnType<typeof setNameAC>*/
+/*type ChangeNameType=ReturnType<typeof ChangeNameAC>*/
+type ActionsType = LogoutType | AppActionsType
