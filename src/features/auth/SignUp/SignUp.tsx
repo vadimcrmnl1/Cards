@@ -1,16 +1,15 @@
 import React from "react";
 import s from './SignUp.module.css'
-import {FormikHelpers, useField, useFormik} from 'formik';
+import {FormikHelpers, useFormik} from 'formik';
 import * as yup from "yup";
 import {IconButton, InputAdornment, TextField} from "@mui/material";
 import {Button} from "@material-ui/core";
-import {FieldInputProps, FormikConfig, FormikErrors, FormikTouched} from "formik/dist/types";
 import {VisibilityOff} from "@mui/icons-material";
 import Visibility from '@mui/icons-material/Visibility';
-import {NavLink} from "react-router-dom";
+import {NavLink, Navigate} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {selectIsLoggedIn} from "../selectors";
+import {selectIsSignedUp} from "../selectors";
 import {signUpTC} from "../auth-reducer";
 
 
@@ -42,7 +41,7 @@ const validationSchema = yup.object({
 export const SignUp = () => {
 
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+    const isSignedUp = useAppSelector(selectIsSignedUp)
 
     const initialValues = {
         email: '',
@@ -51,7 +50,6 @@ export const SignUp = () => {
     }
     const onSubmit = (values: Values, {setSubmitting}: FormikHelpers<Values>) => {
         dispatch(signUpTC(values.email, values.password))
-        alert(JSON.stringify(values, null, 2));
         setSubmitting(false);
     }
 
@@ -79,7 +77,9 @@ export const SignUp = () => {
                 </IconButton>
             </InputAdornment>
     }
-
+    if (isSignedUp) {
+        return <Navigate to={PATH.login}/>
+    }
     return (
         <div className={s.container}>
             <h1>Sign up</h1>
@@ -89,6 +89,7 @@ export const SignUp = () => {
                            fullWidth
                            variant={'standard'}
                            type={'email'}
+                           placeholder={'foo@bar.com'}
                            {...formik.getFieldProps('email')}
                 />
                 {formik.errors.email && formik.touched.email && <span>{formik.errors.email}</span>}
@@ -123,16 +124,50 @@ export const SignUp = () => {
             </form>
             <div className={s.questionBlock}>
                 Don't have an account yet?
+                <p>test1@test1.com</p>
+                <p>test1test1</p>
             </div>
             <div className={s.link}>
-                <NavLink to={PATH.login}
-
-                >Sign in</NavLink>
+                <NavLink to={PATH.login}>Sign in</NavLink>
             </div>
         </div>
     )
 }
 
-
-
+//
+// let notValidEmail = {
+//     emailRegExp: {},
+//     error: "not valid email/password /ᐠ-ꞈ-ᐟ\\",
+//     in: "createUser",
+//     isEmailValid: false,
+//     isPassValid: true,
+//     passwordRegExp: "Password must be more than 7 characters..."
+// }
+// let notValidPasword = {
+//     emailRegExp: {},
+//     error: "not valid email/password /ᐠ-ꞈ-ᐟ\\",
+//     in: "createUser",
+//     isEmailValid: true,
+//     isPassValid: false,
+//     passwordRegExp: "Password must be more than 7 characters..."
+// }
+// let a = {
+//     email: "94timoha@gmail.com",
+//     error: "email already exists /ᐠ｡ꞈ｡ᐟ\\",
+//     in: "createUser"
+// }
+//
+// //res.data =>
+// let addedUser = {
+//     created: "2023-03-08T19:24:10.062Z",
+//     email: "98timoha@gmail.com",
+//     isAdmin: false,
+//     name: "98timoha@gmail.com",
+//     publicCardPacksCount: 0,
+//     rememberMe: false,
+//     updated: "2023-03-08T19:24:10.062Z",
+//     verified: false,
+//     __v: 0,
+//     _id: "6408e0da827dd518fc9b224d"
+// }
 

@@ -1,9 +1,23 @@
 import {Dispatch} from "redux";
-import {AppActionsType, setAppErrorAC, setAppStatusAC} from "../../app/AppReducer";
+import {AppActionsType, setAppErrorAC, SetAppErrorActionType, setAppStatusAC} from "../../app/AppReducer";
+import axios, {AxiosError} from "axios";
 
 
 export const handleServerNetworkError = (error: { statusText: string }, dispatch: Dispatch<AppActionsType>) => {
     console.log(error.statusText)
     dispatch(setAppErrorAC(error.statusText ? error.statusText : 'Some error occurred'))
     dispatch(setAppStatusAC('failed'))
+}
+
+
+type ErrorType = Error | AxiosError<{ error: string }>
+
+export const errorUtils = (e: ErrorType, dispatch: Dispatch<SetAppErrorActionType>) => {
+    const err = e as ErrorType
+    if (axios.isAxiosError(err)) {
+        const error = err.response?.data ? err.response.data.error : err.message
+        dispatch(setAppErrorAC(error))
+    } else {
+        dispatch(setAppErrorAC(`${err.name}: ${err.message}`))
+    }
 }

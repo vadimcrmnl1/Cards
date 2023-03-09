@@ -1,5 +1,8 @@
 import {authAPI, LoginParamsType} from "../../api/cards-api";
 import {Dispatch} from "redux";
+import {AppActionsType, setAppStatusAC} from "../../app/AppReducer";
+import {AppThunk} from "../../app/store";
+import {errorUtils} from "../../common/utils/errorUtils";
 
 const initialState = {
     data: {
@@ -15,8 +18,10 @@ const initialState = {
         rememberMe: false,
         error: ''
     },
-    isLoggedIn: false
+    isLoggedIn: false,
+    isSignedUp: false
 }
+//типы ответов храним тут или в файле api?
 export type ResponseDataType = {
     _id: string
     email: string
@@ -38,6 +43,8 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
             return {...state, isLoggedIn: action.isLoggedIn}
         case 'login/SET-LOGIN-DATA':
             return {...state, ...action.data}
+        case 'login/SET-IS-SIGNED-UP':
+            return {...state, isSignedUp: action.isSignedUp}
         default:
             return state
     }
@@ -46,6 +53,8 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
 export const setAuthAC = (isLoggedIn: boolean) =>
     ({type: 'login/SET-IS-LOGGED-IN', isLoggedIn} as const)
 export const setLoginAC = (data: ResponseDataType) => ({type: 'login/SET-LOGIN-DATA', data} as const)
+export const setSignedUpAC = (isSignedUp: boolean) => ({type: 'login/SET-IS-SIGNED-UP', isSignedUp} as const)
+
 // thunks
 export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsType>) => {
     authAPI.login(data)
@@ -62,14 +71,25 @@ export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionsTyp
         })
 
 }
-export const signUpTC = (email: string, password: string) => (dispatch: Dispatch<ActionsType>) => {
+//если промис резолвится, то приходит <AxiosResponse<T>>res.<T>data... . Если rejected то приходит <AxiosError<T>>err
+//.<AxiosResponse<T>>response.<T>data
+export const signUpTC = (email: string, password: string): AppThunk<ActionsType | AppActionsType> => (dispatch) => {
+    dispatch(setAppStatusAC('loading'))
     authAPI.signUp(email, password)
         .then(res => {
-                       console.log(res)
+            dispatch(setSignedUpAC(true))
+            console.log(res)
         })
-        .catch(err=> {
+        .catch(err => {
+            errorUtils(err, dispatch)
             console.log(err)
+        })
+        .finally(() => {
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 // types
-type ActionsType = ReturnType<typeof setAuthAC> | ReturnType<typeof setLoginAC>
+type ActionsType = ReturnType<typeof setAuthAC>
+    | ReturnType<typeof setLoginAC>
+    | ReturnType<typeof setSignedUpAC>
+

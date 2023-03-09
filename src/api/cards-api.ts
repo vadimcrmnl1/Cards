@@ -13,7 +13,7 @@ export const authAPI = {
         return instance.delete<object>('auth/me')
     },
     signUp(email: string,password: string){
-        return instance.post('auth/register',{email,password})
+        return instance.post<{error?:string}>('auth/register',{email,password})
     }
 }
 
