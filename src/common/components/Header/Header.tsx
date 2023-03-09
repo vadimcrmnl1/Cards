@@ -5,8 +5,8 @@ import {PATH} from "../../utils/routes/Routes";
 import {AppBar, Avatar, Box, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography} from "@mui/material";
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import {Button} from "@material-ui/core";
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {useAppSelector} from "../../../app/store";
+import {NavbarTemperary} from "../NavbarTemperary/NavbarTemperary";
 
 
 const settings = ['Profile', 'Logout'];
@@ -36,7 +36,10 @@ export const Header = () => {
         <AppBar position="static" color={'default'}>
             <Container maxWidth="xl">
                 <Toolbar style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <NavLink to={'/'}><WorkspacesIcon style={{color: 'black'}}/></NavLink>
+                    <NavLink to={'/'}>
+                        {/*<img src={logo} alt={'logo'}/>*/}
+                        <WorkspacesIcon style={{color: 'black'}}/>
+                    </NavLink>
                     {!isLoggedId
                         ?
                         <div>
@@ -81,6 +84,7 @@ export const Header = () => {
                     }
                 </Toolbar>
             </Container>
+            <NavbarTemperary/>
         </AppBar>
     )
 }

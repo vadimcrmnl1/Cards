@@ -50,6 +50,7 @@ export const SignUp = () => {
     }
     const onSubmit = (values: Values, {setSubmitting}: FormikHelpers<Values>) => {
         dispatch(signUpTC(values.email, values.password))
+        formik.resetForm()
         setSubmitting(false);
     }
 
@@ -77,6 +78,7 @@ export const SignUp = () => {
                 </IconButton>
             </InputAdornment>
     }
+
     if (isSignedUp) {
         return <Navigate to={PATH.login}/>
     }
