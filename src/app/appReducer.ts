@@ -40,7 +40,7 @@ export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch)
 
         })
         .finally(() => {
-
+        dispatch(setAppStatusAC('succeeded'))
         })
 }
 

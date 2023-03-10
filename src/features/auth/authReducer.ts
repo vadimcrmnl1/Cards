@@ -1,7 +1,6 @@
 import {authAPI, LoginParamsType, ResponseDataType} from "../../api/api";
 
 import {errorUtils, handleServerNetworkError} from "../../common/utils/errorUtils";
-import {AxiosError} from "axios";
 import {AuthActionsType, LoginTypes} from "./types";
 import {setAppInfoAC, setAppStatusAC} from "../../app/actions";
 import {setLoggedInAC} from "./actions";
@@ -38,12 +37,13 @@ export const loginTC = (data: LoginParamsType): AppThunk<AllReducersActionType> 
             }
 
         })
-        .catch((err: AxiosError<{ error: string | null }>) => {
-            const error = err.response
-                ? err.response.data.error
-                : err.message
-            console.log(err)
-            console.log('Error', error)
+        .catch((err) => {
+            handleServerNetworkError(err.response.data.error, dispatch)
+            // const error = err.response
+            //     ? err.response.data.error
+            //     : err.message
+            // console.log(err)
+            // console.log('Error', error)
         })
         .finally(() => {
             dispatch(setAppStatusAC('succeeded'))

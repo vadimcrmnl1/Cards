@@ -35,7 +35,7 @@ export const Header = () => {
             <Container maxWidth="xl">
                 <Toolbar style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <NavLink to={'/'}><img src={logo} alt={'logo'}/> </NavLink>
-                    {!isLoggedId
+                    {isLoggedId !== 'loggedIn'
                         ?
                         <div>
                             <NavLink to={PATH.login}>
