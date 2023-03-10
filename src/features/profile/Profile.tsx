@@ -27,7 +27,7 @@ export const Profile = () => {
     useEffect(() => {
 
         if (isLoggedIn==='loggedIn') {
-            dispatch(setProfileTC())
+            // dispatch(setProfileTC())
         }
 
     }, [])

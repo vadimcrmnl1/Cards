@@ -3,6 +3,7 @@ import {authAPI} from "../../api/api";
 import {handleServerNetworkError} from "../../common/utils/errorUtils";
 import {changeNameAC, setProfileAC} from "./actions";
 import {AllReducersActionType, AppThunk} from "../../app/types";
+import {setAppInfoAC} from "../../app/actions";
 
 export const profileInitialState: ProfileInitialStateType = {
     _id: '',
@@ -49,9 +50,8 @@ export const setProfileTC = (): AppThunk<AllReducersActionType> => (dispatch) =>
 export const changeNameTC = (name: string): AppThunk<AllReducersActionType> => (dispatch) => {
 
     authAPI.changeName(name).then((res) => {
-        console.log(res.data.updatedUser.name)
         dispatch(changeNameAC(res.data.updatedUser.name))
-
+        dispatch(setAppInfoAC(`Name schanged to ${res.data.updatedUser.name}`))
     }).catch((e: any) => {
         console.log(e.response.data.error)
         handleServerNetworkError(e.response, dispatch)

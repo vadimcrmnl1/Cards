@@ -1,9 +1,9 @@
 import {authAPI} from "../api/api";
 
-import {handleServerAppError, handleServerNetworkError} from "../common/utils/errorUtils";
 import {AllReducersActionType, AppActionsType, AppInitialStateType, AppThunk} from "./types";
-import {setAppStatusAC} from "./actions";
+import {setAppErrorAC, setAppStatusAC} from "./actions";
 import {setLoggedInAC} from "../features/auth/actions";
+import {setProfileAC} from "../features/profile/actions";
 
 const appInitialState: AppInitialStateType = {
     status: 'idle',
@@ -25,26 +25,21 @@ export const appReducer = (state: AppInitialStateType = appInitialState, action:
 }
 
 
-
 //thunks
 export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.me()
         .then(res => {
-            if (res.status === 200) {
-                dispatch(setLoggedInAC('loggedIn'))
-
-            } else {
-                handleServerAppError(res.data, dispatch)
-
-            }
+            dispatch(setLoggedInAC('loggedIn'))
+            dispatch(setProfileAC(res.data))
+            dispatch(setAppStatusAC('succeeded'))
         })
         .catch((error) => {
-            handleServerNetworkError(error, dispatch)
+            dispatch(setAppErrorAC(error.response.data.error))
+            dispatch(setAppStatusAC('failed'))
 
         })
         .finally(() => {
-            dispatch(setAppStatusAC('succeeded'))
 
         })
 }

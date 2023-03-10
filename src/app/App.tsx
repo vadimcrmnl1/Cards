@@ -7,10 +7,11 @@ import {useAppDispatch, useAppSelector} from "./store";
 import {CircularProgress} from "@mui/material";
 import {initializeAppTC} from "./appReducer";
 
+
+
 function App() {
     const appStatus = useAppSelector(state => state.app.status)
     const dispatch = useAppDispatch()
-
     useEffect(() => {
         dispatch(initializeAppTC())
     }, [])

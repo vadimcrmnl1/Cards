@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import s from './Login.module.css'
 import {useFormik} from 'formik';
 import * as yup from 'yup';
