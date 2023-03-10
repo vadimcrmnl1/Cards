@@ -5,8 +5,9 @@ import { AppActionsType } from "../../app/types";
 import { setAppErrorAC, setAppStatusAC } from "../../app/actions";
 
 
-export const handleServerNetworkError = (error: { message: string }, dispatch: Dispatch<AppActionsType>) => {
-    dispatch(setAppErrorAC(error.message ? error.message : 'Some error occurred'))
+export const handleServerNetworkError = (error: string, dispatch: Dispatch<AppActionsType>) => {
+    debugger
+    dispatch(setAppErrorAC(error ? error : 'Some error occurred'))
     dispatch(setAppStatusAC('failed'))
 }
 export const handleServerAppError = (error: string, dispatch: Dispatch<AppActionsType>) => {

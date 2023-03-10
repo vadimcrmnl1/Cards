@@ -41,17 +41,19 @@ export const InitializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch)
     dispatch(setAppStatusAC('loading'))
     authAPI.me()
         .then(res => {
+
             dispatch(setIsInitializedAC(true))
             if (res.status === 200) {
                 dispatch(setAuthAC(true))
-
+                console.log('me', res)
             } else {
                 handleServerAppError(res.data, dispatch)
 
             }
         })
         .catch((error) => {
-            handleServerNetworkError(error, dispatch)
+
+            handleServerNetworkError(error.response.data.error, dispatch)
 
         })
         .finally(() => {

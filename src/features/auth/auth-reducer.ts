@@ -1,8 +1,7 @@
 import {authAPI, LoginParamsType, ResponseDataType} from "../../api/api";
 
 import {AllReducersActionType, AppThunk} from "../../app/store";
-import {errorUtils, handleServerNetworkError} from "../../common/utils/errorUtils";
-import {AxiosError} from "axios";
+import {handleServerAppError, handleServerNetworkError} from "../../common/utils/errorUtils";
 import {AuthActionsType} from "./types";
 import {setAppInfoAC, setAppStatusAC} from "../../app/actions";
 import {changeNameAC, setAuthAC, setLoginAC, setProfileAC, setSignedUpAC} from "./actions";
@@ -45,26 +44,24 @@ export const authReducer = (state: InitialStateType = initialState, action: Auth
 }
 
 
-
 // thunks
 export const loginTC = (data: LoginParamsType): AppThunk<AllReducersActionType> => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.login(data)
         .then(res => {
+
             if (res.status === 200) {
+
                 dispatch(setAuthAC(true))
                 dispatch(setLoginAC(res.data))
                 console.log(res)
             } else {
-
+                debugger
+                handleServerAppError(res.statusText, dispatch)
             }
         })
-        .catch((err: AxiosError<{ error: string | null }>) => {
-            const error = err.response
-                ? err.response.data.error
-                : err.message
-
-            console.log('Error', error)
+        .catch((error) => {
+            handleServerNetworkError(error.response.data.error, dispatch)
         })
         .finally(() => {
             dispatch(setAppStatusAC('succeeded'))
@@ -76,17 +73,18 @@ export const logoutTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
     authAPI.logout()
         .then(res => {
             if (res) {
-                console.log(res)
                 dispatch(setLoginAC({} as ResponseDataType))
                 dispatch(setAuthAC(false))
                 dispatch(setSignedUpAC(false))
+            } else {
+                handleServerAppError(res, dispatch)
             }
         })
         .catch((e) => {
             const error = e.response
                 ? e.response.data.error
                 : (e.message + ', more details in the console');
-            console.log('Error', {...e})
+            console.log('Error LogoutTC', {...e})
         })
         .finally(() => {
             dispatch(setAppStatusAC('succeeded'))
@@ -105,7 +103,7 @@ export const signUpTC = (email: string, password: string): AppThunk<AllReducersA
             console.log(res)
         })
         .catch(err => {
-            errorUtils(err, dispatch)
+            handleServerNetworkError(err.response.data.error, dispatch)
             console.log(err)
         })
         .finally(() => {
