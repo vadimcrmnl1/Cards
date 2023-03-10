@@ -91,19 +91,9 @@ export const Profile = () => {
                                                    color: '#282c34'
                                                }}
                                                {...formik.getFieldProps('nickName')}/>
-                                    <Button type={'submit'} variant={'contained'}
-                                            style={{
-                                                width: 'max-content',
-                                                height: '30px',
-                                                fontSize: '22px',
-                                                fontWeight: 'bold',
-                                                fontFamily: '"Montserrat Thin", sans-serif',
-                                                borderRadius: '5px',
-                                                background: '#00bbc0',
-                                                color: 'white'
-                                            }}>
+                                    <button type={'submit'}>
                                         Save
-                                    </Button>
+                                    </button>
                                 </div>
                                 <div className={s.profileError}>
                                     {formik.touched.nickName && formik.errors.nickName &&
