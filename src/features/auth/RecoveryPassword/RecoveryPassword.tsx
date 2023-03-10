@@ -7,9 +7,9 @@ import TextField from "@mui/material/TextField";
 import {Button} from "@material-ui/core";
 import {NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
-import {useAppDispatch, useAppSelector} from "../../../app/store";
+import {useAppDispatch} from "../../../app/store";
 import * as yup from "yup";
-import {forgotPassTC} from "../auth-reducer";
+import {forgotPassTC} from "../authReducer";
 
 const validationSchema = yup.object({
     email: yup
@@ -20,7 +20,6 @@ const validationSchema = yup.object({
 
 export const RecoveryPassword = () => {
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
     const formik = useFormik({
         initialValues: {
             email: ''
@@ -32,11 +31,6 @@ export const RecoveryPassword = () => {
             formik.resetForm()
         })
     })
-
-
-    const activeStyle = {
-        textDecoration: 'none'
-    }
 
     return (
         <Box

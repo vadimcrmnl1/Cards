@@ -10,7 +10,8 @@ import {useAppDispatch, useAppSelector} from "../../../app/store";
 import st from "../RecoveryPassword/RecoveryPassword.module.css";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {Navigate, useLocation, useSearchParams} from 'react-router-dom'
-import {resetPasswordTC} from "../auth-reducer";
+import {resetPasswordTC} from "../authReducer";
+import {selectIsLoggedIn} from "../selectors";
 
 const validationSchema = yup.object({
     password: yup
@@ -24,7 +25,7 @@ export const NewPassword = () => {
     const dispatch = useAppDispatch()
     const location = useLocation()
     const token = location.pathname.slice(18)
-    const isSignedUp = useAppSelector<boolean>(state => state.auth.isSignedUp)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
     const formik = useFormik({
         initialValues: {
             password: ''
@@ -45,10 +46,7 @@ export const NewPassword = () => {
     const activeStyle = {
         textDecoration: 'none'
     }
-    // if (!resetMailToken) {
-    //     return <Navigate to={PATH.passwordRecovery}/>
-    // }
-    if (isSignedUp) {
+    if (isLoggedIn==='unLoggedIn') {
         return <Navigate to={PATH.login}/>
     }
     return (
