@@ -46,7 +46,7 @@ export const NewPassword = () => {
     const activeStyle = {
         textDecoration: 'none'
     }
-    if (isLoggedIn==='unLoggedIn') {
+    if (isLoggedIn==='registered') {
         return <Navigate to={PATH.login}/>
     }
     return (

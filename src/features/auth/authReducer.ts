@@ -111,7 +111,7 @@ export const resetPasswordTC = (newPassword: string, token: string): AppThunk<Al
     authAPI.resetPass(newPassword, token)
         .then(res => {
             if (res) {
-                dispatch(setLoggedInAC('unLoggedIn'))
+                dispatch(setLoggedInAC('registered'))
                 dispatch(setAppInfoAC('Password changed successful'))
                 dispatch(setAppStatusAC('succeeded'))
             }
