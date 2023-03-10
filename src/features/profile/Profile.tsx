@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import {Navigate, NavLink} from "react-router-dom";
 import arrow from "../images/Group 240.svg"
-import s from "./Profile.module.css"
+import s from "./profile.module.css"
 import {useFormik} from "formik";
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import editIcon from "../../common/components/SuperEditableSpan/editIcon.svg";
@@ -16,8 +16,10 @@ export type FormikErrorType = {
 export const Profile = () => {
 
     const [editMode, setEditMode] = useState(false)
+    const [nickName, setNickName] = useState('')
     const error = useAppSelector(state => state.app.error)
-    const userData = useAppSelector(state => state.auth.data)
+    const name = useAppSelector(state => state.auth.data.name)
+    const email = useAppSelector(state => state.auth.data.email)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
 
@@ -27,6 +29,7 @@ export const Profile = () => {
 
         if (isLoggedIn) {
             dispatch(getDataTC())
+            setNickName(name)
         }
 
     }, [])
@@ -44,17 +47,20 @@ export const Profile = () => {
 
         onSubmit: values => {
             dispatch(changeNameTC(values.nickName))
-            formik.resetForm()
+            //formik.resetForm()
             setEditMode(false)
         },
 
     })
-    const logoutHandler = () => {
+    const handlerLogout = () => {
         dispatch(logoutTC())
 
     }
-    const onClickCallBack = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
+    const handlerOnClick= (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
         setEditMode(true)
+    }
+    const handlerChangeName = (event:any)=>{
+          setNickName(event.target.value)
     }
     if (!isLoggedIn) {
         return <Navigate to={PATH.login}/>
@@ -78,10 +84,12 @@ export const Profile = () => {
                         <form onSubmit={formik.handleSubmit}>
                             <div className={s.changeName}>
                                 <div className={s.nickNameField}>
-                                    <TextField label="nickName"
+                                  <TextField label="nickName"
                                                id="standard-basic"
                                                variant="standard"
                                                margin="dense"
+
+
                                                style={{
                                                    width: '200px',
                                                    height: '30px',
@@ -90,8 +98,13 @@ export const Profile = () => {
                                                    marginBottom: '17px',
                                                    color: '#282c34'
                                                }}
-                                               {...formik.getFieldProps('nickName')}/>
-                                    <button type={'submit'}>
+
+                                      {...formik.getFieldProps('nickName')}
+
+                                    />
+
+
+                                    <button type={'submit'} className={s.buttonSave}>
                                         Save
                                     </button>
                                 </div>
@@ -104,18 +117,17 @@ export const Profile = () => {
                         </form>
                     ) : (
                         <div className={s.spanBlock}>
-                            <div>{userData.name}</div>
+                            <div>{name}</div>
                             <img
-                                onClick={onClickCallBack}
+                                onClick={handlerOnClick}
                                 src={editIcon}
                                 className={s.pen}
                                 alt={'edit'}
                             />
                         </div>
                     )}
-                    <span>{userData.email}</span>
-                    <button onClick={logoutHandler}
-                            className={s.buttonLogout}>
+                    <span>{email}</span>
+                    <button onClick={handlerLogout}>
                         {/*<div className={s.logoutImg}><img src={logOut} alt={'logout'}/></div>*/}
                         Log out
                     </button>
