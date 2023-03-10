@@ -9,8 +9,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import {NavLink, Navigate} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {selectIsSignedUp} from "../selectors";
-import {signUpTC} from "../auth-reducer";
+import {selectIsLoggedIn} from "../selectors";
+import {signUpTC} from "../authReducer";
 
 
 export interface Values {
@@ -32,16 +32,15 @@ const validationSchema = yup.object({
     confirmPassword: yup
         .string()
         .required('Confirm password is required')
-        /* .oneOf([yup.ref('password'), null], 'Passwords must match'),
-       * тут я не разобрался в логике. Это проверка подтверждения пароля*/
-        .oneOf([yup.ref('password')], 'Вы неправильно подтвердили пароль'),
+        /* тут я не разобрался в логике. Это проверка подтверждения пароля*/
+        .oneOf([yup.ref('password',/*null*/)], 'Passwords must match'),
 
 });
 
 export const SignUp = () => {
 
     const dispatch = useAppDispatch()
-    const isSignedUp = useAppSelector(selectIsSignedUp)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
     const initialValues = {
         email: '',
@@ -59,13 +58,14 @@ export const SignUp = () => {
         onSubmit,
         validationSchema,
     })
-    const [showPassword, setShowPassword] = React.useState(false);
 
+    const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
+
     const inputProps = {
         endAdornment:
             <InputAdornment position="end">
@@ -79,7 +79,7 @@ export const SignUp = () => {
             </InputAdornment>
     }
 
-    if (isSignedUp) {
+    if (isLoggedIn === 'registered') {
         return <Navigate to={PATH.login}/>
     }
     return (
@@ -126,8 +126,6 @@ export const SignUp = () => {
             </form>
             <div className={s.questionBlock}>
                 Don't have an account yet?
-                <p>test1@test1.com</p>
-                <p>test1test1</p>
             </div>
             <div className={s.link}>
                 <NavLink to={PATH.login}>Sign in</NavLink>
@@ -135,41 +133,4 @@ export const SignUp = () => {
         </div>
     )
 }
-
-//
-// let notValidEmail = {
-//     emailRegExp: {},
-//     error: "not valid email/password /ᐠ-ꞈ-ᐟ\\",
-//     in: "createUser",
-//     isEmailValid: false,
-//     isPassValid: true,
-//     passwordRegExp: "Password must be more than 7 characters..."
-// }
-// let notValidPasword = {
-//     emailRegExp: {},
-//     error: "not valid email/password /ᐠ-ꞈ-ᐟ\\",
-//     in: "createUser",
-//     isEmailValid: true,
-//     isPassValid: false,
-//     passwordRegExp: "Password must be more than 7 characters..."
-// }
-// let a = {
-//     email: "94timoha@gmail.com",
-//     error: "email already exists /ᐠ｡ꞈ｡ᐟ\\",
-//     in: "createUser"
-// }
-//
-// //res.data =>
-// let addedUser = {
-//     created: "2023-03-08T19:24:10.062Z",
-//     email: "98timoha@gmail.com",
-//     isAdmin: false,
-//     name: "98timoha@gmail.com",
-//     publicCardPacksCount: 0,
-//     rememberMe: false,
-//     updated: "2023-03-08T19:24:10.062Z",
-//     verified: false,
-//     __v: 0,
-//     _id: "6408e0da827dd518fc9b224d"
-// }
 

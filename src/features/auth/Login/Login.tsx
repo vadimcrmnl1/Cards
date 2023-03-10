@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import s from './Login.module.css'
 import {useFormik} from 'formik';
 import * as yup from 'yup';
@@ -9,8 +9,8 @@ import TextField from '@mui/material/TextField'
 import {Navigate, NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {loginTC} from "../auth-reducer";
-import {setSignedUpAC} from "../actions";
+import {loginTC} from "../authReducer";
+import {selectIsLoggedIn} from "../selectors";
 
 
 const validationSchema = yup.object({
@@ -28,11 +28,11 @@ const validationSchema = yup.object({
 });
 
 export const Login = () => {
-    useEffect(() => {
-        dispatch(setSignedUpAC(false))
-    }, [])
+    // useEffect(() => {
+    //
+    // }, [])
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
     const formik = useFormik({
         initialValues: {
@@ -56,7 +56,7 @@ export const Login = () => {
         textDecoration: 'none'
     }
 
-    if (isLoggedIn) {
+    if (isLoggedIn==='loggedIn') {
         return <Navigate to={PATH.profile}/>
     }
     return (

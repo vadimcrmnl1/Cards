@@ -3,22 +3,22 @@ import s from './App.module.css';
 import {Header} from "../common/components/Header/Header";
 import {Outlet} from "react-router-dom";
 import {ErrorSnackbar} from "../common/components/ErrorSnackbar/ErrorSnackbar";
-import {InitializeAppTC} from "./appReducer";
 import {useAppDispatch, useAppSelector} from "./store";
 import {CircularProgress} from "@mui/material";
+import {initializeAppTC} from "./appReducer";
+
+
 
 function App() {
-    const isInitialize = useAppSelector(state => state.app.isInitialized)
     const appStatus = useAppSelector(state => state.app.status)
     const dispatch = useAppDispatch()
     useEffect(() => {
-        dispatch(InitializeAppTC())
+        dispatch(initializeAppTC())
     }, [])
+
+
     if (appStatus === 'loading') {
-        return <div
-            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
-            <CircularProgress/>
-        </div>
+        return <CircularProgress sx={{position: 'fixed', top: '30%', right: '50%',}}/>
     }
 
     return (
