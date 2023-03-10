@@ -50,9 +50,11 @@ export const setProfileTC = (): AppThunk<AllReducersActionType> => (dispatch) =>
 export const changeNameTC = (name: string): AppThunk<AllReducersActionType> => (dispatch) => {
 
     authAPI.changeName(name).then((res) => {
+        debugger
         dispatch(changeNameAC(res.data.updatedUser.name))
         dispatch(setAppInfoAC(`Name schanged to ${res.data.updatedUser.name}`))
     }).catch((e: any) => {
+        debugger
         console.log(e.response.data.error)
         handleServerNetworkError(e.response, dispatch)
     })
