@@ -6,8 +6,9 @@ import {useFormik} from "formik";
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import editIcon from "../../common/components/SuperEditableSpan/editIcon.svg";
 import {Button, TextField} from "@mui/material";
-import {changeNameTC, getDataTC, logoutTC} from "../auth/auth-reducer";
+import {  logoutTC} from "../auth/authReducer";
 import {PATH} from "../../common/utils/routes/Routes";
+import {changeNameTC, setProfileTC} from "./profileReducer";
 
 export type FormikErrorType = {
     nickName?: string
@@ -17,7 +18,7 @@ export const Profile = () => {
 
     const [editMode, setEditMode] = useState(false)
     const error = useAppSelector(state => state.app.error)
-    const userData = useAppSelector(state => state.auth.data)
+    const userData = useAppSelector(state => state.profile)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
 
@@ -25,8 +26,8 @@ export const Profile = () => {
     //
     useEffect(() => {
 
-        if (isLoggedIn) {
-            dispatch(getDataTC())
+        if (isLoggedIn==='loggedIn') {
+            dispatch(setProfileTC())
         }
 
     }, [])
@@ -49,14 +50,15 @@ export const Profile = () => {
         },
 
     })
+
     const logoutHandler = () => {
         dispatch(logoutTC())
-
     }
+
     const onClickCallBack = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
         setEditMode(true)
     }
-    if (!isLoggedIn) {
+    if (isLoggedIn!=='loggedIn') {
         return <Navigate to={PATH.login}/>
     }
 

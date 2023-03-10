@@ -9,8 +9,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import {NavLink, Navigate} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {selectIsSignedUp} from "../selectors";
-import {signUpTC} from "../auth-reducer";
+import {selectIsLoggedIn} from "../selectors";
+import {signUpTC} from "../authReducer";
 
 
 export interface Values {
@@ -32,16 +32,15 @@ const validationSchema = yup.object({
     confirmPassword: yup
         .string()
         .required('Confirm password is required')
-        /* .oneOf([yup.ref('password'), null], 'Passwords must match'),
-       * тут я не разобрался в логике. Это проверка подтверждения пароля*/
-        .oneOf([yup.ref('password')], 'Вы неправильно подтвердили пароль'),
+       /* тут я не разобрался в логике. Это проверка подтверждения пароля*/
+        .oneOf([yup.ref('password',/*null*/)], 'Passwords must match'),
 
 });
 
 export const SignUp = () => {
 
     const dispatch = useAppDispatch()
-    const isSignedUp = useAppSelector(selectIsSignedUp)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
     const initialValues = {
         email: '',
@@ -79,7 +78,7 @@ export const SignUp = () => {
             </InputAdornment>
     }
 
-    if (isSignedUp) {
+    if (isLoggedIn==='registered') {
         return <Navigate to={PATH.login}/>
     }
     return (

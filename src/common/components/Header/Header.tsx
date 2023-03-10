@@ -3,10 +3,10 @@ import {NavLink} from "react-router-dom";
 import {PATH} from "../../utils/routes/Routes";
 import logo from './incubator-logo.png'
 import {AppBar, Avatar, Box, Container, IconButton, Menu, MenuItem, Toolbar, Tooltip} from "@mui/material";
-import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import {Button} from "@material-ui/core";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {logoutTC} from "../../../features/auth/auth-reducer";
+import {logoutTC} from "../../../features/auth/authReducer";
+import {setAppErrorAC} from "../../../app/actions";
 
 
 export const Header = () => {
@@ -20,6 +20,10 @@ export const Header = () => {
     };
 
     const handleCloseUserMenu = () => {
+//хендлер висит на кнопке профайл
+        if (isLoggedId !== 'loggedIn') {
+            dispatch(setAppErrorAC('You are not authorised'))
+        }
         setAnchorElUser(null);
     };
     const handleLogout = () => {

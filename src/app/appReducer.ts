@@ -1,63 +1,51 @@
 import {authAPI} from "../api/api";
 
 import {handleServerAppError, handleServerNetworkError} from "../common/utils/errorUtils";
-import {AllReducersActionType, AppThunk} from "./store";
-import {AppActionsType} from "./types";
-import {setAppStatusAC, setIsInitializedAC} from "./actions";
-import {setAuthAC} from "../features/auth/actions";
+import {AllReducersActionType, AppActionsType, AppInitialStateType, AppThunk} from "./types";
+import {setAppStatusAC} from "./actions";
+import {setLoggedInAC} from "../features/auth/actions";
 
-const initialState: InitialStateType = {
+const appInitialState: AppInitialStateType = {
     status: 'idle',
     error: null,
-    isInitialized: false,
     appInfo: null,
 }
 
-export const AppReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
+export const appReducer = (state: AppInitialStateType = appInitialState, action: AppActionsType): AppInitialStateType => {
     switch (action.type) {
-        case 'APP-STATUS':
+        case 'app/STATUS':
             return {...state, status: action.status}
-        case 'APP-ERROR':
+        case 'app/ERROR':
             return {...state, error: action.error}
-        case 'APP-IS-INITIALIZED':
-            return {...state, isInitialized: action.isInitialized}
-        case 'APP-INFO':
+        case 'app/INFO':
             return {...state, appInfo: action.appInfo}
         default:
             return state
     }
 }
 
-export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
-export type InitialStateType = {
-    status: RequestStatusType
-    error: string | null
-    isInitialized: boolean
-    appInfo: string | null
-}
 
 
-export const InitializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
+//thunks
+export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.me()
         .then(res => {
-
-            dispatch(setIsInitializedAC(true))
             if (res.status === 200) {
-                dispatch(setAuthAC(true))
-                console.log('me', res)
+                dispatch(setLoggedInAC('loggedIn'))
+
             } else {
                 handleServerAppError(res.data, dispatch)
 
             }
         })
         .catch((error) => {
-
-            handleServerNetworkError(error.response.data.error, dispatch)
+            handleServerNetworkError(error, dispatch)
 
         })
         .finally(() => {
             dispatch(setAppStatusAC('succeeded'))
+
         })
 }
 

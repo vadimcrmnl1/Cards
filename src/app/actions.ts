@@ -1,6 +1,5 @@
-import {RequestStatusType} from "./appReducer";
+import {RequestStatusType} from "./types"
 
-export const setAppErrorAC = (error: string | null) => ({type: 'APP-ERROR', error} as const)
-export const setAppInfoAC = (appInfo: string | null) => ({type: 'APP-INFO', appInfo} as const)
-export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP-STATUS', status} as const)
-export const setIsInitializedAC = (isInitialized: boolean) => ({type: 'APP-IS-INITIALIZED', isInitialized} as const)
+export const setAppErrorAC = (error: string | null) => ({type: 'app/ERROR', error} as const)
+export const setAppInfoAC = (appInfo: string | null) => ({type: 'app/INFO', appInfo} as const)
+export const setAppStatusAC = (status: RequestStatusType) => ({type: 'app/STATUS', status} as const)
