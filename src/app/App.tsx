@@ -5,7 +5,7 @@ import {Outlet} from "react-router-dom";
 import {ErrorSnackbar} from "../common/components/ErrorSnackbar/ErrorSnackbar";
 import {useAppDispatch, useAppSelector} from "./store";
 import {CircularProgress} from "@mui/material";
-import {initializeAppTC} from "./appReducer";
+import {initializeAppTC} from "./app-reducer";
 
 
 

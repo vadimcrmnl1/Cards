@@ -33,7 +33,6 @@ export const profileReducer = (state: ProfileInitialStateType = profileInitialSt
 //thunks
 //Получение данных
 export const setProfileTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
-
     authAPI.getData()
         .then((res) => {
             console.log(res)
@@ -48,14 +47,13 @@ export const setProfileTC = (): AppThunk<AllReducersActionType> => (dispatch) =>
 
 //Изменение nickName
 export const changeNameTC = (name: string): AppThunk<AllReducersActionType> => (dispatch) => {
-
     authAPI.changeName(name).then((res) => {
-        debugger
+
         dispatch(changeNameAC(res.data.updatedUser.name))
-        dispatch(setAppInfoAC(`Name schanged to ${res.data.updatedUser.name}`))
+        dispatch(setAppInfoAC(`Name changed to ${res.data.updatedUser.name}`))
     }).catch((e: any) => {
         debugger
         console.log(e.response.data.error)
-        handleServerNetworkError(e.response, dispatch)
+        handleServerNetworkError(e.response.data.error, dispatch)
     })
 }

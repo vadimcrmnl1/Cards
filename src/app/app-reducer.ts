@@ -13,11 +13,11 @@ const appInitialState: AppInitialStateType = {
 
 export const appReducer = (state: AppInitialStateType = appInitialState, action: AppActionsType): AppInitialStateType => {
     switch (action.type) {
-        case 'app/STATUS':
+        case 'APP/STATUS':
             return {...state, status: action.status}
-        case 'app/ERROR':
+        case 'APP/ERROR':
             return {...state, error: action.error}
-        case 'app/INFO':
+        case 'APP/INFO':
             return {...state, appInfo: action.appInfo}
         default:
             return state

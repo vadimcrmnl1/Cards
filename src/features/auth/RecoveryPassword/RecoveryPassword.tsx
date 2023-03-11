@@ -9,7 +9,7 @@ import {NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch} from "../../../app/store";
 import * as yup from "yup";
-import {forgotPassTC} from "../authReducer";
+import {forgotPassTC} from "../auth-reducer";
 
 const validationSchema = yup.object({
     email: yup
@@ -27,8 +27,6 @@ export const RecoveryPassword = () => {
         validationSchema: validationSchema,
         onSubmit: (values => {
             dispatch(forgotPassTC(values.email))
-            console.log(values.email)
-            formik.resetForm()
         })
     })
 
@@ -78,7 +76,6 @@ export const RecoveryPassword = () => {
                         </div>
                         <div className={s.link}>
                             <NavLink to={PATH.login}
-
                             >Try logging in</NavLink>
                         </div>
                     </div>

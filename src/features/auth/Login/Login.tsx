@@ -9,7 +9,7 @@ import TextField from '@mui/material/TextField'
 import {Navigate, NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {loginTC} from "../authReducer";
+import {loginTC} from "../auth-reducer";
 import {selectIsLoggedIn} from "../selectors";
 
 
@@ -28,9 +28,7 @@ const validationSchema = yup.object({
 });
 
 export const Login = () => {
-    // useEffect(() => {
-    //
-    // }, [])
+
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
@@ -71,7 +69,6 @@ export const Login = () => {
                 },
             }}
         >
-
             <Paper>
                 <div>
                     <Paper/>

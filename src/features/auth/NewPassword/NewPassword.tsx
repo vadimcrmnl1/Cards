@@ -9,14 +9,14 @@ import * as yup from "yup";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import st from "../RecoveryPassword/RecoveryPassword.module.css";
 import {PATH} from "../../../common/utils/routes/Routes";
-import {Navigate, useLocation, useSearchParams} from 'react-router-dom'
-import {resetPasswordTC} from "../authReducer";
+import {Navigate, useLocation} from 'react-router-dom'
+import {resetPasswordTC} from "../auth-reducer";
 import {selectIsLoggedIn} from "../selectors";
 
 const validationSchema = yup.object({
     password: yup
         .string()
-        .min(3, 'Password should be of minimum 3 characters length')
+        .min(8, 'Password should be of minimum 8 characters length')
         .required('Password is required'),
 });
 
@@ -34,7 +34,7 @@ export const NewPassword = () => {
         onSubmit: (values => {
             console.log(values.password, token)
             dispatch(resetPasswordTC(values.password, token))
-            formik.resetForm()
+
         })
     })
 
@@ -61,7 +61,6 @@ export const NewPassword = () => {
                 },
             }}
         >
-
             <Paper>
                 <div>
                     <Paper/>

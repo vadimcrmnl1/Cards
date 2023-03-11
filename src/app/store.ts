@@ -1,10 +1,10 @@
 import { applyMiddleware, combineReducers, legacy_createStore} from "redux";
-import {authReducer} from "../features/auth/authReducer";
+import {authReducer} from "../features/auth/auth-reducer";
 import thunk from "redux-thunk";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {appReducer} from "./appReducer";
+import {appReducer} from "./app-reducer";
 import { AppThunkDispatch} from "./types";
-import {profileReducer} from "../features/profile/profileReducer";
+import {profileReducer} from "../features/profile/profile-reducer";
 
 const rootReducer = combineReducers({
     auth: authReducer,

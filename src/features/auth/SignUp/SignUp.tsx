@@ -10,7 +10,7 @@ import {NavLink, Navigate} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {selectIsLoggedIn} from "../selectors";
-import {signUpTC} from "../authReducer";
+import {signUpTC} from "../auth-reducer";
 
 
 export interface Values {
