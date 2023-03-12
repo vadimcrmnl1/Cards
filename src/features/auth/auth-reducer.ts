@@ -67,18 +67,18 @@ export const logoutTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
 
 }
 
-export const signUpTC = (email: string, password: string): AppThunk<AllReducersActionType> => (dispatch) => {
+export const signUpTC = (email: string, password: string): AppThunk<AllReducersActionType> => async (dispatch) => {
     dispatch(setAppStatusAC('loading'))
-    authAPI.signUp(email, password)
-        .then(res => {
-            dispatch(setIsSignedUpAC(true))
-            dispatch(setAppStatusAC('succeeded'))
-        })
-        .catch(err => {
-            errorUtils(err, dispatch)
-        })
+    try {
+        const res = await authAPI.signUp(email, password)
+        dispatch(setAppInfoAC(res.data.addedUser.email + ' has registered'))
+        dispatch(setIsSignedUpAC(true))
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e: any) {
+        errorUtils(e, dispatch)
+    }
 }
-export const forgotPassTC = (email: string): AppThunk<AllReducersActionType> => (dispatch) => {
+export const forgotPassTC = (email: string): AppThunk<AllReducersActionType> => async (dispatch) => {
 
     const from = "test-front-admin <ai73a@yandex.by>"
     const message = `<div style="background-color: #98a498; padding: 15px">
@@ -86,31 +86,33 @@ export const forgotPassTC = (email: string): AppThunk<AllReducersActionType> => 
                     <a href='http://localhost:3000/Cards#/set-new-password/$token$'>
                     link</a>
                     </div>`
+    const data = {email, from, message}
 
     dispatch(setAppStatusAC('loading'))
-    authAPI.forgotPass(email, from, message)
-        .then(res => {
-            dispatch(setAppInfoAC(`${res.data.info}, Check your email: ${email}`))
-            dispatch(setAppStatusAC('succeeded'))
-            dispatch(setMailWasSentAC(true))
-        })
-        .catch((err) => {
-            errorUtils(err, dispatch)
-        })
+    try {
+        const res = await authAPI.forgotPass(data)
+        dispatch(setAppInfoAC(`${res.data.info}, Check your email: ${email}`))
+        dispatch(setAppStatusAC('succeeded'))
+        dispatch(setMailWasSentAC(true))
+    } catch (e: any) {
+        errorUtils(e, dispatch)
+    }
 }
-export const resetPasswordTC = (newPassword: string, token: string): AppThunk<AllReducersActionType> => (dispatch) => {
-    dispatch(setAppStatusAC('loading'))
-    authAPI.resetPass(newPassword, token)
-        .then(res => {
+export const resetPasswordTC = (password: string, resetPasswordToken: string): AppThunk<AllReducersActionType> => {
+    return async (dispatch) => {
+        const data = {password, resetPasswordToken}
+
+        dispatch(setAppStatusAC('loading'))
+        try {
+            const res = await authAPI.resetPass(data)
             dispatch(setIsPasswordChangedAC(true))
-            dispatch(setAppInfoAC('Password changed successful'))
+            dispatch(setAppInfoAC(res.data.info))
             dispatch(setAppStatusAC('succeeded'))
-        })
-        .catch(err => {
-            errorUtils(err, dispatch)
-        })
+        } catch (e: any) {
+            errorUtils(e, dispatch)
+        }
+    }
 }
-
 
 
 
