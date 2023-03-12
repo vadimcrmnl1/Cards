@@ -9,13 +9,14 @@ import * as yup from "yup";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import st from "../RecoveryPassword/RecoveryPassword.module.css";
 import {PATH} from "../../../common/utils/routes/Routes";
-import {Navigate, useLocation, useSearchParams} from 'react-router-dom'
+import {Navigate, useLocation} from 'react-router-dom'
 import {resetPasswordTC} from "../auth-reducer";
+import {selectIsPasswordChanged} from "../selectors";
 
 const validationSchema = yup.object({
     password: yup
         .string()
-        .min(3, 'Password should be of minimum 3 characters length')
+        .min(8, 'Password should be of minimum 8 characters length')
         .required('Password is required'),
 });
 
@@ -24,16 +25,14 @@ export const NewPassword = () => {
     const dispatch = useAppDispatch()
     const location = useLocation()
     const token = location.pathname.slice(18)
-    const isSignedUp = useAppSelector<boolean>(state => state.auth.isSignedUp)
+    const isPasswordChanged = useAppSelector(selectIsPasswordChanged)
     const formik = useFormik({
         initialValues: {
             password: ''
         },
         validationSchema: validationSchema,
         onSubmit: (values => {
-            console.log(values.password, token)
             dispatch(resetPasswordTC(values.password, token))
-            formik.resetForm()
         })
     })
 
@@ -42,13 +41,7 @@ export const NewPassword = () => {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
-    const activeStyle = {
-        textDecoration: 'none'
-    }
-    // if (!resetMailToken) {
-    //     return <Navigate to={PATH.passwordRecovery}/>
-    // }
-    if (isSignedUp) {
+    if (isPasswordChanged) {
         return <Navigate to={PATH.login}/>
     }
     return (
@@ -63,7 +56,6 @@ export const NewPassword = () => {
                 },
             }}
         >
-
             <Paper>
                 <div>
                     <Paper/>

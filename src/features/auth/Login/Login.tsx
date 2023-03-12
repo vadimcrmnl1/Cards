@@ -10,7 +10,8 @@ import {Navigate, NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {loginTC} from "../auth-reducer";
-import {setSignedUpAC} from "../actions";
+import {selectLoginStatus} from "../selectors";
+import {setIsPasswordChangedAC, setIsSignedUpAC, setMailWasSentAC} from "../actions";
 
 
 const validationSchema = yup.object({
@@ -20,7 +21,7 @@ const validationSchema = yup.object({
         .required('Email is required'),
     password: yup
         .string()
-        .min(3, 'Password should be of minimum 3 characters length')
+        .min(8, 'Password should be of minimum 8 characters length')
         .required('Password is required'),
     rememberMe: yup
         .string()
@@ -28,11 +29,17 @@ const validationSchema = yup.object({
 });
 
 export const Login = () => {
-    useEffect(() => {
-        dispatch(setSignedUpAC(false))
-    }, [])
+
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
+    const isLoggedIn = useAppSelector(selectLoginStatus)
+
+//сброс isSignedUp чтобы можно было перейти на сигнап, восстановление пароля или на снова можно было вводить новый пароль
+    useEffect(() => {
+        dispatch(setIsSignedUpAC(false))
+        dispatch(setMailWasSentAC(false))
+        dispatch(setIsPasswordChangedAC(false))
+    }, [dispatch])
+
 
     const formik = useFormik({
         initialValues: {
@@ -71,7 +78,6 @@ export const Login = () => {
                 },
             }}
         >
-
             <Paper>
                 <div>
                     <Paper/>

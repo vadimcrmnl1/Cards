@@ -1,9 +1,8 @@
-import {ResponseDataType} from "../../api/api";
+export const setLoggedInAC = (isLoggedIn: boolean) => ({type: 'auth/SET-IS-LOGGED-IN',  isLoggedIn} as const)
+export const setIsSignedUpAC = (isSignedUp: boolean) => ({type: 'auth/SET-IS-SIGNED-UP', isSignedUp} as const)
+export const setMailWasSentAC = (mailWasSent: boolean) => ({type: 'auth/SET-MAIL-WAS-SENT', mailWasSent} as const)
+export const setIsPasswordChangedAC = (isPasswordChanged: boolean) => ({
+    type: 'auth/SET-IS-PASSWORD-CHANGED',
+    isPasswordChanged
+} as const)
 
-export const setAuthAC = (isLoggedIn: boolean) =>
-    ({type: 'login/SET-IS-LOGGED-IN', isLoggedIn} as const)
-export const setLoginAC = (data: ResponseDataType) => ({type: 'login/SET-LOGIN-DATA', data} as const)
-export const setSignedUpAC = (isSignedUp: boolean) => ({type: 'login/SET-IS-SIGNED-UP', isSignedUp} as const)
-
-export const setProfileAC = (data: ResponseDataType) => ({type: 'SET_PROFILE', data} as const)
-export const changeNameAC = (name: string) => ({type: "CHANGE-NAME", name} as const)
