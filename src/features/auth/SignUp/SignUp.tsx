@@ -1,7 +1,6 @@
 import React from "react";
 import s from './SignUp.module.css'
 import {FormikHelpers, useFormik} from 'formik';
-import * as yup from "yup";
 import {NavLink, Navigate} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
@@ -9,43 +8,15 @@ import {selectIsSignedUp} from "../selectors";
 import {signUpTC} from "../auth-reducer";
 import SuperInputText from "../../../common/components/SuperInputText/SuperInputText";
 import SuperButton from "../../../common/components/SuperButton/SuperButton";
+import {initialValues, validationSchema, FormikValuesType} from "../common";
 
-
-export interface Values {
-    email: string;
-    password: string;
-    confirmPassword: string
-
-}
-
-const validationSchema = yup.object({
-    email: yup
-        .string()
-        .email('Enter a valid email')
-        .required('Email is required'),
-    password: yup
-        .string()
-        .min(8, 'Password should be of minimum 8 characters length')
-        .required('Password is required'),
-    confirmPassword: yup
-        .string()
-        .required('Confirm password is required')
-        /* тут я не разобрался в логике. Это проверка подтверждения пароля*/
-        .oneOf([yup.ref('password',/*null*/)], 'Passwords must match'),
-
-});
 
 export const SignUp = () => {
 
     const dispatch = useAppDispatch()
     const isSignedUp = useAppSelector(selectIsSignedUp)
 
-    const initialValues = {
-        email: '',
-        password: '',
-        confirmPassword: '',
-    }
-    const onSubmit = (values: Values, {setSubmitting}: FormikHelpers<Values>) => {
+    const onSubmit = (values: Omit<FormikValuesType, 'confirmPassword'>, {setSubmitting}: FormikHelpers<FormikValuesType>) => {
         dispatch(signUpTC(values.email, values.password))
         // formik.resetForm()
         setSubmitting(false);

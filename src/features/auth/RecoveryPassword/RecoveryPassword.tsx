@@ -1,24 +1,16 @@
 import React from "react";
 import {useFormik} from "formik";
-import s from "./../Login/Login.module.css";
-import st from './RecoveryPassword.module.css'
-import {Box, Paper} from "@mui/material";
-import TextField from "@mui/material/TextField";
-import {Button} from "@material-ui/core";
+import s from './RecoveryPassword.module.css'
 import {NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import * as yup from "yup";
 import {forgotPassTC} from "../auth-reducer";
 import {CheckEmail} from "../CheckEmail/CheckEmail";
 import {selectMailWasSent} from "../selectors";
+import SuperInputText from "../../../common/components/SuperInputText/SuperInputText";
+import SuperButton from "../../../common/components/SuperButton/SuperButton";
+import {initialValues, validationSchema, FormikValuesType} from "../common";
 
-const validationSchema = yup.object({
-    email: yup
-        .string()
-        .email('Enter a valid email')
-        .required('Email is required'),
-});
 
 export const RecoveryPassword = () => {
 
@@ -26,71 +18,44 @@ export const RecoveryPassword = () => {
 
     const mailWasSent = useAppSelector(selectMailWasSent)
 
+    const onSubmit = (values: Omit<FormikValuesType, 'password'>) => {
+        dispatch(forgotPassTC(values.email))
+    }
+
     const formik = useFormik({
-        initialValues: {
-            email: ''
-        },
-        validationSchema: validationSchema,
-        onSubmit: (values => {
-            dispatch(forgotPassTC(values.email))
-        })
+        initialValues,
+        validationSchema,
+        onSubmit
     })
 
     return mailWasSent
         ? <CheckEmail/>
-        : (
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    '& > :not(style)': {
-                        m: 1,
-                        width: 413,
-                        height: 552,
-                    },
-                }}
-            >
+        : (<div className={s.container}>
+                <h1>Forgot your password?</h1>
+                <form onSubmit={formik.handleSubmit} className={s.form}>
 
-                <Paper>
-                    <div>
-                        <Paper/>
-                        <h1>Forgot your password?</h1>
-                        <div className={s.loginWrapper}>
-                            <form onSubmit={formik.handleSubmit} className={s.form}>
-                                <TextField
-                                    fullWidth
-                                    variant={'standard'}
-                                    id={'email'}
-                                    name={'email'}
-                                    label={'Email'}
-                                    value={formik.values.email}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.email && Boolean(formik.errors.email)}
-                                    helperText={formik.touched.email && formik.errors.email}
-                                />
-                                <div className={st.descriptionBlock}>
-                                    Enter your email address and we will send you further instructions
-                                </div>
-                                <Button color={'primary'}
-                                        fullWidth
-                                        style={{marginTop: '57px', borderRadius: '20px'}}
-                                        variant={'contained'}
-                                        type={"submit"}
-                                >Send instruction</Button>
-                            </form>
+                    <SuperInputText
+                        id={'email'}
+                        placeholder={'foo@bar.com'}
+                        {...formik.getFieldProps('email')}
+                    />
+                    {formik.errors.email && formik.touched.email && <span>{formik.errors.email}</span>}
 
-                            <div className={s.questionBlock}>
-                                Did you remember your password?
-                            </div>
-                            <div className={s.link}>
-                                <NavLink to={PATH.login}
-                                >Try logging in</NavLink>
-                            </div>
-                        </div>
-
+                    <div className={s.questionBlock}>
+                        Enter your email address and we will send you further instructions
                     </div>
-                </Paper>
 
-            </Box>
+                    <SuperButton type={"submit"}>Send instruction</SuperButton>
+
+                </form>
+
+                <div className={s.questionBlock}>
+                    Did you remember your password?
+                </div>
+                <div className={s.link}>
+                    <NavLink to={PATH.login}
+                    >Try logging in</NavLink>
+                </div>
+            </div>
         )
 }
