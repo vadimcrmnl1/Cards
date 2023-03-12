@@ -9,7 +9,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import {NavLink, Navigate} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {selectIsLoggedIn} from "../selectors";
+import {selectIsSignedUp} from "../selectors";
 import {signUpTC} from "../auth-reducer";
 
 
@@ -40,7 +40,7 @@ const validationSchema = yup.object({
 export const SignUp = () => {
 
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+    const isSignedUp = useAppSelector(selectIsSignedUp)
 
     const initialValues = {
         email: '',
@@ -49,7 +49,7 @@ export const SignUp = () => {
     }
     const onSubmit = (values: Values, {setSubmitting}: FormikHelpers<Values>) => {
         dispatch(signUpTC(values.email, values.password))
-        formik.resetForm()
+        // formik.resetForm()
         setSubmitting(false);
     }
 
@@ -79,7 +79,7 @@ export const SignUp = () => {
             </InputAdornment>
     }
 
-    if (isLoggedIn === 'registered') {
+    if (isSignedUp) {
         return <Navigate to={PATH.login}/>
     }
     return (

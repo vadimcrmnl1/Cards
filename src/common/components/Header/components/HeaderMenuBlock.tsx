@@ -3,9 +3,10 @@ import {Avatar, Box, IconButton, Menu, MenuItem, Tooltip} from "@mui/material";
 import {setAppErrorAC} from "../../../../app/actions";
 import {logoutTC} from "../../../../features/auth/auth-reducer";
 import {useAppDispatch, useAppSelector} from "../../../../app/store";
+import {selectLoginStatus} from "../../../../features/auth/selectors";
 
 export const HeaderMenuBlock = () => {
-    const isLoggedId = useAppSelector(state => state.auth.isLoggedIn)
+    const loginStatus = useAppSelector(selectLoginStatus)
     const dispatch = useAppDispatch()
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -13,7 +14,7 @@ export const HeaderMenuBlock = () => {
     };
     const handleCloseUserMenu = () => {
 //хендлер висит на кнопке профайл
-        if (isLoggedId !== 'loggedIn') {
+        if (!loginStatus ) {
             dispatch(setAppErrorAC('You are not authorised'))
         }
         setAnchorElUser(null);

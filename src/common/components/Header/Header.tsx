@@ -8,14 +8,14 @@ import {HeaderMenuBlock} from "./components/HeaderMenuBlock";
 
 
 export const Header = () => {
-    const isLoggedId = useAppSelector(state => state.auth.isLoggedIn)
+    const loginStatus = useAppSelector(state => state.auth.isLoggedIn)
 
     return (
         <AppBar position="static" color={'default'}>
             <Container maxWidth="xl">
                 <Toolbar style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <NavLink to={'/'}><img src={logo} alt={'logo'}/> </NavLink>
-                    {isLoggedId !== 'loggedIn'
+                    {!loginStatus
                         ?
                         <HeaderButtonBlock/>
                         :

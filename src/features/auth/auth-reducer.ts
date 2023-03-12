@@ -1,15 +1,17 @@
 import {authAPI, LoginParamsType, ResponseDataType} from "../../api/api";
 
-import {errorUtils, handleServerNetworkError} from "../../common/utils/errorUtils";
-import {AuthActionsType, LoginTypes} from "./types";
+import {errorUtils} from "../../common/utils/errorUtils";
+import {AuthActionsType} from "./types";
 import {setAppInfoAC, setAppStatusAC} from "../../app/actions";
-import {setLoggedInAC} from "./actions";
+import {setIsPasswordChangedAC, setIsSignedUpAC, setLoggedInAC, setMailWasSentAC} from "./actions";
 import {AllReducersActionType, AppThunk} from "../../app/types";
 import {setProfileAC} from "../profile/actions";
 
 const authInitialState = {
-    isLoggedIn: 'unLoggedIn' as LoginTypes,
+    isLoggedIn: false,
     isSignedUp: false,
+    mailWasSent: false,
+    isPasswordChanged: false,
     resetMailToken: null as null | string
 }
 export type AuthInitialStateType = typeof authInitialState
@@ -18,6 +20,12 @@ export const authReducer = (state: AuthInitialStateType = authInitialState, acti
     switch (action.type) {
         case 'auth/SET-IS-LOGGED-IN':
             return {...state, isLoggedIn: action.isLoggedIn}
+        case 'auth/SET-IS-SIGNED-UP':
+            return {...state, isSignedUp: action.isSignedUp}
+        case 'auth/SET-MAIL-WAS-SENT':
+            return {...state, mailWasSent: action.mailWasSent}
+        case 'auth/SET-IS-PASSWORD-CHANGED':
+            return {...state, isPasswordChanged: action.isPasswordChanged}
         default:
             return state
     }
@@ -29,36 +37,23 @@ export const loginTC = (data: LoginParamsType): AppThunk<AllReducersActionType> 
     dispatch(setAppStatusAC('loading'))
     authAPI.login(data)
         .then(res => {
-            if (res.status === 200) {
-                dispatch(setLoggedInAC('loggedIn'))
-                console.log(res)
-                dispatch(setProfileAC(res.data))
-            } else {
-            }
-
-        })
-        .catch((err) => {
-            handleServerNetworkError(err.response.data.error, dispatch)
-            // const error = err.response
-            //     ? err.response.data.error
-            //     : err.message
-            // console.log(err)
-            // console.log('Error', error)
-        })
-        .finally(() => {
+            dispatch(setLoggedInAC(true))
+            dispatch(setProfileAC(res.data))
             dispatch(setAppStatusAC('succeeded'))
         })
+        .catch((err) => {
+            errorUtils(err, dispatch)
+        })
+
 
 }
 export const logoutTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.logout()
         .then(res => {
-            if (res) {
-                console.log(res)
-                setProfileAC({} as ResponseDataType)
-                dispatch(setLoggedInAC('unLoggedIn'))
-            }
+            setProfileAC({} as ResponseDataType)
+            dispatch(setLoggedInAC(false))
+            dispatch(setAppStatusAC('succeeded'))
         })
         .catch((e) => {
             const error = e.response
@@ -76,14 +71,11 @@ export const signUpTC = (email: string, password: string): AppThunk<AllReducersA
     dispatch(setAppStatusAC('loading'))
     authAPI.signUp(email, password)
         .then(res => {
-            console.log(res)
-            dispatch(setLoggedInAC('registered'))
+            dispatch(setIsSignedUpAC(true))
             dispatch(setAppStatusAC('succeeded'))
-            console.log(res)
         })
         .catch(err => {
             errorUtils(err, dispatch)
-            console.log(err)
         })
 }
 export const forgotPassTC = (email: string): AppThunk<AllReducersActionType> => (dispatch) => {
@@ -100,24 +92,22 @@ export const forgotPassTC = (email: string): AppThunk<AllReducersActionType> => 
         .then(res => {
             dispatch(setAppInfoAC(`${res.data.info}, Check your email: ${email}`))
             dispatch(setAppStatusAC('succeeded'))
+            dispatch(setMailWasSentAC(true))
         })
         .catch((err) => {
-            console.log(err)
-            handleServerNetworkError(err.response, dispatch)
+            errorUtils(err, dispatch)
         })
 }
 export const resetPasswordTC = (newPassword: string, token: string): AppThunk<AllReducersActionType> => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.resetPass(newPassword, token)
         .then(res => {
-            if (res) {
-                dispatch(setLoggedInAC('registered'))
-                dispatch(setAppInfoAC('Password changed successful'))
-                dispatch(setAppStatusAC('succeeded'))
-            }
+            dispatch(setIsPasswordChangedAC(true))
+            dispatch(setAppInfoAC('Password changed successful'))
+            dispatch(setAppStatusAC('succeeded'))
         })
         .catch(err => {
-            handleServerNetworkError(err.response, dispatch)
+            errorUtils(err, dispatch)
         })
 }
 

@@ -30,17 +30,16 @@ export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch)
     dispatch(setAppStatusAC('loading'))
     authAPI.me()
         .then(res => {
-            dispatch(setLoggedInAC('loggedIn'))
+            dispatch(setLoggedInAC(true))
             dispatch(setProfileAC(res.data))
             dispatch(setAppStatusAC('succeeded'))
         })
         .catch((error) => {
             dispatch(setAppErrorAC(error.response.data.error))
             dispatch(setAppStatusAC('failed'))
-
         })
-        .finally(() => {
-        dispatch(setAppStatusAC('succeeded'))
+        .finally(()=>{
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 
