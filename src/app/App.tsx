@@ -8,7 +8,6 @@ import {CircularProgress} from "@mui/material";
 import {initializeAppTC} from "./app-reducer";
 
 
-
 function App() {
     const appStatus = useAppSelector(state => state.app.status)
     const dispatch = useAppDispatch()
@@ -18,18 +17,27 @@ function App() {
 
 
     if (appStatus === 'loading') {
-        return <CircularProgress sx={{position: 'fixed', top: '30%', right: '50%',}}/>
-    }
-
-    return (
-        <div className={s.App}>
+        return <div className={s.App}>
+            <CircularProgress sx={{position: 'fixed', top: '30%', right: '50%',}}/>
             <ErrorSnackbar/>
             <Header/>
             <div className={s.appWrapper}>
                 <Outlet/>
             </div>
         </div>
-    );
+    } else {
+        return (
+            <div className={s.App}>
+                <ErrorSnackbar/>
+                <Header/>
+                <div className={s.appWrapper}>
+                    <Outlet/>
+                </div>
+            </div>
+        );
+    }
+
+
 }
 
 export default App;

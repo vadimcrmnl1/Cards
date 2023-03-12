@@ -35,12 +35,13 @@ export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch)
             dispatch(setAppStatusAC('succeeded'))
         })
         .catch((error) => {
-            dispatch(setAppErrorAC(error.response.data.error))
-            dispatch(setAppStatusAC('failed'))
-
+            if (error.response.status !== 401) {
+                dispatch(setAppErrorAC(error.response.data.error))
+                dispatch(setAppStatusAC('failed'))
+            }
         })
         .finally(() => {
-        dispatch(setAppStatusAC('succeeded'))
+            dispatch(setAppStatusAC('succeeded'))
         })
 }
 
