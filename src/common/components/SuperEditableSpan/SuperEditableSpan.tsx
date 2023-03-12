@@ -7,7 +7,7 @@ import React, {
 import s from './SuperEditableSpan.module.css'
 
 import editIcon from './editIcon.svg'
-import SuperInputText from "../SuperInputText/SuperInputText";
+import SuperInput from "../SuperInput/SuperInput";
 
 // тип пропсов обычного инпута
 type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>,
@@ -64,7 +64,7 @@ const SuperEditableSpan: React.FC<SuperEditableSpanType> = (
     return (
         <>
             {editMode ? (
-                <SuperInputText
+                <SuperInput
                     autoFocus={autoFocus || true}
                     onBlur={onBlurCallback}
                     onEnter={onEnterCallback}

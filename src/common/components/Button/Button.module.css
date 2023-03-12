@@ -1,4 +1,4 @@
-.button {
+.buttonContainer {
     font-family: "Montserrat Thin", sans-serif;
     font-size: 22px;
     font-weight: bold;
@@ -9,10 +9,10 @@
     background: #00bbc0;
     color: white;
 }
-.button:hover {
+.buttonContainer:hover {
     background: #009a9f;
 }
-.button:active {
+.buttonContainer:active {
     background: white;
     color: #00bbc0;
 }

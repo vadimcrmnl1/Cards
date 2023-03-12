@@ -6,7 +6,7 @@ import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {selectIsSignedUp} from "../selectors";
 import {signUpTC} from "../auth-reducer";
-import SuperInputText from "../../../common/components/SuperInputText/SuperInputText";
+import SuperInput from "../../../common/components/SuperInput/SuperInput";
 import SuperButton from "../../../common/components/SuperButton/SuperButton";
 import {initialValues, validationSchema, FormikValuesType} from "../common";
 
@@ -27,6 +27,11 @@ export const SignUp = () => {
         onSubmit,
         validationSchema,
     })
+    const error = (value: 'email' | 'password' | 'confirmPassword') => {
+        return Boolean(formik.errors[value]) && formik.touched[value]
+            ? formik.errors[value]
+            : ''
+    }
 
     if (isSignedUp) {
         return <Navigate to={PATH.login}/>
@@ -36,27 +41,28 @@ export const SignUp = () => {
             <h1>Sign up</h1>
             <form onSubmit={formik.handleSubmit} className={s.form}>
 
-                <SuperInputText
+                <SuperInput
                     id={'email'}
-                    placeholder={'foo@bar.com'}
+                    placeholder={'Email'}
+                    error={error('email')}
                     {...formik.getFieldProps('email')}
                 />
-                {formik.errors.email && formik.touched.email && <span>{formik.errors.email}</span>}
 
-                <SuperInputText
+                <SuperInput
                     id={'password'}
-                    placeholder={'12345'}
+                    placeholder={'Password'}
                     {...formik.getFieldProps('password')}
+                    error={error('password')}
+                    withEye
                 />
-                {formik.errors.password && formik.touched.password && <span>{formik.errors.password}</span>}
 
-                <SuperInputText
+                <SuperInput
                     id={'confirmPassword'}
-                    placeholder={'12345'}
+                    placeholder={'Confirm password'}
                     {...formik.getFieldProps('confirmPassword')}
+                    error={error('confirmPassword')}
+                    withEye
                 />
-                {formik.errors.confirmPassword && formik.touched.confirmPassword &&
-                    <span>{formik.errors.confirmPassword}</span>}
 
                 <SuperButton type={"submit"}>
                     Sign up
@@ -72,4 +78,5 @@ export const SignUp = () => {
         </div>
     )
 }
+
 

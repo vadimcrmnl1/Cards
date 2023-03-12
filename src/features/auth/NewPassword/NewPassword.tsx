@@ -6,7 +6,7 @@ import {PATH} from "../../../common/utils/routes/Routes";
 import {Navigate, NavLink, useLocation} from 'react-router-dom'
 import {resetPasswordTC} from "../auth-reducer";
 import {selectIsPasswordChanged} from "../selectors";
-import SuperInputText from "../../../common/components/SuperInputText/SuperInputText";
+import SuperInput from "../../../common/components/SuperInput/SuperInput";
 import SuperButton from "../../../common/components/SuperButton/SuperButton";
 import {initialValues, validationSchema, FormikValuesType} from "../common";
 
@@ -36,12 +36,13 @@ export const NewPassword = () => {
             <h1>Create new password</h1>
             <form onSubmit={formik.handleSubmit} className={s.form}>
 
-                <SuperInputText
+                <SuperInput
                     id={'password'}
-                    placeholder={'12345'}
+                    placeholder={'Password'}
+                    error={formik.errors.password && formik.touched.password
+                        ? formik.errors.password : ''}
                     {...formik.getFieldProps('password')}
                 />
-                {formik.errors.password && formik.touched.password && <span>{formik.errors.password}</span>}
 
 
                 <SuperButton type={"submit"}>Create new password</SuperButton>

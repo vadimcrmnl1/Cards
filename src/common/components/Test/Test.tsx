@@ -10,7 +10,7 @@ import SuperSelect from "../SuperSelect/SuperSelect";
 import SuperRadio from "../SuperRadio/SuperRadio";
 import SuperRange from "../SuperRange/SuperRange";
 import SuperDebouncedInput from "../SuperDebouncedInput/SuperDebouncedInput";
-import SuperInputText from "../SuperInputText/SuperInputText";
+import SuperInput from "../SuperInput/SuperInput";
 
 const arr = [
     { id: 1, value: 'Pre-junior' },
@@ -27,7 +27,7 @@ export const Test = () => {
             <div className={s.commonContainer}>
                 <div className={s.common}>
                     <div>Text input</div>
-                    <SuperInputText/>
+                    <SuperInput/>
                 </div>
                 <div className={s.common}>
                     <div>Button</div>

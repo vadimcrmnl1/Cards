@@ -7,7 +7,7 @@ import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {forgotPassTC} from "../auth-reducer";
 import {CheckEmail} from "../CheckEmail/CheckEmail";
 import {selectMailWasSent} from "../selectors";
-import SuperInputText from "../../../common/components/SuperInputText/SuperInputText";
+import SuperInput from "../../../common/components/SuperInput/SuperInput";
 import SuperButton from "../../../common/components/SuperButton/SuperButton";
 import {initialValues, validationSchema, FormikValuesType} from "../common";
 
@@ -34,12 +34,13 @@ export const RecoveryPassword = () => {
                 <h1>Forgot your password?</h1>
                 <form onSubmit={formik.handleSubmit} className={s.form}>
 
-                    <SuperInputText
+                    <SuperInput
                         id={'email'}
                         placeholder={'foo@bar.com'}
                         {...formik.getFieldProps('email')}
+                        error={formik.errors.email && formik.touched.email
+                            ? formik.errors.email : ''}
                     />
-                    {formik.errors.email && formik.touched.email && <span>{formik.errors.email}</span>}
 
                     <div className={s.questionBlock}>
                         Enter your email address and we will send you further instructions
