@@ -1,9 +1,8 @@
 import {authAPI} from "../api/api";
-
 import {AllReducersActionType, AppActionsType, AppInitialStateType, AppThunk} from "./types";
-import {setAppErrorAC, setAppStatusAC} from "./actions";
-import {setLoggedInAC} from "../features/auth/actions";
-import {setProfileAC} from "../features/profile/actions";
+import * as appActions from './actions'
+import * as authAction from './../features/auth/actions'
+import * as profileActions from './../features/profile/actions'
 
 const appInitialState: AppInitialStateType = {
     status: 'idle',
@@ -27,19 +26,21 @@ export const appReducer = (state: AppInitialStateType = appInitialState, action:
 
 //thunks
 export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
-    dispatch(setAppStatusAC('loading'))
+    dispatch(appActions.setAppStatusAC('loading'))
     authAPI.me()
         .then(res => {
-            dispatch(setLoggedInAC(true))
-            dispatch(setProfileAC(res.data))
-            dispatch(setAppStatusAC('succeeded'))
+            dispatch(authAction.setLoggedInAC(true))
+            dispatch(profileActions.setProfileAC(res.data))
+            dispatch(appActions.setAppStatusAC('succeeded'))
         })
         .catch((error) => {
-            dispatch(setAppErrorAC(error.response.data.error))
-            dispatch(setAppStatusAC('failed'))
+            if (error.response.status !== 401) {
+                dispatch(appActions.setAppErrorAC(error.response.data.error))
+                dispatch(appActions.setAppStatusAC('failed'))
+            }
         })
-        .finally(()=>{
-            dispatch(setAppStatusAC('succeeded'))
+        .finally(() => {
+        dispatch(appActions.setAppStatusAC('succeeded'))
         })
 }
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import {ResetPassResponseType, SignUpType} from "../features/auth/types";
 
 export const instance = axios.create({
     baseURL: process.env.NODE_ENV !== 'development' ? 'http://localhost:7542/2.0/' : 'https://neko-back.herokuapp.com/2.0/',
@@ -10,10 +11,10 @@ export const authAPI = {
         return instance.post<ResponseDataType>('auth/login', data)
     },
     logout() {
-        return instance.delete<object>('auth/me')
+        return instance.delete<ResetPassResponseType>('auth/me')
     },
     signUp(email: string, password: string) {
-        return instance.post<{ error?: string }>('auth/register', {email, password})
+        return instance.post<SignUpType>('auth/register', {email, password})
     },
     getData() {
         return instance.post<ResponseDataType>('auth/me')
@@ -23,20 +24,13 @@ export const authAPI = {
         return instance.put('auth/me', {name})
     },
     me() {
-        return instance.post('auth/me', {})
+        return instance.post<ResponseDataType>('auth/me', {})
     },
-    forgotPass(email: string, from: string, message: string) {
-        return instance.post<ResetPassResponseType>('auth/forgot', {
-            email,
-            from,
-            message
-        }, {withCredentials: true})
+    forgotPass(data: { email: string, from: string, message: string }) {
+        return instance.post<ResetPassResponseType>('auth/forgot', {...data})
     },
-    resetPass(password: string, resetPasswordToken: string) {
-        return instance.post<ResetPassResponseType>('auth/set-new-password', {
-            password,
-            resetPasswordToken
-        }, {withCredentials: true})
+    resetPass(data: { password: string, resetPasswordToken: string }) {
+        return instance.post<ResetPassResponseType>('auth/set-new-password', {...data})
     }
 }
 
@@ -58,6 +52,5 @@ export type ResponseDataType = {
     rememberMe: boolean;
     error?: string;
 }
-type ResetPassResponseType = {
-    info:string, error: string
-}
+
+

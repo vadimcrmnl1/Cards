@@ -8,13 +8,15 @@ import editIcon from "../../common/components/SuperEditableSpan/editIcon.svg";
 import {Button, TextField} from "@mui/material";
 import {changeNameTC, getDataTC, logoutTC} from "../auth/auth-reducer";
 import {PATH} from "../../common/utils/routes/Routes";
+import {ProfileEditNameBlock} from "./components/ProfileEditNameBlock";
+import {ProfileNameBlock} from "./components/ProfileNameBlock";
+import {selectLoginStatus} from "../auth/selectors";
 
 export type FormikErrorType = {
     nickName?: string
 }
 
 export const Profile = () => {
-
     const [editMode, setEditMode] = useState(false)
     const error = useAppSelector(state => state.app.error)
     const userData = useAppSelector(state => state.auth.data)
@@ -22,14 +24,6 @@ export const Profile = () => {
 
 
     const dispatch = useAppDispatch()
-    //
-    useEffect(() => {
-
-        if (isLoggedIn) {
-            dispatch(getDataTC())
-        }
-
-    }, [])
 
     const handleLogout = () => {dispatch(logoutTC())}
 

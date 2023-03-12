@@ -1,9 +1,9 @@
 import {ProfileActionsType, ProfileInitialStateType} from "./types";
 import {authAPI} from "../../api/api";
 import {handleServerNetworkError} from "../../common/utils/errorUtils";
-import {changeNameAC, setProfileAC} from "./actions";
+import * as profileActions from "./actions";
 import {AllReducersActionType, AppThunk} from "../../app/types";
-import {setAppInfoAC} from "../../app/actions";
+import * as appActions from './../../app/actions'
 
 export const profileInitialState: ProfileInitialStateType = {
     _id: '',
@@ -31,26 +31,13 @@ export const profileReducer = (state: ProfileInitialStateType = profileInitialSt
 }
 
 //thunks
-//Получение данных
-export const setProfileTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
-    authAPI.getData()
-        .then((res) => {
-            console.log(res)
-            dispatch(setProfileAC(res.data))
-        })
-        .catch((e: any) => {
-            console.log(e)
-            handleServerNetworkError(e.response, dispatch)
-        })
-        .finally(/*dispatch(setAppStatusAC('succeeded'))*/)
-}
 
 //Изменение nickName
 export const changeNameTC = (name: string): AppThunk<AllReducersActionType> => (dispatch) => {
     authAPI.changeName(name).then((res) => {
 
-        dispatch(changeNameAC(res.data.updatedUser.name))
-        dispatch(setAppInfoAC(`Name changed to ${res.data.updatedUser.name}`))
+        dispatch(profileActions.changeNameAC(res.data.updatedUser.name))
+        dispatch(appActions.setAppInfoAC(`Name changed to ${res.data.updatedUser.name}`))
     }).catch((e: any) => {
         debugger
         console.log(e.response.data.error)
