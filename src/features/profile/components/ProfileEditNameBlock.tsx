@@ -3,33 +3,34 @@ import s from "../Profile.module.css";
 import {Button, TextField} from "@mui/material";
 import {useFormik} from "formik";
 import {changeNameTC} from "../profile-reducer";
-import {FormikErrorType} from "../Profile";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 
 type ProfileEditNameBlockType = {
     setEditMode: (editMode: boolean) => void
 }
-
+export type FormikErrorType = {
+    nickName?: string
+}
 export const ProfileEditNameBlock = (props: ProfileEditNameBlockType) => {
     const dispatch = useAppDispatch()
     const error = useAppSelector(state => state.app.error)
-    const userData = useAppSelector(state => state.profile)
+    const name = useAppSelector(state => state.profile.name)
     const formik = useFormik({
         initialValues: {
-            nickName: userData.name
+            nickName: name
         },
         validate: (values) => {
             const errors: FormikErrorType = {}
             if (!values.nickName) {
                 errors.nickName = 'Required'
             }
-            if (values.nickName === userData.name) {
+            if (values.nickName === name) {
                 errors.nickName = 'Your name is not changed'
             }
         },
 
         onSubmit: values => {
-            if (values.nickName !== userData.name) {
+            if (values.nickName !== name) {
                 dispatch(changeNameTC(values.nickName))
                 props.setEditMode(false)
             }
@@ -41,7 +42,7 @@ export const ProfileEditNameBlock = (props: ProfileEditNameBlockType) => {
     }
     return (
         <form onSubmit={formik.handleSubmit}>
-            <div className={s.changeName} onBlur={handleOnBlurName}>
+            <div className={s.changeName}>
                 <div className={s.nickNameField}>
                     <TextField label="nickName"
                                autoFocus={true}
@@ -57,7 +58,9 @@ export const ProfileEditNameBlock = (props: ProfileEditNameBlockType) => {
                                    color: '#282c34'
                                }}
                                {...formik.getFieldProps('nickName')}/>
+                    {/*<button type={'submit'}>Save</button>*/}
                     <Button type={'submit'} variant={'contained'}
+
                             style={{
                                 width: 'max-content',
                                 height: '30px',
@@ -66,7 +69,8 @@ export const ProfileEditNameBlock = (props: ProfileEditNameBlockType) => {
                                 fontFamily: '"Montserrat Thin", sans-serif',
                                 borderRadius: '5px',
                                 background: '#00bbc0',
-                                color: 'white'
+                                color: 'white',
+
                             }}>
                         Save
                     </Button>
