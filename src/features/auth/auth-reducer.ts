@@ -18,7 +18,7 @@ export type AuthInitialStateType = typeof authInitialState
 
 export const authReducer = (state: AuthInitialStateType = authInitialState, action: AuthActionsType): AuthInitialStateType => {
     switch (action.type) {
-        case 'auth/SET-IS-LOGGED-IN':
+        case 'AUTH/SET_IS_LOGGED_IN':
             return {...state, isLoggedIn: action.isLoggedIn}
         case 'auth/SET-IS-SIGNED-UP':
             return {...state, isSignedUp: action.isSignedUp}
@@ -33,49 +33,45 @@ export const authReducer = (state: AuthInitialStateType = authInitialState, acti
 
 
 // thunks
-export const loginTC = (data: LoginParamsType): AppThunk<AllReducersActionType> => (dispatch) => {
+export const loginTC = (data: LoginParamsType): AppThunk<AllReducersActionType> => async (dispatch) => {
     dispatch(setAppStatusAC('loading'))
-    authAPI.login(data)
-        .then(res => {
-            dispatch(setLoggedInAC(true))
-            dispatch(setProfileAC(res.data))
-            dispatch(setAppStatusAC('succeeded'))
-        })
-        .catch((err) => {
-            errorUtils(err, dispatch)
-        })
-
-
+    try {
+        const res = await authAPI.login(data)
+        dispatch(setLoggedInAC(true))
+        dispatch(setProfileAC(res.data))
+        dispatch(setAppInfoAC(`Welcome, ${res.data.name}`))
+    } catch (err: any) {
+        errorUtils(err, dispatch)
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
 }
-export const logoutTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
+export const logoutTC = (): AppThunk<AllReducersActionType> => async (dispatch) => {
     dispatch(setAppStatusAC('loading'))
-    authAPI.logout()
-        .then(res => {
-            setProfileAC({} as ResponseDataType)
-            dispatch(setLoggedInAC(false))
-            dispatch(setAppStatusAC('succeeded'))
-        })
-        .catch((e) => {
-            const error = e.response
-                ? e.response.data.error
-                : (e.message + ', more details in the console');
-            console.log('Error', {...e})
-        })
-        .finally(() => {
-            dispatch(setAppStatusAC('succeeded'))
-        })
-
+    try {
+        const res = await authAPI.logout()
+        setProfileAC({} as ResponseDataType)
+        dispatch(setLoggedInAC(false))
+        dispatch(setAppInfoAC(res.data.info))
+    } catch (err: any) {
+        errorUtils(err, dispatch)
+    } finally {
+        dispatch(setAppStatusAC('succeeded'))
+    }
 }
 
 export const signUpTC = (email: string, password: string): AppThunk<AllReducersActionType> => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.signUp(email, password)
         .then(res => {
-            dispatch(setIsSignedUpAC(true))
+            console.log(res)
+            dispatch(setLoggedInAC('registered'))
             dispatch(setAppStatusAC('succeeded'))
+            console.log(res)
         })
         .catch(err => {
             errorUtils(err, dispatch)
+            console.log(err)
         })
 }
 export const forgotPassTC = (email: string): AppThunk<AllReducersActionType> => (dispatch) => {
@@ -92,22 +88,24 @@ export const forgotPassTC = (email: string): AppThunk<AllReducersActionType> => 
         .then(res => {
             dispatch(setAppInfoAC(`${res.data.info}, Check your email: ${email}`))
             dispatch(setAppStatusAC('succeeded'))
-            dispatch(setMailWasSentAC(true))
         })
         .catch((err) => {
-            errorUtils(err, dispatch)
+            console.log(err)
+            handleServerNetworkError(err.response, dispatch)
         })
 }
 export const resetPasswordTC = (newPassword: string, token: string): AppThunk<AllReducersActionType> => (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     authAPI.resetPass(newPassword, token)
         .then(res => {
-            dispatch(setIsPasswordChangedAC(true))
-            dispatch(setAppInfoAC('Password changed successful'))
-            dispatch(setAppStatusAC('succeeded'))
+            if (res) {
+                dispatch(setLoggedInAC('registered'))
+                dispatch(setAppInfoAC('Password changed successful'))
+                dispatch(setAppStatusAC('succeeded'))
+            }
         })
         .catch(err => {
-            errorUtils(err, dispatch)
+            handleServerNetworkError(err.response, dispatch)
         })
 }
 
