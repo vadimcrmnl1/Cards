@@ -11,7 +11,7 @@ import st from "../RecoveryPassword/RecoveryPassword.module.css";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {Navigate, useLocation} from 'react-router-dom'
 import {resetPasswordTC} from "../auth-reducer";
-import {selectIsLoggedIn} from "../selectors";
+import {selectIsPasswordChanged} from "../selectors";
 
 const validationSchema = yup.object({
     password: yup
@@ -25,16 +25,14 @@ export const NewPassword = () => {
     const dispatch = useAppDispatch()
     const location = useLocation()
     const token = location.pathname.slice(18)
-    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+    const isPasswordChanged = useAppSelector(selectIsPasswordChanged)
     const formik = useFormik({
         initialValues: {
             password: ''
         },
         validationSchema: validationSchema,
         onSubmit: (values => {
-            console.log(values.password, token)
             dispatch(resetPasswordTC(values.password, token))
-
         })
     })
 
@@ -43,10 +41,7 @@ export const NewPassword = () => {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
-    const activeStyle = {
-        textDecoration: 'none'
-    }
-    if (isLoggedIn==='registered') {
+    if (isPasswordChanged) {
         return <Navigate to={PATH.login}/>
     }
     return (

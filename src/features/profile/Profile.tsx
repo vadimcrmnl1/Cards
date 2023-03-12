@@ -7,6 +7,7 @@ import {logoutTC} from "../auth/auth-reducer";
 import {PATH} from "../../common/utils/routes/Routes";
 import {ProfileEditNameBlock} from "./components/ProfileEditNameBlock";
 import {ProfileNameBlock} from "./components/ProfileNameBlock";
+import {selectLoginStatus} from "../auth/selectors";
 
 export type FormikErrorType = {
     nickName?: string
@@ -15,12 +16,12 @@ export type FormikErrorType = {
 export const Profile = () => {
     const [editMode, setEditMode] = useState(false)
     const userData = useAppSelector(state => state.profile)
-    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const loginStatus = useAppSelector(selectLoginStatus)
     const dispatch = useAppDispatch()
-    //
+    // дообсудим этот юз эффект
     useEffect(() => {
 
-        if (isLoggedIn === 'loggedIn') {
+        if (loginStatus) {
             // dispatch(setProfileTC())
         }
 
@@ -28,7 +29,7 @@ export const Profile = () => {
 
     const handleLogout = () => {dispatch(logoutTC())}
 
-    if (isLoggedIn !== 'loggedIn') {
+    if (!loginStatus) {
         return <Navigate to={PATH.login}/>
     }
 
