@@ -18,14 +18,6 @@ export const Profile = () => {
     const userData = useAppSelector(state => state.profile)
     const loginStatus = useAppSelector(selectLoginStatus)
     const dispatch = useAppDispatch()
-    // дообсудим этот юз эффект
-    useEffect(() => {
-
-        if (loginStatus) {
-            // dispatch(setProfileTC())
-        }
-
-    }, [])
 
     const handleLogout = () => {dispatch(logoutTC())}
 

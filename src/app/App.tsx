@@ -15,29 +15,14 @@ function App() {
         dispatch(initializeAppTC())
     }, [])
 
-
-    if (appStatus === 'loading') {
-        return <div className={s.App}>
-            <CircularProgress sx={{position: 'fixed', top: '30%', right: '50%',}}/>
-            <ErrorSnackbar/>
-            <Header/>
-            <div className={s.appWrapper}>
-                <Outlet/>
-            </div>
+    return <div className={s.App}>
+        {appStatus === 'loading' && <CircularProgress sx={{position: 'fixed', top: '30%', right: '50%',}}/>}
+        <ErrorSnackbar/>
+        <Header/>
+        <div className={s.appWrapper}>
+            <Outlet/>
         </div>
-    } else {
-        return (
-            <div className={s.App}>
-                <ErrorSnackbar/>
-                <Header/>
-                <div className={s.appWrapper}>
-                    <Outlet/>
-                </div>
-            </div>
-        );
-    }
-
-
+    </div>
 }
 
 export default App;
