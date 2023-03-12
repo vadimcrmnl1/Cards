@@ -1,5 +1,5 @@
 .container {
-    width: 27%;
+    width: 347px;
     border: 1px solid gray;
     background: white;
     border-radius: 5px;
@@ -34,7 +34,7 @@ h1 {
     text-align: center;
     opacity: 0.5;
 }
-
+/*это можно глобально стилизовать*/
 .link {
     margin-top: 20px;
     font-style: normal;
@@ -46,8 +46,8 @@ h1 {
     color: #366EFF;
 }
 
-@media screen and (max-width: 1280px) {
-    .container {
-        width: 30%;
-    }
-}
+/*@media screen and (max-width: 1280px) {*/
+/*    .container {*/
+/*        width: 30%;*/
+/*    }*/
+/*}*/
