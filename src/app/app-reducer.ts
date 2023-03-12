@@ -23,7 +23,6 @@ export const appReducer = (state: AppInitialStateType = appInitialState, action:
     }
 }
 
-
 //thunks
 export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
     dispatch(appActions.setAppStatusAC('loading'))
