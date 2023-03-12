@@ -1,6 +1,5 @@
 import * as yup from "yup";
-
-export type FormikValuesType = {
+export type FormikValuesType ={
     email: string;
     password: string;
     confirmPassword: string
