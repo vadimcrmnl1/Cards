@@ -3,7 +3,7 @@ import {AllReducersActionType, AppThunk} from "../../../app/types";
 import * as appActions from "../../../app/actions";
 import * as tableActions from "./actions";
 import {errorUtils} from "../../../common/utils/errorUtils";
-import {CardPacksType, packsAPI} from "../table-api";
+import {AddPackRequestDataType, CardPacksType, packsAPI, UpdatePackRequestDataType} from "../table-api";
 import {dateUtils} from "../../../common/utils/dateUtils";
 
 export const packsInitialState = {
@@ -33,6 +33,12 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
             return {...state, page: action.payload.page};
         case 'TABLE/SET_PACKS_PAGE_COUNT':
             return {...state, pageCount: action.payload.pageCount};
+        case 'TABLE/ADD_PACK':
+            return {...state}
+        case 'TABLE/DELETE_PACK':
+            return {...state}
+        case 'TABLE/UPDATE_PACK':
+            return {...state}
         default:
             return state;
     }
@@ -57,5 +63,53 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async dispatch 
         dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
+    }
+}
+export const addPackTC = (data: AddPackRequestDataType): AppThunk<AllReducersActionType> => async dispatch => {
+    dispatch(appActions.setAppStatusAC('loading'))
+    try {
+        const res = await packsAPI.addPack(data)
+        console.log(res)
+        if (res.status === 201) {
+            dispatch(getPacksTC())
+            dispatch(appActions.setAppInfoAC(`Your pack -=${data.cardsPack.name}=- has been successfully added`))
+        }
+    }
+    catch (err: any) {
+        errorUtils(err, dispatch)
+    }
+    finally {
+        dispatch(appActions.setAppStatusAC('succeeded'))
+    }
+}
+export const deletePackTC = (id: string): AppThunk<AllReducersActionType> => async dispatch => {
+    dispatch(appActions.setAppStatusAC('loading'))
+    try {
+        const res = await packsAPI.deletePack(id)
+        if (res.status === 200) {
+            dispatch(getPacksTC())
+            dispatch(appActions.setAppInfoAC(`Your pack has been deleted`))
+        }
+
+    }
+    catch (err: any) {
+        errorUtils(err, dispatch)
+    }
+    finally {
+        dispatch(appActions.setAppStatusAC('succeeded'))
+    }
+}
+export const updatePackTC = (data: UpdatePackRequestDataType): AppThunk<AllReducersActionType> => async dispatch => {
+    dispatch(appActions.setAppStatusAC('loading'))
+    try {
+        const res = await packsAPI.updatePack(data)
+        dispatch(getPacksTC())
+        dispatch(appActions.setAppInfoAC(`Your pack -= ${data.cardsPack.name} =- has been updated`))
+    }
+    catch (err: any) {
+        errorUtils(err, dispatch)
+    }
+    finally {
+        dispatch(appActions.setAppStatusAC('succeeded'))
     }
 }

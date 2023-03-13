@@ -7,8 +7,10 @@ export const instance = axios.create({
 })
 
 export const authAPI = {
+
     login(data: LoginParamsType) {
-        return instance.post<any,AxiosResponse<ResponseDataType>>('auth/login', data)
+
+        return instance.post<any, AxiosResponse<ResponseDataType>>('auth/login', data)
     },
     logout() {
         return instance.delete<ResetPassResponseType>('auth/me')

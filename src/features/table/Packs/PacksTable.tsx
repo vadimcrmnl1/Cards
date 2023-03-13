@@ -18,6 +18,8 @@ import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {selectCardPacks, selectCardPacksTotalCount, selectPage, selectPageCount} from "./selectors";
 import {setPacksPageAC, setPacksPageCountAC} from "./actions";
 import {TableHead} from "@mui/material";
+import {useEffect} from "react";
+import {getPacksTC} from "./packs-reducer";
 
 interface TablePaginationActionsProps {
     count: number;
@@ -94,7 +96,9 @@ export const PacksTable = () => {
     const page = useAppSelector(selectPage)
     const pageCount = useAppSelector(selectPageCount)
 
-
+    useEffect(() => {
+        dispatch(getPacksTC())
+    }, [dispatch])
     //=====default table settings=====
     // const [page, setPage] = React.useState(0);
     // const [pageCount, setPageCount] = React.useState(5);

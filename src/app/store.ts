@@ -7,12 +7,14 @@ import { AppThunkDispatch} from "./types";
 import {profileReducer} from "../features/profile/profile-reducer";
 import {packsReducer} from "../features/table/Packs/packs-reducer";
 import {composeWithDevTools} from "redux-devtools-extension";
+import {cardsReducer} from "../features/table/Cards/cards-reducer";
 
 const rootReducer = combineReducers({
     auth: authReducer,
     profile: profileReducer,
     app: appReducer,
     packs:packsReducer,
+    cards: cardsReducer
 })
 
 
