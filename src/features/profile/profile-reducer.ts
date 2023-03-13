@@ -22,9 +22,9 @@ export const profileInitialState: ProfileInitialStateType = {
 export const profileReducer = (state: ProfileInitialStateType = profileInitialState, action: ProfileActionsType): ProfileInitialStateType => {
     switch (action.type) {
         case "profile/SET_PROFILE":
-            return {...state, ...action.data};
+            return {...state, ...action.payload.data};
         case "profile/CHANGE_NAME":
-            return {...state, name: action.name}
+            return {...state, name: action.payload.name}
         default:
             return state
     }

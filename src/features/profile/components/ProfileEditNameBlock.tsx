@@ -4,6 +4,7 @@ import {Button, TextField} from "@mui/material";
 import {useFormik} from "formik";
 import {changeNameTC} from "../profile-reducer";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
+import {useStyles} from "./ProfileStileMU";
 
 type ProfileEditNameBlockType = {
     setEditMode: (editMode: boolean) => void
@@ -13,6 +14,7 @@ export type FormikErrorType = {
 }
 export const ProfileEditNameBlock = (props: ProfileEditNameBlockType) => {
     const dispatch = useAppDispatch()
+    const styleMU = useStyles();
     const error = useAppSelector(state => state.app.error)
     const name = useAppSelector(state => state.profile.name)
     const formik = useFormik({
@@ -37,9 +39,9 @@ export const ProfileEditNameBlock = (props: ProfileEditNameBlockType) => {
         },
 
     })
-    const handleOnBlurName = () => {
+  /*  const handleOnBlurName = () => {
         props.setEditMode(false)
-    }
+    }*/
     return (
         <form onSubmit={formik.handleSubmit}>
             <div className={s.changeName}>
@@ -49,35 +51,18 @@ export const ProfileEditNameBlock = (props: ProfileEditNameBlockType) => {
                                id="standard-basic"
                                variant="standard"
                                margin="dense"
-                               style={{
-                                   width: '200px',
-                                   height: '30px',
-                                   marginRight: '10px',
-                                   fontSize: '18px',
-                                   marginBottom: '17px',
-                                   color: '#282c34'
-                               }}
+                               className={styleMU.textField}
                                {...formik.getFieldProps('nickName')}/>
-                    {/*<button type={'submit'}>Save</button>*/}
-                    <Button type={'submit'} variant={'contained'}
 
-                            style={{
-                                width: 'max-content',
-                                height: '30px',
-                                fontSize: '22px',
-                                fontWeight: 'bold',
-                                fontFamily: '"Montserrat Thin", sans-serif',
-                                borderRadius: '5px',
-                                background: '#00bbc0',
-                                color: 'white',
-
-                            }}>
+                    <Button type={'submit'} variant={'contained'} className={styleMU.buttonSave}>
                         Save
                     </Button>
                 </div>
                 <div className={s.profileError}>
                     {formik.touched.nickName && formik.errors.nickName &&
-                        <div>{formik.errors.nickName}</div>}
+                        <div>
+                            {formik.errors.nickName}
+                        </div>}
                     {error && <div>{error}</div>}
                 </div>
             </div>

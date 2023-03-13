@@ -1,17 +1,16 @@
-import {instance, ResponseDataType} from "../../api/api";
+import {instance} from "../../api/api";
 
 export const profileAPI = {
     changeName(name: string) {
         return instance.put<ProfileUserType>('auth/me', {name})
     }
-
 }
 
-type ProfileUserType={
-    updatedUser:UpdateUserType
-    error?:string
+type ProfileUserType = {
+    updatedUser: UpdateUserType
+    error?: string
 }
-type UpdateUserType={
+type UpdateUserType = {
     _id: string;
     email: string;
     name: string;

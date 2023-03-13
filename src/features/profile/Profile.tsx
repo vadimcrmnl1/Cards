@@ -1,6 +1,5 @@
 import React, {useState} from "react";
-import {Navigate, NavLink} from "react-router-dom";
-import arrow from "../images/Group 240.svg"
+import {Navigate} from "react-router-dom";
 import s from "./Profile.module.css"
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import {logoutTC} from "../auth/auth-reducer";
@@ -9,20 +8,15 @@ import {ProfileEditNameBlock} from "./components/ProfileEditNameBlock";
 import {ProfileNameBlock} from "./components/ProfileNameBlock";
 import {ProfileLinkToBack} from "./components/ProfileLinkToBack";
 import avatar from "./../images/avatar.webp"
+import {useStyles} from "./components/ProfileStileMU";
+import {Button} from "@mui/material";
 
-
-/*export type FormikErrorType = {
-    nickName?: string
-}*/
 export const Profile = () => {
 
     const [editMode, setEditMode] = useState(false)
-    const error = useAppSelector(state => state.app.error)
-    const name = useAppSelector(state => state.profile.name)
     const email = useAppSelector(state => state.profile.email)
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-
-
+    const styleMU = useStyles();
     const dispatch = useAppDispatch()
 
     const handleLogout = () => {dispatch(logoutTC())}
@@ -30,9 +24,9 @@ export const Profile = () => {
     if (!isLoggedIn) {
         return <Navigate to={PATH.login}/>
     }
-    const handleOnBlurName = () => {
+    /*const handleOnBlurName = () => {
         setEditMode(false)
-    }
+    }*/
     return (
         <div className={s.profile}>
             <div className={s.container}>
@@ -51,10 +45,11 @@ export const Profile = () => {
                         <ProfileNameBlock setEditMode={setEditMode}/>
                     }
                     <span>{email}</span>
-                    <button onClick={handleLogout}
-                            className={s.buttonLogout}>
+                    <Button variant={'contained'}
+                            onClick={handleLogout}
+                            className={styleMU.button}>
                          Log out
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>
