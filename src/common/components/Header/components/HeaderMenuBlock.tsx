@@ -24,7 +24,6 @@ export const HeaderMenuBlock = () => {
         }
         setAnchorElUser(null);
     };
-
     const handleLogout = () => {
         dispatch(logoutTC())
     }
