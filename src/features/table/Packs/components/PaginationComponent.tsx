@@ -1,8 +1,7 @@
-import React, {ChangeEventHandler, useState} from 'react';
+import React, {useState} from 'react';
 import TablePagination from '@material-ui/core/TablePagination';
 import {selectCardPacksTotalCount, selectPage, selectPageCount} from "../selectors";
 import {useAppDispatch, useAppSelector} from "../../../../app/store";
-import {getPacksPaginTC, getPacksTC} from "../packs-reducer";
 
 export const PaginationComponent=()=> {
     const [page, setPage] = useState(2);
@@ -12,7 +11,7 @@ export const PaginationComponent=()=> {
     const pageCount= useAppSelector(selectPageCount)
     const dispatch = useAppDispatch()
     const handleChangePage = (e:any, newPage:number) => {
-        dispatch(getPacksPaginTC(newPage, pageCount))
+        // dispatch(getPacksPaginTC(newPage, pageCount))
     };
 
    /* const handleChangeRowsPerPage = (e:any) => {

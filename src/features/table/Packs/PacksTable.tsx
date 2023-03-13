@@ -12,6 +12,7 @@ import { Pagination, Select, SelectChangeEvent, TableHead} from "@mui/material";
 import {useEffect} from "react";
 import {getPacksTC} from "./packs-reducer";
 
+
 export const PacksTable = () => {
 
     const dispatch = useAppDispatch()

@@ -3,7 +3,6 @@ import {AllReducersActionType, AppThunk} from "../../../app/types";
 import * as appActions from "../../../app/actions";
 import * as tableActions from "./actions";
 import {errorUtils} from "../../../common/utils/errorUtils";
-import {CardPacksType, packsAPI} from "../table-api";
 import {AddPackRequestDataType, CardPacksType, packsAPI, UpdatePackRequestDataType} from "../table-api";
 import {dateUtils} from "../../../common/utils/dateUtils";
 
@@ -48,7 +47,7 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
 
 //thunks
 
-export const getPacksTC = (page1: number): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
     const {page, pageCount} = getState().packs
 

@@ -4,7 +4,7 @@ import {instance} from "../../api/api";
 
 export const packsAPI = {
     getPacks(data: PacksRequestDataType) {
-        return instance.get<PacksResponseDataType>('cards/pack', {params:data})
+        return instance.get<PacksResponseDataType>('cards/pack', {params: data})
     },
     addPack(data: AddPackRequestDataType) {
         return instance.post<AddPackResponseDataType>('cards/pack', data)
@@ -55,7 +55,7 @@ export type CardPacksType = {
     cardsCount: number
     created: string
     updated: string
-    user_name:string
+    user_name: string
 }
 export type AddPackRequestDataType = {
     cardsPack: {
