@@ -28,7 +28,9 @@ export const setPacksPageAC = (page: number) => ({
     type: 'TABLE/SET_PACKS_PAGE',
     payload: {page},
 } as const)
-export const setPacksPageCountAC = (pageCount: number) => ({
-    type: 'TABLE/SET_PACKS_PAGE_COUNT',
-    payload: {pageCount},
-} as const)
+export const setPacksPageCountAC = (pageCount: number) => {
+    return ({
+        type: 'TABLE/SET_PACKS_PAGE_COUNT',
+        payload: {pageCount},
+    } as const)
+}

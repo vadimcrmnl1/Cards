@@ -64,9 +64,8 @@ export const Login = () => {
     }
 
     if (isLoggedIn) {
-        return <Navigate to={PATH.profile}/>
+        return <Navigate to={PATH.packs}/>
     }
-    console.log(formik.touched.password, formik.errors.password)
     return (
         <Box
             sx={{

@@ -4,7 +4,7 @@ import {instance} from "../../api/api";
 
 export const packsAPI = {
     getPacks(data: PacksRequestDataType) {
-        return instance.get<PacksResponseDataType>('cards/pack')
+        return instance.get<PacksResponseDataType>('cards/pack', {params:data})
     },
     addPack(data: AddPackRequestDataType) {
         return instance.post<AddPackResponseDataType>('cards/pack', data)

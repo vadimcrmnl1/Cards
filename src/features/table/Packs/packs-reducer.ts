@@ -12,7 +12,7 @@ export const packsInitialState = {
     maxCardsCount: 1,
     minCardsCount: 1,
     page: 1,
-    pageCount: 1,
+    pageCount: 5,
 }
 
 export type PacksInitialStateType = typeof packsInitialState
@@ -20,9 +20,11 @@ export type PacksInitialStateType = typeof packsInitialState
 export const packsReducer = (state: PacksInitialStateType = packsInitialState, action: PacksActionsType): PacksInitialStateType => {
     switch (action.type) {
         case 'TABLE/SET_PACKS':
-            return {...state, cardPacks: action.payload.cardPacks.map(pack => {
-                return {...pack, updated: dateUtils(pack.updated),created:dateUtils(pack.created)}
-                })};
+            return {
+                ...state, cardPacks: action.payload.cardPacks.map(pack => {
+                    return {...pack, updated: dateUtils(pack.updated), created: dateUtils(pack.created)}
+                })
+            };
         case 'TABLE/SET_CARDS_PACK_TOTAL_COUNT':
             return {...state, cardPacksTotalCount: action.payload.cardPacksTotalCount};
         case 'TABLE/SET_MAX_CARDS_COUNT':
@@ -41,18 +43,23 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
 
 //thunks
 
-export const getPacksTC = (): AppThunk<AllReducersActionType> => async dispatch => {
+export const getPacksTC = (page1: number): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
-    const params = {}
+    const {page, pageCount} = getState().packs
+
+    // const params = {
+    //     page: state.page,
+    //     pageCount:state.pageCount,
+    // }
+
     try {
-        const res = await packsAPI.getPacks(params)
+        const res = await packsAPI.getPacks({page, pageCount})
         dispatch(tableActions.setPacksAC(res.data.cardPacks))
-        console.log(res)
         dispatch(tableActions.setCardPacksTotalCountAC(res.data.cardPacksTotalCount))
         dispatch(tableActions.setMaxCardsCountAC(res.data.maxCardsCount))
         dispatch(tableActions.setMinCardsCountAC(res.data.minCardsCount))
-        dispatch(tableActions.setPacksPageAC(res.data.page))
-        dispatch(tableActions.setPacksPageCountAC(res.data.pageCount))
+        // dispatch(tableActions.setPacksPageAC(res.data.page))
+        // dispatch(tableActions.setPacksPageCountAC(res.data.pageCount))
 
         dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {

@@ -1,7 +1,5 @@
 import * as React from 'react';
-import {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {getPacksTC} from "./packs-reducer";
 import {PacksTable} from "./PacksTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
 import {Navigate} from 'react-router-dom';
@@ -11,9 +9,6 @@ export const Packs = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
-    useEffect(() => {
-        dispatch(getPacksTC())
-    }, [dispatch])
 
 
     if (!isLoggedIn) {
@@ -22,6 +17,7 @@ export const Packs = () => {
     return (
         <div>
             <PacksTable/>
+
         </div>
     );
 };
