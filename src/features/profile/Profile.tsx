@@ -8,7 +8,7 @@ import {ProfileEditNameBlock} from "./components/ProfileEditNameBlock";
 import {ProfileNameBlock} from "./components/ProfileNameBlock";
 import {ProfileLinkToBack} from "./components/ProfileLinkToBack";
 import avatar from "./../images/avatar.webp"
-import {useStyles} from "./components/ProfileStileMU";
+import {useStyles} from "../styleMU/styleMU";
 import {Button} from "@mui/material";
 import {selectorEmail, selectorIsLoggedIn} from "./selectors";
 

@@ -59,3 +59,25 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async dispatch 
         errorUtils(err, dispatch)
     }
 }
+
+export const getPacksPaginTC = (page:number, pageCount:number): AppThunk<AllReducersActionType> => async dispatch => {
+    dispatch(appActions.setAppStatusAC('loading'))
+   // const params = {}
+    try {
+        const res = await packsAPI.getPacks({page, pageCount})
+        console.log(res)
+        dispatch(tableActions.setPacksAC(res.data.cardPacks))
+
+      /*  dispatch(tableActions.setCardPacksTotalCountAC(res.data.cardPacksTotalCount))
+        dispatch(tableActions.setMaxCardsCountAC(res.data.maxCardsCount))
+        dispatch(tableActions.setMinCardsCountAC(res.data.minCardsCount))
+        dispatch(tableActions.setPacksPageAC(res.data.page))
+        dispatch(tableActions.setPacksPageCountAC(res.data.pageCount))
+
+  */
+    } catch (err: any) {
+        errorUtils(err, dispatch)
+    }finally {
+        dispatch(appActions.setAppStatusAC('succeeded'))
+    }
+}
