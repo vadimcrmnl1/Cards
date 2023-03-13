@@ -4,6 +4,7 @@ import {AnyAction} from "redux";
 import {AuthActionsType} from "../features/auth/types";
 import {ProfileActionsType} from "../features/profile/types";
 import {AppRootStateType} from "./store";
+import {PacksActionsType} from "../features/table/Packs/types";
 //general application types
 export type InferValueTypes<T> = T extends { [key: string]: infer U }
     ? U
@@ -13,7 +14,7 @@ export type AppThunkDispatch = ThunkDispatch<AppRootStateType, unknown, AllReduc
 
 export type AppThunk<A extends AnyAction, ReturnType = void> = ThunkAction<
     ReturnType, AppRootStateType, unknown, A>
-export type AllReducersActionType = AuthActionsType | AppActionsType |ProfileActionsType
+export type AllReducersActionType = AuthActionsType | AppActionsType |ProfileActionsType|PacksActionsType
 
 
 
