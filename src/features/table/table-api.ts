@@ -1,5 +1,5 @@
 import {AxiosResponse} from "axios";
-import { instance } from "../../api/api";
+import {instance} from "../../api/api";
 
 
 export const packsAPI = {
@@ -10,15 +10,15 @@ export const packsAPI = {
         return instance.post<AddPackResponseDataType>('cards/pack', data)
     },
     deletePack(id: string) {
-        return instance.delete<AxiosResponse>('cards/pack')
+        return instance.delete<AxiosResponse>(`cards/pack?id=${id}`)
     },
     updatePack(data: UpdatePackRequestDataType) {
-        return instance.put<AxiosResponse>('cards/pack')
+        return instance.put<AxiosResponse>('cards/pack', data)
     }
 }
 export const cardsAPI = {
-    getCards(data: CardsRequestDataType) {
-        return instance.get<CardsResponseDataType>('cards/card')
+    getCards(params: CardsRequestDataType) {
+        return instance.get<CardsResponseDataType>('cards/card', {params})
     },
     addCard(data: AddCardRequestType) {
         return instance.post<AxiosResponse>('cards/card', data)
@@ -41,26 +41,26 @@ export type PacksRequestDataType = {
     block?: boolean
 }
 export type PacksResponseDataType = {
-    cardPacks: [
-        {
-            _id: string
-            user_id: string
-            name: string
-            cardsCount: number
-            create: Date
-            updated: Date
-        }
-    ]
+    cardPacks: CardPacksType[]
     cardPacksTotalCount: number
     maxCardsCount: number
     minCardsCount: number
     page: number
     pageCount: number
 }
+export type CardPacksType = {
+    _id: string
+    user_id: string
+    name: string
+    cardsCount: number
+    created: string
+    updated: string
+    user_name:string
+}
 export type AddPackRequestDataType = {
     cardsPack: {
         name: string
-        deckCover: string
+        deckCover?: string
         private: boolean
     }
 }
@@ -85,25 +85,24 @@ export type CardsRequestDataType = {
     pageCount?: number
 }
 export type CardsResponseDataType = {
-    cards: [
-        {
-            answer: string
-            question: string
-            cardsPack_id: string
-            grade: number
-            shots: number
-            user_id: string
-            created: Date
-            updated: Date
-            _id: string
-        }
-    ]
+    cards: CardsType[]
     cardsTotalCount: number
     maxGrade: number
     minGrade: number
     page: number
     pageCount: number
     packUserId: string
+}
+export type CardsType = {
+    answer: string
+    question: string
+    cardsPack_id: string
+    grade: number
+    shots: number
+    user_id: string
+    created: string
+    updated: string
+    _id: string
 }
 export type AddCardRequestType = {
     card: {

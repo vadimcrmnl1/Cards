@@ -1,9 +1,9 @@
 import {ProfileActionsType, ProfileInitialStateType} from "./types";
-import {errorUtils} from "../../common/utils/errorUtils";
+import {authAPI} from "../../api/api";
+import {handleServerNetworkError} from "../../common/utils/errorUtils";
 import * as profileActions from "./actions";
 import {AllReducersActionType, AppThunk} from "../../app/types";
 import * as appActions from './../../app/actions'
-import {profileAPI} from "./profileApi";
 
 export const profileInitialState: ProfileInitialStateType = {
     _id: '',
@@ -22,23 +22,25 @@ export const profileInitialState: ProfileInitialStateType = {
 export const profileReducer = (state: ProfileInitialStateType = profileInitialState, action: ProfileActionsType): ProfileInitialStateType => {
     switch (action.type) {
         case "profile/SET_PROFILE":
-            return {...state, ...action.payload.data};
-        case "profile/CHANGE_NAME":
-            return {...state, name: action.payload.name}
+            return {...state, ...action.data};
+        case "profile/CHANGE-NAME":
+            return {...state, name: action.name}
         default:
             return state
     }
 }
 
 //thunks
-//Change nickName
-export const changeNameTC = (name: string): AppThunk<AllReducersActionType> => async (dispatch) => {
-       try{
-           const res = await profileAPI.changeName(name)
-           dispatch(profileActions.changeNameAC(res.data.updatedUser.name))
-           dispatch(appActions.setAppInfoAC(`Name changed to ${res.data.updatedUser.name}`))
-       }
-       catch(e: any){
-           errorUtils(e, dispatch)
-       }
+
+//Изменение nickName
+export const changeNameTC = (name: string): AppThunk<AllReducersActionType> => (dispatch) => {
+    authAPI.changeName(name).then((res) => {
+
+        dispatch(profileActions.changeNameAC(res.data.updatedUser.name))
+        dispatch(appActions.setAppInfoAC(`Name changed to ${res.data.updatedUser.name}`))
+    }).catch((e: any) => {
+        debugger
+        console.log(e.response.data.error)
+        handleServerNetworkError(e.response.data.error, dispatch)
+    })
 }

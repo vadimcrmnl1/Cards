@@ -1,43 +1,43 @@
-import React, {useState} from "react";
-import {Navigate} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Navigate, NavLink} from "react-router-dom";
+import arrow from "../images/Group 240.svg"
 import s from "./Profile.module.css"
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import {logoutTC} from "../auth/auth-reducer";
 import {PATH} from "../../common/utils/routes/Routes";
 import {ProfileEditNameBlock} from "./components/ProfileEditNameBlock";
 import {ProfileNameBlock} from "./components/ProfileNameBlock";
-import {ProfileLinkToBack} from "./components/ProfileLinkToBack";
-import avatar from "./../images/avatar.webp"
-import {useStyles} from "./components/ProfileStileMU";
-import {Button} from "@mui/material";
-import {selectorEmail, selectorIsLoggedIn} from "./selectors";
+import {selectIsLoggedIn} from "../auth/selectors";
+
+export type FormikErrorType = {
+    nickName?: string
+}
 
 export const Profile = () => {
-
     const [editMode, setEditMode] = useState(false)
-    const email = useAppSelector(selectorEmail)
-    const isLoggedIn = useAppSelector(selectorIsLoggedIn)
-    const styleMU = useStyles();
+    const userData = useAppSelector(state => state.profile)
+    const loginStatus = useAppSelector(selectIsLoggedIn)
     const dispatch = useAppDispatch()
 
     const handleLogout = () => {dispatch(logoutTC())}
 
-    if (!isLoggedIn) {
+    if (!loginStatus) {
         return <Navigate to={PATH.login}/>
     }
-    /*const handleOnBlurName = () => {
-        setEditMode(false)
-    }*/
+
     return (
         <div className={s.profile}>
             <div className={s.container}>
                 <div className={s.link}>
-                    <ProfileLinkToBack title={'Back to Packs List'}/>
-                 </div>
+                    <NavLink to={PATH.packs} className={s.navLink}>
+                        <img src={arrow} alt={'arrow'}/>
+                        <span>Back to Packs List</span>
+                    </NavLink>
+                </div>
                 <div className={s.informBlock}>
                     <h3>Personal Information</h3>
                     <div className={s.avatar}>
-                         <img src={avatar} alt={'avatar'} className={s.avatarPic}/>
+                        {/* <img src={'*'} alt={'avatar'}/>*/}
                     </div>
                     {editMode
                         ?
@@ -45,12 +45,12 @@ export const Profile = () => {
                         :
                         <ProfileNameBlock setEditMode={setEditMode}/>
                     }
-                    <span>{email}</span>
-                    <Button variant={'contained'}
-                            onClick={handleLogout}
-                            className={styleMU.button}>
-                         Log out
-                    </Button>
+                    <span>{userData.email}</span>
+                    <button onClick={handleLogout}
+                            className={s.buttonLogout}>
+                        {/*<div className={s.logoutImg}><img src={logOut} alt={'logout'}/></div>*/}
+                        Log out
+                    </button>
                 </div>
             </div>
         </div>

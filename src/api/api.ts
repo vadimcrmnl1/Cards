@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {ResetPassResponseType, SignUpType} from "../features/auth/types";
 
 export const instance = axios.create({
@@ -7,14 +7,23 @@ export const instance = axios.create({
 })
 
 export const authAPI = {
+
     login(data: LoginParamsType) {
-        return instance.post<ResponseDataType>('auth/login', data)
+
+        return instance.post<any, AxiosResponse<ResponseDataType>>('auth/login', data)
     },
     logout() {
         return instance.delete<ResetPassResponseType>('auth/me')
     },
     signUp(email: string, password: string) {
         return instance.post<SignUpType>('auth/register', {email, password})
+    },
+    getData() {
+        return instance.post<ResponseDataType>('auth/me')
+    },
+    changeName(name: string) {
+
+        return instance.put('auth/me', {name})
     },
     me() {
         return instance.post<ResponseDataType>('auth/me', {})

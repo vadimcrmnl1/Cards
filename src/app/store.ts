@@ -5,14 +5,25 @@ import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "./app-reducer";
 import { AppThunkDispatch} from "./types";
 import {profileReducer} from "../features/profile/profile-reducer";
+import {packsReducer} from "../features/table/Packs/packs-reducer";
+import {composeWithDevTools} from "redux-devtools-extension";
+import {cardsReducer} from "../features/table/Cards/cards-reducer";
 
 const rootReducer = combineReducers({
     auth: authReducer,
     profile: profileReducer,
-    app: appReducer
+    app: appReducer,
+    packs:packsReducer,
+    cards: cardsReducer
 })
 
-export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
+
+const middlewareEnhancer = applyMiddleware<AppThunkDispatch, AppRootStateType>(thunk)
+//enchancers это функции,которые пмогут добавлять нашему стору различные улучшения, например,
+//мидлвар санок. Все эти улучшение можно объеденить специальной функцией, которая добавляет возможность
+// пользоваться reactDevTools - очень полезное расширение для хрома.
+const composedEnhancers = composeWithDevTools(middlewareEnhancer)
+export const store = legacy_createStore(rootReducer, composedEnhancers);
 
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
