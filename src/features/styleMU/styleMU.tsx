@@ -2,8 +2,9 @@ import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) => ({
     button: {
-        width: '90%',
+        width: 'max-content',
         height: '30px',
+        padding: '6px 16px',
         fontSize: '0.875rem',
         fontWeight: 500,
         fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
