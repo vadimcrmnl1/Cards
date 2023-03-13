@@ -18,7 +18,7 @@ export const NewPassword = () => {
     const token = location.pathname.slice(18)
     const isPasswordChanged = useAppSelector(selectIsPasswordChanged)
 
-    const onSubmit = (values: Omit<FormikValuesType, 'email'>) => {
+    const onSubmit = (values:FormikValuesType) => {
         dispatch(resetPasswordTC(values.password, token))
     }
 

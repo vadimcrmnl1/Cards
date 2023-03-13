@@ -16,7 +16,7 @@ export const SignUp = () => {
     const dispatch = useAppDispatch()
     const isSignedUp = useAppSelector(selectIsSignedUp)
 
-    const onSubmit = (values: Omit<FormikValuesType, 'confirmPassword'>, {setSubmitting}: FormikHelpers<FormikValuesType>) => {
+    const onSubmit = (values: FormikValuesType, {setSubmitting}: FormikHelpers<FormikValuesType>) => {
         dispatch(signUpTC(values.email, values.password))
         // formik.resetForm()
         setSubmitting(false);

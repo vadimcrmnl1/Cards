@@ -1,5 +1,5 @@
 import {AxiosResponse} from "axios";
-import { instance } from "../../api/api";
+import {instance} from "../../api/api";
 
 
 export const packsAPI = {
@@ -17,8 +17,8 @@ export const packsAPI = {
     }
 }
 export const cardsAPI = {
-    getCards(data: CardsRequestDataType) {
-        return instance.get<CardsResponseDataType>('cards/card')
+    getCards(params: CardsRequestDataType) {
+        return instance.get<CardsResponseDataType>('cards/card', {params})
     },
     addCard(data: AddCardRequestType) {
         return instance.post<AxiosResponse>('cards/card', data)
@@ -41,21 +41,21 @@ export type PacksRequestDataType = {
     block?: boolean
 }
 export type PacksResponseDataType = {
-    cardPacks: [
-        {
-            _id: string
-            user_id: string
-            name: string
-            cardsCount: number
-            create: Date
-            updated: Date
-        }
-    ]
+    cardPacks: CardPacksType[]
     cardPacksTotalCount: number
     maxCardsCount: number
     minCardsCount: number
     page: number
     pageCount: number
+}
+export type CardPacksType = {
+    _id: string
+    user_id: string
+    name: string
+    cardsCount: number
+    created: string
+    updated: string
+    user_name:string
 }
 export type AddPackRequestDataType = {
     cardsPack: {
