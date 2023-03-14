@@ -9,7 +9,7 @@ import {ProfileNameBlock} from "./components/ProfileNameBlock";
 import {ProfileLinkToBack} from "./components/ProfileLinkToBack";
 import avatar from "./../images/avatar.webp"
 import {useStyles} from "../styleMU/styleMU";
-import {Button} from "@mui/material";
+import Button from "@mui/material/Button";
 import {selectorEmail, selectorIsLoggedIn} from "./selectors";
 
 export const Profile = () => {
@@ -25,9 +25,7 @@ export const Profile = () => {
     if (!isLoggedIn) {
         return <Navigate to={PATH.login}/>
     }
-    /*const handleOnBlurName = () => {
-        setEditMode(false)
-    }*/
+
     return (
         <div className={s.profile}>
             <div className={s.container}>

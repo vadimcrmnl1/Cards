@@ -1,6 +1,7 @@
 import React from "react";
 import s from "../Profile.module.css";
-import {Button, TextField} from "@mui/material";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import {useFormik} from "formik";
 import {changeNameTC} from "../profile-reducer";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
@@ -40,20 +41,27 @@ export const ProfileEditNameBlock = (props: ProfileEditNameBlockType) => {
         },
 
     })
-    /*  const handleOnBlurName = () => {
-          props.setEditMode(false)
-      }*/
+      const handleOnBlurName = () => {
+        setTimeout(()=>{
+            props.setEditMode(false)
+        }, 140)
+      }
+
     return (
         <form onSubmit={formik.handleSubmit}>
             <div className={s.changeName}>
-                <div className={s.nickNameField}>
+                <div className={s.nickNameField} >
                     <TextField label="nickName"
                                autoFocus={true}
                                variant="standard"
                                className={styleMU.textField}
-                               {...formik.getFieldProps('nickName')}/>
-
-                    <Button type={'submit'} variant={'contained'} className={styleMU.buttonSave}>
+                               {...formik.getFieldProps('nickName')}
+                               onBlur={handleOnBlurName}
+                               />
+                    <Button type={'submit'}
+                            variant={'contained'}
+                            className={styleMU.buttonSave}
+                            >
                         Save
                     </Button>
                 </div>
