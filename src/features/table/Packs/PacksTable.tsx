@@ -5,35 +5,23 @@ import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import TableCell, {tableCellClasses} from "@mui/material/TableCell";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {selectCardPacks, selectCardPacksTotalCount, selectPacksCountOfPages, selectPacksPage, selectPacksPageCount} from "./selectors";
+import {
+    selectCardPacks,
+    selectCardPacksTotalCount,
+    selectPacksCountOfPages,
+    selectPacksPage,
+    selectPacksPageCount
+} from "./selectors";
 import {setPacksPageAC, setPacksPageCountAC} from "./actions";
-import {FormControl, MenuItem, Pagination, Select, SelectChangeEvent, styled, TableHead} from "@mui/material";
+import {FormControl, MenuItem, Pagination, Select, SelectChangeEvent, TableHead} from "@mui/material";
 import {getPacksTC} from "./packs-reducer";
 import {ActionsCell} from "./PacksTable/ActionsCell/ActionsCell";
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        // backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-        border: 0,
-    },
-}));
-
+import {NavLink} from "react-router-dom";
+import {PATH} from "../../../common/utils/routes/Routes";
+import {setPack_idAC} from "../Cards/actions";
+import {StyledTableCell, StyledTableRow} from "./PacksTable/styles";
+import {TableTextCell} from "../TableTextCell";
 
 
 export const PacksTable = () => {
@@ -53,6 +41,7 @@ export const PacksTable = () => {
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? pageCount - cardPacks.length : 0;
+    const emptyRowsStyle = {height: 53 * emptyRows}
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         dispatch(setPacksPageAC(value))
@@ -60,10 +49,11 @@ export const PacksTable = () => {
     const handlePageCountChange = (event: SelectChangeEvent) => {
         dispatch(setPacksPageCountAC(+event.target.value))
     };
+
     return (
         <div className={s.table}>
             <TableContainer component={Paper}>
-                <Table aria-label="custom pagination table" stickyHeader>
+                <Table aria-label="custom table" stickyHeader>
                     <TableHead>
                         <StyledTableRow>
                             <StyledTableCell>
@@ -78,16 +68,24 @@ export const PacksTable = () => {
                             <StyledTableCell>
                                 Created by
                             </StyledTableCell>
-                            <StyledTableCell sx={{}}>
+                            <StyledTableCell>
                                 Actions
                             </StyledTableCell>
                         </StyledTableRow>
                     </TableHead>
                     <TableBody>
-                        {cardPacks.map((cardPack, index) => (
-                            <StyledTableRow key={index} hover>
-                                <StyledTableCell component="th" scope="row">
-                                    {cardPack.name}
+                        {cardPacks.map((cardPack, index) => {
+                            const handleLinkToCards = () => {
+                                dispatch(setPack_idAC(cardPack._id))
+                            }
+                            return <StyledTableRow key={index} hover>
+                                <StyledTableCell scope="row">
+                                    <NavLink to={PATH.cards}
+                                             onClick={handleLinkToCards}
+                                             className={s.link}
+                                    >
+                                        <TableTextCell text={cardPack.name}/>
+                                    </NavLink>
                                 </StyledTableCell>
                                 <StyledTableCell>
                                     {cardPack.cardsCount}
@@ -96,15 +94,17 @@ export const PacksTable = () => {
                                     {cardPack.updated}
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    {cardPack.user_name}
+                                    <TableTextCell text={cardPack.user_name}/>
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    <ActionsCell packOwnerId={cardPack.user_id}/>
+                                    <ActionsCell
+                                        packs
+                                        packOwnerId={cardPack.user_id}/>
                                 </StyledTableCell>
                             </StyledTableRow>
-                        ))}
+                        })}
                         {emptyRows > 0 && (
-                            <StyledTableRow style={{height: 53 * emptyRows}}>
+                            <StyledTableRow style={emptyRowsStyle}>
                                 <StyledTableCell colSpan={5}/>
                             </StyledTableRow>
                         )}

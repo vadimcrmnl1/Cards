@@ -9,27 +9,35 @@ import {useState} from "react";
 
 type ActionsCellPropsType = {
     packOwnerId: string
+    packs?: boolean
 }
-export const ActionsCell: React.FC<ActionsCellPropsType> = ({packOwnerId}) => {
+export const ActionsCell: React.FC<ActionsCellPropsType> = ({packOwnerId,packs}) => {
 
     const dispatch = useAppDispatch()
 
     const userId = useAppSelector(selectUserId)
 
-    const [editModalOpen,setEditModalOpen] = useState(false)
-    const [deleteModalOpen,setDeleteModalOpen] = useState(false)
+    const [editModalOpen, setEditModalOpen] = useState(false)
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+
+    const handleEdit = () => {
+        setEditModalOpen(editModalOpen => !editModalOpen)
+    }
+    const handleDelete = () => {
+        setDeleteModalOpen(deleteModalOpen => !deleteModalOpen)
+    }
 
     return (
         <div className={s.cell}>
-            <button>
+            {packs&&<button>
                 <TeacherIcon/>
-            </button>
+            </button>}
             {packOwnerId === userId &&
                 <div>
-                    <button>
+                    <button onClick={handleEdit}>
                         <EditIcon/>
                     </button>
-                    <button>
+                    <button onClick={handleDelete}>
                         <TrashIcon/>
                     </button>
                 </div>}
