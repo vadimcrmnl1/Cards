@@ -13,7 +13,6 @@ export const cardsInitialState = {
     minGrade: 1,
     page: 1,
     pageCount: 5,
-    packUserId: '',
     pack_id: ''
 }
 
@@ -37,8 +36,6 @@ export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, a
             return {...state, page: action.payload.page}
         case 'TABLE/SET_CARDS_PAGE_COUNT':
             return {...state, pageCount: action.payload.pageCount}
-        case 'TABLE/SET_CARDS_PACK_USER_ID':
-            return {...state, packUserId: action.payload.packUserId}
         case 'TABLE/SET_CARDS_PACK_ID':
             return {...state, pack_id: action.payload.pack_id}
         default:
@@ -53,60 +50,45 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
         const res = await cardsAPI.getCards({page, pageCount, cardsPack_id})
         dispatch(cardsActions.setCardsAC(res.data.cards))
         dispatch(cardsActions.setCardsTotalCountAC(res.data.cardsTotalCount))
-        dispatch(cardsActions.setMaxGradeAC(res.data.maxGrade))
-        dispatch(cardsActions.setMinGradeAC(res.data.minGrade))
+        dispatch(cardsActions.setCardsMaxGradeAC(res.data.maxGrade))
+        dispatch(cardsActions.setCardsMinGradeAC(res.data.minGrade))
         // dispatch(cardsActions.setPageAC(res.data.page))
         // dispatch(cardsActions.setPageCountAC(res.data.pageCount))
-        dispatch(cardsActions.setPackUserId(res.data.packUserId))
+        dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
-    } finally {
-        dispatch(appActions.setAppStatusAC('succeeded'))
     }
 }
-export const addCardTC = (data: AddCardRequestType, cardsPack_id: string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+export const addCardTC = (data: AddCardRequestType): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
     try {
-        const res = await cardsAPI.addCard(data)
-        if (res.status === 201) {
-            dispatch(getCardsTC(cardsPack_id))
-            dispatch(appActions.setAppInfoAC(`Your card has been added`))
-        }
+        await cardsAPI.addCard(data)
+        dispatch(getCardsTC())
+        dispatch(appActions.setAppInfoAC(`Your card has been added`))
+        dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
-    } finally {
-        dispatch(appActions.setAppStatusAC('succeeded'))
     }
 }
-export const deleteCardTC = (id: string, cardsPack_id: string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+export const deleteCardTC = (id: string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
     try {
-        const res = await cardsAPI.deleteCard(id)
-        if (res.status === 200) {
-            dispatch(getCardsTC(cardsPack_id))
-            dispatch(appActions.setAppInfoAC('Your cart has been deleted'))
-        }
-    }
-    catch (err: any) {
-        errorUtils(err, dispatch)
-    }
-    finally {
+        await cardsAPI.deleteCard(id)
+        dispatch(getCardsTC())
+        dispatch(appActions.setAppInfoAC('Your cart has been deleted'))
         dispatch(appActions.setAppStatusAC('succeeded'))
+    } catch (err: any) {
+        errorUtils(err, dispatch)
     }
 }
-export const updateCardTC = (data: UpdateCardRequestDataType, cardsPack_id: string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+export const updateCardTC = (data: UpdateCardRequestDataType): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
     try {
-        const res = await cardsAPI.updateCard(data)
-        if (res.status === 200) {
-            dispatch(getCardsTC(cardsPack_id))
-            dispatch(appActions.setAppInfoAC(`Your card has been updated`))
-        }
-    }
-    catch (err: any) {
-        errorUtils(err, dispatch)
-    }
-    finally {
+        await cardsAPI.updateCard(data)
+        dispatch(getCardsTC())
+        dispatch(appActions.setAppInfoAC(`Your card has been updated`))
         dispatch(appActions.setAppStatusAC('succeeded'))
+    } catch (err: any) {
+        errorUtils(err, dispatch)
     }
 }

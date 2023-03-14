@@ -1,27 +1,28 @@
 import * as React from "react";
-import s from './PacksTable/PacksTable.module.css'
+import s from './PacksTable.module.css'
 import {useEffect} from "react";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import {useAppDispatch, useAppSelector} from "../../../app/store";
+import {useAppDispatch, useAppSelector} from "../../../../app/store";
 import {
     selectCardPacks,
     selectCardPacksTotalCount,
     selectPacksCountOfPages,
     selectPacksPage,
     selectPacksPageCount
-} from "./selectors";
-import {setPacksPageAC, setPacksPageCountAC} from "./actions";
+} from "../selectors";
+import {setPacksPageAC, setPacksPageCountAC} from "../actions";
 import {FormControl, MenuItem, Pagination, Select, SelectChangeEvent, TableHead} from "@mui/material";
-import {getPacksTC} from "./packs-reducer";
-import {ActionsCell} from "./PacksTable/ActionsCell/ActionsCell";
+import {getPacksTC} from "../packs-reducer";
+import {ActionsCell} from "./ActionsCell/ActionsCell";
 import {NavLink} from "react-router-dom";
-import {PATH} from "../../../common/utils/routes/Routes";
-import {setPack_idAC} from "../Cards/actions";
-import {StyledTableCell, StyledTableRow} from "./PacksTable/styles";
-import {TableTextCell} from "../TableTextCell";
+import {PATH} from "../../../../common/utils/routes/Routes";
+
+import {StyledTableCell, StyledTableRow} from "./styles";
+import {TableTextCell} from "../../TableTextCell";
+import {setCardsPackIdAC} from "../../Cards/actions";
 
 
 export const PacksTable = () => {
@@ -34,6 +35,7 @@ export const PacksTable = () => {
     const count = useAppSelector(selectPacksCountOfPages)
 
     useEffect(() => {
+
         dispatch(getPacksTC())
     }, [dispatch, page, pageCount])
 
@@ -76,7 +78,7 @@ export const PacksTable = () => {
                     <TableBody>
                         {cardPacks.map((cardPack, index) => {
                             const handleLinkToCards = () => {
-                                dispatch(setPack_idAC(cardPack._id))
+                                dispatch(setCardsPackIdAC(cardPack._id))
                             }
                             return <StyledTableRow key={index} hover>
                                 <StyledTableCell scope="row">

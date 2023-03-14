@@ -1,7 +1,8 @@
 import {AppRootStateType} from "../../app/store";
 
-export const selectorEmail = (state:AppRootStateType) => state.profile.email
-export const selectorIsLoggedIn = (state:AppRootStateType) => state.auth.isLoggedIn
-export const selectorError = (state:AppRootStateType) => state.app.error
-export const selectorName = (state:AppRootStateType) => state.profile.name
+export const selectEmail = (state:AppRootStateType) => state.profile.email
+export const selectIsLoggedIn = (state:AppRootStateType) => state.auth.isLoggedIn
+
+export const selectName = (state:AppRootStateType) => state.profile.name
 export const selectUserId = (state:AppRootStateType) => state.profile._id
+export const selectMyID = (state:AppRootStateType) => state.profile._id

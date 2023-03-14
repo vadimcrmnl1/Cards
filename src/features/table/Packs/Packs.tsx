@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 
-import {PacksTable} from "./PacksTable";
+import {PacksTable} from "./PacksTable/PacksTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
 import {Navigate} from 'react-router-dom';
 import {PATH} from "../../../common/utils/routes/Routes";

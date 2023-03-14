@@ -10,13 +10,13 @@ import {ProfileLinkToBack} from "./components/ProfileLinkToBack";
 import avatar from "./../images/avatar.webp"
 import {useStyles} from "../styleMU/styleMU";
 import Button from "@mui/material/Button";
-import {selectorEmail, selectorIsLoggedIn} from "./selectors";
+import {selectEmail, selectIsLoggedIn} from "./selectors";
 
 export const Profile = () => {
 
     const [editMode, setEditMode] = useState(false)
-    const email = useAppSelector(selectorEmail)
-    const isLoggedIn = useAppSelector(selectorIsLoggedIn)
+    const email = useAppSelector(selectEmail)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
     const styleMU = useStyles();
     const dispatch = useAppDispatch()
 

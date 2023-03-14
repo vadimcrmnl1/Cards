@@ -10,10 +10,11 @@ import {useAppDispatch, useAppSelector} from "../../../../app/store";
 import {getCardsTC} from "../cards-reducer";
 import {selectCards, selectCardsCountOfPages, selectCardsPage, selectCardsPageCount} from "../selectors";
 import {ActionsCell} from "../../Packs/PacksTable/ActionsCell/ActionsCell";
-import {setPageAC, setPageCountAC} from "../actions";
+
 import {StyledTableCell, StyledTableRow} from "./styles";
 import {Grade} from "./Grade/Grade";
 import {TableTextCell} from "../../TableTextCell";
+import {setCardsPageAC, setCardsPageCountAC} from "../actions";
 
 
 export const CardsTable = () => {
@@ -36,10 +37,10 @@ export const CardsTable = () => {
     const emptyRowsStyle = {height: 53 * emptyRows}
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        dispatch(setPageAC(value))
+        dispatch(setCardsPageAC(value))
     }
     const handlePageCountChange = (event: SelectChangeEvent) => {
-        dispatch(setPageCountAC(+event.target.value))
+        dispatch(setCardsPageCountAC(+event.target.value))
     };
     return (
         <div>

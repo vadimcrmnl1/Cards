@@ -24,11 +24,7 @@ export const setCardsPageCountAC = (pageCount: number) => ({
     type: 'TABLE/SET_CARDS_PAGE_COUNT',
     payload: {pageCount}
 } as const)
-export const setPackUserIdAC = (packUserId: string) => ({
-    type: 'TABLE/SET_CARDS_PACK_USER_ID',
-    payload: {packUserId}
-} as const)
-export const setCardsPackIdAC = (cardsPack_id: string) => ({
-    type: 'TABLE/CARDS/SET_CARDS_PACK_ID',
-    payload: {cardsPack_id}
+export const setCardsPackIdAC = (pack_id: string) => ({
+    type: 'TABLE/SET_CARDS_PACK_ID',
+    payload: {pack_id}
 } as const)

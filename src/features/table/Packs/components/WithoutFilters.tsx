@@ -10,7 +10,7 @@ export const WithoutFilters = ()=>{
     }
     return(
         <div className={s.iconsFilter}>
-            <img src={filterIcon} className={'icon'} onClick={handleDeleteAllFilters}/>
+            <img alt={'icon'} src={filterIcon} className={'icon'} onClick={handleDeleteAllFilters}/>
         </div>
     )
 }
