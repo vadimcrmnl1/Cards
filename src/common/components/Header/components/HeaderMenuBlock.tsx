@@ -3,10 +3,15 @@ import {Avatar, Box, IconButton, Menu, MenuItem, Tooltip} from "@mui/material";
 import {setAppErrorAC} from "../../../../app/actions";
 import {logoutTC} from "../../../../features/auth/auth-reducer";
 import {useAppDispatch, useAppSelector} from "../../../../app/store";
-import {selectLoginStatus} from "../../../../features/auth/selectors";
+import {selectIsLoggedIn} from "../../../../features/auth/selectors";
+import avatar from './../../../../features/images/avatar.png'
+import s from './../Header.module.css'
+import {NavLink} from "react-router-dom";
+import {PATH} from "../../../utils/routes/Routes";
 
 export const HeaderMenuBlock = () => {
-    const loginStatus = useAppSelector(selectLoginStatus)
+    const loginStatus = useAppSelector(selectIsLoggedIn)
+    const userName = useAppSelector(state => state.profile.name)
     const dispatch = useAppDispatch()
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -25,9 +30,10 @@ export const HeaderMenuBlock = () => {
 
     return (
         <Box sx={{flexGrow: 0}}>
-            <Tooltip title="Open settings">
+            <span className={s.nameBlock}>{userName}</span>
+            <Tooltip title="Open menu">
                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg"/>
+                    <Avatar alt="avatar" src={avatar}/>
                 </IconButton>
             </Tooltip>
             <Menu
@@ -46,7 +52,7 @@ export const HeaderMenuBlock = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
             >
-                <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
+                <NavLink style={{color: 'black'}} to={PATH.profile}><MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem></NavLink>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
 
             </Menu>

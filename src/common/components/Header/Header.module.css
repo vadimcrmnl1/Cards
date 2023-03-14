@@ -12,3 +12,7 @@
     align-items: center;
     padding-top: 10px;
 }
+.nameBlock {
+    margin-right: 10px;
+    font-weight: bold;
+}

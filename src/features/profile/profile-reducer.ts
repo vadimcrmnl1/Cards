@@ -21,9 +21,9 @@ export const profileInitialState: ProfileInitialStateType = {
 
 export const profileReducer = (state: ProfileInitialStateType = profileInitialState, action: ProfileActionsType): ProfileInitialStateType => {
     switch (action.type) {
-        case "profile/SET_PROFILE":
+        case "PROFILE/SET_PROFILE":
             return {...state, ...action.payload.data};
-        case "profile/CHANGE_NAME":
+        case "PROFILE/CHANGE_NAME":
             return {...state, name: action.payload.name}
         default:
             return state
@@ -31,14 +31,15 @@ export const profileReducer = (state: ProfileInitialStateType = profileInitialSt
 }
 
 //thunks
-//Change nickName
+
+//Изменение nickName
 export const changeNameTC = (name: string): AppThunk<AllReducersActionType> => async (dispatch) => {
-       try{
-           const res = await profileAPI.changeName(name)
-           dispatch(profileActions.changeNameAC(res.data.updatedUser.name))
-           dispatch(appActions.setAppInfoAC(`Name changed to ${res.data.updatedUser.name}`))
-       }
-       catch(e: any){
-           errorUtils(e, dispatch)
-       }
+    try{
+        const res = await profileAPI.changeName(name)
+        dispatch(profileActions.changeNameAC(res.data.updatedUser.name))
+        dispatch(appActions.setAppInfoAC(`Name changed to ${res.data.updatedUser.name}`))
+    }
+    catch(e: any){
+        errorUtils(e, dispatch)
+    }
 }

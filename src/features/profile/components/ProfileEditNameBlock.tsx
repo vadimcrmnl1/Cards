@@ -4,7 +4,7 @@ import {Button, TextField} from "@mui/material";
 import {useFormik} from "formik";
 import {changeNameTC} from "../profile-reducer";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {useStyles} from "./ProfileStileMU";
+import {useStyles} from "../../styleMU/styleMU";
 import {selectorError, selectorName} from "../selectors";
 
 type ProfileEditNameBlockType = {

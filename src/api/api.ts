@@ -16,6 +16,13 @@ export const authAPI = {
     signUp(email: string, password: string) {
         return instance.post<SignUpType>('auth/register', {email, password})
     },
+    getData() {
+        return instance.post<ResponseDataType>('auth/me')
+    },
+    changeName(name: string) {
+
+        return instance.put('auth/me', {name})
+    },
     me() {
         return instance.post<ResponseDataType>('auth/me', {})
     },

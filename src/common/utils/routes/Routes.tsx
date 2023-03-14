@@ -7,6 +7,8 @@ import {RecoveryPassword} from "../../../features/auth/RecoveryPassword/Recovery
 import {NewPassword} from "../../../features/auth/NewPassword/NewPassword";
 import {Test} from "../../components/Test/Test";
 import {SignUp} from "../../../features/auth/SignUp/SignUp";
+import {Packs} from "../../../features/table/Packs/Packs";
+import {Cards} from "../../../features/table/Cards/Cards";
 
 
 export const PATH = {
@@ -15,8 +17,10 @@ export const PATH = {
     profile: '/profile',
     pageNotFound: '/404',
     passwordRecovery: '/password-recovery',
-    newPassword: '/set-new-password',
-    test: '/test'
+    newPassword: '/set-new-password/:token',
+    test: '/test',
+    packs: '/packs',
+    cards: '/cards',
 }
 
 
@@ -49,13 +53,21 @@ const router = createHashRouter([
                         element: <RecoveryPassword/>
                     },
                     {
-                        path: PATH.newPassword+'/*',
+                        path: PATH.newPassword,
                         element: <NewPassword/>
                     },
                     {
                         path: PATH.test,
                         element: <Test/>
-                    }
+                    },
+                    {
+                        path: PATH.packs,
+                        element: <Packs/>
+                    },
+                    {
+                        path: PATH.cards,
+                        element: <Cards/>
+                    },
                 ]
             }
         ]

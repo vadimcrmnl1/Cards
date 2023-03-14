@@ -9,7 +9,7 @@ type ProfileLinkToBackPropsType={
 
 export const ProfileLinkToBack = (props:ProfileLinkToBackPropsType)=>{
     return(
-        <NavLink to={'/login'} className={s.navLink}>
+        <NavLink to={'/packs'} className={s.navLink}>
             <img src={arrow} alt={'arrow'}/>
             <span>{props.title}</span>
         </NavLink>

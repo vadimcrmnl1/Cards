@@ -10,7 +10,7 @@ import {Navigate, NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {loginTC} from "../auth-reducer";
-import {selectLoginStatus} from "../selectors";
+import {selectIsLoggedIn} from "../selectors";
 import {setIsPasswordChangedAC, setIsSignedUpAC, setMailWasSentAC} from "../actions";
 
 
@@ -31,7 +31,7 @@ const validationSchema = yup.object({
 export const Login = () => {
 
     const dispatch = useAppDispatch()
-    const isLoggedIn = useAppSelector(selectLoginStatus)
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
 //сброс isSignedUp чтобы можно было перейти на сигнап, восстановление пароля или на снова можно было вводить новый пароль
     useEffect(() => {
@@ -64,9 +64,9 @@ export const Login = () => {
     }
 
     if (isLoggedIn) {
-        return <Navigate to={PATH.profile}/>
+        return <Navigate to={PATH.packs}/>
     }
-    console.log(formik.touched.password, formik.errors.password)
+
     return (
         <Box
             sx={{
