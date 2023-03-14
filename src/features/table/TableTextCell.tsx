@@ -6,7 +6,7 @@ type TableTextCellPropsType = {
 export const TableTextCell: React.FC<TableTextCellPropsType> = ({text}) => {
     const textStyle = {
         display: '-webkit-box',
-        webkitLineClamp: '3',
+        WebkitLineClamp: '3',
         webkitBoxOrient: 'vertical',
         overflow: 'hidden',
     }

@@ -28,7 +28,7 @@ export const CardsTable = () => {
 
     useEffect(() => {
         dispatch(getCardsTC())
-    }, [dispatch])
+    }, [dispatch,page,pageCount])
 
 
     // Avoid a layout jump when reaching the last page with empty rows.
@@ -45,7 +45,7 @@ export const CardsTable = () => {
     return (
         <div>
             <TableContainer component={Paper}>
-                <Table aria-label="custom customized table" stickyHeader>
+                <Table aria-label="custom table" stickyHeader>
                     <TableHead>
                         <StyledTableRow>
                             <StyledTableCell>
@@ -82,7 +82,8 @@ export const CardsTable = () => {
                                     <Grade grade={card.grade}/>
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    <ActionsCell packOwnerId={card.user_id}/>
+                                    <ActionsCell
+                                        packOwnerId={card.user_id}/>
                                 </StyledTableCell>
                             </StyledTableRow>
                         ))}

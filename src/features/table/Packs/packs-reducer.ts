@@ -54,7 +54,6 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
 //thunks
 
 export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
-    debugger
     dispatch(appActions.setAppStatusAC('loading'))
     const {page, pageCount} = getState().packs
 
