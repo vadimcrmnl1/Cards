@@ -18,6 +18,15 @@ export type AllReducersActionType = AuthActionsType
     | AppActionsType
     | ProfileActionsType | PacksActionsType
     | CardsActionsType
+export type AppThunk<A extends AnyAction, ReturnType = void> = ThunkAction<
+    ReturnType, AppRootStateType, unknown, A>
+export type AllReducersActionType = AuthActionsType | AppActionsType |ProfileActionsType|PacksActionsType | CardsActionsType
+
+
+
+
+
+
 
 
 // APP types

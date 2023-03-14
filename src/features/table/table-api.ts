@@ -18,13 +18,13 @@ export const packsAPI = {
 }
 export const cardsAPI = {
     getCards(params: CardsRequestDataType) {
-        return instance.get<CardsResponseDataType>('cards/card', {params})
+        return instance.get<CardsResponseDataType>(`cards/card?cardsPack_id=${params.cardsPack_id}`, {params})
     },
     addCard(data: AddCardRequestType) {
         return instance.post<AxiosResponse>('cards/card', data)
     },
     deleteCard(id: string) {
-        return instance.delete<AxiosResponse>('cards/card')
+        return instance.delete<AxiosResponse>(`cards/card?id=${id}`)
     },
     updateCard(data: UpdateCardRequestDataType) {
         return instance.put<AxiosResponse>('cards/card', data)
@@ -77,7 +77,7 @@ export type UpdatePackRequestDataType = {
 export type CardsRequestDataType = {
     cardAnswer?: string
     cardQuestion?: string
-    cardsPack_id?: string
+    cardsPack_id: string
     min?: number
     max?: number
     sortCards?: string
@@ -121,5 +121,6 @@ export type UpdateCardRequestDataType = {
     card: {
         _id: string
         question?: string
+        answer?: string
     }
 }
