@@ -69,7 +69,7 @@ export const Packs = () => {
             <div>
                 <PacksTable/>
             </div>
-            <PaginationComponent/>
+            {/*<PaginationComponent/>*/}
 
         </div>
     )

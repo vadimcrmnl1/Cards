@@ -1,0 +1,12 @@
+.cell {
+    display: flex;
+}
+
+.cell button {
+    border: 0;
+    background-color: inherit;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0 14px 0 0;
+}

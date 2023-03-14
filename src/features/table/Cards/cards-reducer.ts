@@ -1,6 +1,10 @@
 import {CardsActionsType} from "./types";
-import {CardsType} from "../table-api";
+import {cardsAPI, CardsType} from "../table-api";
 import {dateUtils} from "../../../common/utils/dateUtils";
+import {AllReducersActionType, AppThunk} from "../../../app/types";
+import * as appActions from "../../../app/actions";
+import * as tableActions from "../Packs/actions";
+import {errorUtils} from "../../../common/utils/errorUtils";
 
 export const cardsInitialState = {
     cards: [] as CardsType[],
@@ -34,5 +38,23 @@ export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, a
             return {...state, packUserId: action.payload.packUserId}
         default:
             return state;
+    }
+}
+
+export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+    dispatch(appActions.setAppStatusAC('loading'))
+    const {page, pageCount} = getState().packs
+
+    // const params = {
+    //     page: state.page,
+    //     pageCount:state.pageCount,
+    // }
+
+    try {
+        const res = await cardsAPI.getCards({page, pageCount})
+
+        dispatch(appActions.setAppStatusAC('succeeded'))
+    } catch (err: any) {
+        errorUtils(err, dispatch)
     }
 }
