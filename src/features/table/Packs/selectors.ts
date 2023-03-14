@@ -5,7 +5,9 @@ import {createSelector} from "reselect";
 export const selectCardPacksTotalCount = (state: AppRootStateType) => state.packs.cardPacksTotalCount
 export const selectPage = (state: AppRootStateType) => state.packs.page
 export const selectPageCount = (state: AppRootStateType) => state.packs.pageCount
-
+export const selectorMyID = (state:AppRootStateType) => state.profile._id
+export const selectMinCardsCount = (state: AppRootStateType) => state.packs.minCardsCount
+export const selectMaxCardsCount = (state: AppRootStateType) => state.packs.maxCardsCount
 
 export const selectCountOfPages = createSelector([selectCardPacksTotalCount, selectPageCount],
     (cardPacksTotalCount, pageCount) => {

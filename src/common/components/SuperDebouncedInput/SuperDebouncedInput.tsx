@@ -1,6 +1,7 @@
 import React, {DetailedHTMLProps, InputHTMLAttributes, ReactNode, useState} from 'react'
 import SuperInput from "../SuperInput/SuperInput";
-
+import {useStyles} from '../../../features/styleMU/styleMU'
+import {TextField} from "@mui/material";
 
 // тип пропсов обычного инпута
 type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>,
@@ -19,36 +20,35 @@ export type SuperDebouncedInputPropsType = Omit<DefaultInputPropsType, 'type'> &
     onDebouncedChange?: (value: string) => void
 }
 
-const SuperDebouncedInput: React.FC<SuperDebouncedInputPropsType> = (
+export const SuperDebouncedInput: React.FC<SuperDebouncedInputPropsType> = (
     {
         onChangeText,
         onDebouncedChange,
-
-        ...restProps // все остальные пропсы попадут в объект restProps
+        ...restProps
     }
 ) => {
     const [timerId, setTimerId] = useState<number | undefined>(undefined)
-
-    const onChangeTextCallback = (value: string) => {
+    const styleMU = useStyles();
+    const handleOnChangeText = (value: string) => {
         onChangeText?.(value)
-
         if (onDebouncedChange) {
-            // делает студент
-            setTimeout(() => {
-                return onDebouncedChange(value)
-            }, 1500)
-
-
-            // остановить предыдущий таймер
-            // запустить новый на 1500ms, в котором вызовется функция
-            console.log('timerId', timerId)
-            //
+            clearTimeout(timerId)
+            setTimerId(+(setTimeout(() => {onDebouncedChange(value) }, 1500))) ;
         }
     }
 
     return (
-        <SuperInput onChangeText={onChangeTextCallback} {...restProps}/>
+       /* <TextField
+            id="filled-search"
+            label="Search field"
+            type="search"
+            variant="filled"
+
+        />*/
+        <SuperInput onChangeText={handleOnChangeText}
+                    className={styleMU.textField}
+                    {...restProps}/>
     )
 }
 
-export default SuperDebouncedInput
+
