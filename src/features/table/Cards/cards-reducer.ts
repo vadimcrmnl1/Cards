@@ -12,9 +12,9 @@ export const cardsInitialState = {
     maxGrade: 1,
     minGrade: 1,
     page: 1,
-    pageCount: 1,
+    pageCount: 5,
     packUserId: '',
-    cardsPackId: ''
+    pack_id: ''
 }
 
 export type CardsInitialStateType = typeof cardsInitialState
@@ -39,19 +39,22 @@ export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, a
             return {...state, pageCount: action.payload.pageCount}
         case 'TABLE/SET_CARDS_PACK_USER_ID':
             return {...state, packUserId: action.payload.packUserId}
+        case 'TABLE/SET_CARDS_PACK_ID':
+            return {...state, pack_id: action.payload.pack_id}
         default:
             return state;
     }
 }
-export const getCardsTC = (cardsPack_id: string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
-    const {page, pageCount} = getState().cards
+    const {page, pageCount, pack_id} = getState().cards
+    const cardsPack_id = pack_id.toString()
     try {
         const res = await cardsAPI.getCards({page, pageCount, cardsPack_id})
         dispatch(cardsActions.setCardsAC(res.data.cards))
         dispatch(cardsActions.setCardsTotalCountAC(res.data.cardsTotalCount))
-        dispatch(cardsActions.setCardsMaxGradeAC(res.data.maxGrade))
-        dispatch(cardsActions.setCardsMinGradeAC(res.data.minGrade))
+        dispatch(cardsActions.setMaxGradeAC(res.data.maxGrade))
+        dispatch(cardsActions.setMinGradeAC(res.data.minGrade))
         // dispatch(cardsActions.setPageAC(res.data.page))
         // dispatch(cardsActions.setPageCountAC(res.data.pageCount))
         dispatch(cardsActions.setPackUserId(res.data.packUserId))

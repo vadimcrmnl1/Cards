@@ -1,72 +1,63 @@
 import * as React from "react";
-import s from './PacksTable/PacksTable.module.css'
 import {useEffect} from "react";
+import s from './CardsTable.module.css'
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {
-    selectCardPacks,
-    selectCardPacksTotalCount,
-    selectPacksCountOfPages,
-    selectPacksPage,
-    selectPacksPageCount
-} from "./selectors";
-import {setPacksPageAC, setPacksPageCountAC} from "./actions";
 import {FormControl, MenuItem, Pagination, Select, SelectChangeEvent, TableHead} from "@mui/material";
-import {getPacksTC} from "./packs-reducer";
-import {ActionsCell} from "./PacksTable/ActionsCell/ActionsCell";
-import {NavLink} from "react-router-dom";
-import {PATH} from "../../../common/utils/routes/Routes";
-import {setPack_idAC} from "../Cards/actions";
-import {StyledTableCell, StyledTableRow} from "./PacksTable/styles";
-import {TableTextCell} from "../TableTextCell";
+import {useAppDispatch, useAppSelector} from "../../../../app/store";
+import {getCardsTC} from "../cards-reducer";
+import {selectCards, selectCardsCountOfPages, selectCardsPage, selectCardsPageCount} from "../selectors";
+import {ActionsCell} from "../../Packs/PacksTable/ActionsCell/ActionsCell";
+import {setPageAC, setPageCountAC} from "../actions";
+import {StyledTableCell, StyledTableRow} from "./styles";
+import {Grade} from "./Grade/Grade";
+import {TableTextCell} from "../../TableTextCell";
 
 
-export const PacksTable = () => {
+export const CardsTable = () => {
 
     const dispatch = useAppDispatch()
-    const cardPacks = useAppSelector(selectCardPacks)
-    const cardPacksTotalCount = useAppSelector(selectCardPacksTotalCount)
-    const page = useAppSelector(selectPacksPage)
-    const pageCount = useAppSelector(selectPacksPageCount)
-    const count = useAppSelector(selectPacksCountOfPages)
+    const cards = useAppSelector(selectCards)
+    const page = useAppSelector(selectCardsPage)
+    const pageCount = useAppSelector(selectCardsPageCount)
+    const count = useAppSelector(selectCardsCountOfPages)
+
 
     useEffect(() => {
-        dispatch(getPacksTC())
-    }, [dispatch, page, pageCount])
+        dispatch(getCardsTC())
+    }, [dispatch])
 
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
-        page > 0 ? pageCount - cardPacks.length : 0;
+        page > 0 ? pageCount - cards.length : 0;
     const emptyRowsStyle = {height: 53 * emptyRows}
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        dispatch(setPacksPageAC(value))
+        dispatch(setPageAC(value))
     }
     const handlePageCountChange = (event: SelectChangeEvent) => {
-        dispatch(setPacksPageCountAC(+event.target.value))
+        dispatch(setPageCountAC(+event.target.value))
     };
-
     return (
-        <div className={s.table}>
+        <div>
             <TableContainer component={Paper}>
-                <Table aria-label="custom table" stickyHeader>
+                <Table aria-label="custom customized table" stickyHeader>
                     <TableHead>
                         <StyledTableRow>
                             <StyledTableCell>
-                                Name
+                                Question
                             </StyledTableCell>
                             <StyledTableCell>
-                                Cards
+                                Answer
                             </StyledTableCell>
                             <StyledTableCell>
                                 Last Updated
                             </StyledTableCell>
                             <StyledTableCell>
-                                Created by
+                                Grade
                             </StyledTableCell>
                             <StyledTableCell>
                                 Actions
@@ -74,35 +65,26 @@ export const PacksTable = () => {
                         </StyledTableRow>
                     </TableHead>
                     <TableBody>
-                        {cardPacks.map((cardPack, index) => {
-                            const handleLinkToCards = () => {
-                                dispatch(setPack_idAC(cardPack._id))
-                            }
-                            return <StyledTableRow key={index} hover>
-                                <StyledTableCell scope="row">
-                                    <NavLink to={PATH.cards}
-                                             onClick={handleLinkToCards}
-                                             className={s.link}
-                                    >
-                                        <TableTextCell text={cardPack.name}/>
-                                    </NavLink>
+                        {cards.map((card, index) => (
+                            <StyledTableRow key={index}>
+                                <StyledTableCell
+                                    scope="row">
+                                    <TableTextCell text={card.question}/>
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    {cardPack.cardsCount}
+                                    <TableTextCell text={card.answer}/>
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    {cardPack.updated}
+                                    {card.updated}
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    <TableTextCell text={cardPack.user_name}/>
+                                    <Grade grade={card.grade}/>
                                 </StyledTableCell>
                                 <StyledTableCell>
-                                    <ActionsCell
-                                        packs
-                                        packOwnerId={cardPack.user_id}/>
+                                    <ActionsCell packOwnerId={card.user_id}/>
                                 </StyledTableCell>
                             </StyledTableRow>
-                        })}
+                        ))}
                         {emptyRows > 0 && (
                             <StyledTableRow style={emptyRowsStyle}>
                                 <StyledTableCell colSpan={5}/>
@@ -133,7 +115,7 @@ export const PacksTable = () => {
                         <MenuItem value={15}>15</MenuItem>
                     </Select>
                 </FormControl>
-                Packs per Page
+                Cards per Page
             </div>
         </div>
     );
