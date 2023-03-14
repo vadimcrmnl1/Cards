@@ -11,6 +11,8 @@ import {setPacksPageAC, setPacksPageCountAC} from "./actions";
 import { Pagination, Select, SelectChangeEvent, TableHead} from "@mui/material";
 import {useEffect} from "react";
 import {getPacksTC} from "./packs-reducer";
+import {NavLink} from "react-router-dom";
+import {PATH} from "../../../common/utils/routes/Routes";
 
 
 export const PacksTable = () => {
@@ -68,9 +70,9 @@ export const PacksTable = () => {
                             : cardPacks
                     ).map((cardPack, index) => (
                         <TableRow key={index}>
-                            <TableCell component="th" scope="row">
+                            <NavLink to={`${PATH.cards}/card?cardPack_id=${cardPack._id}`}><TableCell component="th" scope="row">
                                 {cardPack.name}
-                            </TableCell>
+                            </TableCell></NavLink>
                             <TableCell style={{width: 160}} align="center">
                                 {cardPack.cardsCount}
                             </TableCell>

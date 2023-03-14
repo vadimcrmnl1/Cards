@@ -14,6 +14,10 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import {useAppDispatch, useAppSelector} from "../../../app/store";
+import {selectCard} from "./selectors";
+import {useEffect} from "react";
+import {getCardsTC} from "./cards-reducer";
 
 export const Cards = () => {
     return (
@@ -94,19 +98,29 @@ function createData(name: string, calories: number, fat: number) {
     return {name, calories, fat};
 }
 
-const rows = [
-    createData('Cupcake', 305, 3.7),
-    createData('Donut', 452, 25.0),
+// const rows = [
+//     createData('Cupcake', 305, 3.7),
+//     createData('Donut', 452, 25.0),
+//
+// ].sort((a, b) => (a.calories < b.calories ? -1 : 1));
 
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
- export const PacksTable = () => {
+export const PacksTable = () => {
+    const dispatch = useAppDispatch()
+    const cardsPack_id = useAppSelector(state => state.cards.cards.map(
+        (cp, index) => {
+            return cp.cardsPack_id
+        }
+    ))
+    const cards = useAppSelector(selectCard)
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+    // useEffect(() => {
+    //     dispatch(getCardsTC())
+    // }, [dispatch])
     // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    // const emptyRows =
+    //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -127,45 +141,46 @@ const rows = [
             <Table sx={{minWidth: 500}} aria-label="custom pagination table">
                 <TableBody>
                     {(rowsPerPage > 0
-                            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            : rows
-                    ).map((row) => (
-                        <TableRow key={row.name}>
+                            // ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        ? cards
+                        : cards
+                    ).map((cards, index) => (
+                        <TableRow key={index}>
                             <TableCell component="th" scope="row">
-                                {row.name}
+                                {cards.question}
                             </TableCell>
                             <TableCell style={{width: 160}} align="right">
-                                {row.calories}
+                                {cards.answer}
                             </TableCell>
                             <TableCell style={{width: 160}} align="right">
-                                {row.fat}
+                                {cards.grade}
                             </TableCell>
                         </TableRow>
                     ))}
-                    {emptyRows > 0 && (
-                        <TableRow style={{height: 53 * emptyRows}}>
-                            <TableCell colSpan={6}/>
-                        </TableRow>
-                    )}
+                    {/*{emptyRows > 0 && (*/}
+                    {/*    <TableRow style={{height: 53 * emptyRows}}>*/}
+                    {/*        <TableCell colSpan={6}/>*/}
+                    {/*    </TableRow>*/}
+                    {/*)}*/}
                 </TableBody>
                 <TableFooter>
                     <TableRow>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25, {label: 'All', value: -1}]}
-                            colSpan={3}
-                            count={rows.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            SelectProps={{
-                                inputProps: {
-                                    'aria-label': 'rows per page',
-                                },
-                                native: true,
-                            }}
-                            onPageChange={handleChangePage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                            ActionsComponent={TablePaginationActions}
-                        />
+                        {/*<TablePagination*/}
+                        {/*    rowsPerPageOptions={[5, 10, 25, {label: 'All', value: -1}]}*/}
+                        {/*    colSpan={3}*/}
+                        {/*    count={rows.length}*/}
+                        {/*    rowsPerPage={rowsPerPage}*/}
+                        {/*    page={page}*/}
+                        {/*    SelectProps={{*/}
+                        {/*        inputProps: {*/}
+                        {/*            'aria-label': 'rows per page',*/}
+                        {/*        },*/}
+                        {/*        native: true,*/}
+                        {/*    }}*/}
+                        {/*    onPageChange={handleChangePage}*/}
+                        {/*    onRowsPerPageChange={handleChangeRowsPerPage}*/}
+                        {/*    ActionsComponent={TablePaginationActions}*/}
+                        {/*/>*/}
                     </TableRow>
                 </TableFooter>
             </Table>

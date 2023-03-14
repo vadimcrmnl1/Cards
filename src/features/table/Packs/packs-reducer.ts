@@ -20,9 +20,11 @@ export type PacksInitialStateType = typeof packsInitialState
 export const packsReducer = (state: PacksInitialStateType = packsInitialState, action: PacksActionsType): PacksInitialStateType => {
     switch (action.type) {
         case 'TABLE/SET_PACKS':
-            return {...state, cardPacks: action.payload.cardPacks.map(pack => {
-                return {...pack, updated: dateUtils(pack.updated),created:dateUtils(pack.created)}
-                })};
+            return {
+                ...state, cardPacks: action.payload.cardPacks.map(pack => {
+                    return {...pack, updated: dateUtils(pack.updated), created: dateUtils(pack.created)}
+                })
+            };
         case 'TABLE/SET_CARDS_PACK_TOTAL_COUNT':
             return {...state, cardPacksTotalCount: action.payload.cardPacksTotalCount};
         case 'TABLE/SET_MAX_CARDS_COUNT':
@@ -79,11 +81,9 @@ export const addPackTC = (data: AddPackRequestDataType): AppThunk<AllReducersAct
             dispatch(getPacksTC())
             dispatch(appActions.setAppInfoAC(`Your pack -=${data.cardsPack.name}=- has been successfully added`))
         }
-    }
-    catch (err: any) {
+    } catch (err: any) {
         errorUtils(err, dispatch)
-    }
-    finally {
+    } finally {
         dispatch(appActions.setAppStatusAC('succeeded'))
     }
 }
@@ -96,11 +96,9 @@ export const deletePackTC = (id: string): AppThunk<AllReducersActionType> => asy
             dispatch(appActions.setAppInfoAC(`Your pack has been deleted`))
         }
 
-    }
-    catch (err: any) {
+    } catch (err: any) {
         errorUtils(err, dispatch)
-    }
-    finally {
+    } finally {
         dispatch(appActions.setAppStatusAC('succeeded'))
     }
 }
@@ -108,13 +106,13 @@ export const updatePackTC = (data: UpdatePackRequestDataType): AppThunk<AllReduc
     dispatch(appActions.setAppStatusAC('loading'))
     try {
         const res = await packsAPI.updatePack(data)
-        dispatch(getPacksTC())
-        dispatch(appActions.setAppInfoAC(`Your pack -= ${data.cardsPack.name} =- has been updated`))
-    }
-    catch (err: any) {
+        if (res.status === 200) {
+            dispatch(getPacksTC())
+            dispatch(appActions.setAppInfoAC(`Your pack -= ${data.cardsPack.name} =- has been updated`))
+        }
+    } catch (err: any) {
         errorUtils(err, dispatch)
-    }
-    finally {
+    } finally {
         dispatch(appActions.setAppStatusAC('succeeded'))
     }
 }
