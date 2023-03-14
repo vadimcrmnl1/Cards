@@ -106,18 +106,14 @@ function createData(name: string, calories: number, fat: number) {
 
 export const PacksTable = () => {
     const dispatch = useAppDispatch()
-    const cardsPack_id = useAppSelector(state => state.cards.cards.map(
-        (cp, index) => {
-            return cp.cardsPack_id
-        }
-    ))
+    const cardsPack_id = useAppSelector(state => state.packs.cardsPackId)
     const cards = useAppSelector(selectCard)
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-    // useEffect(() => {
-    //     dispatch(getCardsTC())
-    // }, [dispatch])
+    console.log('cardsPack_id', cardsPack_id)
+    useEffect(() => {
+        dispatch(getCardsTC(cardsPack_id))
+    }, [dispatch, cardsPack_id])
     // Avoid a layout jump when reaching the last page with empty rows.
     // const emptyRows =
     //     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;

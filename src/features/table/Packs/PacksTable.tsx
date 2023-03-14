@@ -1,4 +1,5 @@
 import * as React from "react";
+import {useEffect} from "react";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -7,12 +8,11 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {selectCardPacks, selectCardPacksTotalCount, selectCountOfPages, selectPage, selectPageCount} from "./selectors";
-import {setPacksPageAC, setPacksPageCountAC} from "./actions";
-import { Pagination, Select, SelectChangeEvent, TableHead} from "@mui/material";
-import {useEffect} from "react";
+import {Pagination, Select, SelectChangeEvent, TableHead} from "@mui/material";
 import {getPacksTC} from "./packs-reducer";
-import {NavLink} from "react-router-dom";
+import {Navigate, NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
+import {setCardsPackId, setPacksPageAC, setPacksPageCountAC} from "./actions";
 
 
 export const PacksTable = () => {
@@ -23,11 +23,12 @@ export const PacksTable = () => {
     const page = useAppSelector(selectPage)
     const pageCount = useAppSelector(selectPageCount)
     const count = useAppSelector(selectCountOfPages)
-    console.log('page: ', page)
+    const cardsPack_id = useAppSelector(state => state.packs.cardsPackId)
+    console.log('cardsPack_id: ', cardsPack_id)
 
     useEffect(() => {
         dispatch(getPacksTC())
-    }, [dispatch, page, pageCount])
+    }, [dispatch])
 
 
     // Avoid a layout jump when reaching the last page with empty rows.
@@ -41,6 +42,10 @@ export const PacksTable = () => {
     const handlePageCountChange = (event: SelectChangeEvent) => {
         dispatch(setPacksPageCountAC(+event.target.value))
     };
+    const handleCardsPackId = () => {
+        dispatch(setCardsPackId(cardsPack_id))
+    }
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 1024}} aria-label="custom pagination table" stickyHeader>
@@ -66,13 +71,16 @@ export const PacksTable = () => {
                 <TableBody>
                     {(pageCount > 0
                             ? cardPacks
-                            // .slice(page * pageCount, page * pageCount + pageCount)
+
                             : cardPacks
                     ).map((cardPack, index) => (
                         <TableRow key={index}>
-                            <NavLink to={`${PATH.cards}/card?cardPack_id=${cardPack._id}`}><TableCell component="th" scope="row">
-                                {cardPack.name}
-                            </TableCell></NavLink>
+                            <NavLink to={`${PATH.cards}`} onClick={handleCardsPackId}>
+                                <TableCell style={{maxWidth: '160px', wordWrap: 'break-word'}} component="th"
+                                           scope="row">
+                                    {cardPack.name}
+                                </TableCell>
+                            </NavLink>
                             <TableCell style={{width: 160}} align="center">
                                 {cardPack.cardsCount}
                             </TableCell>

@@ -13,7 +13,8 @@ export const cardsInitialState = {
     minGrade: 1,
     page: 1,
     pageCount: 1,
-    packUserId: ''
+    packUserId: '',
+    cardsPackId: ''
 }
 
 export type CardsInitialStateType = typeof cardsInitialState
@@ -49,8 +50,8 @@ export const getCardsTC = (cardsPack_id: string): AppThunk<AllReducersActionType
         const res = await cardsAPI.getCards({page, pageCount, cardsPack_id})
         dispatch(cardsActions.setCardsAC(res.data.cards))
         dispatch(cardsActions.setCardsTotalCountAC(res.data.cardsTotalCount))
-        dispatch(cardsActions.setMaxGradeAC(res.data.maxGrade))
-        dispatch(cardsActions.setMinGradeAC(res.data.minGrade))
+        dispatch(cardsActions.setCardsMaxGradeAC(res.data.maxGrade))
+        dispatch(cardsActions.setCardsMinGradeAC(res.data.minGrade))
         // dispatch(cardsActions.setPageAC(res.data.page))
         // dispatch(cardsActions.setPageCountAC(res.data.pageCount))
         dispatch(cardsActions.setPackUserId(res.data.packUserId))

@@ -13,6 +13,7 @@ export const packsInitialState = {
     minCardsCount: 1,
     page: 1,
     pageCount: 5,
+    cardsPackId: ''
 }
 
 export type PacksInitialStateType = typeof packsInitialState
@@ -41,6 +42,8 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
             return {...state}
         case 'TABLE/UPDATE_PACK':
             return {...state}
+        case 'TABLE/SET_CARDS_PACK_ID':
+            return {...state, cardsPackId: action.payload._id}
         default:
             return state;
     }
