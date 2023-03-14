@@ -18,26 +18,26 @@ const rootReducer = combineReducers({
     cards: cardsReducer
 })
 //localstorage
-const saveToLocalStorage = (state: AppRootStateType) => {
-    try {
-        const serializedState = JSON.stringify(state)
-        localStorage.setItem('persistedState', serializedState)
-    } catch (err: any) {
-        console.warn(err)
-    }
-}
-const loadFromLocalStorage = () => {
-    try {
-        const serialisedState = localStorage.getItem('persistedState')
-        if (serialisedState === null) {
-            return undefined
-        }
-        return JSON.parse(serialisedState)
-    } catch (err: any) {
-        console.warn(err)
-        return undefined
-    }
-}
+// const saveToLocalStorage = (state: AppRootStateType) => {
+//     try {
+//         const serializedState = JSON.stringify(state)
+//         localStorage.setItem('persistedState', serializedState)
+//     } catch (err: any) {
+//         console.warn(err)
+//     }
+// }
+// const loadFromLocalStorage = () => {
+//     try {
+//         const serialisedState = localStorage.getItem('persistedState')
+//         if (serialisedState === null) {
+//             return undefined
+//         }
+//         return JSON.parse(serialisedState)
+//     } catch (err: any) {
+//         console.warn(err)
+//         return undefined
+//     }
+// }
 
 
 const middlewareEnhancer = applyMiddleware<AppThunkDispatch, AppRootStateType>(thunk)
@@ -45,8 +45,8 @@ const middlewareEnhancer = applyMiddleware<AppThunkDispatch, AppRootStateType>(t
 //мидлвар санок. Все эти улучшение можно объеденить специальной функцией, которая добавляет возможность
 // пользоваться reactDevTools - очень полезное расширение для хрома.
 const composedEnhancers = composeWithDevTools(middlewareEnhancer)
-export const store = legacy_createStore(rootReducer, loadFromLocalStorage(), composedEnhancers);
-store.subscribe(() => saveToLocalStorage(store.getState()))
+export const store = legacy_createStore(rootReducer, composedEnhancers);
+// store.subscribe(() => saveToLocalStorage(store.getState()))
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
 //хуки тоже можно вынести в отдельный файл
