@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {addPackTC, deletePackTC, updatePackTC} from "./packs-reducer";
+
 import {PacksTable} from "./PacksTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
 import {Navigate} from 'react-router-dom';
@@ -10,6 +10,10 @@ import {Button} from "@mui/material";
 import {useStyles} from "../../styleMU/styleMU";
 import s from "./Packs.module.css"
 import {PaginationComponent} from "./components/PaginationComponent";
+import { SearchComponent } from './components/SearchComponent';
+import {SortComponent} from "./components/SortComponents";
+import {FilterCountCardComponent} from "./components/FilterCountCardComponent";
+import {WithoutFilters} from "./components/WithoutFilters";
 
 export const Packs = () => {
     const dispatch = useAppDispatch()
@@ -23,20 +27,20 @@ export const Packs = () => {
                 private: false
             }
         }
-        dispatch(addPackTC(cardPack))
+       // dispatch(addPackTC(cardPack))
     }
     const handleDeletePack = () => {
         const id = '640f6d55dc68f718b46b2501'
-        dispatch(deletePackTC(id))
+      //  dispatch(deletePackTC(id))
     }
     const handleUpdatePack = () => {
-        const cardPack: UpdatePackRequestDataType = {
+      /*  const cardPack: UpdatePackRequestDataType = {
             cardsPack: {
                 _id: '640f6d7edc68f718b46b2502',
                 name: 'First Pack'
             }
         }
-        dispatch(updatePackTC(cardPack))
+        dispatch(updatePackTC(cardPack))*/
     }
     const styleMU = useStyles();
 
@@ -62,9 +66,10 @@ export const Packs = () => {
                 >Update pack</Button>
             </div>
             <div className={s.packsBlock}>
-                {/*<SearchComponent/>
-            <SortComponent/>
-            <FilterComponent/>*/}
+                <SearchComponent/>
+                <SortComponent/>
+                <FilterCountCardComponent/>
+                <WithoutFilters/>
             </div>
             <div>
                 <PacksTable/>

@@ -34,6 +34,9 @@ export const useStyles = makeStyles((theme) => ({
         marginRight: '10px',
         fontSize: '18px',
         marginBottom: '17px',
-        color: '#282c34'
+        color: '#282c34',
+        },
+    slider:{
+        width: '150px',
     }
 }));

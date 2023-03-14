@@ -32,10 +32,12 @@ export const setPacksPageCountAC = (pageCount: number) => ({
     type: 'TABLE/SET_PACKS_PAGE_COUNT',
     payload: {pageCount},
 } as const)
-export const setCardsPackId = (_id: string) => ({
-    type: 'TABLE/SET_CARDS_PACK_ID',
-    payload: {_id}
+
+export const setFilterAC = (packs:CardPacksType[]) => ({
+    type: 'TABLE/SET_FILTER',
+    payload: {packs}
 } as const)
+
 export const addPackAC = (cardPack: AddPackRequestDataType) => ({type: 'TABLE/ADD_PACK', payload: {cardPack}} as const)
 export const deletePackAC = (id: string) => ({type: 'TABLE/DELETE_PACK', payload: {id}} as const)
 export const updatePackAC = (cardPack: UpdatePackRequestDataType) => ({type: 'TABLE/UPDATE_PACK', payload: {cardPack}} as const)

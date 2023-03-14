@@ -5,6 +5,8 @@ import * as tableActions from "./actions";
 import {errorUtils} from "../../../common/utils/errorUtils";
 import {AddPackRequestDataType, CardPacksType, packsAPI, UpdatePackRequestDataType} from "../table-api";
 import {dateUtils} from "../../../common/utils/dateUtils";
+import {setFilterAC} from "./actions";
+import {keys} from "@material-ui/core/styles/createBreakpoints";
 
 export const packsInitialState = {
     cardPacks: [] as CardPacksType[],
@@ -21,11 +23,9 @@ export type PacksInitialStateType = typeof packsInitialState
 export const packsReducer = (state: PacksInitialStateType = packsInitialState, action: PacksActionsType): PacksInitialStateType => {
     switch (action.type) {
         case 'TABLE/SET_PACKS':
-            return {
-                ...state, cardPacks: action.payload.cardPacks.map(pack => {
-                    return {...pack, updated: dateUtils(pack.updated), created: dateUtils(pack.created)}
-                })
-            };
+            return {...state, cardPacks: action.payload.cardPacks.map(pack => {
+                return {...pack, updated: dateUtils(pack.updated),created:dateUtils(pack.created)}
+                })};
         case 'TABLE/SET_CARDS_PACK_TOTAL_COUNT':
             return {...state, cardPacksTotalCount: action.payload.cardPacksTotalCount};
         case 'TABLE/SET_MAX_CARDS_COUNT':
@@ -42,6 +42,10 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
             return {...state}
         case 'TABLE/UPDATE_PACK':
             return {...state}
+                case 'TABLE/SET_FILTER':{
+            return {...state, cardPacks: action.payload.packs}
+        }
+
         case 'TABLE/SET_CARDS_PACK_ID':
             return {...state, cardsPackId: action.payload._id}
         default:
@@ -84,9 +88,11 @@ export const addPackTC = (data: AddPackRequestDataType): AppThunk<AllReducersAct
             dispatch(getPacksTC())
             dispatch(appActions.setAppInfoAC(`Your pack -=${data.cardsPack.name}=- has been successfully added`))
         }
-    } catch (err: any) {
+    }
+    catch (err: any) {
         errorUtils(err, dispatch)
-    } finally {
+    }
+    finally {
         dispatch(appActions.setAppStatusAC('succeeded'))
     }
 }
@@ -99,9 +105,11 @@ export const deletePackTC = (id: string): AppThunk<AllReducersActionType> => asy
             dispatch(appActions.setAppInfoAC(`Your pack has been deleted`))
         }
 
-    } catch (err: any) {
+    }
+    catch (err: any) {
         errorUtils(err, dispatch)
-    } finally {
+    }
+    finally {
         dispatch(appActions.setAppStatusAC('succeeded'))
     }
 }
@@ -109,10 +117,49 @@ export const updatePackTC = (data: UpdatePackRequestDataType): AppThunk<AllReduc
     dispatch(appActions.setAppStatusAC('loading'))
     try {
         const res = await packsAPI.updatePack(data)
-        if (res.status === 200) {
-            dispatch(getPacksTC())
-            dispatch(appActions.setAppInfoAC(`Your pack -= ${data.cardsPack.name} =- has been updated`))
-        }
+        dispatch(getPacksTC())
+        dispatch(appActions.setAppInfoAC(`Your pack -= ${data.cardsPack.name} =- has been updated`))
+    }
+    catch (err: any) {
+        errorUtils(err, dispatch)
+    }
+    finally {
+        dispatch(appActions.setAppStatusAC('succeeded'))
+    }
+}
+
+export const setMyPacksTC = (id:string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+    dispatch(appActions.setAppStatusAC('loading'))
+    try {
+        const res = await packsAPI.getPacks({userId:id})
+        const a= dispatch(tableActions.setFilterAC(res.data.cardPacks))
+        console.log(a)
+    } catch (err: any) {
+        errorUtils(err, dispatch)
+    } finally {
+        dispatch(appActions.setAppStatusAC('succeeded'))
+    }
+}
+
+export const setPacksTitleTC = (title:string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+
+    dispatch(appActions.setAppStatusAC('loading'))
+    try {
+        const res = await packsAPI.getPacks({packName:title})
+        dispatch(tableActions.setFilterAC(res.data.cardPacks))
+
+    } catch (err: any) {
+        errorUtils(err, dispatch)
+    } finally {
+        dispatch(appActions.setAppStatusAC('succeeded'))
+    }
+}
+export const setFilterCardsTC= (countCards:number[]): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+    dispatch(appActions.setAppStatusAC('loading'))
+    try {
+        const res = await packsAPI.getPacks({min:countCards[0], max:countCards[1]})
+        dispatch(tableActions.setFilterAC(res.data.cardPacks))
+
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {

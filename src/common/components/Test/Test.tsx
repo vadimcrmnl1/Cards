@@ -9,8 +9,9 @@ import SuperEditableSpan from "../SuperEditableSpan/SuperEditableSpan";
 import SuperSelect from "../SuperSelect/SuperSelect";
 import SuperRadio from "../SuperRadio/SuperRadio";
 import SuperRange from "../SuperRange/SuperRange";
-import SuperDebouncedInput from "../SuperDebouncedInput/SuperDebouncedInput";
+
 import SuperInput from "../SuperInput/SuperInput";
+import {SuperDebouncedInput} from "../SuperDebouncedInput/SuperDebouncedInput";
 
 const arr = [
     { id: 1, value: 'Pre-junior' },

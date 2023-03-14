@@ -1,33 +1,41 @@
 import React, {useState} from 'react';
 import TablePagination from '@material-ui/core/TablePagination';
-import {selectCardPacksTotalCount, selectPacksPage, selectPacksPageCount} from "../selectors";
+import {selectCardPacksTotalCount, selectPage, selectPageCount} from "../selectors";
 import {useAppDispatch, useAppSelector} from "../../../../app/store";
+import {useParams} from "react-router-dom";
+import {getPacksTC} from "../packs-reducer";
+import {setPacksPageAC, setPacksPageCountAC} from "../actions";
 
 export const PaginationComponent=()=> {
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const packsTotalCount=useAppSelector(selectCardPacksTotalCount)
-    const pageNumber= useAppSelector(selectPacksPage)
-    const pageCount= useAppSelector(selectPacksPageCount)
+    const pageNumber= useAppSelector(selectPage)
+    const pageCount= useAppSelector(selectPageCount)
     const dispatch = useAppDispatch()
+
     const handleChangePage = (e:any, newPage:number) => {
-        // dispatch(getPacksPaginTC(newPage, pageCount))
+         dispatch(setPacksPageAC(newPage))
     };
 
-   /* const handleChangeRowsPerPage = (e:any) => {
-        setRowsPerPage(parseInt(e.target.value, 10));
-        setPage(0);
-    };*/
+    const handleChangeRowsPerPage = (e:any) => {
+         dispatch(setPacksPageCountAC(+e.target.value));
+
+    };
     const countPages=Math.ceil(packsTotalCount/pageCount)
+    console.log('packsTotalCount=', packsTotalCount)
+    console.log('pageNumber=', pageNumber)
+    console.log('pageCount=', pageCount)
+
     return (
         <TablePagination
-            component="div"
+            //component="div"
             count={countPages}
-            page={pageNumber+1}
+            page={pageNumber}
             onPageChange={handleChangePage}
             rowsPerPage={pageCount}
-            rowsPerPageOptions={[4,6,8,10]}
-            //onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPageOptions={[5,10,15]}
+            onRowsPerPageChange={handleChangeRowsPerPage}
         />
     );
 }
