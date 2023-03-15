@@ -1,0 +1,13 @@
+.cell,.cell>div {
+    display: flex;
+    gap: 14px;
+}
+
+.cell button {
+    border: 0;
+    background-color: inherit;
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 0;
+    margin: 0;
+}

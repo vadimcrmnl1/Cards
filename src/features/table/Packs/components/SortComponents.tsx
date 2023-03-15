@@ -1,11 +1,12 @@
 import {Button} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../../app/store";
 import {getPacksTC, setMyPacksTC} from "../packs-reducer";
-import {selectorMyID} from "../selectors";
+import {selectMyID} from "../../../profile/selectors";
+
 
 export const SortComponent=()=>{
     const dispatch = useAppDispatch()
-    const myID = useAppSelector(selectorMyID)
+    const myID = useAppSelector(selectMyID)
     const handleSortByMyPacks=()=>{
         dispatch(setMyPacksTC(myID))
     }

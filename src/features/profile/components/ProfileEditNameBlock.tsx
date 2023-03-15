@@ -6,7 +6,8 @@ import {useFormik} from "formik";
 import {changeNameTC} from "../profile-reducer";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {useStyles} from "../../styleMU/styleMU";
-import {selectorError, selectorName} from "../selectors";
+import {selectName} from "../selectors";
+import {selectError} from "../../../app/selectors";
 
 type ProfileEditNameBlockType = {
     setEditMode: (editMode: boolean) => void
@@ -17,8 +18,8 @@ export type FormikErrorType = {
 export const ProfileEditNameBlock = (props: ProfileEditNameBlockType) => {
     const dispatch = useAppDispatch()
     const styleMU = useStyles();
-    const error = useAppSelector(selectorError)
-    const name = useAppSelector(selectorName)
+    const error = useAppSelector(selectError)
+    const name = useAppSelector(selectName)
     const formik = useFormik({
         initialValues: {
             nickName: name

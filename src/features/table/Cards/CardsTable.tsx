@@ -17,6 +17,9 @@ import * as React from "react";
 // import {useAppDispatch, useAppSelector} from "../../../app/store";
 // import {TableHead} from "@mui/material";
 // import {useEffect} from "react";
+// import {selectCardPacks, selectCardPacksTotalCount, selectPage, selectPageCount} from "../Packs/selectors";
+// import {getPacksTC} from "../Packs/packs-reducer";
+// import {setPacksPageAC, setPacksPageCountAC} from "../Packs/actions";
 //
 // interface TablePaginationActionsProps {
 //     count: number;

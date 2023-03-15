@@ -5,6 +5,7 @@ import {AuthActionsType} from "../features/auth/types";
 import {ProfileActionsType} from "../features/profile/types";
 import {AppRootStateType} from "./store";
 import {PacksActionsType} from "../features/table/Packs/types";
+import {CardsActionsType} from "../features/table/Cards/types";
 //general application types
 export type InferValueTypes<T> = T extends { [key: string]: infer U }
     ? U
@@ -12,15 +13,12 @@ export type InferValueTypes<T> = T extends { [key: string]: infer U }
 
 export type AppThunkDispatch = ThunkDispatch<AppRootStateType, unknown, AllReducersActionType>
 
-export type AppThunk<A extends AnyAction, ReturnType = void> = ThunkAction<
-    ReturnType, AppRootStateType, unknown, A>
-export type AllReducersActionType = AuthActionsType | AppActionsType |ProfileActionsType|PacksActionsType
-
-
-
-
-
-
+export type AppThunk<A extends AnyAction, ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, A>
+export type AllReducersActionType = AuthActionsType
+    | AppActionsType
+    | ProfileActionsType
+    | PacksActionsType
+    | CardsActionsType
 
 
 // APP types

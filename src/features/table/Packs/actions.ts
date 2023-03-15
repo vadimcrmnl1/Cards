@@ -12,15 +12,15 @@ export const setPacksAC = (cardPacks: CardPacksType[]) => ({
     type: 'TABLE/SET_PACKS',
     payload: {cardPacks}
 } as const)
-export const setCardPacksTotalCountAC = (cardPacksTotalCount: number) => ({
+export const setPacksTotalCountAC = (cardPacksTotalCount: number) => ({
     type: 'TABLE/SET_CARDS_PACK_TOTAL_COUNT',
     payload: {cardPacksTotalCount},
 } as const)
-export const setMaxCardsCountAC = (maxCardsCount: number) => ({
+export const setPacksMaxCardsCountAC = (maxCardsCount: number) => ({
     type: 'TABLE/SET_MAX_CARDS_COUNT',
     payload: {maxCardsCount},
 } as const)
-export const setMinCardsCountAC = (minCardsCount: number) => ({
+export const setPacksMinCardsCountAC = (minCardsCount: number) => ({
     type: 'TABLE/SET_MIN_CARDS_COUNT',
     payload: {minCardsCount},
 } as const)
@@ -33,7 +33,7 @@ export const setPacksPageCountAC = (pageCount: number) => ({
     payload: {pageCount},
 } as const)
 
-export const setFilterAC = (packs:CardPacksType[]) => ({
+export const setPacksFilterAC = (packs:CardPacksType[]) => ({
     type: 'TABLE/SET_FILTER',
     payload: {packs}
 } as const)
