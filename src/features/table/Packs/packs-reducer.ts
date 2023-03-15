@@ -41,17 +41,10 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
             return {...state}
         case 'TABLE/UPDATE_PACK':
             return {...state}
-        /*case 'TABLE/SET_MY_PACKS':{
-            return {...state, cardPacks: state.cardPacks.filter((pack)=>{return pack.user_id===action.payload.id ? pack:""})}
-        }*/
-        case 'TABLE/SET_FILTER':{
+           case 'TABLE/SET_FILTER':{
             return {...state, cardPacks: action.payload.packs}
         }
-        /*case 'TABLE/SET_PACKS_COUNT_CARDS':{
-            return {...state, cardPacks: state.cardPacks.filter((pack)=>{
-                return (pack.cardsCount>=action.payload.countCards[0] && pack.cardsCount<=action.payload.countCards[1])?pack:''})}
-        }*/
-        default:
+           default:
             return state;
     }
 }
@@ -69,7 +62,7 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
      }*/
 
     try {
-        const res = await packsAPI.getPacks({page})
+        const res = await packsAPI.getPacks({page, pageCount})
         console.log(res)
         dispatch(tableActions.setPacksAC(res.data.cardPacks))
         dispatch(tableActions.setCardPacksTotalCountAC(res.data.cardPacksTotalCount))

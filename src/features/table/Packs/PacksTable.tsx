@@ -39,6 +39,7 @@ export const PacksTable = () => {
     const handlePageCountChange = (event: SelectChangeEvent) => {
         dispatch(setPacksPageCountAC(+event.target.value))
     };
+    console.log(cardPacks)
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 1024}} aria-label="custom pagination table" stickyHeader>
