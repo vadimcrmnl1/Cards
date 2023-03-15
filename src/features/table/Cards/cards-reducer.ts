@@ -13,7 +13,8 @@ export const cardsInitialState = {
     minGrade: 1,
     page: 1,
     pageCount: 5,
-    pack_id: ''
+    pack_id: '',
+    packUser_id: ''
 }
 
 export type CardsInitialStateType = typeof cardsInitialState
@@ -38,6 +39,8 @@ export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, a
             return {...state, pageCount: action.payload.pageCount}
         case 'TABLE/SET_CARDS_PACK_ID':
             return {...state, pack_id: action.payload.pack_id}
+        case 'TABLE/SET_CARDS_PACK_USER_ID':
+            return {...state, packUser_id: action.payload.packUser_id}
         default:
             return state;
     }

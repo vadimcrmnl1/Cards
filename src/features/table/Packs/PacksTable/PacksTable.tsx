@@ -22,20 +22,20 @@ import {PATH} from "../../../../common/utils/routes/Routes";
 
 import {StyledTableCell, StyledTableRow} from "./styles";
 import {TableTextCell} from "../../TableTextCell";
-import {setCardsPackIdAC} from "../../Cards/actions";
+import {setCardsPackIdAC, setCardsPackUserIdAC} from "../../Cards/actions";
 
 
 export const PacksTable = () => {
 
     const dispatch = useAppDispatch()
     const cardPacks = useAppSelector(selectCardPacks)
-    const cardPacksTotalCount = useAppSelector(selectCardPacksTotalCount)
     const page = useAppSelector(selectPacksPage)
     const pageCount = useAppSelector(selectPacksPageCount)
     const count = useAppSelector(selectPacksCountOfPages)
 
-    useEffect(() => {
 
+
+    useEffect(() => {
         dispatch(getPacksTC())
     }, [dispatch, page, pageCount])
 
@@ -43,7 +43,7 @@ export const PacksTable = () => {
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? pageCount - cardPacks.length : 0;
-    const emptyRowsStyle = {height: 53 * emptyRows}
+    const emptyRowsStyle = {height: 75 * emptyRows}
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         dispatch(setPacksPageAC(value))
@@ -79,6 +79,7 @@ export const PacksTable = () => {
                         {cardPacks.map((cardPack, index) => {
                             const handleLinkToCards = () => {
                                 dispatch(setCardsPackIdAC(cardPack._id))
+                                dispatch(setCardsPackUserIdAC(cardPack.user_id))
                             }
                             return <StyledTableRow key={index} hover>
                                 <StyledTableCell scope="row">

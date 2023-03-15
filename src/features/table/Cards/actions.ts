@@ -28,3 +28,7 @@ export const setCardsPackIdAC = (pack_id: string) => ({
     type: 'TABLE/SET_CARDS_PACK_ID',
     payload: {pack_id}
 } as const)
+export const setCardsPackUserIdAC = (packUser_id: string) => ({
+    type: 'TABLE/SET_CARDS_PACK_USER_ID',
+    payload: {packUser_id}
+} as const)

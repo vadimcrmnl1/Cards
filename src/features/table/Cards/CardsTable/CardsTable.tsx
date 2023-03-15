@@ -8,13 +8,20 @@ import TableBody from "@mui/material/TableBody";
 import {FormControl, MenuItem, Pagination, Select, SelectChangeEvent, TableHead} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../../app/store";
 import {getCardsTC} from "../cards-reducer";
-import {selectCards, selectCardsCountOfPages, selectCardsPage, selectCardsPageCount} from "../selectors";
+import {
+    selectCards,
+    selectCardsCountOfPages,
+    selectCardsPage,
+    selectCardsPageCount,
+    selectPackUserId
+} from "../selectors";
 import {ActionsCell} from "../../Packs/PacksTable/ActionsCell/ActionsCell";
 
 import {StyledTableCell, StyledTableRow} from "./styles";
 import {Grade} from "./Grade/Grade";
 import {TableTextCell} from "../../TableTextCell";
 import {setCardsPageAC, setCardsPageCountAC} from "../actions";
+import {selectMyID} from "../../../profile/selectors";
 
 
 export const CardsTable = () => {
@@ -24,17 +31,19 @@ export const CardsTable = () => {
     const page = useAppSelector(selectCardsPage)
     const pageCount = useAppSelector(selectCardsPageCount)
     const count = useAppSelector(selectCardsCountOfPages)
+    const packUserId = useAppSelector(selectPackUserId)
+    const myId = useAppSelector(selectMyID)
 
 
     useEffect(() => {
         dispatch(getCardsTC())
-    }, [dispatch,page,pageCount])
+    }, [dispatch, page, pageCount])
 
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? pageCount - cards.length : 0;
-    const emptyRowsStyle = {height: 53 * emptyRows}
+    const emptyRowsStyle = {height: 75 * emptyRows}
 
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         dispatch(setCardsPageAC(value))
@@ -60,9 +69,9 @@ export const CardsTable = () => {
                             <StyledTableCell>
                                 Grade
                             </StyledTableCell>
-                            <StyledTableCell>
+                            {packUserId === myId && <StyledTableCell>
                                 Actions
-                            </StyledTableCell>
+                            </StyledTableCell>}
                         </StyledTableRow>
                     </TableHead>
                     <TableBody>
@@ -81,10 +90,10 @@ export const CardsTable = () => {
                                 <StyledTableCell>
                                     <Grade grade={card.grade}/>
                                 </StyledTableCell>
-                                <StyledTableCell>
+                                {packUserId === myId && <StyledTableCell>
                                     <ActionsCell
                                         packOwnerId={card.user_id}/>
-                                </StyledTableCell>
+                                </StyledTableCell>}
                             </StyledTableRow>
                         ))}
                         {emptyRows > 0 && (

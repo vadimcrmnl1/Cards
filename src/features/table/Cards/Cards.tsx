@@ -1,4 +1,5 @@
 import * as React from 'react';
+import s from './Cards.module.css'
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {CardsTable} from "./CardsTable/CardsTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
@@ -12,7 +13,7 @@ export const Cards = () => {
         return <Navigate to={PATH.login}/>
     }
     return (
-        <div>
+        <div className={s.container}>
             <CardsTable/>
         </div>
     );
