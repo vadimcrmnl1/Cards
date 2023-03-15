@@ -28,3 +28,8 @@ export const setCardsPackIdAC = (pack_id: string) => ({
     type: 'TABLE/SET_CARDS_PACK_ID',
     payload: {pack_id}
 } as const)
+//Action creator for search
+export const setCardsSearchByAnswerAC = (answer: string) => ({
+    type: 'TABLE/SET_CARDS_SEARCH_BY_ANSWER',
+    payload: {answer}
+} as const)

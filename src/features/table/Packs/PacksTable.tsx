@@ -6,7 +6,13 @@ import TableBody from "@mui/material/TableBody";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {selectCardPacks, selectCardPacksTotalCount, selectCountOfPages, selectPage, selectPageCount} from "./selectors";
+import {
+    selectCardPacks,
+    selectCardPacksTotalCount,
+    selectPacksCountOfPages,
+    selectPacksPage,
+    selectPacksPageCount
+} from "./selectors";
 import {setPacksPageAC, setPacksPageCountAC} from "./actions";
 import { Pagination, Select, SelectChangeEvent, TableHead} from "@mui/material";
 import {useEffect} from "react";
@@ -17,15 +23,17 @@ export const PacksTable = () => {
 
     const dispatch = useAppDispatch()
     const cardPacks = useAppSelector(selectCardPacks)
-    const cardPacksTotalCount = useAppSelector(selectCardPacksTotalCount)
-    const page = useAppSelector(selectPage)
-    const pageCount = useAppSelector(selectPageCount)
-    const count = useAppSelector(selectCountOfPages)
+    const packName=useAppSelector(state=>state.packs.packName)
+   // const cardPacksTotalCount = useAppSelector(selectCardPacksTotalCount)
+    const page = useAppSelector(selectPacksPage)
+    const pageCount = useAppSelector(selectPacksPageCount)
+  //  const count = useAppSelector(selectPacksCountOfPages)
     console.log('page: ', page)
-
+    console.log(packName)
     useEffect(() => {
+
         dispatch(getPacksTC())
-    }, [dispatch, page, pageCount])
+    }, [dispatch, page, pageCount, packName])
 
 
     // Avoid a layout jump when reaching the last page with empty rows.
@@ -33,12 +41,12 @@ export const PacksTable = () => {
         page > 0 ? pageCount - cardPacks.length : 0;
     // page > 0 ? Math.max(0, (1 + page) * pageCount - cardPacksTotalCount) : 0;
 
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+   /* const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         dispatch(setPacksPageAC(value))
     }
     const handlePageCountChange = (event: SelectChangeEvent) => {
         dispatch(setPacksPageCountAC(+event.target.value))
-    };
+    };*/
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 1024}} aria-label="custom pagination table" stickyHeader>
@@ -90,7 +98,7 @@ export const PacksTable = () => {
 
                 </TableBody>
             </Table>
-            <Pagination
+            {/*<Pagination
                 count={count}
                 page={page}
                 onChange={handlePageChange}
@@ -111,7 +119,7 @@ export const PacksTable = () => {
                 <option>10</option>
                 <option>15</option>
             </Select>
-            Cards per Page
+            Cards per Page*/}
         </TableContainer>
     );
 }

@@ -13,7 +13,8 @@ export const cardsInitialState = {
     minGrade: 1,
     page: 1,
     pageCount: 5,
-    pack_id: ''
+    pack_id: '',
+    cardAnswer:''
 }
 
 export type CardsInitialStateType = typeof cardsInitialState
@@ -38,16 +39,26 @@ export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, a
             return {...state, pageCount: action.payload.pageCount}
         case 'TABLE/SET_CARDS_PACK_ID':
             return {...state, pack_id: action.payload.pack_id}
+        case 'TABLE/SET_CARDS_SEARCH_BY_ANSWER':
+            return {...state, cardAnswer: action.payload.answer}
+
         default:
             return state;
     }
 }
+export type CardsParamsType = {
+    page: number
+    pageCount: number
+    pack_id?: string
+    answer?:string
+}
 export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
-    const {page, pageCount, pack_id} = getState().cards
+    const {page, pageCount, pack_id, cardAnswer} = getState().cards
     const cardsPack_id = pack_id.toString()
+
     try {
-        const res = await cardsAPI.getCards({page, pageCount, cardsPack_id})
+        const res = await cardsAPI.getCards({page, pageCount, cardsPack_id, cardAnswer})
         dispatch(cardsActions.setCardsAC(res.data.cards))
         dispatch(cardsActions.setCardsTotalCountAC(res.data.cardsTotalCount))
         dispatch(cardsActions.setCardsMaxGradeAC(res.data.maxGrade))

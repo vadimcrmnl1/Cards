@@ -3,20 +3,28 @@ import {useAppDispatch, useAppSelector} from "../../../app/store";
 
 import {PacksTable} from "./PacksTable/PacksTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
-import {Navigate} from 'react-router-dom';
+import {Navigate, useSearchParams} from 'react-router-dom';
 import {PATH} from "../../../common/utils/routes/Routes";
 import {AddPackRequestDataType, UpdatePackRequestDataType} from "../table-api";
 import {Button} from "@mui/material";
 import {useStyles} from "../../styleMU/styleMU";
 import s from "./Packs.module.css"
-import {PaginationComponent} from "./components/PaginationComponent";
-import { SearchComponent } from './components/SearchComponent';
-import {SortComponent} from "./components/SortComponents";
-import {FilterCountCardComponent} from "./components/FilterCountCardComponent";
-import {WithoutFilters} from "./components/WithoutFilters";
+import {PaginationComponent} from "./components/pagination/PaginationComponent";
+import { SearchTitleCards } from './components/searchTitleCards/SearchTitleCards';
+import {SortComponent} from "./components/sortingByUser/SortingByUser";
+import {FilterCountCards} from "./components/filterCountCards/FilterCountCards";
+import {NoFilters} from "./components/noFilters/NoFilters";
+import {useEffect} from "react";
+
 
 export const Packs = () => {
     const dispatch = useAppDispatch()
+    const packName= localStorage.getItem('packName') || ''
+    const userId = localStorage.getItem('userId') || ''
+    const min = localStorage.getItem('min') || 0
+    const max = localStorage.getItem('max') || 100
+    const [searchParams, setSearchParams] = useSearchParams()
+
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
     // const packId = useAppSelector(selectCardPacks)
     const handleAddPack = () => {
@@ -43,7 +51,15 @@ export const Packs = () => {
         dispatch(updatePackTC(cardPack))*/
     }
     const styleMU = useStyles();
+   /* useEffect(() => {
+        const params = Object.fromEntries(searchParams)
+        console.log(params)
+        dispatch(setFiltersTC({packName: params.packName,
+            userId:params.userId,
+            min :+params.min,
+            max :+params.max}))
 
+    }, [])*/
     if (!isLoggedIn) {
         return <Navigate to={PATH.login}/>
     }
@@ -66,15 +82,15 @@ export const Packs = () => {
                 >Update pack</Button>
             </div>
             <div className={s.packsBlock}>
-                <SearchComponent/>
+                <SearchTitleCards/>
                 <SortComponent/>
-                <FilterCountCardComponent/>
-                <WithoutFilters/>
+                <FilterCountCards/>
+                <NoFilters/>
             </div>
             <div>
                 <PacksTable/>
             </div>
-            {/*<PaginationComponent/>*/}
+            <PaginationComponent/>
 
         </div>
     )

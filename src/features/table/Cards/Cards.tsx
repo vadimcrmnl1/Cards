@@ -4,6 +4,7 @@ import {CardsTable} from "./CardsTable/CardsTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
 import { Navigate } from 'react-router-dom';
 import {PATH} from "../../../common/utils/routes/Routes";
+import {SearchByCardsName} from "./components/SearchByCardsName";
 
 export const Cards = () => {
     const isLoggedIn=useAppSelector(selectIsLoggedIn)
@@ -13,6 +14,7 @@ export const Cards = () => {
     }
     return (
         <div>
+            <SearchByCardsName/>
             <CardsTable/>
         </div>
     );

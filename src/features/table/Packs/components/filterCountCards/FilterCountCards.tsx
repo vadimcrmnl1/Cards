@@ -1,46 +1,40 @@
 import Slider from "@mui/material/Slider";
-import {useAppDispatch, useAppSelector} from "../../../../app/store";
-import {setFilterCardsTC} from "../packs-reducer";
-import {selectMaxCardsCount, selectMinCardsCount} from "../selectors";
-import s from './FilterCountCard.module.css'
-import {useState} from "react";
-import {useStyles} from "../../../styleMU/styleMU";
+import {useAppDispatch, useAppSelector} from "../../../../../app/store";
+import {selectMaxCardsCount,
+    selectMinCardsCount, selectPacksMaxCards, selectPacksMinCards,
+} from "../../selectors";
+import s from './FilterCountCards.module.css'
+import {useStyles} from "../../../../styleMU/styleMU";
+import {setMinMaxCardsAC} from "../../actions";
 
-function valuetext(value: number) {
-    return `${value}`;
-}
-
-export const FilterCountCardComponent=()=>{
+export const FilterCountCards=()=>{
     const styleMU = useStyles();
     const dispatch = useAppDispatch()
     const minCardsCount= useAppSelector(selectMinCardsCount)
     const maxCardsCount= useAppSelector(selectMaxCardsCount)
-
-    const [value, setValue] = useState<number[]>([0, 100]);
+    const minCards=useAppSelector(selectPacksMinCards)
+    const maxCards=useAppSelector(selectPacksMaxCards)
 
     const handleChange = (event:any, newValue:number | number[]) => {
-        setValue(newValue as number[]);
-        dispatch(setFilterCardsTC(newValue as number[]))
+          dispatch(setMinMaxCardsAC(newValue as number[]))
     };
+
     return(
         <div>
             <div className={s.wrapper}>
-                <span >{value[0]}</span>
+                <span >{minCards}</span>
                 <Slider
                     getAriaLabel={() => 'Temperature range'}
-                    value={value}
+                    value={[minCards, (maxCards===0?maxCardsCount:maxCards)]}
                     onChangeCommitted={handleChange}
                     valueLabelDisplay="auto"
                     step={1}
                     min={minCardsCount}
                     max={maxCardsCount}
-
-                   // getAriaValueText={valuetext}
                     className={styleMU.slider}
                 />
-                <span >{value[1]}</span>
+                <span >{(maxCards===0?maxCardsCount:maxCards)}</span>
             </div>
-
         </div>
     )
 }
