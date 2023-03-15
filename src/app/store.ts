@@ -15,7 +15,8 @@ const rootReducer = combineReducers({
     profile: profileReducer,
     app: appReducer,
     packs:packsReducer,
-    cards: cardsReducer
+    cards: cardsReducer,
+
 })
 //localstorage
 // const saveToLocalStorage = (state: AppRootStateType) => {

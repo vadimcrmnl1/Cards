@@ -13,7 +13,11 @@ export const packsInitialState = {
     minCardsCount: 1,
     page: 1,
     pageCount: 5,
-    cardsPackId: ''
+    cardsPackId: '',
+    packName: null as string | null,
+    user_id: null as string | null,
+    min: 0,
+    max: 0,
 }
 
 export type PacksInitialStateType = typeof packsInitialState
@@ -42,8 +46,17 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
             return {...state}
         case 'TABLE/UPDATE_PACK':
             return {...state}
-        case 'TABLE/SET_FILTER': {
+        /*case 'TABLE/SET_FILTER': {
             return {...state, cardPacks: action.payload.packs}
+        }*/
+        case 'TABLE/SET_PACK_NAME': {
+            return {...state, packName: action.payload.packName}
+        }
+        case 'TABLE/SET_MY_PACKS': {
+            return {...state, user_id: action.payload.id}
+        }
+        case 'TABLE/SET_MIN_MAX_CARDS': {
+            return {...state, min:action.payload.counts[0], max:action.payload.counts[1]}
         }
         default:
             return state;
@@ -52,18 +65,38 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
 
 
 //thunks
-
+export type PacksParamsType = {
+    page: number
+    pageCount: number
+    packName?: string
+    user_id?: string
+    min?:number
+    max?:number
+}
 export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
-    const {page, pageCount} = getState().packs
+    const {page, pageCount, packName, user_id, min, max} = getState().packs
 
-    // const params = {
-    //     page: state.page,
-    //     pageCount:state.pageCount,
-    // }
+    const params: PacksParamsType = {
+        page,
+        pageCount,
 
+    }
+    if (packName !== null) {
+        params.packName = packName
+    }
+    if (user_id !== null) {
+        params.user_id = user_id
+    }
+    params.min=min
+    params.max=max
+    /*if (min !== null && max!==null) {
+        params.user_id = user_id
+    }*/
+    console.log(params)
     try {
-        const res = await packsAPI.getPacks({page, pageCount})
+        const res = await packsAPI.getPacks(params)
+        console.log(res)
         dispatch(tableActions.setPacksAC(res.data.cardPacks))
         dispatch(tableActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
         dispatch(tableActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))
@@ -110,7 +143,7 @@ export const updatePackTC = (data: UpdatePackRequestDataType): AppThunk<AllReduc
     }
 }
 
-export const setMyPacksTC = (id: string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+/*export const setMyPacksTC = (id:string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
     try {
         const res = await packsAPI.getPacks({userId: id})
@@ -119,9 +152,9 @@ export const setMyPacksTC = (id: string): AppThunk<AllReducersActionType> => asy
     } catch (err: any) {
         errorUtils(err, dispatch)
     }
-}
+}*/
 
-export const setPacksTitleTC = (title: string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+/*export const setPacksTitleTC = (title: string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
     try {
         const res = await packsAPI.getPacks({packName: title})
@@ -130,7 +163,8 @@ export const setPacksTitleTC = (title: string): AppThunk<AllReducersActionType> 
     } catch (err: any) {
         errorUtils(err, dispatch)
     }
-}
+}*/
+/*
 export const setFilterCardsTC = (countCards: number[]): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
     try {
@@ -141,3 +175,31 @@ export const setFilterCardsTC = (countCards: number[]): AppThunk<AllReducersActi
         errorUtils(err, dispatch)
     }
 }
+*/
+
+/*export const setFiltersTC = (param:ParamsType): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+    dispatch(appActions.setAppStatusAC('loading'))
+
+    console.log(param)
+    try {
+        const res = await packsAPI.getPacksFilter({packName:param.packName,
+            userId:param.userId, min:param.min, max:param.max})
+        //console.log(res.data)
+        dispatch(tableActions.setPacksFilterAC(res.data.cardPacks))
+        dispatch(appActions.setAppStatusAC('succeeded'))
+    } catch (err: any) {
+        errorUtils(err, dispatch)
+    }
+}
+export type ParamsType={
+    packName?: string
+    userId?: string
+    min?: number
+    max?: number
+}*/
+/*const initialState={
+    packName: '',
+    userId: '',
+    min: 0,
+    max: 100
+}*/

@@ -2,6 +2,7 @@ import {AxiosResponse} from "axios";
 import {instance} from "../../api/api";
 
 
+
 export const packsAPI = {
     getPacks(data: PacksRequestDataType) {
         return instance.get<PacksResponseDataType>('cards/pack', {params: data})
@@ -14,7 +15,8 @@ export const packsAPI = {
     },
     updatePack(data: UpdatePackRequestDataType) {
         return instance.put<AxiosResponse>('cards/pack', data)
-    }
+    },
+
 }
 export const cardsAPI = {
     getCards(params: CardsRequestDataType) {
@@ -28,7 +30,8 @@ export const cardsAPI = {
     },
     updateCard(data: UpdateCardRequestDataType) {
         return instance.put<AxiosResponse>('cards/card', data)
-    }
+    },
+
 }
 export type PacksRequestDataType = {
     packName?: string

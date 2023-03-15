@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import TablePagination from '@material-ui/core/TablePagination';
-import {selectCardPacksTotalCount, selectPacksPage, selectPacksPageCount} from "../selectors";
-import {useAppDispatch, useAppSelector} from "../../../../app/store";
+import {selectCardPacksTotalCount, selectPacksPage, selectPacksPageCount} from "../../selectors";
+import {useAppDispatch, useAppSelector} from "../../../../../app/store";
 import {useParams} from "react-router-dom";
-import {getPacksTC} from "../packs-reducer";
-import {setPacksPageAC, setPacksPageCountAC} from "../actions";
+import {getPacksTC} from "../../packs-reducer";
+import {setPacksPageAC, setPacksPageCountAC} from "../../actions";
 
 export const PaginationComponent=()=> {
     const [page, setPage] = useState(2);

@@ -9,9 +9,9 @@ import {useAppDispatch, useAppSelector} from "../../../../app/store";
 import {
     selectCardPacks,
     selectCardPacksTotalCount,
-    selectPacksCountOfPages,
+    selectPacksCountOfPages, selectPacksMaxCards, selectPacksMinCards, selectPacksName,
     selectPacksPage,
-    selectPacksPageCount
+    selectPacksPageCount, selectPacksUserId
 } from "../selectors";
 import {setPacksPageAC, setPacksPageCountAC} from "../actions";
 import {FormControl, MenuItem, Pagination, Select, SelectChangeEvent, TableHead} from "@mui/material";
@@ -29,6 +29,11 @@ export const PacksTable = () => {
 
     const dispatch = useAppDispatch()
     const cardPacks = useAppSelector(selectCardPacks)
+    const packName=useAppSelector(selectPacksName)
+    const userId=useAppSelector(selectPacksUserId)
+    const minCards=useAppSelector(selectPacksMinCards)
+    const maxCards=useAppSelector(selectPacksMaxCards)
+    const cardPacksTotalCount = useAppSelector(selectCardPacksTotalCount)
     const page = useAppSelector(selectPacksPage)
     const pageCount = useAppSelector(selectPacksPageCount)
     const count = useAppSelector(selectPacksCountOfPages)
@@ -37,7 +42,7 @@ export const PacksTable = () => {
 
     useEffect(() => {
         dispatch(getPacksTC())
-    }, [dispatch, page, pageCount])
+    }, [dispatch, page, pageCount, packName, userId, minCards, maxCards])
 
 
     // Avoid a layout jump when reaching the last page with empty rows.
@@ -116,7 +121,7 @@ export const PacksTable = () => {
                 </Table>
 
             </TableContainer>
-            <div className={s.pagination}>
+            {/*<div className={s.pagination}>
                 <Pagination
                     count={count}
                     page={page}
@@ -137,7 +142,7 @@ export const PacksTable = () => {
                     </Select>
                 </FormControl>
                 Packs per Page
-            </div>
+            </div>*/}
         </div>
     );
 }
