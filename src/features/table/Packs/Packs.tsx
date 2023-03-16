@@ -5,16 +5,17 @@ import {PacksTable} from "./PacksTable/PacksTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
 import {Navigate, useSearchParams} from 'react-router-dom';
 import {PATH} from "../../../common/utils/routes/Routes";
-import {AddPackRequestDataType, UpdatePackRequestDataType} from "../table-api";
 import {Button} from "@mui/material";
 import {useStyles} from "../../styleMU/styleMU";
 import s from "./Packs.module.css"
 import {PaginationComponent} from "./components/pagination/PaginationComponent";
-import { SearchTitleCards } from './components/searchTitleCards/SearchTitleCards';
+import {SearchTitleCards} from './components/searchTitleCards/SearchTitleCards';
 import {SortComponent} from "./components/sortingByUser/SortingByUser";
 import {FilterCountCards} from "./components/filterCountCards/FilterCountCards";
 import {NoFilters} from "./components/noFilters/NoFilters";
-import {useEffect} from "react";
+import {selectCardPacks} from "./selectors";
+import {addPackTC, deletePackTC, updatePackTC} from "./packs-reducer";
+import {AddPackRequestDataType, UpdatePackRequestDataType} from '../table-api';
 import {
     selectCardPacksTotalCount,
     selectMaxCardsCount,
@@ -29,6 +30,7 @@ import {
     setPacksPageAC,
     setPacksPageCountAC
 } from "./actions";
+import {useEffect} from "react";
 
 type ParamsType={
 
@@ -48,9 +50,9 @@ export const Packs = () => {
     const minCards=useAppSelector(selectPacksMinCards)
     const maxCards=useAppSelector(selectPacksMaxCards)
     const [searchParams, setSearchParams] = useSearchParams()
-
+    // const packId = useAppSelector(selectPackId)
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
-    // const packId = useAppSelector(selectCardPacks)
+    const packId = useAppSelector(selectCardPacks)
     const handleAddPack = () => {
         const cardPack: AddPackRequestDataType = {
             cardsPack: {
@@ -59,20 +61,20 @@ export const Packs = () => {
                 private: false
             }
         }
-       // dispatch(addPackTC(cardPack))
+       dispatch(addPackTC(cardPack))
     }
     const handleDeletePack = () => {
-        const id = '640f6d55dc68f718b46b2501'
-      //  dispatch(deletePackTC(id))
+
+       dispatch(deletePackTC(packId[0]._id))
     }
     const handleUpdatePack = () => {
-      /*  const cardPack: UpdatePackRequestDataType = {
+        const cardPack: UpdatePackRequestDataType = {
             cardsPack: {
-                _id: '640f6d7edc68f718b46b2502',
+                _id: packId[0]._id,
                 name: 'First Pack'
             }
         }
-        dispatch(updatePackTC(cardPack))*/
+        dispatch(updatePackTC(cardPack))
     }
     const styleMU = useStyles();
 
@@ -122,12 +124,12 @@ export const Packs = () => {
                         onClick={handleAddPack}
                         variant={'contained'}>Add new pack</Button>
                 <Button color={'primary'}
-                        style={{borderRadius: '20px', margin: '5px'}}
+                        className={styleMU.button}
                         variant={'contained'}
                         onClick={handleDeletePack}
                 >Delete pack</Button>
                 <Button color={'primary'}
-                        style={{borderRadius: '20px', margin: '5px'}}
+                        className={styleMU.button}
                         variant={'contained'}
                         onClick={handleUpdatePack}
                 >Update pack</Button>

@@ -13,6 +13,7 @@ export const selectPacksMinCards=(state: AppRootStateType) => state.packs.min
 export const selectPacksMaxCards=(state: AppRootStateType) => state.packs.max
 export const selectMinCardsCount = (state: AppRootStateType) => state.packs.minCardsCount
 export const selectMaxCardsCount = (state: AppRootStateType) => state.packs.maxCardsCount
+// export const selectPackId = (state: AppRootStateType) => state.packs.cardPacks[0]._id
 
 export const selectPacksCountOfPages = createSelector([selectCardPacksTotalCount, selectPacksPageCount],
     (cardPacksTotalCount, pageCount) => {

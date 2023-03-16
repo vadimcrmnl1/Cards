@@ -31,12 +31,15 @@ export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch)
         .then(res => {
             dispatch(authAction.setLoggedInAC(true))
             dispatch(profileActions.setProfileAC(res.data))
-            dispatch(appActions.setAppStatusAC('succeeded'))
         })
         .catch((error: any) => {
-            errorUtils(error, dispatch)
+            if (error.response.status !== 401) { // ошибка неавторизованного пользователя
+                errorUtils(error, dispatch)
+            }
         })
-
+        .finally(() => {
+            dispatch(appActions.setAppStatusAC('succeeded'))
+        })
 }
 
 

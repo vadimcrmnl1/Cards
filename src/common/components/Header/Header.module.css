@@ -16,3 +16,9 @@
     margin-right: 10px;
     font-weight: bold;
 }
+.avatar {
+    transition: 0.5s;
+}
+.avatar:hover {
+    scale: 1.2;
+}

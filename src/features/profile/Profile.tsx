@@ -30,7 +30,7 @@ export const Profile = () => {
         <div className={s.profile}>
             <div className={s.container}>
                 <div className={s.link}>
-                    <LinkToBack linkPage={'PATH.packs'} title={'Back to Packs List'}/>
+                    <LinkToBack linkPage={PATH.packs} title={'Back to Packs List'}/>
                  </div>
                 <div className={s.informBlock}>
                     <h3>Personal Information</h3>
