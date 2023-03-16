@@ -1,5 +1,4 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
 import s from './PacksTable.module.css'
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
@@ -8,17 +7,14 @@ import TableBody from "@mui/material/TableBody";
 import {useAppDispatch, useAppSelector} from "../../../../app/store";
 import {
     selectCardPacks,
-    selectCardPacksTotalCount,
-    selectPacksCountOfPages, selectPacksMaxCards, selectPacksMinCards, selectPacksName,
     selectPacksPage,
     selectPacksSort,
-    selectPacksPageCount, selectPacksUserId
+    selectPacksPageCount
 } from "../selectors";
-import {setPacksPageAC, setPacksPageCountAC, setPacksSortAC} from "../actions";
+import { setPacksSortAC} from "../actions";
 import {TableHead} from "@mui/material";
-import {getPacksTC} from "../packs-reducer";
 import {ActionsCell} from "./ActionsCell/ActionsCell";
-import {NavLink, useNavigate, useSearchParams} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {PATH} from "../../../../common/utils/routes/Routes";
 
 import {StyledTableCell, StyledTableRow} from "./styles";
@@ -28,18 +24,12 @@ import {TableTextCell} from "../../TableTextCell/TableTextCell";
 
 
 export const PacksTable = () => {
-    console.log('Table')
+
     const dispatch = useAppDispatch()
     const cardPacks = useAppSelector(selectCardPacks)
-    const packName = useAppSelector(selectPacksName)
-    const userId = useAppSelector(selectPacksUserId)
-
     const page = useAppSelector(selectPacksPage)
     const pageCount = useAppSelector(selectPacksPageCount)
-    const count = useAppSelector(selectPacksCountOfPages)
     const sortPacks = useAppSelector(selectPacksSort)
-
-
 
 
 // Avoid a layout jump when reaching the last page with empty rows.
@@ -90,6 +80,7 @@ export const PacksTable = () => {
                     <TableBody>
                         {cardPacks.map((cardPack, index) => {
                             const handleLinkToCards = () => {
+                                //указать какую колоду открываем и её владельца
                                 dispatch(setCardsPackIdAC(cardPack._id))
                                 dispatch(setCardsPackUserIdAC(cardPack.user_id))
                                 //чтобы при переходе с колод на карты всегда была первая страница

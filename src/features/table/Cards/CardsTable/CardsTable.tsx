@@ -32,7 +32,6 @@ export const CardsTable = () => {
     const cards = useAppSelector(selectCards)
     const page = useAppSelector(selectCardsPage)
     const pageCount = useAppSelector(selectCardsPageCount)
-    const count = useAppSelector(selectCardsCountOfPages)
     const answer = useAppSelector(selectCardsAnswer)
     const packUserId = useAppSelector(selectPackUserId)
     const myId = useAppSelector(selectMyID)
