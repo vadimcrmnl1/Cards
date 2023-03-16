@@ -5,6 +5,7 @@ export const selectCardsTotalCount = (state: AppRootStateType) => state.cards.ca
 export const selectCardsPage = (state: AppRootStateType) => state.cards.page
 export const selectCardsPageCount = (state: AppRootStateType) => state.cards.pageCount
 export const selectPackUserId = (state: AppRootStateType) => state.cards.packUser_id
+export const selectCardsSort = (state: AppRootStateType) => state.cards.sortCards
 
 
 export const selectCardsCountOfPages = createSelector([selectCardsTotalCount, selectCardsPageCount],

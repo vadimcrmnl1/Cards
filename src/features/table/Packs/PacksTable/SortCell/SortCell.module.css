@@ -1,0 +1,21 @@
+.wrapper{
+
+    display: flex;
+    align-items: center;
+    gap: 2px;
+
+}
+.wrapper p {
+    display: inline;
+}
+.wrapper button {
+    border: 0;
+    background-color: inherit;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+.icon{
+
+}

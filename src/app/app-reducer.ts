@@ -3,6 +3,7 @@ import {AllReducersActionType, AppActionsType, AppInitialStateType, AppThunk} fr
 import * as appActions from './actions'
 import * as authAction from './../features/auth/actions'
 import * as profileActions from './../features/profile/actions'
+import {errorUtils} from "../common/utils/errorUtils";
 
 const appInitialState: AppInitialStateType = {
     status: 'idle',
@@ -32,15 +33,10 @@ export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch)
             dispatch(profileActions.setProfileAC(res.data))
             dispatch(appActions.setAppStatusAC('succeeded'))
         })
-        .catch((error) => {
-            if (error.response.status !== 401) {
-                dispatch(appActions.setAppErrorAC(error.response.data.error))
-                dispatch(appActions.setAppStatusAC('failed'))
-            }
+        .catch((error: any) => {
+            errorUtils(error, dispatch)
         })
-        .finally(() => {
-        dispatch(appActions.setAppStatusAC('succeeded'))
-        })
+
 }
 
 

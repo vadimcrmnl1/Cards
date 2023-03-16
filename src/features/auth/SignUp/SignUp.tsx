@@ -6,76 +6,148 @@ import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {selectIsSignedUp} from "../selectors";
 import {signUpTC} from "../auth-reducer";
-import SuperInput from "../../../common/components/SuperInput/SuperInput";
-import SuperButton from "../../../common/components/SuperButton/SuperButton";
-import {initialValues, validationSchema, FormikValuesType} from "../common";
+import {initialValues, FormikValuesType} from "../common";
+import TextField from "@mui/material/TextField";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Button from "@material-ui/core/Button";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
+import * as yup from "yup";
 
+const validationSchema = yup.object({
+    email: yup
+        .string()
+        .email('Enter a valid email')
+        .required('Email is required'),
+    password: yup
+        .string()
+        .min(8, 'Password should be of minimum 8 characters length')
+        .required('Password is required'),
+    confirmPassword: yup
+        .string()
+        .required('You should confirm your password')
+        .oneOf([yup.ref('password',/*null*/)], 'Passwords must match'),
+
+});
 
 export const SignUp = () => {
 
     const dispatch = useAppDispatch()
     const isSignedUp = useAppSelector(selectIsSignedUp)
 
-    const onSubmit = (values: FormikValuesType, {setSubmitting}: FormikHelpers<FormikValuesType>) => {
-        dispatch(signUpTC(values.email, values.password))
-        // formik.resetForm()
-        setSubmitting(false);
-    }
+    // const onSubmit = (values: FormikValuesType, {setSubmitting}: FormikHelpers<FormikValuesType>) => {
+    //     dispatch(signUpTC(values.email, values.password))
+    //     setSubmitting(false);
+    // }
 
     const formik = useFormik({
-        initialValues,
-        onSubmit,
-        validationSchema,
+        initialValues: {
+            email: '',
+            password: '',
+            confirmPassword: '',
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values => {
+            dispatch(signUpTC(values.email, values.password))
+        }),
     })
-    const error = (value: 'email' | 'password' | 'confirmPassword') => {
-        return Boolean(formik.errors[value]) && formik.touched[value]
-            ? formik.errors[value]
-            : ''
+    const [showPassword, setShowPassword] = React.useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+    const inputProps = {
+        endAdornment: (
+            <InputAdornment position="end">
+                <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                >
+                    {showPassword ? <VisibilityOff/> : <Visibility/>}
+                </IconButton>
+            </InputAdornment>
+        )
     }
+
 
     if (isSignedUp) {
         return <Navigate to={PATH.login}/>
     }
     return (
-        <div className={s.container}>
-            <h1>Sign up</h1>
-            <form onSubmit={formik.handleSubmit} className={s.form}>
+        <Box
+            sx={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                '& > :not(style)': {
+                    m: 1,
+                    width: 413,
+                    height: 552,
+                },
+            }}
+        >
+            <Paper>
+                <div>
+                    <h1>Sign up</h1>
+                    <div className={s.loginWrapper}>
+                        <form onSubmit={formik.handleSubmit} className={s.form}>
+                            <TextField
+                                fullWidth
+                                variant={'standard'}
+                                id={'email'}
+                                label={'Email'}
+                                error={formik.touched.email && Boolean(formik.errors.email)}
+                                helperText={formik.touched.email && formik.errors.email}
+                                {...formik.getFieldProps('email')}
+                            />
 
-                <SuperInput
-                    id={'email'}
-                    placeholder={'Email'}
-                    error={error('email')}
-                    {...formik.getFieldProps('email')}
-                />
+                            <TextField
+                                fullWidth
+                                variant={'standard'}
+                                id={'password'}
+                                type={showPassword ? 'text' : 'password'}
+                                label={'Password'}
+                                error={formik.touched.password && Boolean(formik.errors.password)}
+                                helperText={formik.touched.password && formik.errors.password}
+                                {...formik.getFieldProps('password')}
+                                InputProps={inputProps}
+                            />
+                            <TextField
+                                fullWidth
+                                variant={'standard'}
+                                id={'password'}
+                                type={showPassword ? 'text' : 'password'}
+                                label={'Password'}
+                                error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+                                helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                                {...formik.getFieldProps('confirmPassword')}
+                                InputProps={inputProps}
+                            />
 
-                <SuperInput
-                    id={'password'}
-                    placeholder={'Password'}
-                    {...formik.getFieldProps('password')}
-                    error={error('password')}
-                    withEye
-                />
+                            <Button color={'primary'}
+                                    fullWidth
+                                    style={{marginTop: '20px', borderRadius: '20px'}}
+                                    variant={'contained'}
+                                    type={"submit"}
+                                    disabled={formik.isSubmitting}
+                            >Sign up
+                            </Button>
 
-                <SuperInput
-                    id={'confirmPassword'}
-                    placeholder={'Confirm password'}
-                    {...formik.getFieldProps('confirmPassword')}
-                    error={error('confirmPassword')}
-                    withEye
-                />
+                        </form>
+                        <div className={s.questionBlock}>
+                            Don't have an account yet?
+                        </div>
+                        <div className={s.link}>
+                            <NavLink to={PATH.login}>Sign in</NavLink>
+                        </div>
+                    </div>
+                </div>
+            </Paper>
+        </Box>
 
-                <SuperButton type={"submit"}>
-                    Sign up
-                </SuperButton>
 
-            </form>
-            <div className={s.questionBlock}>
-                Don't have an account yet?
-            </div>
-            <div className={s.link}>
-                <NavLink to={PATH.login}>Sign in</NavLink>
-            </div>
-        </div>
     )
 }
 

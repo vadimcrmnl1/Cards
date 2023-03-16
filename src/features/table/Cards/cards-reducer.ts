@@ -1,4 +1,4 @@
-import {CardsActionsType} from "./types";
+import {CardsActionsType, CardsParamsType} from "./types";
 import {AddCardRequestType, cardsAPI, CardsType, UpdateCardRequestDataType} from "../table-api";
 import {dateUtils} from "../../../common/utils/dateUtils";
 import {AllReducersActionType, AppThunk} from "../../../app/types";
@@ -15,7 +15,8 @@ export const cardsInitialState = {
     pageCount: 5,
     pack_id: '',
     packUser_id: '',
-    cardAnswer:'',
+    sortCards: null as null | string,
+    cardAnswer: '',
 }
 
 export type CardsInitialStateType = typeof cardsInitialState
@@ -42,6 +43,8 @@ export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, a
             return {...state, pack_id: action.payload.pack_id}
         case 'TABLE/SET_CARDS_PACK_USER_ID':
             return {...state, packUser_id: action.payload.packUser_id}
+        case 'TABLE/SET_CARDS_SORT':
+            return {...state, sortCards: action.payload.sortCards}
         case 'TABLE/SET_CARDS_SEARCH_BY_ANSWER':
             return {...state, cardAnswer: action.payload.answer}
 
@@ -49,19 +52,23 @@ export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, a
             return state;
     }
 }
-export type CardsParamsType = {
-    page: number
-    pageCount: number
-    pack_id?: string
-    answer?:string
-}
+
+
+
 export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
-    const {page, pageCount, pack_id, cardAnswer} = getState().cards
-    const cardsPack_id = pack_id.toString()
+    const {page, pageCount, pack_id, sortCards, cardAnswer} = getState().cards
+    const params: CardsParamsType = {
+        page,
+        pageCount,
+        cardsPack_id: pack_id.toString()
+    }
 
+    if (sortCards !== null) {
+        params.sortCards = sortCards
+    }
     try {
-        const res = await cardsAPI.getCards({page, pageCount, cardsPack_id, cardAnswer})
+        const res = await cardsAPI.getCards(params)
         dispatch(cardsActions.setCardsAC(res.data.cards))
         dispatch(cardsActions.setCardsTotalCountAC(res.data.cardsTotalCount))
         dispatch(cardsActions.setCardsMaxGradeAC(res.data.maxGrade))

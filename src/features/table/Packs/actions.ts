@@ -47,6 +47,10 @@ export const setMinMaxCardsAC = (counts:number[]) => ({
     type: 'TABLE/SET_MIN_MAX_CARDS',
     payload: {counts}
 } as const)
+export const setPacksSortAC = (sortPacks:null|string) => ({
+    type: 'TABLE/SET_PACKS_SORT',
+    payload: {sortPacks}
+} as const)
 
 
 export const addPackAC = (cardPack: AddPackRequestDataType) => ({type: 'TABLE/ADD_PACK', payload: {cardPack}} as const)

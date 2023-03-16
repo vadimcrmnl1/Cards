@@ -42,8 +42,6 @@ export const loginTC = (data: LoginParamsType): AppThunk<AllReducersActionType> 
         dispatch(appActions.setAppInfoAC(`Welcome, ${res.data.name}`))
     } catch (err: any) {
         errorUtils(err, dispatch)
-    } finally {
-        dispatch(appActions.setAppStatusAC('succeeded'))
     }
 }
 export const logoutTC = (): AppThunk<AllReducersActionType> => async (dispatch) => {

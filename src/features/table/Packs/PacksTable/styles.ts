@@ -9,11 +9,11 @@ export const StyledTableCell = styled(TableCell)(({theme}) => ({
     },
     '&:nth-of-type(2)': {
         width: '7%',
-        minWidth: '45px',
+        minWidth: '60px',
     },
     '&:nth-of-type(3)': {
         width: '10%',
-        minWidth: '85px',
+        minWidth: '115px',
     },
     '&:nth-of-type(4)': {
         width: '20%',

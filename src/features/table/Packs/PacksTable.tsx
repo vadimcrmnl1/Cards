@@ -41,12 +41,6 @@ export const PacksTable = () => {
         page > 0 ? pageCount - cardPacks.length : 0;
     // page > 0 ? Math.max(0, (1 + page) * pageCount - cardPacksTotalCount) : 0;
 
-   /* const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        dispatch(setPacksPageAC(value))
-    }
-    const handlePageCountChange = (event: SelectChangeEvent) => {
-        dispatch(setPacksPageCountAC(+event.target.value))
-    };*/
     return (
         <TableContainer component={Paper}>
             <Table sx={{minWidth: 1024}} aria-label="custom pagination table" stickyHeader>
@@ -98,28 +92,6 @@ export const PacksTable = () => {
 
                 </TableBody>
             </Table>
-            {/*<Pagination
-                count={count}
-                page={page}
-                onChange={handlePageChange}
-                shape="rounded"
-                showFirstButton
-                showLastButton
-            />
-            Show
-            <Select
-                native
-                size={'small'}
-                defaultValue={'' + pageCount}
-                // value={''+pageCount}
-                // label="Age"
-                onChange={handlePageCountChange}
-            >
-                <option>5</option>
-                <option>10</option>
-                <option>15</option>
-            </Select>
-            Cards per Page*/}
         </TableContainer>
     );
 }

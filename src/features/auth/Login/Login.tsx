@@ -29,11 +29,10 @@ const validationSchema = yup.object({
 });
 
 export const Login = () => {
-
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
-//сброс isSignedUp чтобы можно было перейти на сигнап, восстановление пароля или на снова можно было вводить новый пароль
+// сброс isSignedUp чтобы можно было перейти на сигнап, восстановление пароля или на снова можно было вводить новый пароль
     useEffect(() => {
         dispatch(setIsSignedUpAC(false))
         dispatch(setMailWasSentAC(false))
@@ -62,7 +61,7 @@ export const Login = () => {
     const activeStyle = {
         textDecoration: 'none'
     }
-
+    console.log(formik.errors,formik.touched)
     if (isLoggedIn) {
         return <Navigate to={PATH.packs}/>
     }

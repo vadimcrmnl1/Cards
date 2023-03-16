@@ -12,16 +12,18 @@ import {
     selectCards,
     selectCardsCountOfPages,
     selectCardsPage,
-    selectCardsPageCount,
+    selectCardsPageCount, selectCardsSort,
     selectPackUserId
 } from "../selectors";
 import {ActionsCell} from "../../Packs/PacksTable/ActionsCell/ActionsCell";
 
 import {StyledTableCell, StyledTableRow} from "./styles";
 import {Grade} from "./Grade/Grade";
-import {TableTextCell} from "../../TableTextCell";
-import {setCardsPageAC, setCardsPageCountAC} from "../actions";
+import {TableTextCell} from "../../TableTextCell/TableTextCell";
+import {setCardsPageAC, setCardsPageCountAC, setCardsSortAC} from "../actions";
 import {selectMyID} from "../../../profile/selectors";
+import {SortCell} from "../../Packs/PacksTable/SortCell/SortCell";
+import {useSearchParams} from "react-router-dom";
 
 
 export const CardsTable = () => {
@@ -33,11 +35,13 @@ export const CardsTable = () => {
     const count = useAppSelector(selectCardsCountOfPages)
     const packUserId = useAppSelector(selectPackUserId)
     const myId = useAppSelector(selectMyID)
+    const cardsSort = useAppSelector(selectCardsSort)
 
+    const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         dispatch(getCardsTC())
-    }, [dispatch, page, pageCount])
+    }, [dispatch, page, pageCount, cardsSort])
 
 
     // Avoid a layout jump when reaching the last page with empty rows.
@@ -51,6 +55,17 @@ export const CardsTable = () => {
     const handlePageCountChange = (event: SelectChangeEvent) => {
         dispatch(setCardsPageCountAC(+event.target.value))
     };
+
+    const handleSort = (sort: string | null) => {
+        dispatch(setCardsSortAC(sort))
+        if (sort !== null) {
+            setSearchParams({...searchParams, sortPacks: sort})
+        } else {
+            searchParams.delete('sortPacks')
+            setSearchParams(searchParams)
+        }
+    }
+
     return (
         <div>
             <TableContainer component={Paper}>
@@ -58,16 +73,18 @@ export const CardsTable = () => {
                     <TableHead>
                         <StyledTableRow>
                             <StyledTableCell>
-                                Question
+                                <SortCell label={"Question"} sorter={'question'} sort={cardsSort}
+                                          toggleSort={handleSort}/>
                             </StyledTableCell>
                             <StyledTableCell>
-                                Answer
+                                <SortCell label={"Answer"} sorter={'answer'} sort={cardsSort} toggleSort={handleSort}/>
                             </StyledTableCell>
                             <StyledTableCell>
-                                Last Updated
+                                <SortCell label={"Last Updated"} sorter={'updated'} sort={cardsSort}
+                                          toggleSort={handleSort}/>
                             </StyledTableCell>
                             <StyledTableCell>
-                                Grade
+                                <SortCell label={"Grade"} sorter={'grade'} sort={cardsSort} toggleSort={handleSort}/>
                             </StyledTableCell>
                             {packUserId === myId && <StyledTableCell>
                                 Actions

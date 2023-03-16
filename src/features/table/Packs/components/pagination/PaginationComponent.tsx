@@ -1,14 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import TablePagination from '@material-ui/core/TablePagination';
 import {selectCardPacksTotalCount, selectPacksPage, selectPacksPageCount} from "../../selectors";
 import {useAppDispatch, useAppSelector} from "../../../../../app/store";
-import {useParams} from "react-router-dom";
-import {getPacksTC} from "../../packs-reducer";
 import {setPacksPageAC, setPacksPageCountAC} from "../../actions";
 
 export const PaginationComponent=()=> {
-    const [page, setPage] = useState(2);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
     const packsTotalCount=useAppSelector(selectCardPacksTotalCount)
     const pageNumber= useAppSelector(selectPacksPage)
     const pageCount= useAppSelector(selectPacksPageCount)
@@ -23,9 +19,6 @@ export const PaginationComponent=()=> {
 
     };
     const countPages=Math.ceil(packsTotalCount/pageCount)
-    console.log('packsTotalCount=', packsTotalCount)
-    console.log('pageNumber=', pageNumber)
-    console.log('pageCount=', pageCount)
 
     return (
         <TablePagination

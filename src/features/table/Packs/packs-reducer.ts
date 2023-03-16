@@ -1,4 +1,4 @@
-import {PacksActionsType} from "./types";
+import {PacksActionsType, PacksParamsType} from "./types";
 import {AllReducersActionType, AppThunk} from "../../../app/types";
 import * as appActions from "../../../app/actions";
 import * as tableActions from "./actions";
@@ -14,6 +14,7 @@ export const packsInitialState = {
     page: 1,
     pageCount: 5,
     cardsPackId: '',
+    sortPacks: null as null | string,
     packName: null as string | null,
     user_id: null as string | null,
     min: 0,
@@ -46,9 +47,6 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
             return {...state}
         case 'TABLE/UPDATE_PACK':
             return {...state}
-        /*case 'TABLE/SET_FILTER': {
-            return {...state, cardPacks: action.payload.packs}
-        }*/
         case 'TABLE/SET_PACK_NAME': {
             return {...state, packName: action.payload.packName}
         }
@@ -56,8 +54,10 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
             return {...state, user_id: action.payload.id}
         }
         case 'TABLE/SET_MIN_MAX_CARDS': {
-            return {...state, min:action.payload.counts[0], max:action.payload.counts[1]}
+            return {...state, min: action.payload.counts[0], max: action.payload.counts[1]}
         }
+        case 'TABLE/SET_PACKS_SORT':
+            return {...state, sortPacks: action.payload.sortPacks}
         default:
             return state;
     }
@@ -65,22 +65,17 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
 
 
 //thunks
-export type PacksParamsType = {
-    page: number
-    pageCount: number
-    packName?: string
-    user_id?: string
-    min?:number
-    max?:number
-}
+
 export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(appActions.setAppStatusAC('loading'))
-    const {page, pageCount, packName, user_id, min, max} = getState().packs
+    const {page, pageCount, sortPacks, packName, user_id, min, max} = getState().packs
 
     const params: PacksParamsType = {
         page,
         pageCount,
-
+    }
+    if (sortPacks !== null) {
+        params.sortPacks = sortPacks
     }
     if (packName !== null) {
         params.packName = packName
@@ -88,15 +83,13 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
     if (user_id !== null) {
         params.user_id = user_id
     }
-    params.min=min
-    params.max=max
+    params.min = min
+    params.max = max
     /*if (min !== null && max!==null) {
         params.user_id = user_id
     }*/
-    console.log(params)
     try {
         const res = await packsAPI.getPacks(params)
-        console.log(res)
         dispatch(tableActions.setPacksAC(res.data.cardPacks))
         dispatch(tableActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
         dispatch(tableActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))

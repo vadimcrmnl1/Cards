@@ -10,7 +10,10 @@ h1 {
     font-size: 26px;
     line-height: 32px;
 }
-
+.loginWrapper {
+    width: 350px;
+    margin: 0 auto;
+}
 .form {
     display: flex;
     flex-direction: column;
