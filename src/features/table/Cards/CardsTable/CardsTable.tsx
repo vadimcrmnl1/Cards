@@ -9,7 +9,7 @@ import {FormControl, MenuItem, Pagination, Select, SelectChangeEvent, TableHead}
 import {useAppDispatch, useAppSelector} from "../../../../app/store";
 import {getCardsTC} from "../cards-reducer";
 import {
-    selectCards,
+    selectCards, selectCardsAnswer,
     selectCardsCountOfPages,
     selectCardsPage,
     selectCardsPageCount, selectCardsSort,
@@ -33,6 +33,7 @@ export const CardsTable = () => {
     const page = useAppSelector(selectCardsPage)
     const pageCount = useAppSelector(selectCardsPageCount)
     const count = useAppSelector(selectCardsCountOfPages)
+    const answer = useAppSelector(selectCardsAnswer)
     const packUserId = useAppSelector(selectPackUserId)
     const myId = useAppSelector(selectMyID)
     const cardsSort = useAppSelector(selectCardsSort)
@@ -41,7 +42,7 @@ export const CardsTable = () => {
 
     useEffect(() => {
         dispatch(getCardsTC())
-    }, [dispatch, page, pageCount, cardsSort])
+    }, [dispatch, page, pageCount, cardsSort, answer])
 
 
     // Avoid a layout jump when reaching the last page with empty rows.
@@ -73,7 +74,9 @@ export const CardsTable = () => {
                     <TableHead>
                         <StyledTableRow>
                             <StyledTableCell>
-                                <SortCell label={"Question"} sorter={'question'} sort={cardsSort}
+                                <SortCell label={"Question"}
+                                          sorter={'question'}
+                                          sort={cardsSort}
                                           toggleSort={handleSort}/>
                             </StyledTableCell>
                             <StyledTableCell>
@@ -123,7 +126,7 @@ export const CardsTable = () => {
                 </Table>
 
             </TableContainer>
-            <div className={s.pagination}>
+            {/*<div className={s.pagination}>
                 <Pagination
                     count={count}
                     page={page}
@@ -144,7 +147,7 @@ export const CardsTable = () => {
                     </Select>
                 </FormControl>
                 Cards per Page
-            </div>
+            </div>*/}
         </div>
     );
 }

@@ -1,34 +1,28 @@
 import React from 'react';
 import TablePagination from '@material-ui/core/TablePagination';
-import {selectCardPacksTotalCount, selectPacksPage, selectPacksPageCount} from "../../selectors";
-import {useAppDispatch, useAppSelector} from "../../../../../app/store";
-import {setPacksPageAC, setPacksPageCountAC} from "../../actions";
 
-export const PaginationComponent=()=> {
-    const packsTotalCount=useAppSelector(selectCardPacksTotalCount)
-    const pageNumber= useAppSelector(selectPacksPage)
-    const pageCount= useAppSelector(selectPacksPageCount)
-    const dispatch = useAppDispatch()
 
-    const handleChangePage = (e:any, newPage:number) => {
-         dispatch(setPacksPageAC(newPage))
-    };
+type PaginationPropsType={
+    totalCount:number
+    pageNumber: number
+    pageCount:number
+    handleChangePage:(e:any, newPage:number)=>void
+    handleChangeRowsPerPage:(e:any)=>void
+}
 
-    const handleChangeRowsPerPage = (e:any) => {
-         dispatch(setPacksPageCountAC(+e.target.value));
+export const PaginationComponent = (props: PaginationPropsType) => {
 
-    };
-    const countPages=Math.ceil(packsTotalCount/pageCount)
+    const countPages = Math.ceil(props.totalCount / props.pageCount)
 
     return (
         <TablePagination
             //component="div"
             count={countPages}
-            page={pageNumber}
-            onPageChange={handleChangePage}
-            rowsPerPage={pageCount}
-            rowsPerPageOptions={[5,10,15]}
-            onRowsPerPageChange={handleChangeRowsPerPage}
+            page={props.pageNumber-1}
+            onPageChange={props.handleChangePage}
+            rowsPerPage={props.pageCount}
+            rowsPerPageOptions={[5, 10, 15]}
+            onRowsPerPageChange={props.handleChangeRowsPerPage}
         />
     );
 }

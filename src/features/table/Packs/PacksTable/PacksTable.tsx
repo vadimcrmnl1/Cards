@@ -60,6 +60,7 @@ export const PacksTable = () => {
     useEffect(() => {
         if (!isFirstLoading) {
             dispatch(getPacksTC())
+
         }
     }, [dispatch, page, pageCount, packName, userId, minCards, maxCards])
 
@@ -70,12 +71,12 @@ const emptyRows =
     page > 0 ? pageCount - cardPacks.length : 0;
 const emptyRowsStyle = {height: 75 * emptyRows}
 
-const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+/*const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     dispatch(setPacksPageAC(value))
 }
 const handlePageCountChange = (event: SelectChangeEvent) => {
     dispatch(setPacksPageCountAC(+event.target.value))
-};
+};*/
 const handleSort = (sort: string | null) => {
     dispatch(setPacksSortAC(sort))
     if (sort !== null) {

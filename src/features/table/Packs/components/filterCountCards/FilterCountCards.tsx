@@ -7,17 +7,20 @@ import s from './FilterCountCards.module.css'
 import {useStyles} from "../../../../styleMU/styleMU";
 import {setMinMaxCardsAC} from "../../actions";
 
-export const FilterCountCards=()=>{
+type FilterCountCardsPropsType={
+    handleChange:(event:any, newValue:number | number[])=>void
+}
+export const FilterCountCards=(props:FilterCountCardsPropsType)=>{
     const styleMU = useStyles();
-    const dispatch = useAppDispatch()
+
     const minCardsCount= useAppSelector(selectMinCardsCount)
     const maxCardsCount= useAppSelector(selectMaxCardsCount)
     const minCards=useAppSelector(selectPacksMinCards)
     const maxCards=useAppSelector(selectPacksMaxCards)
 
-    const handleChange = (event:any, newValue:number | number[]) => {
+    /*const handleChange = (event:any, newValue:number | number[]) => {
           dispatch(setMinMaxCardsAC(newValue as number[]))
-    };
+    };*/
 
     return(
         <div>
@@ -26,7 +29,7 @@ export const FilterCountCards=()=>{
                 <Slider
                     getAriaLabel={() => 'Temperature range'}
                     value={[minCards, (maxCards===0?maxCardsCount:maxCards)]}
-                    onChangeCommitted={handleChange}
+                    onChangeCommitted={props.handleChange}
                     valueLabelDisplay="auto"
                     step={1}
                     min={minCardsCount}

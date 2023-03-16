@@ -6,7 +6,7 @@ import {logoutTC} from "../auth/auth-reducer";
 import {PATH} from "../../common/utils/routes/Routes";
 import {ProfileEditNameBlock} from "./components/ProfileEditNameBlock";
 import {ProfileNameBlock} from "./components/ProfileNameBlock";
-import {ProfileLinkToBack} from "./components/ProfileLinkToBack";
+import {LinkToBack} from "../../common/components/LinkToBack/LinkToBack";
 import avatar from "./../images/avatar.webp"
 import {useStyles} from "../styleMU/styleMU";
 import Button from "@mui/material/Button";
@@ -30,7 +30,7 @@ export const Profile = () => {
         <div className={s.profile}>
             <div className={s.container}>
                 <div className={s.link}>
-                    <ProfileLinkToBack title={'Back to Packs List'}/>
+                    <LinkToBack linkPage={'PATH.packs'} title={'Back to Packs List'}/>
                  </div>
                 <div className={s.informBlock}>
                     <h3>Personal Information</h3>

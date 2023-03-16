@@ -8,6 +8,6 @@ export type CardsParamsType = {
     pageCount: number
     cardsPack_id:string
     sortCards?: string
-    answer?: string
+    cardAnswer?: string
 }
 

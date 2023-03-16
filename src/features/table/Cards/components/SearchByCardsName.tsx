@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {setCardsSearchByAnswerAC} from "../actions";
 import {useAppDispatch} from "../../../../app/store";
 import {SuperDebouncedInput} from "../../../../common/components/SuperDebouncedInput/SuperDebouncedInput";
+import s from "../../Packs/components/noFilters/NoFilters.module.css";
+import filterIcon from "../../../images/Group 1496.png";
 
 export const SearchByCardsName = () => {
-   // const packName = useAppSelector(selectPacksName) as string
     const [value, setValue] = useState('')
     const dispatch = useAppDispatch()
     const handleSendQuery = (value: string) => {
@@ -13,10 +14,11 @@ export const SearchByCardsName = () => {
     const handleOnChangeText = (value: string) => {
         setValue(value)
     }
-
-  /*  useEffect(() => {
+    const handleDeleteFilter = () => {
+        dispatch(setCardsSearchByAnswerAC(''))
         setValue('')
-    }, [packName === ''])*/
+    }
+
     return (
         <div>
             <SuperDebouncedInput
@@ -25,6 +27,9 @@ export const SearchByCardsName = () => {
                 onDebouncedChange={handleSendQuery}
                 placeholder={'Provide your text'}
             />
+            <div className={s.iconsFilter}>
+                <img alt={'icon'} src={filterIcon} className={'icon'} onClick={handleDeleteFilter}/>
+            </div>
         </div>
     )
 }

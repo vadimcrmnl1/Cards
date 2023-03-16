@@ -51,8 +51,14 @@ export const setPacksSortAC = (sortPacks:null|string) => ({
     type: 'TABLE/SET_PACKS_SORT',
     payload: {sortPacks}
 } as const)
-
-
+export const setPacksMinCardsAC = (cardPacks: CardPacksType[]) => ({
+    type: 'TABLE/SET_MIN_CARDS',
+    payload: {cardPacks}
+} as const)
+export const setPacksMaxCardsAC = (cardPacks: CardPacksType[]) => ({
+    type: 'TABLE/SET_MAX_CARDS',
+    payload: {cardPacks}
+} as const)
 export const addPackAC = (cardPack: AddPackRequestDataType) => ({type: 'TABLE/ADD_PACK', payload: {cardPack}} as const)
 export const deletePackAC = (id: string) => ({type: 'TABLE/DELETE_PACK', payload: {id}} as const)
 export const updatePackAC = (cardPack: UpdatePackRequestDataType) => ({type: 'TABLE/UPDATE_PACK', payload: {cardPack}} as const)
