@@ -8,17 +8,18 @@ import avatar from './../../../../features/images/avatar.png'
 import s from './../Header.module.css'
 import {NavLink} from "react-router-dom";
 import {PATH} from "../../../utils/routes/Routes";
+import {selectName} from "../../../../features/profile/selectors";
 
 export const HeaderMenuBlock = () => {
     const loginStatus = useAppSelector(selectIsLoggedIn)
-    const userName = useAppSelector(state => state.profile.name)
+    const userName = useAppSelector(selectName)
+
     const dispatch = useAppDispatch()
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
     const handleCloseUserMenu = () => {
-//хендлер висит на кнопке профайл
         if (!loginStatus ) {
             dispatch(setAppErrorAC('You are not authorised'))
         }
@@ -37,7 +38,7 @@ export const HeaderMenuBlock = () => {
                 </IconButton>
             </Tooltip>
             <Menu
-                sx={{mt: '45px', display: 'flex', flexDirection: 'column'}}
+                sx={{mt: '45px'}}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{

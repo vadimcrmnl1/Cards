@@ -16,7 +16,7 @@ export const packsInitialState = {
     page: 1,
     pageCount: 5,
     cardsPackId: '',
-    sortPacks: null as null | string,
+    sortPacks: null as string | null,
     packName: null as string | null,
     user_id: null as string | null,
     min: 0,
@@ -74,13 +74,15 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
 //thunks
 
 export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
-    dispatch(appActions.setAppStatusAC('loading'))
-    const {page, pageCount, sortPacks, packName, user_id, min, max} = getState().packs
+    // dispatch(appActions.setAppStatusAC('loading'))
+    const {page, pageCount, cardPacksTotalCount, sortPacks, packName, user_id, min, max} = getState().packs
 
     const params: PacksParamsType = {
         page,
         pageCount,
     }
+
+
     if (sortPacks !== null) {
         params.sortPacks = sortPacks
     }
@@ -152,13 +154,26 @@ export const getPacksWithFiltersTC = (params1:Params1Type): AppThunk<AllReducers
     try {
         const res = await packsAPI.getPacks(params)
         dispatch(tableActions.setPacksAC(res.data.cardPacks))
-        dispatch(tableActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
+        //проверки чтобы не было бессмысленный экшенов.
+        if (page !== res.data.page) {
+            dispatch(tableActions.setPacksPageAC(res.data.page))
+        }
+        if (pageCount !== res.data.pageCount) {
+            dispatch(tableActions.setPacksPageCountAC(res.data.pageCount))
+        }
+        if (cardPacksTotalCount !== res.data.cardPacksTotalCount) {
+            dispatch(tableActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
+        }
         dispatch(tableActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))
         dispatch(tableActions.setPacksMinCardsCountAC(res.data.minCardsCount))
-        // dispatch(tableActions.setPacksPageAC(res.data.page))
-        // dispatch(tableActions.setPacksPageCountAC(res.data.pageCount))
 
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        if (params.sortPacks) {
+            dispatch(tableActions.setPacksSortAC(params.sortPacks))
+        } else {
+            dispatch(tableActions.setPacksSortAC('off'))
+        }
+
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
     }
@@ -168,34 +183,34 @@ export const getPacksWithFiltersTC = (params1:Params1Type): AppThunk<AllReducers
 
 
 export const addPackTC = (data: AddPackRequestDataType): AppThunk<AllReducersActionType> => async dispatch => {
-    dispatch(appActions.setAppStatusAC('loading'))
+    // dispatch(appActions.setAppStatusAC('loading'))
     try {
         await packsAPI.addPack(data)
         dispatch(getPacksTC())
         dispatch(appActions.setAppInfoAC(`Your pack -=${data.cardsPack.name}=- has been successfully added`))
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
     }
 }
 export const deletePackTC = (id: string): AppThunk<AllReducersActionType> => async dispatch => {
-    dispatch(appActions.setAppStatusAC('loading'))
+    // dispatch(appActions.setAppStatusAC('loading'))
     try {
         await packsAPI.deletePack(id)
         dispatch(getPacksTC())
         dispatch(appActions.setAppInfoAC(`Your pack has been deleted`))
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
     }
 }
 export const updatePackTC = (data: UpdatePackRequestDataType): AppThunk<AllReducersActionType> => async dispatch => {
-    dispatch(appActions.setAppStatusAC('loading'))
+    // dispatch(appActions.setAppStatusAC('loading'))
     try {
         await packsAPI.updatePack(data)
         dispatch(getPacksTC())
         dispatch(appActions.setAppInfoAC(`Your pack -= ${data.cardsPack.name} =- has been updated`))
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
     }

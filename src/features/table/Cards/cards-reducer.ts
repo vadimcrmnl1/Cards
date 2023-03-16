@@ -56,7 +56,7 @@ export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, a
 
 
 export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
-    dispatch(appActions.setAppStatusAC('loading'))
+    // dispatch(appActions.setAppStatusAC('loading'))
     const {page, pageCount, pack_id, sortCards, cardAnswer} = getState().cards
     const params: CardsParamsType = {
         page,
@@ -76,40 +76,40 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
         dispatch(cardsActions.setCardsMinGradeAC(res.data.minGrade))
         // dispatch(cardsActions.setPageAC(res.data.page))
         // dispatch(cardsActions.setPageCountAC(res.data.pageCount))
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
     }
 }
 export const addCardTC = (data: AddCardRequestType): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
-    dispatch(appActions.setAppStatusAC('loading'))
+    // dispatch(appActions.setAppStatusAC('loading'))
     try {
         await cardsAPI.addCard(data)
         dispatch(getCardsTC())
         dispatch(appActions.setAppInfoAC(`Your card has been added`))
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
     }
 }
 export const deleteCardTC = (id: string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
-    dispatch(appActions.setAppStatusAC('loading'))
+    // dispatch(appActions.setAppStatusAC('loading'))
     try {
         await cardsAPI.deleteCard(id)
         dispatch(getCardsTC())
         dispatch(appActions.setAppInfoAC('Your cart has been deleted'))
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
     }
 }
 export const updateCardTC = (data: UpdateCardRequestDataType): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
-    dispatch(appActions.setAppStatusAC('loading'))
+    // dispatch(appActions.setAppStatusAC('loading'))
     try {
         await cardsAPI.updateCard(data)
         dispatch(getCardsTC())
         dispatch(appActions.setAppInfoAC(`Your card has been updated`))
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
     }

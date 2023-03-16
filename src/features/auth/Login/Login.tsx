@@ -8,9 +8,9 @@ import {Visibility, VisibilityOff} from "@mui/icons-material";
 import TextField from '@mui/material/TextField'
 import {Navigate, NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
-import {useAppDispatch, useAppSelector} from "../../../app/store";
+import {AppRootStateType, useAppDispatch, useAppSelector} from "../../../app/store";
 import {loginTC} from "../auth-reducer";
-import {selectIsLoggedIn} from "../selectors";
+import {selectIsLoggedIn, selectIsPasswordChanged, selectIsSignedUp, selectMailWasSent} from "../selectors";
 import {setIsPasswordChangedAC, setIsSignedUpAC, setMailWasSentAC} from "../actions";
 
 
@@ -28,15 +28,34 @@ const validationSchema = yup.object({
 
 });
 
+export const boxStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > :not(style)': {
+        m: 1,
+        width: 413,
+        height: 552,
+    },
+}
+
 export const Login = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
+    const mailWasSent = useAppSelector(selectMailWasSent)
+    const isSignedUp = useAppSelector(selectIsSignedUp)
+    const isPasswordChanged = useAppSelector(selectIsPasswordChanged)
 
-// сброс isSignedUp чтобы можно было перейти на сигнап, восстановление пароля или на снова можно было вводить новый пароль
+// отключение триггеров редиректа на логин
     useEffect(() => {
-        dispatch(setIsSignedUpAC(false))
-        dispatch(setMailWasSentAC(false))
-        dispatch(setIsPasswordChangedAC(false))
+        if (isSignedUp) {
+            dispatch(setIsSignedUpAC(false))
+        }
+        if (mailWasSent) {
+            dispatch(setMailWasSentAC(false))
+        }
+        if (isPasswordChanged) {
+            dispatch(setIsPasswordChangedAC(false))
+        }
     }, [dispatch])
 
 
@@ -49,7 +68,6 @@ export const Login = () => {
         validationSchema: validationSchema,
         onSubmit: (values => {
             dispatch(loginTC(values))
-            formik.resetForm()
         })
     })
 
@@ -61,23 +79,13 @@ export const Login = () => {
     const activeStyle = {
         textDecoration: 'none'
     }
-    console.log(formik.errors,formik.touched)
+    console.log(formik.errors, formik.touched)
     if (isLoggedIn) {
         return <Navigate to={PATH.packs}/>
     }
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                '& > :not(style)': {
-                    m: 1,
-                    width: 413,
-                    height: 552,
-                },
-            }}
-        >
+        <Box sx={boxStyle}>
             <Paper>
                 <div>
                     <Paper/>
@@ -133,7 +141,10 @@ export const Login = () => {
                             </div>
                             <Button color={'primary'}
                                     fullWidth
-                                    style={{marginTop: '20px', borderRadius: '20px'}}
+                                    style={{
+                                        marginTop: '20px',
+                                        borderRadius: '20px'
+                                    }}
                                     variant={'contained'}
                                     type={"submit"}
                             >Sign in</Button>
