@@ -15,7 +15,7 @@ import {
     selectPacksPageCount, selectPacksUserId
 } from "../selectors";
 import {setPacksPageAC, setPacksPageCountAC, setPacksSortAC} from "../actions";
-import { TableHead} from "@mui/material";
+import {TableHead} from "@mui/material";
 import {getPacksTC} from "../packs-reducer";
 import {ActionsCell} from "./ActionsCell/ActionsCell";
 import {NavLink, useNavigate, useSearchParams} from "react-router-dom";
@@ -33,34 +33,13 @@ export const PacksTable = () => {
     const cardPacks = useAppSelector(selectCardPacks)
     const packName = useAppSelector(selectPacksName)
     const userId = useAppSelector(selectPacksUserId)
-    const minCards = useAppSelector(selectPacksMinCards)
-    const maxCards = useAppSelector(selectPacksMaxCards)
+
     const page = useAppSelector(selectPacksPage)
     const pageCount = useAppSelector(selectPacksPageCount)
     const count = useAppSelector(selectPacksCountOfPages)
     const sortPacks = useAppSelector(selectPacksSort)
 
-    const [isFirstLoading, setIsFirstLoading] = useState(true)
 
-    const [searchParams, setSearchParams] = useSearchParams();
-
-    useEffect(() => {
-        if (isFirstLoading) {
-            const sort = searchParams.get('sortPacks')
-            if (sort) {
-                dispatch(setPacksSortAC(sort))
-            }
-            // navigate(`?sortPacks=${sort}`)
-            dispatch(getPacksTC())
-            setIsFirstLoading(false)
-        }
-    }, [])
-
-    useEffect(() => {
-        if (!isFirstLoading) {
-            dispatch(getPacksTC())
-        }
-    }, [dispatch, packName, userId, minCards, maxCards])
 
 
 // Avoid a layout jump when reaching the last page with empty rows.
@@ -68,22 +47,9 @@ export const PacksTable = () => {
         page > 0 ? pageCount - cardPacks.length : 0;
     const emptyRowsStyle = {height: 75 * emptyRows}
 
-// const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-//     dispatch(setPacksPageAC(value))
-// }
-// const handlePageCountChange = (event: SelectChangeEvent) => {
-//     dispatch(setPacksPageCountAC(+event.target.value))
-// };
 
-    const handleSort = (sort: string) => {
-        dispatch(getPacksTC(page, pageCount, sort))
-        // dispatch(setPacksSortAC(sort))
-        if (sort !== null) {
-            setSearchParams({...searchParams, sortPacks: sort})
-        } else {
-            searchParams.delete('sortPacks')
-            setSearchParams(searchParams)
-        }
+    const handleSort = (sort: string | null) => {
+        dispatch(setPacksSortAC(sort))
     }
 
     return (
@@ -93,18 +59,27 @@ export const PacksTable = () => {
                     <TableHead>
                         <StyledTableRow>
                             <StyledTableCell>
-                                <SortCell label={"Name"} sorter={'name'}  toggleSort={handleSort}/>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <SortCell label={'Cards'} sorter={'cardsCount'}
+                                <SortCell label={"Name"}
+                                          sorter={'name'}
+                                          sort={sortPacks}
                                           toggleSort={handleSort}/>
                             </StyledTableCell>
                             <StyledTableCell>
-                                <SortCell label={'Last Updated'} sorter={'updated'}
+                                <SortCell label={'Cards'}
+                                          sorter={'cardsCount'}
+                                          sort={sortPacks}
                                           toggleSort={handleSort}/>
                             </StyledTableCell>
                             <StyledTableCell>
-                                <SortCell label={'Created by'} sorter={'user_name'}
+                                <SortCell label={'Last Updated'}
+                                          sorter={'updated'}
+                                          sort={sortPacks}
+                                          toggleSort={handleSort}/>
+                            </StyledTableCell>
+                            <StyledTableCell>
+                                <SortCell label={'Created by'}
+                                          sorter={'user_name'}
+                                          sort={sortPacks}
                                           toggleSort={handleSort}/>
                             </StyledTableCell>
                             <StyledTableCell>
@@ -155,28 +130,6 @@ export const PacksTable = () => {
                 </Table>
 
             </TableContainer>
-            {/*<div className={s.pagination}>
-                <Pagination
-                    count={count}
-                    page={page}
-                    onChange={handlePageChange}
-                    shape="rounded"
-                    showFirstButton
-                    showLastButton
-                />
-                Show
-                <FormControl sx={{m: 1}} variant="outlined" size={'small'}>
-                    <Select
-                        value={'' + pageCount}
-                        onChange={handlePageCountChange}
-                    >
-                        <MenuItem value={5}>5</MenuItem>
-                        <MenuItem value={10}>10</MenuItem>
-                        <MenuItem value={15}>15</MenuItem>
-                    </Select>
-                </FormControl>
-                Packs per Page
-            </div>*/}
         </div>
     );
 }

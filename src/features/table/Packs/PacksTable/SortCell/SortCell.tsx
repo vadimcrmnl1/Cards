@@ -1,49 +1,36 @@
 import * as React from "react";
 import s from './SortCell.module.css'
-import {useAppDispatch, useAppSelector} from "../../../../../app/store";
 import SortIcon from '@mui/icons-material/Sort';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import {selectAppStatus} from "../../../../../app/selectors";
-import {selectPacksPage, selectPacksPageCount, selectPacksSort} from "../../selectors";
-import {getPacksTC} from "../../packs-reducer";
 
 type SortCellPropsType = {
     label: string
     sorter: string
-    toggleSort: (sort: string) => void
+    sort: string | null
+    toggleSort: (sort: string | null) => void
 }
-export const SortCell: React.FC<SortCellPropsType> = ({label, sorter, toggleSort}) => {
+export const SortCell: React.FC<SortCellPropsType> = ({label, sorter, sort, toggleSort}) => {
 
-    const dispatch = useAppDispatch()
-
-    let appStatus = useAppSelector(selectAppStatus)
-    let sortPacks = useAppSelector(selectPacksSort)
-    const page = useAppSelector(selectPacksPage)
-    const pageCount = useAppSelector(selectPacksPageCount)
 
     const handleClick = () => {
-        if (sortPacks === 'off') {
-            sortPacks = 1 + sorter
-        } else if (sortPacks[0] === '1') {
-            sortPacks = 0 + sorter
+        if (sort === null) {
+            sort = 1 + sorter
+        } else if (sort[0] === '1') {
+            sort = 0 + sorter
         } else {
-            sortPacks = 'off'
+            sort = null
         }
-        dispatch(getPacksTC(undefined, undefined, sortPacks))
-        // toggleSort(sortPacks)
+        toggleSort(sort)
     }
-    const icon = sortPacks !== 'off' && sortPacks.slice(1) === sorter
-        ? sortPacks === '1' + sorter
+    const icon = sort !== null && sort.slice(1) === sorter
+        ? sort === '1' + sorter
             ? <FilterListIcon style={{rotate: '180deg'}}/>
             : <FilterListIcon/>
         : <SortIcon style={{opacity: '0.3'}}/>
 
     return (<div className={s.wrapper}>
             <p> {label}</p>
-            <button
-                disabled={appStatus === 'loading'}
-                onClick={handleClick}
-            >
+            <button onClick={handleClick}>
                 {icon}
             </button>
         </div>

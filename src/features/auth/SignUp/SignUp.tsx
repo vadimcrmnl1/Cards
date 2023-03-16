@@ -1,12 +1,11 @@
 import React from "react";
 import s from './SignUp.module.css'
-import {useFormik} from 'formik';
+import {FormikHelpers, useFormik} from 'formik';
 import {NavLink, Navigate} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {selectIsSignedUp} from "../selectors";
 import {signUpTC} from "../auth-reducer";
-import {initialValues, FormikValuesType} from "../common";
 import TextField from "@mui/material/TextField";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -17,6 +16,16 @@ import {Visibility, VisibilityOff} from "@mui/icons-material";
 import * as yup from "yup";
 import {boxStyle} from "../Login/Login";
 
+type FormikValuesType = {
+    email: string;
+    password: string;
+    confirmPassword: string
+}
+const initialValues: FormikValuesType = {
+    email: '',
+    password: '',
+    confirmPassword: '',
+}
 const validationSchema = yup.object({
     email: yup
         .string()
@@ -38,21 +47,15 @@ export const SignUp = () => {
     const dispatch = useAppDispatch()
     const isSignedUp = useAppSelector(selectIsSignedUp)
 
-    // const onSubmit = (values: FormikValuesType, {setSubmitting}: FormikHelpers<FormikValuesType>) => {
-    //     dispatch(signUpTC(values.email, values.password))
-    //     setSubmitting(false);
-    // }
+    const onSubmit = (values: FormikValuesType, {setSubmitting}: FormikHelpers<FormikValuesType>) => {
+        dispatch(signUpTC(values.email, values.password))
+        setSubmitting(false);
+    }
 
     const formik = useFormik({
-        initialValues: {
-            email: '',
-            password: '',
-            confirmPassword: '',
-        },
-        validationSchema: validationSchema,
-        onSubmit: (values => {
-            dispatch(signUpTC(values.email, values.password))
-        }),
+        initialValues,
+        validationSchema,
+        onSubmit,
     })
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);

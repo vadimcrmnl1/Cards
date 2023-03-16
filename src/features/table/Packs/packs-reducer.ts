@@ -14,7 +14,7 @@ export const packsInitialState = {
     page: 1,
     pageCount: 5,
     cardsPackId: '',
-    sortPacks: 'off',
+    sortPacks: null as string | null,
     packName: null as string | null,
     user_id: null as string | null,
     min: 0,
@@ -66,24 +66,19 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
 
 //thunks
 
-export const getPacksTC = (newPage?: number, newPageCount?: number, newSortPacks?: string, newPackName?: string, newUser_id?: string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     // dispatch(appActions.setAppStatusAC('loading'))
     const {page, pageCount, cardPacksTotalCount, sortPacks, packName, user_id, min, max} = getState().packs
 
     const params: PacksParamsType = {
-        page: newPage ? newPage : page,
-        pageCount: newPageCount ? newPageCount : pageCount,
-        // sortPacks: newSortPacks ? newSortPacks : sortPacks
+        page,
+        pageCount,
     }
-    if (newSortPacks && newSortPacks !== 'off') {
-        params.sortPacks = newSortPacks
-    } else if (newSortPacks === 'off') {
-        params.sortPacks = undefined
-    } else if (sortPacks !== 'off') {
+
+
+    if (sortPacks !== null) {
         params.sortPacks = sortPacks
     }
-
-
     if (packName !== null) {
         params.packName = packName
     }

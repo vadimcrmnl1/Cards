@@ -1,5 +1,5 @@
 import React from "react";
-import {useFormik} from "formik";
+import {FormikHelpers, useFormik} from "formik";
 import s from './RecoveryPassword.module.css'
 import {NavLink} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
@@ -7,20 +7,33 @@ import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {forgotPassTC} from "../auth-reducer";
 import {CheckEmail} from "../CheckEmail/CheckEmail";
 import {selectMailWasSent} from "../selectors";
-import {initialValues, validationSchema, FormikValuesType} from "../common";
 import TextField from "@mui/material/TextField";
 import Button from "@material-ui/core/Button";
+import * as yup from "yup";
 
+type FormikValuesType = {
+    email: string;
+}
 
+const validationSchema = yup.object({
+    email: yup
+        .string()
+        .email('Enter a valid email')
+        .required('Email is required'),
+});
+
+const initialValues: FormikValuesType = {
+    email: '',
+}
 export const RecoveryPassword = () => {
 
     const dispatch = useAppDispatch()
 
     const mailWasSent = useAppSelector(selectMailWasSent)
 
-    const onSubmit = (values: Omit<FormikValuesType, 'password'>) => {
-        debugger
+    const onSubmit = (values: FormikValuesType, {setSubmitting}: FormikHelpers<FormikValuesType>) => {
         dispatch(forgotPassTC(values.email))
+        setSubmitting(false)
     }
 
     const formik = useFormik({

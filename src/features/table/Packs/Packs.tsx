@@ -14,7 +14,10 @@ import { SearchTitleCards } from './components/searchTitleCards/SearchTitleCards
 import {SortComponent} from "./components/sortingByUser/SortingByUser";
 import {FilterCountCards} from "./components/filterCountCards/FilterCountCards";
 import {NoFilters} from "./components/noFilters/NoFilters";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {setPacksSortAC} from "./actions";
+import {getPacksTC} from "./packs-reducer";
+import {selectPacksMaxCards, selectPacksMinCards, selectPacksSort} from "./selectors";
 
 
 export const Packs = () => {
@@ -26,7 +29,36 @@ export const Packs = () => {
     const [searchParams, setSearchParams] = useSearchParams()
 
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
+    const minCards = useAppSelector(selectPacksMinCards)
+    const maxCards = useAppSelector(selectPacksMaxCards)
+    const sortPacks = useAppSelector(selectPacksSort)
     // const packId = useAppSelector(selectCardPacks)
+
+    const [isFirstLoading, setIsFirstLoading] = useState(true)
+
+
+    useEffect(() => {
+        if (isFirstLoading) {
+            const sort = searchParams.get('sortPacks')
+            if (sort) {
+                dispatch(setPacksSortAC(sort))
+            }
+            // navigate(`?sortPacks=${sort}`)
+            dispatch(getPacksTC())
+            setIsFirstLoading(false)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (!isFirstLoading) {
+            dispatch(getPacksTC())
+        }
+    }, [dispatch, packName,sortPacks, userId, minCards, maxCards])
+
+
+
+
+
     const handleAddPack = () => {
         const cardPack: AddPackRequestDataType = {
             cardsPack: {
@@ -39,27 +71,11 @@ export const Packs = () => {
     }
     const handleDeletePack = () => {
         const id = '640f6d55dc68f718b46b2501'
-      //  dispatch(deletePackTC(id))
     }
     const handleUpdatePack = () => {
-      /*  const cardPack: UpdatePackRequestDataType = {
-            cardsPack: {
-                _id: '640f6d7edc68f718b46b2502',
-                name: 'First Pack'
-            }
-        }
-        dispatch(updatePackTC(cardPack))*/
     }
     const styleMU = useStyles();
-   /* useEffect(() => {
-        const params = Object.fromEntries(searchParams)
-        console.log(params)
-        dispatch(setFiltersTC({packName: params.packName,
-            userId:params.userId,
-            min :+params.min,
-            max :+params.max}))
 
-    }, [])*/
     if (!isLoggedIn) {
         return <Navigate to={PATH.login}/>
     }

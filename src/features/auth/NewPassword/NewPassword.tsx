@@ -1,19 +1,34 @@
 import React from "react";
-import {useFormik} from "formik";
+import {FormikHelpers, useFormik} from "formik";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import s from './NewPassword.module.css'
 import {PATH} from "../../../common/utils/routes/Routes";
 import {Navigate, NavLink, useLocation} from 'react-router-dom'
 import {resetPasswordTC} from "../auth-reducer";
 import {selectIsPasswordChanged} from "../selectors";
-import SuperInput from "../../../common/components/SuperInput/SuperInput";
-import {initialValues, validationSchema, FormikValuesType} from "../common";
 import Button from "@material-ui/core/Button";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import * as yup from "yup";
 
+
+type FormikValuesType = {
+    password: string;
+}
+
+const validationSchema = yup.object({
+    password: yup
+        .string()
+        .min(8, 'Password should be of minimum 8 characters length')
+        .required('Password is required'),
+});
+
+
+const initialValues: FormikValuesType = {
+    password: '',
+}
 
 export const NewPassword = () => {
 
@@ -41,8 +56,9 @@ export const NewPassword = () => {
         )
     }
 
-    const onSubmit = (values: FormikValuesType) => {
+    const onSubmit = (values: FormikValuesType, {setSubmitting}: FormikHelpers<FormikValuesType>) => {
         dispatch(resetPasswordTC(values.password, token))
+        setSubmitting(false)
     }
 
     const formik = useFormik({
