@@ -5,8 +5,11 @@ import {setMinMaxCardsAC, setMyPacksAC, setPackNameAC} from "../../actions";
 import {selectMaxCardsCount} from "../../selectors";
 
 export const NoFilters = ()=>{
-    const maxCountCards=useAppSelector(selectMaxCardsCount)
+
     const dispatch = useAppDispatch()
+
+    const maxCountCards=useAppSelector(selectMaxCardsCount)
+
     const handleDeleteAllFilters=()=>{
         dispatch(setPackNameAC(''))
         dispatch(setMyPacksAC(''))

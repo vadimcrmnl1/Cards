@@ -35,19 +35,19 @@ export const setPacksPageCountAC = (pageCount: number) => ({
 
 
 ///Actions for filters
-export const setPackNameAC = (packName:string|null) => ({
+export const setPackNameAC = (packName: string | null) => ({
     type: 'TABLE/SET_PACK_NAME',
     payload: {packName}
 } as const)
-export const setMyPacksAC = (id:string|null) => ({
+export const setMyPacksAC = (id: string | null) => ({
     type: 'TABLE/SET_MY_PACKS',
     payload: {id}
 } as const)
-export const setMinMaxCardsAC = (counts:number[]) => ({
+export const setMinMaxCardsAC = (counts: number[]) => ({
     type: 'TABLE/SET_MIN_MAX_CARDS',
     payload: {counts}
 } as const)
-export const setPacksSortAC = (sortPacks:null|string) => ({
+export const setPacksSortAC = (sortPacks: string) => ({
     type: 'TABLE/SET_PACKS_SORT',
     payload: {sortPacks}
 } as const)
@@ -55,4 +55,7 @@ export const setPacksSortAC = (sortPacks:null|string) => ({
 
 export const addPackAC = (cardPack: AddPackRequestDataType) => ({type: 'TABLE/ADD_PACK', payload: {cardPack}} as const)
 export const deletePackAC = (id: string) => ({type: 'TABLE/DELETE_PACK', payload: {id}} as const)
-export const updatePackAC = (cardPack: UpdatePackRequestDataType) => ({type: 'TABLE/UPDATE_PACK', payload: {cardPack}} as const)
+export const updatePackAC = (cardPack: UpdatePackRequestDataType) => ({
+    type: 'TABLE/UPDATE_PACK',
+    payload: {cardPack}
+} as const)

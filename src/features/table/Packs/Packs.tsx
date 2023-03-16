@@ -5,7 +5,7 @@ import {PacksTable} from "./PacksTable/PacksTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
 import {Navigate, useSearchParams} from 'react-router-dom';
 import {PATH} from "../../../common/utils/routes/Routes";
-import {AddPackRequestDataType, UpdatePackRequestDataType} from "../table-api";
+import {AddPackRequestDataType} from "../table-api";
 import {Button} from "@mui/material";
 import {useStyles} from "../../styleMU/styleMU";
 import s from "./Packs.module.css"

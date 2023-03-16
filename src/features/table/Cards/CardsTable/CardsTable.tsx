@@ -73,18 +73,18 @@ export const CardsTable = () => {
                     <TableHead>
                         <StyledTableRow>
                             <StyledTableCell>
-                                <SortCell label={"Question"} sorter={'question'} sort={cardsSort}
-                                          toggleSort={handleSort}/>
+                                {/*<SortCell label={"Question"} sorter={'question'} sort={cardsSort}*/}
+                                {/*          toggleSort={handleSort}/>*/}
                             </StyledTableCell>
                             <StyledTableCell>
-                                <SortCell label={"Answer"} sorter={'answer'} sort={cardsSort} toggleSort={handleSort}/>
+                                {/*<SortCell label={"Answer"} sorter={'answer'} sort={cardsSort} toggleSort={handleSort}/>*/}
                             </StyledTableCell>
                             <StyledTableCell>
-                                <SortCell label={"Last Updated"} sorter={'updated'} sort={cardsSort}
-                                          toggleSort={handleSort}/>
+                                {/*<SortCell label={"Last Updated"} sorter={'updated'} sort={cardsSort}*/}
+                                {/*          toggleSort={handleSort}/>*/}
                             </StyledTableCell>
                             <StyledTableCell>
-                                <SortCell label={"Grade"} sorter={'grade'} sort={cardsSort} toggleSort={handleSort}/>
+                                {/*<SortCell label={"Grade"} sorter={'grade'} sort={cardsSort} toggleSort={handleSort}/>*/}
                             </StyledTableCell>
                             {packUserId === myId && <StyledTableCell>
                                 Actions

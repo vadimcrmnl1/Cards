@@ -7,19 +7,21 @@ import {changeNameTC} from "../profile-reducer";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {useStyles} from "../../styleMU/styleMU";
 import {selectName} from "../selectors";
-import {selectError} from "../../../app/selectors";
 
 type ProfileEditNameBlockType = {
     setEditMode: (editMode: boolean) => void
 }
-export type FormikErrorType = {
+type FormikErrorType = {
     nickName?: string
 }
 export const ProfileEditNameBlock = (props: ProfileEditNameBlockType) => {
+
     const dispatch = useAppDispatch()
-    const styleMU = useStyles();
-    const error = useAppSelector(selectError)
+
     const name = useAppSelector(selectName)
+
+    const styleMU = useStyles();
+
     const formik = useFormik({
         initialValues: {
             nickName: name
@@ -42,27 +44,28 @@ export const ProfileEditNameBlock = (props: ProfileEditNameBlockType) => {
         },
 
     })
-      const handleOnBlurName = () => {
-        setTimeout(()=>{
+
+    const handleOnBlurName = () => {
+        setTimeout(() => {
             props.setEditMode(false)
         }, 140)
-      }
+    }
 
     return (
         <form onSubmit={formik.handleSubmit}>
             <div className={s.changeName}>
-                <div className={s.nickNameField} >
+                <div className={s.nickNameField}>
                     <TextField label="nickName"
                                autoFocus={true}
                                variant="standard"
                                className={styleMU.textField}
                                {...formik.getFieldProps('nickName')}
                                onBlur={handleOnBlurName}
-                               />
+                    />
                     <Button type={'submit'}
                             variant={'contained'}
                             className={styleMU.buttonSave}
-                            >
+                    >
                         Save
                     </Button>
                 </div>
@@ -71,7 +74,6 @@ export const ProfileEditNameBlock = (props: ProfileEditNameBlockType) => {
                         <div>
                             {formik.errors.nickName}
                         </div>}
-                    {error && <div>{error}</div>}
                 </div>
             </div>
         </form>

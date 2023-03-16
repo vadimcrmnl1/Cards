@@ -1,6 +1,6 @@
 import React from "react";
 import s from './SignUp.module.css'
-import {FormikHelpers, useFormik} from 'formik';
+import {useFormik} from 'formik';
 import {NavLink, Navigate} from "react-router-dom";
 import {PATH} from "../../../common/utils/routes/Routes";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
@@ -15,6 +15,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import * as yup from "yup";
+import {boxStyle} from "../Login/Login";
 
 const validationSchema = yup.object({
     email: yup
@@ -77,17 +78,7 @@ export const SignUp = () => {
         return <Navigate to={PATH.login}/>
     }
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                '& > :not(style)': {
-                    m: 1,
-                    width: 413,
-                    height: 552,
-                },
-            }}
-        >
+        <Box sx={boxStyle}>
             <Paper>
                 <div>
                     <h1>Sign up</h1>
@@ -128,7 +119,7 @@ export const SignUp = () => {
 
                             <Button color={'primary'}
                                     fullWidth
-                                    style={{marginTop: '20px', borderRadius: '20px'}}
+                                    style={{borderRadius: '20px'}}
                                     variant={'contained'}
                                     type={"submit"}
                                     disabled={formik.isSubmitting}

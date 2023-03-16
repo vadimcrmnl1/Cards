@@ -10,20 +10,28 @@ import {selectAppStatus} from "./selectors";
 
 
 function App() {
+
     const appStatus = useAppSelector(selectAppStatus)
     const dispatch = useAppDispatch()
+
     useEffect(() => {
         dispatch(initializeAppTC())
-    }, [])
-    // if (appStatus === 'loading') return <CircularProgress sx={{position: 'fixed', top: '30%', right: '50%',}}/>
-    return <div className={s.App}>
-        {appStatus === 'loading' && <CircularProgress sx={{position: 'fixed', top: '30%', right: '50%',}}/>}
-        <ErrorSnackbar/>
-        <Header/>
-        <div className={s.appWrapper}>
-            <Outlet/>
+    }, [dispatch])
+
+
+    if (appStatus === 'loading') {
+        return <CircularProgress sx={{position: 'fixed', top: '30%', right: '50%',}}/>
+    }
+
+    return (
+        <div className={s.App}>
+            <ErrorSnackbar/>
+            <Header/>
+            <div className={s.appWrapper}>
+                <Outlet/>
+            </div>
         </div>
-    </div>
+    )
 }
 
 export default App;

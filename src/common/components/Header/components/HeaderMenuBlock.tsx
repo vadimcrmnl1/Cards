@@ -8,18 +8,21 @@ import avatar from './../../../../features/images/avatar.png'
 import s from './../Header.module.css'
 import {NavLink} from "react-router-dom";
 import {PATH} from "../../../utils/routes/Routes";
+import {selectName} from "../../../../features/profile/selectors";
 
 export const HeaderMenuBlock = () => {
+
     const loginStatus = useAppSelector(selectIsLoggedIn)
-    const userName = useAppSelector(state => state.profile.name)
+    const userName = useAppSelector(selectName)
+
     const dispatch = useAppDispatch()
+
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
     const handleCloseUserMenu = () => {
-//хендлер висит на кнопке профайл
-        if (!loginStatus ) {
+        if (!loginStatus) {
             dispatch(setAppErrorAC('You are not authorised'))
         }
         setAnchorElUser(null);
@@ -52,7 +55,11 @@ export const HeaderMenuBlock = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
             >
-                <NavLink style={{color: 'black'}} to={PATH.profile}><MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem></NavLink>
+                <NavLink style={{color: 'black'}} to={PATH.profile}>
+                    <MenuItem onClick={handleCloseUserMenu}>
+                        Profile
+                    </MenuItem>
+                </NavLink>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
 
             </Menu>

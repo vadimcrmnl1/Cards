@@ -15,7 +15,7 @@ import {
     selectPacksPageCount, selectPacksUserId
 } from "../selectors";
 import {setPacksPageAC, setPacksPageCountAC, setPacksSortAC} from "../actions";
-import {FormControl, MenuItem, Pagination, Select, SelectChangeEvent, TableHead} from "@mui/material";
+import { TableHead} from "@mui/material";
 import {getPacksTC} from "../packs-reducer";
 import {ActionsCell} from "./ActionsCell/ActionsCell";
 import {NavLink, useNavigate, useSearchParams} from "react-router-dom";
@@ -25,7 +25,6 @@ import {StyledTableCell, StyledTableRow} from "./styles";
 import {setCardsPackIdAC, setCardsPackUserIdAC, setCardsPageAC} from "../../Cards/actions";
 import {SortCell} from "./SortCell/SortCell";
 import {TableTextCell} from "../../TableTextCell/TableTextCell";
-import {selectAppStatus} from "../../../../app/selectors";
 
 
 export const PacksTable = () => {
@@ -36,12 +35,10 @@ export const PacksTable = () => {
     const userId = useAppSelector(selectPacksUserId)
     const minCards = useAppSelector(selectPacksMinCards)
     const maxCards = useAppSelector(selectPacksMaxCards)
-    const cardPacksTotalCount = useAppSelector(selectCardPacksTotalCount)
     const page = useAppSelector(selectPacksPage)
     const pageCount = useAppSelector(selectPacksPageCount)
     const count = useAppSelector(selectPacksCountOfPages)
     const sortPacks = useAppSelector(selectPacksSort)
-    const navigate = useNavigate()
 
     const [isFirstLoading, setIsFirstLoading] = useState(true)
 
@@ -50,7 +47,9 @@ export const PacksTable = () => {
     useEffect(() => {
         if (isFirstLoading) {
             const sort = searchParams.get('sortPacks')
-            dispatch(setPacksSortAC(sort))
+            if (sort) {
+                dispatch(setPacksSortAC(sort))
+            }
             // navigate(`?sortPacks=${sort}`)
             dispatch(getPacksTC())
             setIsFirstLoading(false)
@@ -61,101 +60,102 @@ export const PacksTable = () => {
         if (!isFirstLoading) {
             dispatch(getPacksTC())
         }
-    }, [dispatch, page, pageCount, packName, userId, minCards, maxCards])
-
+    }, [dispatch, packName, userId, minCards, maxCards])
 
 
 // Avoid a layout jump when reaching the last page with empty rows.
-const emptyRows =
-    page > 0 ? pageCount - cardPacks.length : 0;
-const emptyRowsStyle = {height: 75 * emptyRows}
+    const emptyRows =
+        page > 0 ? pageCount - cardPacks.length : 0;
+    const emptyRowsStyle = {height: 75 * emptyRows}
 
-const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    dispatch(setPacksPageAC(value))
-}
-const handlePageCountChange = (event: SelectChangeEvent) => {
-    dispatch(setPacksPageCountAC(+event.target.value))
-};
-const handleSort = (sort: string | null) => {
-    dispatch(setPacksSortAC(sort))
-    if (sort !== null) {
-        setSearchParams({...searchParams, sortPacks: sort})
-    } else {
-        searchParams.delete('sortPacks')
-        setSearchParams(searchParams)
+// const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+//     dispatch(setPacksPageAC(value))
+// }
+// const handlePageCountChange = (event: SelectChangeEvent) => {
+//     dispatch(setPacksPageCountAC(+event.target.value))
+// };
+
+    const handleSort = (sort: string) => {
+        dispatch(getPacksTC(page, pageCount, sort))
+        // dispatch(setPacksSortAC(sort))
+        if (sort !== null) {
+            setSearchParams({...searchParams, sortPacks: sort})
+        } else {
+            searchParams.delete('sortPacks')
+            setSearchParams(searchParams)
+        }
     }
-}
 
-return (
-    <div className={s.table}>
-        <TableContainer component={Paper}>
-            <Table aria-label="custom table" stickyHeader>
-                <TableHead>
-                    <StyledTableRow>
-                        <StyledTableCell>
-                            <SortCell label={"Name"} sorter={'name'} sort={sortPacks} toggleSort={handleSort}/>
-                        </StyledTableCell>
-                        <StyledTableCell>
-                            <SortCell label={'Cards'} sorter={'cardsCount'} sort={sortPacks}
-                                      toggleSort={handleSort}/>
-                        </StyledTableCell>
-                        <StyledTableCell>
-                            <SortCell label={'Last Updated'} sorter={'updated'} sort={sortPacks}
-                                      toggleSort={handleSort}/>
-                        </StyledTableCell>
-                        <StyledTableCell>
-                            <SortCell label={'Created by'} sorter={'user_name'} sort={sortPacks}
-                                      toggleSort={handleSort}/>
-                        </StyledTableCell>
-                        <StyledTableCell>
-                            Actions
-                        </StyledTableCell>
-                    </StyledTableRow>
-                </TableHead>
-                <TableBody>
-                    {cardPacks.map((cardPack, index) => {
-                        const handleLinkToCards = () => {
-                            dispatch(setCardsPackIdAC(cardPack._id))
-                            dispatch(setCardsPackUserIdAC(cardPack.user_id))
-                            //чтобы при переходе с колод на карты всегда была первая страница
-                            dispatch(setCardsPageAC(1))
-                        }
-                        return <StyledTableRow key={index} hover>
-                            <StyledTableCell scope="row">
-                                <NavLink to={PATH.cards}
-                                         onClick={handleLinkToCards}
-                                         className={s.link}
-                                >
-                                    <TableTextCell text={cardPack.name}/>
-                                </NavLink>
+    return (
+        <div className={s.table}>
+            <TableContainer component={Paper}>
+                <Table aria-label="custom table" stickyHeader>
+                    <TableHead>
+                        <StyledTableRow>
+                            <StyledTableCell>
+                                <SortCell label={"Name"} sorter={'name'}  toggleSort={handleSort}/>
                             </StyledTableCell>
                             <StyledTableCell>
-                                {cardPack.cardsCount}
+                                <SortCell label={'Cards'} sorter={'cardsCount'}
+                                          toggleSort={handleSort}/>
                             </StyledTableCell>
                             <StyledTableCell>
-                                {cardPack.updated}
+                                <SortCell label={'Last Updated'} sorter={'updated'}
+                                          toggleSort={handleSort}/>
                             </StyledTableCell>
                             <StyledTableCell>
-                                <TableTextCell text={cardPack.user_name}/>
+                                <SortCell label={'Created by'} sorter={'user_name'}
+                                          toggleSort={handleSort}/>
                             </StyledTableCell>
                             <StyledTableCell>
-                                <ActionsCell
-                                    packs
-                                    packOwnerId={cardPack.user_id}/>
+                                Actions
                             </StyledTableCell>
                         </StyledTableRow>
-                    })}
-                    {emptyRows > 0 && (
-                        <StyledTableRow style={emptyRowsStyle}>
-                            <StyledTableCell colSpan={5}/>
-                        </StyledTableRow>
-                    )}
+                    </TableHead>
+                    <TableBody>
+                        {cardPacks.map((cardPack, index) => {
+                            const handleLinkToCards = () => {
+                                dispatch(setCardsPackIdAC(cardPack._id))
+                                dispatch(setCardsPackUserIdAC(cardPack.user_id))
+                                //чтобы при переходе с колод на карты всегда была первая страница
+                                dispatch(setCardsPageAC(1))
+                            }
+                            return <StyledTableRow key={index} hover>
+                                <StyledTableCell scope="row">
+                                    <NavLink to={PATH.cards}
+                                             onClick={handleLinkToCards}
+                                             className={s.link}
+                                    >
+                                        <TableTextCell text={cardPack.name}/>
+                                    </NavLink>
+                                </StyledTableCell>
+                                <StyledTableCell>
+                                    {cardPack.cardsCount}
+                                </StyledTableCell>
+                                <StyledTableCell>
+                                    {cardPack.updated}
+                                </StyledTableCell>
+                                <StyledTableCell>
+                                    <TableTextCell text={cardPack.user_name}/>
+                                </StyledTableCell>
+                                <StyledTableCell>
+                                    <ActionsCell
+                                        packs
+                                        packOwnerId={cardPack.user_id}/>
+                                </StyledTableCell>
+                            </StyledTableRow>
+                        })}
+                        {emptyRows > 0 && (
+                            <StyledTableRow style={emptyRowsStyle}>
+                                <StyledTableCell colSpan={5}/>
+                            </StyledTableRow>
+                        )}
 
-                </TableBody>
-            </Table>
+                    </TableBody>
+                </Table>
 
-        </TableContainer>
-        {/*<div className={s.pagination}>
+            </TableContainer>
+            {/*<div className={s.pagination}>
                 <Pagination
                     count={count}
                     page={page}
@@ -177,8 +177,8 @@ return (
                 </FormControl>
                 Packs per Page
             </div>*/}
-    </div>
-);
+        </div>
+    );
 }
 
 

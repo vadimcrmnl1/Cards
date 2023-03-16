@@ -7,9 +7,9 @@ import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {forgotPassTC} from "../auth-reducer";
 import {CheckEmail} from "../CheckEmail/CheckEmail";
 import {selectMailWasSent} from "../selectors";
-import SuperInput from "../../../common/components/SuperInput/SuperInput";
-import SuperButton from "../../../common/components/SuperButton/SuperButton";
 import {initialValues, validationSchema, FormikValuesType} from "../common";
+import TextField from "@mui/material/TextField";
+import Button from "@material-ui/core/Button";
 
 
 export const RecoveryPassword = () => {
@@ -19,6 +19,7 @@ export const RecoveryPassword = () => {
     const mailWasSent = useAppSelector(selectMailWasSent)
 
     const onSubmit = (values: Omit<FormikValuesType, 'password'>) => {
+        debugger
         dispatch(forgotPassTC(values.email))
     }
 
@@ -33,20 +34,28 @@ export const RecoveryPassword = () => {
         : (<div className={s.container}>
                 <h1>Forgot your password?</h1>
                 <form onSubmit={formik.handleSubmit} className={s.form}>
-
-                    <SuperInput
+                    <TextField
+                        fullWidth
+                        variant={'standard'}
                         id={'email'}
-                        placeholder={'foo@bar.com'}
+                        label={'Email'}
+                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}
                         {...formik.getFieldProps('email')}
-                        error={formik.errors.email && formik.touched.email
-                            ? formik.errors.email : ''}
                     />
 
                     <div className={s.questionBlock}>
                         Enter your email address and we will send you further instructions
                     </div>
-
-                    <SuperButton type={"submit"}>Send instruction</SuperButton>
+                    <Button color={'primary'}
+                            fullWidth
+                            style={{borderRadius: '20px'}}
+                            variant={'contained'}
+                            type={"submit"}
+                            disabled={formik.isSubmitting}
+                    >
+                        Send instruction
+                    </Button>
 
                 </form>
 
@@ -54,8 +63,7 @@ export const RecoveryPassword = () => {
                     Did you remember your password?
                 </div>
                 <div className={s.link}>
-                    <NavLink to={PATH.login}
-                    >Try logging in</NavLink>
+                    <NavLink to={PATH.login}>Try logging in</NavLink>
                 </div>
             </div>
         )

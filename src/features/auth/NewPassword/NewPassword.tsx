@@ -7,8 +7,12 @@ import {Navigate, NavLink, useLocation} from 'react-router-dom'
 import {resetPasswordTC} from "../auth-reducer";
 import {selectIsPasswordChanged} from "../selectors";
 import SuperInput from "../../../common/components/SuperInput/SuperInput";
-import SuperButton from "../../../common/components/SuperButton/SuperButton";
 import {initialValues, validationSchema, FormikValuesType} from "../common";
+import Button from "@material-ui/core/Button";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 
 export const NewPassword = () => {
@@ -18,7 +22,26 @@ export const NewPassword = () => {
     const token = location.pathname.slice(18)
     const isPasswordChanged = useAppSelector(selectIsPasswordChanged)
 
-    const onSubmit = (values:FormikValuesType) => {
+    const [showPassword, setShowPassword] = React.useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+    const inputProps = {
+        endAdornment: (
+            <InputAdornment position="end">
+                <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                >
+                    {showPassword ? <VisibilityOff/> : <Visibility/>}
+                </IconButton>
+            </InputAdornment>
+        )
+    }
+
+    const onSubmit = (values: FormikValuesType) => {
         dispatch(resetPasswordTC(values.password, token))
     }
 
@@ -36,16 +59,28 @@ export const NewPassword = () => {
             <h1>Create new password</h1>
             <form onSubmit={formik.handleSubmit} className={s.form}>
 
-                <SuperInput
+
+                <TextField
+                    fullWidth
+                    variant={'standard'}
                     id={'password'}
-                    placeholder={'Password'}
-                    error={formik.errors.password && formik.touched.password
-                        ? formik.errors.password : ''}
+                    type={showPassword ? 'text' : 'password'}
+                    label={'Password'}
+                    error={formik.touched.password && Boolean(formik.errors.password)}
+                    helperText={formik.touched.password && formik.errors.password}
                     {...formik.getFieldProps('password')}
+                    InputProps={inputProps}
                 />
 
-
-                <SuperButton type={"submit"}>Create new password</SuperButton>
+                <Button color={'primary'}
+                        fullWidth
+                        style={{borderRadius: '20px'}}
+                        variant={'contained'}
+                        type={"submit"}
+                        disabled={formik.isSubmitting}
+                >
+                    Create new password
+                </Button>
 
             </form>
             <div className={s.questionBlock}>

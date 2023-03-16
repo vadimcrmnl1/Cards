@@ -34,37 +34,37 @@ export const authReducer = (state: AuthInitialStateType = authInitialState, acti
 
 // thunks
 export const loginTC = (data: LoginParamsType): AppThunk<AllReducersActionType> => async (dispatch) => {
-    dispatch(appActions.setAppStatusAC('loading'))
+    // dispatch(appActions.setAppStatusAC('loading'))
     try {
         const res = await authAPI.login(data)
         dispatch(authActions.setLoggedInAC(true))
         dispatch(profileActions.setProfileAC(res.data))
         dispatch(appActions.setAppInfoAC(`Welcome, ${res.data.name}`))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
     }
 }
 export const logoutTC = (): AppThunk<AllReducersActionType> => async (dispatch) => {
-    dispatch(appActions.setAppStatusAC('loading'))
+    // dispatch(appActions.setAppStatusAC('loading'))
     try {
         const res = await authAPI.logout()
         setProfileAC({} as ResponseDataType)
         dispatch(authActions.setLoggedInAC(false))
         dispatch(appActions.setAppInfoAC(res.data.info))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
-    } finally {
-        dispatch(appActions.setAppStatusAC('succeeded'))
     }
 }
 
 export const signUpTC = (email: string, password: string): AppThunk<AllReducersActionType> => async (dispatch) => {
-    dispatch(appActions.setAppStatusAC('loading'))
+    // dispatch(appActions.setAppStatusAC('loading'))
     try {
         const res = await authAPI.signUp(email, password)
         dispatch(appActions.setAppInfoAC(res.data.addedUser.email + ' has registered'))
         dispatch(authActions.setIsSignedUpAC(true))
-        dispatch(appActions.setAppStatusAC('succeeded'))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (e: any) {
         errorUtils(e, dispatch)
     }
@@ -79,12 +79,12 @@ export const forgotPassTC = (email: string): AppThunk<AllReducersActionType> => 
                     </div>`
     const data = {email, from, message}
 
-    dispatch(appActions.setAppStatusAC('loading'))
+    // dispatch(appActions.setAppStatusAC('loading'))
     try {
         const res = await authAPI.forgotPass(data)
         dispatch(appActions.setAppInfoAC(`${res.data.info}, Check your email: ${email}`))
-        dispatch(appActions.setAppStatusAC('succeeded'))
         dispatch(authActions.setMailWasSentAC(true))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (e: any) {
         errorUtils(e, dispatch)
     }
@@ -93,12 +93,12 @@ export const resetPasswordTC = (password: string, resetPasswordToken: string): A
     return async (dispatch) => {
         const data = {password, resetPasswordToken}
 
-        dispatch(appActions.setAppStatusAC('loading'))
+        // dispatch(appActions.setAppStatusAC('loading'))
         try {
             const res = await authAPI.resetPass(data)
             dispatch(authActions.setIsPasswordChangedAC(true))
             dispatch(appActions.setAppInfoAC(res.data.info))
-            dispatch(appActions.setAppStatusAC('succeeded'))
+            // dispatch(appActions.setAppStatusAC('succeeded'))
         } catch (e: any) {
             errorUtils(e, dispatch)
         }

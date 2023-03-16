@@ -9,7 +9,9 @@ type ProfileNameBlockType = {
 }
 
 export const ProfileNameBlock = (props: ProfileNameBlockType) => {
+
     const name = useAppSelector(selectName)
+
     const handleEditName = (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
         props.setEditMode(true)
     }
