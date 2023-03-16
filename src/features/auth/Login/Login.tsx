@@ -79,7 +79,6 @@ export const Login = () => {
     const activeStyle = {
         textDecoration: 'none'
     }
-    console.log(formik.errors, formik.touched)
     if (isLoggedIn) {
         return <Navigate to={PATH.packs}/>
     }

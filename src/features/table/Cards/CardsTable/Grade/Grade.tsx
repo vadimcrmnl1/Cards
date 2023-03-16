@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Star} from "../../../icons/Star";
+import {Star} from "../../../common/icons/Star";
 import s from './Grage.module.css'
 
 type GradePropsType = {

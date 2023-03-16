@@ -13,14 +13,14 @@ import {
 } from "../selectors";
 import { setPacksSortAC} from "../actions";
 import {TableHead} from "@mui/material";
-import {ActionsCell} from "./ActionsCell/ActionsCell";
+import {ActionsCell} from "../../common/ActionsCell/ActionsCell";
 import {NavLink} from "react-router-dom";
 import {PATH} from "../../../../common/utils/routes/Routes";
 
-import {StyledTableCell, StyledTableRow} from "./styles";
+import {StyledTableCell, StyledTableRow} from "../../common/styles";
 import {setCardsPackIdAC, setCardsPackUserIdAC, setCardsPageAC} from "../../Cards/actions";
-import {SortCell} from "./SortCell/SortCell";
-import {TableTextCell} from "../../TableTextCell/TableTextCell";
+import {SortCell} from "../../common/SortCell/SortCell";
+import {TableTextCell} from "../../common/TableTextCell/TableTextCell";
 
 
 export const PacksTable = () => {

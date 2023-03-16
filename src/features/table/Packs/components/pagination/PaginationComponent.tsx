@@ -2,12 +2,12 @@ import React from 'react';
 import TablePagination from '@material-ui/core/TablePagination';
 
 
-type PaginationPropsType={
-    totalCount:number
+type PaginationPropsType = {
+    totalCount: number
     pageNumber: number
-    pageCount:number
-    handleChangePage:(e:any, newPage:number)=>void
-    handleChangeRowsPerPage:(e:any)=>void
+    pageCount: number
+    handleChangePage: (e: any, newPage: number) => void
+    handleChangeRowsPerPage: (e: any) => void
 
 }
 
@@ -17,9 +17,9 @@ export const PaginationComponent = (props: PaginationPropsType) => {
 
     return (
         <TablePagination
-            //component="div"
+            component="div"
             count={props.totalCount}
-            page={props.pageNumber-1}
+            page={props.pageNumber - 1}
             onPageChange={props.handleChangePage}
             rowsPerPage={props.pageCount}
             rowsPerPageOptions={[5, 10, 15]}

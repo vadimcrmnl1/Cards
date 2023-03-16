@@ -1,9 +1,9 @@
 import * as React from "react";
-import {useAppDispatch, useAppSelector} from "../../../../../app/store";
-import {selectUserId} from "../../../../profile/selectors";
-import {TeacherIcon} from "../../../icons/TeacherIcon";
-import {EditIcon} from "../../../icons/EditIcon";
-import {TrashIcon} from "../../../icons/TrashIcon";
+import {useAppDispatch, useAppSelector} from "../../../../app/store";
+import {selectUserId} from "../../../profile/selectors";
+import {TeacherIcon} from "../icons/TeacherIcon";
+import {EditIcon} from "../icons/EditIcon";
+import {TrashIcon} from "../icons/TrashIcon";
 import s from './ActionsCell.module.css'
 import {useState} from "react";
 

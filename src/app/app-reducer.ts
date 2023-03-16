@@ -6,7 +6,7 @@ import * as profileActions from './../features/profile/actions'
 import {errorUtils} from "../common/utils/errorUtils";
 
 const appInitialState: AppInitialStateType = {
-    status: 'idle',
+    status: false,
     error: null,
     appInfo: null,
 }
@@ -26,19 +26,20 @@ export const appReducer = (state: AppInitialStateType = appInitialState, action:
 
 //thunks
 export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
-    dispatch(appActions.setAppStatusAC('loading'))
+    dispatch(appActions.setAppStatusAC(true))
     authAPI.me()
         .then(res => {
             dispatch(authAction.setLoggedInAC(true))
             dispatch(profileActions.setProfileAC(res.data))
         })
         .catch((error: any) => {
+            //не удалять, избавляет от первой ошибки неаторизованного
             if (error.response.status !== 401) { // ошибка неавторизованного пользователя
                 errorUtils(error, dispatch)
             }
         })
         .finally(() => {
-            dispatch(appActions.setAppStatusAC('succeeded'))
+            dispatch(appActions.setAppStatusAC(false))
         })
 }
 

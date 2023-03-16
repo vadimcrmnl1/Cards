@@ -9,12 +9,12 @@ import {Button} from "@mui/material";
 import {useStyles} from "../../styleMU/styleMU";
 import s from "./Packs.module.css"
 import {PaginationComponent} from "./components/pagination/PaginationComponent";
-import { SearchTitleCards } from './components/searchTitleCards/SearchTitleCards';
+import {SearchTitleCards} from './components/searchTitleCards/SearchTitleCards';
 import {SortComponent} from "./components/sortingByUser/SortingByUser";
 import {FilterCountCards} from "./components/filterCountCards/FilterCountCards";
 import {NoFilters} from "./components/noFilters/NoFilters";
-import {useEffect, useState} from "react";
-import {selectCardPacks, selectPacksUserId} from "./selectors";
+import {useEffect} from "react";
+import {selectCardPacks, selectPacksLoadingStatus, selectPacksUserId} from "./selectors";
 import {addPackTC, deletePackTC, updatePackTC} from "./packs-reducer";
 import {AddPackRequestDataType, UpdatePackRequestDataType} from '../table-api';
 import {
@@ -27,10 +27,9 @@ import {
 import {
     setMinMaxCardsAC, setPackNameAC,
     setPacksPageAC,
-    setPacksPageCountAC, setPacksSortAC
+    setPacksPageCountAC
 } from "./actions";
 import {getPacksTC} from "./packs-reducer";
-import {selectMyID} from "../../profile/selectors";
 
 
 export const Packs = () => {
@@ -46,6 +45,7 @@ export const Packs = () => {
     const page = useAppSelector(selectPacksPage)
     const packName = useAppSelector(selectPacksName)
     const userId = useAppSelector(selectPacksUserId)
+    const packsLoadingStatus = useAppSelector(selectPacksLoadingStatus)
 
     const [searchParams, setSearchParams] = useSearchParams()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
@@ -53,32 +53,27 @@ export const Packs = () => {
     // const [isFirstLoading, setIsFirstLoading] = useState(true)
 
 
-    // useEffect(() => {
-    //     if (isFirstLoading) {
-    //         const sort = searchParams.get('sortPacks')
-    //         if (sort) {
-    //             dispatch(setPacksSortAC(sort))
-    //         }
-    //         dispatch(getPacksTC())
-    //         setIsFirstLoading(false)
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (isLoggedIn){
+            dispatch(getPacksTC())
+        }
+    }, [dispatch, page, pageCount, packName, sortPacks, userId, minCards, maxCards])
 
     useEffect(() => {
         // if (isFirstLoading) {
-            dispatch(getPacksTC())
-            // setSearchParams({...searchParams,sortPacks: sortPacks!})
-            // const params = Object.fromEntries(searchParams)
-            // console.log('params=', params)
-            // dispatch(setPacksPageCountAC(+params.pageCount || 5))
-            // dispatch(setPacksPageAC(+params.page || 1))
-            // dispatch(setMinMaxCardsAC([+params.min || minCards, +params.max || maxCards]))
-            // dispatch(setPackNameAC(params.packName || ''))
+        // dispatch(getPacksTC())
+        // setSearchParams({...searchParams,sortPacks: sortPacks!})
+        const params = Object.fromEntries(searchParams)
+        dispatch(setPacksPageCountAC(+params.pageCount || 5))
+        dispatch(setPacksPageAC(+params.page || 1))
+        dispatch(setMinMaxCardsAC(+params.min || minCards, +params.max || maxCards))
+        dispatch(setPackNameAC(params.packName || ''))
         // }
         /*dispatch(setPacksMaxCardsCountAC(+params.max || maxCardsCount))
         dispatch(setPacksMinCardsCountAC(+params.min || minCardsCount))*/
-    }, [dispatch, page, pageCount, packName, sortPacks, userId, minCards, maxCards])
-    console.log('useeffect', page, pageCount, 'packName:', packName, 'sortPacks:', sortPacks, userId, minCards, maxCards)
+    }, [])
+
+    console.log('Packs',typeof page,typeof pageCount, 'packName:',typeof packName, 'sortPacks:',typeof sortPacks,typeof userId,typeof minCards,typeof maxCards)
 
 
     const handleAddPack = () => {
@@ -89,24 +84,23 @@ export const Packs = () => {
                 private: false
             }
         }
-       dispatch(addPackTC(cardPack))
+        dispatch(addPackTC(cardPack))
     }
     const handleDeletePack = () => {
 
-       dispatch(deletePackTC(cardPacks[0]._id))
+        dispatch(deletePackTC(cardPacks[0]._id))
     }
     const handleUpdatePack = () => {
+        const identifier = Math.random().toFixed(2)
         const cardPack: UpdatePackRequestDataType = {
             cardsPack: {
                 _id: cardPacks[0]._id,
-                name: 'First Pack'
+                name: 'Name updated'+identifier
             }
         }
         dispatch(updatePackTC(cardPack))
     }
     const styleMU = useStyles();
-
-
 
 
     const handleChangePage = (e: any, newPage: number) => {
@@ -123,9 +117,9 @@ export const Packs = () => {
     };
 
     const handleChangeCountCards = (event: any, newValue: number | number[]) => {
-        dispatch(setMinMaxCardsAC(newValue as number[]))
         const counts = newValue as number []
-        setSearchParams({...searchParams, min: counts[0].toString(), max: counts[1].toString()})
+        dispatch(setMinMaxCardsAC(counts[0], counts[1]))
+        setSearchParams({...searchParams, min:counts[0].toString(),max:counts[1].toString()})
     };
     const handleSearchTitleCards = (value: string) => {
         dispatch(setPackNameAC(value))
@@ -143,16 +137,19 @@ export const Packs = () => {
                 <h3>Packs list</h3>
                 <Button className={styleMU.button}
                         onClick={handleAddPack}
-                        variant={'contained'}>Add new pack</Button>
+                        variant={'contained'}
+                        disabled={packsLoadingStatus}>Add new pack</Button>
                 <Button color={'primary'}
                         className={styleMU.button}
                         variant={'contained'}
                         onClick={handleDeletePack}
+                        disabled={packsLoadingStatus}
                 >Delete pack</Button>
                 <Button color={'primary'}
                         className={styleMU.button}
                         variant={'contained'}
                         onClick={handleUpdatePack}
+                        disabled={packsLoadingStatus}
                 >Update pack</Button>
             </div>
             <div className={s.packsBlock}>

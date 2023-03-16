@@ -10,16 +10,13 @@ import {selectAppStatus} from "./selectors";
 
 
 function App() {
-
     const appStatus = useAppSelector(selectAppStatus)
     const dispatch = useAppDispatch()
-
     useEffect(() => {
         dispatch(initializeAppTC())
-    }, [dispatch])
+    }, [])
 
-
-    if (appStatus === 'loading') {
+    if (appStatus) {
         return <CircularProgress sx={{position: 'fixed', top: '30%', right: '50%',}}/>
     }
 

@@ -28,7 +28,7 @@ export type AppActionsType = ReturnType<InferValueTypes<typeof actions>>
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 export type AppInitialStateType = {
-    status: RequestStatusType
+    status: boolean
     error: string | null
     appInfo: string | null
 }

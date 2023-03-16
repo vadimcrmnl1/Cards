@@ -13,7 +13,7 @@ export const NoFilters = ()=>{
     const handleDeleteAllFilters=()=>{
         dispatch(setPackNameAC(''))
         dispatch(setMyPacksAC(''))
-        dispatch(setMinMaxCardsAC([0,maxCountCards]))
+        dispatch(setMinMaxCardsAC(0,maxCountCards))
     }
     return(
         <div className={s.iconsFilter}>

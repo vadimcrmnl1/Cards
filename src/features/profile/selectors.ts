@@ -5,4 +5,3 @@ export const selectIsLoggedIn = (state:AppRootStateType) => state.auth.isLoggedI
 
 export const selectName = (state:AppRootStateType) => state.profile.name
 export const selectUserId = (state:AppRootStateType) => state.profile._id
-export const selectMyID = (state:AppRootStateType) => state.profile._id

@@ -1,13 +1,11 @@
-import {AddPackRequestDataType, CardPacksType, UpdatePackRequestDataType} from "../table-api";
-
-// cardPacks: CardPacksType[]
-// cardPacksTotalCount: number
-// maxCardsCount: number
-// minCardsCount: number
-// page: number
-// pageCount: number
+import { CardPacksType} from "../table-api";
 
 
+
+export const setPacksLoadingStatusAC = (packsLoadingStatus: boolean) => ({
+    type: 'TABLE/SET_PACKS_LOADING_STATUS',
+    payload: {packsLoadingStatus}
+} as const)
 export const setPacksAC = (cardPacks: CardPacksType[]) => ({
     type: 'TABLE/SET_PACKS',
     payload: {cardPacks}
@@ -43,25 +41,11 @@ export const setMyPacksAC = (id: string | null) => ({
     type: 'TABLE/SET_MY_PACKS',
     payload: {id}
 } as const)
-export const setMinMaxCardsAC = (counts: number[]) => ({
+export const setMinMaxCardsAC = (min:number, max:number) => ({
     type: 'TABLE/SET_MIN_MAX_CARDS',
-    payload: {counts}
+    payload: {min, max}
 } as const)
 export const setPacksSortAC = (sortPacks: string|null) => ({
     type: 'TABLE/SET_PACKS_SORT',
     payload: {sortPacks}
-} as const)
-export const setPacksMinCardsAC = (cardPacks: CardPacksType[]) => ({
-    type: 'TABLE/SET_MIN_CARDS',
-    payload: {cardPacks}
-} as const)
-export const setPacksMaxCardsAC = (cardPacks: CardPacksType[]) => ({
-    type: 'TABLE/SET_MAX_CARDS',
-    payload: {cardPacks}
-} as const)
-export const addPackAC = (cardPack: AddPackRequestDataType) => ({type: 'TABLE/ADD_PACK', payload: {cardPack}} as const)
-export const deletePackAC = (id: string) => ({type: 'TABLE/DELETE_PACK', payload: {id}} as const)
-export const updatePackAC = (cardPack: UpdatePackRequestDataType) => ({
-    type: 'TABLE/UPDATE_PACK',
-    payload: {cardPack}
 } as const)

@@ -15,14 +15,14 @@ import {
     selectCardsPageCount, selectCardsSort,
     selectPackUserId
 } from "../selectors";
-import {ActionsCell} from "../../Packs/PacksTable/ActionsCell/ActionsCell";
+import {ActionsCell} from "../../common/ActionsCell/ActionsCell";
 
 import {StyledTableCell, StyledTableRow} from "./styles";
 import {Grade} from "./Grade/Grade";
-import {TableTextCell} from "../../TableTextCell/TableTextCell";
+import {TableTextCell} from "../../common/TableTextCell/TableTextCell";
 import {setCardsPageAC, setCardsPageCountAC, setCardsSortAC} from "../actions";
-import {selectMyID} from "../../../profile/selectors";
-import {SortCell} from "../../Packs/PacksTable/SortCell/SortCell";
+import { selectUserId} from "../../../profile/selectors";
+import {SortCell} from "../../common/SortCell/SortCell";
 import {useSearchParams} from "react-router-dom";
 
 
@@ -34,7 +34,7 @@ export const CardsTable = () => {
     const pageCount = useAppSelector(selectCardsPageCount)
     const answer = useAppSelector(selectCardsAnswer)
     const packUserId = useAppSelector(selectPackUserId)
-    const myId = useAppSelector(selectMyID)
+    const myId = useAppSelector(selectUserId)
     const cardsSort = useAppSelector(selectCardsSort)
 
     const [searchParams, setSearchParams] = useSearchParams();
