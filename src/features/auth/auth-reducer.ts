@@ -50,11 +50,13 @@ export const logoutTC = (): AppThunk<AllReducersActionType> => async (dispatch) 
     try {
         const res = await authAPI.logout()
         setProfileAC({} as ResponseDataType)
-        dispatch(authActions.setLoggedInAC(false))
+
         dispatch(appActions.setAppInfoAC(res.data.info))
         // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
+    } finally {
+        dispatch(authActions.setLoggedInAC(false))
     }
 }
 

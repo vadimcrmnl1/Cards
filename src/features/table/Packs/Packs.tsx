@@ -14,7 +14,7 @@ import {SortComponent} from "./components/sortingByUser/SortingByUser";
 import {FilterCountCards} from "./components/filterCountCards/FilterCountCards";
 import {NoFilters} from "./components/noFilters/NoFilters";
 import {useEffect, useState} from "react";
-import {selectCardPacks} from "./selectors";
+import {selectCardPacks, selectPacksUserId} from "./selectors";
 import {addPackTC, deletePackTC, updatePackTC} from "./packs-reducer";
 import {AddPackRequestDataType, UpdatePackRequestDataType} from '../table-api';
 import {
@@ -45,31 +45,40 @@ export const Packs = () => {
     const sortPacks = useAppSelector(selectPacksSort)
     const page = useAppSelector(selectPacksPage)
     const packName = useAppSelector(selectPacksName)
-    const userId = useAppSelector(selectMyID)
+    const userId = useAppSelector(selectPacksUserId)
 
     const [searchParams, setSearchParams] = useSearchParams()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
-    const packId = useAppSelector(selectCardPacks)
-    const [isFirstLoading, setIsFirstLoading] = useState(true)
+    const cardPacks = useAppSelector(selectCardPacks)
+    // const [isFirstLoading, setIsFirstLoading] = useState(true)
 
+
+    // useEffect(() => {
+    //     if (isFirstLoading) {
+    //         const sort = searchParams.get('sortPacks')
+    //         if (sort) {
+    //             dispatch(setPacksSortAC(sort))
+    //         }
+    //         dispatch(getPacksTC())
+    //         setIsFirstLoading(false)
+    //     }
+    // }, [])
 
     useEffect(() => {
-        if (isFirstLoading) {
-            const sort = searchParams.get('sortPacks')
-            if (sort) {
-                dispatch(setPacksSortAC(sort))
-            }
+        // if (isFirstLoading) {
             dispatch(getPacksTC())
-            setIsFirstLoading(false)
-        }
-    }, [])
-
-    useEffect(() => {
-        if (!isFirstLoading) {
-            dispatch(getPacksTC())
-            setSearchParams({...searchParams,sortPacks: sortPacks!})
-        }
-    }, [dispatch, page, pageCount, packName, sortPacks, userId, minCards, maxCards, isFirstLoading])
+            // setSearchParams({...searchParams,sortPacks: sortPacks!})
+            // const params = Object.fromEntries(searchParams)
+            // console.log('params=', params)
+            // dispatch(setPacksPageCountAC(+params.pageCount || 5))
+            // dispatch(setPacksPageAC(+params.page || 1))
+            // dispatch(setMinMaxCardsAC([+params.min || minCards, +params.max || maxCards]))
+            // dispatch(setPackNameAC(params.packName || ''))
+        // }
+        /*dispatch(setPacksMaxCardsCountAC(+params.max || maxCardsCount))
+        dispatch(setPacksMinCardsCountAC(+params.min || minCardsCount))*/
+    }, [dispatch, page, pageCount, packName, sortPacks, userId, minCards, maxCards])
+    console.log('useeffect', page, pageCount, 'packName:', packName, 'sortPacks:', sortPacks, userId, minCards, maxCards)
 
 
     const handleAddPack = () => {
@@ -84,12 +93,12 @@ export const Packs = () => {
     }
     const handleDeletePack = () => {
 
-       dispatch(deletePackTC(packId[0]._id))
+       dispatch(deletePackTC(cardPacks[0]._id))
     }
     const handleUpdatePack = () => {
         const cardPack: UpdatePackRequestDataType = {
             cardsPack: {
-                _id: packId[0]._id,
+                _id: cardPacks[0]._id,
                 name: 'First Pack'
             }
         }
@@ -97,18 +106,7 @@ export const Packs = () => {
     }
     const styleMU = useStyles();
 
-    useEffect(() => {
 
-        const params = Object.fromEntries(searchParams)
-        console.log('params=', params)
-        dispatch(setPacksPageCountAC(+params.pageCount || 5))
-        dispatch(setPacksPageAC(+params.page || 1))
-        dispatch(setMinMaxCardsAC([+params.min || minCards, +params.max || maxCards]))
-        dispatch(setPackNameAC(params.packName || ''))
-
-        /*dispatch(setPacksMaxCardsCountAC(+params.max || maxCardsCount))
-        dispatch(setPacksMinCardsCountAC(+params.min || minCardsCount))*/
-    }, [])
 
 
     const handleChangePage = (e: any, newPage: number) => {

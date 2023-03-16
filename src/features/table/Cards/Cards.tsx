@@ -22,7 +22,7 @@ export const Cards = () => {
     const pageNumber= useAppSelector(selectCardsPage)
     const pageCount= useAppSelector(selectCardsPageCount)
     const cardsPack_id = useAppSelector(selectCardPacks)
-    const cardId = useAppSelector(selectCards)
+    const cards = useAppSelector(selectCards)
     const dispatch=useAppDispatch()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
     const styleMU = useStyles();
@@ -47,12 +47,12 @@ export const Cards = () => {
         dispatch(addCardTC(data))
     }
     const handleDeleteCard = () => {
-        dispatch(deleteCardTC(cardId[0]._id))
+        dispatch(deleteCardTC(cards[0]._id))
     }
     const handleUpdateCard = () => {
         const data: UpdateCardRequestDataType = {
             card: {
-                _id: cardId[0]._id,
+                _id: cards[0]._id,
                 question: 'How do i become a developer?'
             }
         }

@@ -18,9 +18,9 @@ export const SearchTitleCards = (props:SearchTitleCardsPropsType) => {
         setValue(value)
     }
 
-    useEffect(() => {
-        setValue('')
-    }, [packName === ''])
+    // useEffect(() => {
+    //     setValue('')
+    // }, [packName === ''])
     return (
         <div>
             <SuperDebouncedInput

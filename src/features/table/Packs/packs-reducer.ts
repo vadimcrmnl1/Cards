@@ -60,11 +60,11 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
         }
         case 'TABLE/SET_PACKS_SORT':
             return {...state, sortPacks: action.payload.sortPacks}
-      /*  case 'TABLE/SET_MIN_CARDS': {
-            return {...state, cardPacks:action.payload.cardPacks.filter((packs)=>{
-            return packs.cardsCount>=}
-            }*/
-       // }
+        /*  case 'TABLE/SET_MIN_CARDS': {
+              return {...state, cardPacks:action.payload.cardPacks.filter((packs)=>{
+              return packs.cardsCount>=}
+              }*/
+        // }
         default:
             return state;
     }
@@ -75,6 +75,7 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
 
 export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     // dispatch(appActions.setAppStatusAC('loading'))
+
     const {page, pageCount, cardPacksTotalCount, sortPacks, packName, user_id, min, max} = getState().packs
 
     const params: PacksParamsType = {
@@ -103,84 +104,25 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
         const res = await packsAPI.getPacks(params)
         console.log(res.data.cardPacks)
         dispatch(tableActions.setPacksAC(res.data.cardPacks))
-        dispatch(tableActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
-        dispatch(tableActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))
-        dispatch(tableActions.setPacksMinCardsCountAC(res.data.minCardsCount))
-        dispatch(tableActions.setPacksPageAC(res.data.page))
-        dispatch(tableActions.setPacksPageCountAC(res.data.pageCount))
-        dispatch(tableActions.setPackNameAC(params.packName as string))
-        dispatch(tableActions.setMinMaxCardsAC([params.min, params.max]))
-       /* dispatch(tableActions.setPacksMaxCardsAC(res.data.cardPacks))
-        dispatch(tableActions.setPacksMinCardsAC(res.data.cardPacks))*/
+        // dispatch(tableActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
+        // dispatch(tableActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))
+        // dispatch(tableActions.setPacksMinCardsCountAC(res.data.minCardsCount))
+        // dispatch(tableActions.setPacksPageAC(res.data.page))
+        // dispatch(tableActions.setPacksPageCountAC(res.data.pageCount))
+        // dispatch(tableActions.setPackNameAC(params.packName as string))
+        // dispatch(tableActions.setMinMaxCardsAC([params.min, params.max]))
+        /* dispatch(tableActions.setPacksMaxCardsAC(res.data.cardPacks))
+         dispatch(tableActions.setPacksMinCardsAC(res.data.cardPacks))*/
         //dispatch(tableActions.setMinMaxCardsAC(res.data.cardPacks))
 
-if(packName!=='' && res.data.cardPacks.length===0)
-{
-    dispatch(appActions.setAppErrorAC(`Packs with name ${packName} no search!!!`))
-}
-        dispatch(appActions.setAppStatusAC('succeeded'))
-    } catch (err: any) {
-        errorUtils(err, dispatch)
-    }
-}
-//===========================
-type Params1Type={
-    page: number,
-    pageCount:number
-}
-/*
-export const getPacksWithFiltersTC = (params1:Params1Type): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
-    dispatch(appActions.setAppStatusAC('loading'))
-    const {page, pageCount } = getState().packs
-
-    const params: PacksParamsType = {
-        page,
-        pageCount,
-    }
-    if (sortPacks !== null) {
-        params.sortPacks = sortPacks
-    }
-    if (packName !== null) {
-        params.packName = packName
-    }
-    if (user_id !== null) {
-        params.user_id = user_id
-    }
-
-    params.min = min
-    params.max = max
-    console.log(page)
-
-    try {
-        const res = await packsAPI.getPacks(params)
-        dispatch(tableActions.setPacksAC(res.data.cardPacks))
-        //проверки чтобы не было бессмысленный экшенов.
-        if (page !== res.data.page) {
-            dispatch(tableActions.setPacksPageAC(res.data.page))
+        if (packName !== '' && res.data.cardPacks.length === 0) {
+            dispatch(appActions.setAppErrorAC(`Packs with name ${packName} no search!!!`))
         }
-        if (pageCount !== res.data.pageCount) {
-            dispatch(tableActions.setPacksPageCountAC(res.data.pageCount))
-        }
-        if (cardPacksTotalCount !== res.data.cardPacksTotalCount) {
-            dispatch(tableActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
-        }
-        dispatch(tableActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))
-        dispatch(tableActions.setPacksMinCardsCountAC(res.data.minCardsCount))
-
-        if (params.sortPacks) {
-            dispatch(tableActions.setPacksSortAC(params.sortPacks))
-        } else {
-            dispatch(tableActions.setPacksSortAC('off'))
-        }
-
         // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
     }
 }
-*/
-//====================================
-
 
 export const addPackTC = (data: AddPackRequestDataType): AppThunk<AllReducersActionType> => async dispatch => {
     // dispatch(appActions.setAppStatusAC('loading'))
