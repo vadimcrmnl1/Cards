@@ -61,9 +61,10 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
     const params: CardsParamsType = {
         page,
         pageCount,
-        cardsPack_id: pack_id.toString()
+        cardsPack_id: pack_id.toString(),
+        cardAnswer
     }
-
+    console.log(page)
     if (sortCards !== null) {
         params.sortCards = sortCards
     }

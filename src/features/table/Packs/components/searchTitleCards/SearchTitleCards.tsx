@@ -4,13 +4,16 @@ import {SuperDebouncedInput} from "../../../../../common/components/SuperDebounc
 import {setPackNameAC} from "../../actions";
 import {selectPacksName} from "../../selectors";
 
-export const SearchTitleCards = () => {
+type SearchTitleCardsPropsType={
+    handleSendQuery:(value: string)=>void
+}
+export const SearchTitleCards = (props:SearchTitleCardsPropsType) => {
     const packName = useAppSelector(selectPacksName) as string
     const [value, setValue] = useState('')
-    const dispatch = useAppDispatch()
-    const handleSendQuery = (value: string) => {
+    //const dispatch = useAppDispatch()
+   /* const handleSearchTitleCards = (value: string) => {
         dispatch(setPackNameAC(value))
-    }
+    }*/
     const handleOnChangeText = (value: string) => {
         setValue(value)
     }
@@ -23,7 +26,7 @@ export const SearchTitleCards = () => {
             <SuperDebouncedInput
                 value={value}
                 onChangeText={handleOnChangeText}
-                onDebouncedChange={handleSendQuery}
+                onDebouncedChange={props.handleSendQuery}
                 placeholder={'Provide your text'}
             />
         </div>

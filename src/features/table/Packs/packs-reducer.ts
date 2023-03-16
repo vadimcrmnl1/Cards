@@ -5,6 +5,8 @@ import * as tableActions from "./actions";
 import {errorUtils} from "../../../common/utils/errorUtils";
 import {AddPackRequestDataType, CardPacksType, packsAPI, UpdatePackRequestDataType} from "../table-api";
 import {dateUtils} from "../../../common/utils/dateUtils";
+import {setAppErrorAC} from "../../../app/actions";
+import {setMinMaxCardsAC, setPackNameAC} from "./actions";
 
 export const packsInitialState = {
     cardPacks: [] as CardPacksType[],
@@ -34,9 +36,9 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
         case 'TABLE/SET_CARDS_PACK_TOTAL_COUNT':
             return {...state, cardPacksTotalCount: action.payload.cardPacksTotalCount};
         case 'TABLE/SET_MAX_CARDS_COUNT':
-            return {...state, maxCardsCount: action.payload.maxCardsCount};
+            return {...state, max: action.payload.maxCardsCount};
         case 'TABLE/SET_MIN_CARDS_COUNT':
-            return {...state, minCardsCount: action.payload.minCardsCount};
+            return {...state, min: action.payload.minCardsCount};
         case 'TABLE/SET_PACKS_PAGE':
             return {...state, page: action.payload.page};
         case 'TABLE/SET_PACKS_PAGE_COUNT':
@@ -58,6 +60,11 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
         }
         case 'TABLE/SET_PACKS_SORT':
             return {...state, sortPacks: action.payload.sortPacks}
+      /*  case 'TABLE/SET_MIN_CARDS': {
+            return {...state, cardPacks:action.payload.cardPacks.filter((packs)=>{
+            return packs.cardsCount>=}
+            }*/
+       // }
         default:
             return state;
     }
@@ -85,11 +92,65 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
     if (user_id !== null) {
         params.user_id = user_id
     }
+
     params.min = min
     params.max = max
+    console.log(page)
     /*if (min !== null && max!==null) {
         params.user_id = user_id
     }*/
+    try {
+        const res = await packsAPI.getPacks(params)
+        console.log(res.data.cardPacks)
+        dispatch(tableActions.setPacksAC(res.data.cardPacks))
+        dispatch(tableActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
+        dispatch(tableActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))
+        dispatch(tableActions.setPacksMinCardsCountAC(res.data.minCardsCount))
+        dispatch(tableActions.setPacksPageAC(res.data.page))
+        dispatch(tableActions.setPacksPageCountAC(res.data.pageCount))
+        dispatch(tableActions.setPackNameAC(params.packName as string))
+        dispatch(tableActions.setMinMaxCardsAC([params.min, params.max]))
+       /* dispatch(tableActions.setPacksMaxCardsAC(res.data.cardPacks))
+        dispatch(tableActions.setPacksMinCardsAC(res.data.cardPacks))*/
+        //dispatch(tableActions.setMinMaxCardsAC(res.data.cardPacks))
+
+if(packName!=='' && res.data.cardPacks.length===0)
+{
+    dispatch(appActions.setAppErrorAC(`Packs with name ${packName} no search!!!`))
+}
+        dispatch(appActions.setAppStatusAC('succeeded'))
+    } catch (err: any) {
+        errorUtils(err, dispatch)
+    }
+}
+//===========================
+type Params1Type={
+    page: number,
+    pageCount:number
+}
+/*
+export const getPacksWithFiltersTC = (params1:Params1Type): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+    dispatch(appActions.setAppStatusAC('loading'))
+    const {page, pageCount } = getState().packs
+
+    const params: PacksParamsType = {
+        page,
+        pageCount,
+    }
+    if (sortPacks !== null) {
+        params.sortPacks = sortPacks
+    }
+    if (packName !== null) {
+        params.packName = packName
+    }
+    if (user_id !== null) {
+        params.user_id = user_id
+    }
+
+    params.min = min
+    params.max = max
+    console.log(page)
+
     try {
         const res = await packsAPI.getPacks(params)
         dispatch(tableActions.setPacksAC(res.data.cardPacks))
@@ -117,6 +178,10 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
         errorUtils(err, dispatch)
     }
 }
+*/
+//====================================
+
+
 export const addPackTC = (data: AddPackRequestDataType): AppThunk<AllReducersActionType> => async dispatch => {
     // dispatch(appActions.setAppStatusAC('loading'))
     try {
