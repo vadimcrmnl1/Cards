@@ -4,6 +4,7 @@ import SortIcon from '@mui/icons-material/Sort';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {useAppSelector} from "../../../../app/store";
 import {selectPacksLoadingStatus} from "../../Packs/selectors";
+import {selectCardsLoadingStatus} from "../../Cards/selectors";
 
 type SortCellPropsType = {
     label: string
@@ -14,6 +15,8 @@ type SortCellPropsType = {
 export const SortCell: React.FC<SortCellPropsType> = ({label, sorter, sort, toggleSort}) => {
 
     const packsLoadingStatus = useAppSelector(selectPacksLoadingStatus)
+    const cardsLoadingStatus = useAppSelector(selectCardsLoadingStatus)
+    const buttonDisabled = packsLoadingStatus || cardsLoadingStatus
 
     const handleClick = () => {
         if (sort === null) {
@@ -34,7 +37,7 @@ export const SortCell: React.FC<SortCellPropsType> = ({label, sorter, sort, togg
     return (<div className={s.wrapper}>
             <p> {label}</p>
             <button onClick={handleClick}
-                    disabled={packsLoadingStatus}
+                    disabled={buttonDisabled}
             >
                 {icon}
             </button>

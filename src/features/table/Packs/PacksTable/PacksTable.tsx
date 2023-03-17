@@ -11,7 +11,7 @@ import {
     selectPacksSort,
     selectPacksPageCount
 } from "../selectors";
-import { setPacksSortAC} from "../actions";
+import {setPacksSortAC} from "../actions";
 import {TableHead} from "@mui/material";
 import {ActionsCell} from "../../common/ActionsCell/ActionsCell";
 import {NavLink} from "react-router-dom";
@@ -107,7 +107,9 @@ export const PacksTable = () => {
                                 <StyledTableCell>
                                     <ActionsCell
                                         packs
-                                        packOwnerId={cardPack.user_id}/>
+                                        packOwnerId={cardPack.user_id}
+                                        itemId={cardPack._id}
+                                    />
                                 </StyledTableCell>
                             </StyledTableRow>
                         })}
