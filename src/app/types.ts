@@ -25,10 +25,10 @@ export type AllReducersActionType = AuthActionsType
 
 export type AppActionsType = ReturnType<InferValueTypes<typeof actions>>
 
-export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 export type AppInitialStateType = {
-    status: boolean
+    isAppInitialized: boolean
+    isLoading: boolean
     error: string | null
     appInfo: string | null
 }

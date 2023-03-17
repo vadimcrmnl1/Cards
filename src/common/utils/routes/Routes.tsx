@@ -33,7 +33,7 @@ const router = createHashRouter([
             {
                 errorElement: <ErrorPage/>,
                 children: [
-                    {index: true, element: <Login/>},
+                    {index: true, element: <Packs/>},
 
                     {
                         path: PATH.login,

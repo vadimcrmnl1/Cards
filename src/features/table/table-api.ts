@@ -5,8 +5,6 @@ import {instance} from "../../api/api";
 
 export const packsAPI = {
     getPacks(params: PacksRequestDataType) {
-        const date=new Date()
-        // console.log(date)
         return instance.get<PacksResponseDataType>('cards/pack', {params})
     },
     addPack(data: AddPackRequestDataType) {

@@ -1,10 +1,12 @@
 import {PacksActionsType, PacksParamsType} from "./types";
 import {AllReducersActionType, AppThunk} from "../../../app/types";
 import * as appActions from "../../../app/actions";
-import * as packsActions from "./actions";
+import * as tableActions from './actions'
+import * as packsActions from '../Packs/actions'
 import {errorUtils} from "../../../common/utils/errorUtils";
 import {AddPackRequestDataType, CardPacksType, packsAPI, UpdatePackRequestDataType} from "../table-api";
 import {dateUtils} from "../../../common/utils/dateUtils";
+import {setAppIsLoadingAC} from "../../../app/actions";
 
 export const packsInitialState = {
     packsLoadingStatus: false,
@@ -101,9 +103,6 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
          dispatch(tableActions.setPacksMinCardsAC(res.data.cardPacks))*/
         // dispatch(packsActions.setMinMaxCardsAC(res.data.cardPacks))
 
-        // if (packName !== '' && res.data.cardPacks.length === 0) {
-        //     dispatch(appActions.setAppErrorAC(`Packs with name ${packName} no search!!!`))
-        // }
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {

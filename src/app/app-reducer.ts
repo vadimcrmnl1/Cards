@@ -6,15 +6,18 @@ import * as profileActions from './../features/profile/actions'
 import {errorUtils} from "../common/utils/errorUtils";
 
 const appInitialState: AppInitialStateType = {
-    status: false,
+    isAppInitialized: false,
+    isLoading: false,
     error: null,
     appInfo: null,
 }
 
 export const appReducer = (state: AppInitialStateType = appInitialState, action: AppActionsType): AppInitialStateType => {
     switch (action.type) {
-        case 'APP/STATUS':
-            return {...state, status: action.status}
+        case 'APP/SET_APP_IS_INITIALIZED':
+            return {...state, isAppInitialized: action.isAppInitialized}
+        case 'APP/SET_IS_LOADING':
+            return {...state, isLoading: action.isLoading}
         case 'APP/ERROR':
             return {...state, error: action.error}
         case 'APP/INFO':
@@ -26,11 +29,12 @@ export const appReducer = (state: AppInitialStateType = appInitialState, action:
 
 //thunks
 export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch) => {
-    dispatch(appActions.setAppStatusAC(true))
+    dispatch(appActions.setAppIsLoadingAC(true))
     authAPI.me()
         .then(res => {
             dispatch(authAction.setLoggedInAC(true))
             dispatch(profileActions.setProfileAC(res.data))
+
         })
         .catch((error: any) => {
             //не удалять, избавляет от первой ошибки неаторизованного
@@ -39,7 +43,8 @@ export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch)
             }
         })
         .finally(() => {
-            dispatch(appActions.setAppStatusAC(false))
+            dispatch(appActions.setAppIsInitializedAC(true))
+            dispatch(appActions.setAppIsLoadingAC(false))
         })
 }
 

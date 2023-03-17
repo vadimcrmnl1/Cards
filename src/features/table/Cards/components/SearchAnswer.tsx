@@ -2,33 +2,33 @@ import React, {useState} from "react";
 import {setCardsSearchByAnswerAC} from "../actions";
 import {useAppDispatch} from "../../../../app/store";
 import {SuperDebouncedInput} from "../../../../common/components/SuperDebouncedInput/SuperDebouncedInput";
-import s from "../../Packs/components/noFilters/NoFilters.module.css";
-import filterIcon from "../../../images/Group 1496.png";
+import s from "./SearchAnswer.module.css";
+import close from "../../../images/close.png";
 
-export const SearchByCardsName = () => {
+type SearchByCardsNamePropsType={
+    handleSearchAnswer:(value: string)=>void
+}
+export const SearchAnswer = (props:SearchByCardsNamePropsType) => {
     const [value, setValue] = useState('')
     const dispatch = useAppDispatch()
-    const handleSendQuery = (value: string) => {
-        dispatch(setCardsSearchByAnswerAC(value))
-    }
-    const handleOnChangeText = (value: string) => {
-        setValue(value)
-    }
+
     const handleDeleteFilter = () => {
         dispatch(setCardsSearchByAnswerAC(''))
         setValue('')
     }
-
+    const handleOnChangeText = (value: string) => {
+        setValue(value)
+    }
     return (
-        <div>
+        <div className={s.searchAnswerBlock}>
             <SuperDebouncedInput
                 value={value}
                 onChangeText={handleOnChangeText}
-                onDebouncedChange={handleSendQuery}
+                onDebouncedChange={props.handleSearchAnswer}
                 placeholder={'Provide your text'}
             />
             <div className={s.iconsFilter}>
-                <img alt={'icon'} src={filterIcon} className={'icon'} onClick={handleDeleteFilter}/>
+                <img alt={'icon'} src={close} className={s.iconClose} onClick={handleDeleteFilter}/>
             </div>
         </div>
     )

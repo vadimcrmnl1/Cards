@@ -5,26 +5,26 @@ import {PacksTable} from "./PacksTable/PacksTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
 import {Navigate, useSearchParams} from 'react-router-dom';
 import {PATH} from "../../../common/utils/routes/Routes";
-import {Button} from "@mui/material";
+import {AddPackRequestDataType} from "../table-api";
+import {Button, SelectChangeEvent} from "@mui/material";
 import {useStyles} from "../../styleMU/styleMU";
 import s from "./Packs.module.css"
 import {PaginationComponent} from "./components/pagination/PaginationComponent";
 import {SearchTitleCards} from './components/searchTitleCards/SearchTitleCards';
-import {SortComponent} from "./components/sortingByUser/SortingByUser";
+import {SortingByUser} from "./components/sortingByUser/SortingByUser";
 import {FilterCountCards} from "./components/filterCountCards/FilterCountCards";
 import {NoFilters} from "./components/noFilters/NoFilters";
-import {useEffect} from "react";
-import {selectCardPacks, selectPacksLoadingStatus, selectPacksUserId} from "./selectors";
-import {addPackTC, deletePackTC, updatePackTC} from "./packs-reducer";
-import {AddPackRequestDataType, UpdatePackRequestDataType} from '../table-api';
+import {useEffect, useState} from "react";
+import {selectCardPacks, selectMaxCardsCount, selectMinCardsCount, selectPacksUserId} from "./selectors";
+import {addPackTC, getPacksTC} from "./packs-reducer";
 import {
     selectCardPacksTotalCount,
-    selectMaxCardsCount,
-    selectMinCardsCount, selectPacksMaxCards, selectPacksMinCards, selectPacksName,
+    selectPacksMaxCards, selectPacksMinCards, selectPacksName,
     selectPacksPage,
     selectPacksPageCount, selectPacksSort
 } from "./selectors";
 import {
+    setMyPacksAC,
     setMinMaxCardsAC, setPackNameAC,
     setPacksPageAC,
     setPacksPageCountAC
@@ -32,9 +32,13 @@ import {
 import {getPacksTC} from "./packs-reducer";
 import {EmptySearch} from "../../../common/components/EmptySearch/EmptySearch";
 
+import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
+import {selectIsAppMakeRequest} from "../../../app/selectors";
+import {selectUserId} from "../../profile/selectors";
 
 export const Packs = () => {
     const dispatch = useAppDispatch()
+    const myID = useAppSelector(selectUserId)
     const totalCount = useAppSelector(selectCardPacksTotalCount)
     const pageNumber = useAppSelector(selectPacksPage)
     const pageCount = useAppSelector(selectPacksPageCount)
@@ -46,13 +50,11 @@ export const Packs = () => {
     const page = useAppSelector(selectPacksPage)
     const packName = useAppSelector(selectPacksName)
     const userId = useAppSelector(selectPacksUserId)
-    const packsLoadingStatus = useAppSelector(selectPacksLoadingStatus)
-
+    const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
     const [searchParams, setSearchParams] = useSearchParams()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
-    const cardPacks = useAppSelector(selectCardPacks)
-    // const [isFirstLoading, setIsFirstLoading] = useState(true)
-
+    const [disabled, setDisabled]=useState(false)
+    const styleMU = useStyles();
 
     useEffect(() => {
         if (isLoggedIn){
@@ -67,15 +69,14 @@ export const Packs = () => {
         const params = Object.fromEntries(searchParams)
         dispatch(setPacksPageCountAC(+params.pageCount || 5))
         dispatch(setPacksPageAC(+params.page || 1))
-        dispatch(setMinMaxCardsAC(+params.min || minCards, +params.max || maxCards))
-        dispatch(setPackNameAC(params.packName || ''))
-        // }
-        /*dispatch(setPacksMaxCardsCountAC(+params.max || maxCardsCount))
-        dispatch(setPacksMinCardsCountAC(+params.min || minCardsCount))*/
-    }, [])
+        dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
+        dispatch(setPackNameAC(params.packName || null))
+        dispatch(setMyPacksAC(params.user_id || ''))
+    },[])
 
-    console.log('Packs',typeof page,typeof pageCount, 'packName:',typeof packName, 'sortPacks:',typeof sortPacks,typeof userId,typeof minCards,typeof maxCards)
-
+    if (!isLoggedIn) {
+        return <Navigate to={PATH.login}/>
+    }
 
     const handleAddPack = () => {
         const cardPack: AddPackRequestDataType = {
@@ -103,34 +104,48 @@ export const Packs = () => {
     }
     const styleMU = useStyles();
 
-
-    const handleChangePage = (e: any, newPage: number) => {
-        console.log('searchParams=', searchParams)
-        dispatch(setPacksPageAC(newPage + 1))
-        setSearchParams({...searchParams, page: (newPage + 1).toString()})
+//Change pagination
+    const handleChangePage = (event: React.ChangeEvent<unknown>, newPage:number) => {
+        dispatch(setPacksPageAC(newPage+1))
+        setSearchParams({...searchParams, page:(newPage+1).toString()})
     };
-
-    const handleChangeRowsPerPage = (e: any) => {
-        console.log('searchParams=', searchParams)
-        dispatch(setPacksPageCountAC(+e.target.value));
+    const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
+        dispatch(setPacksPageCountAC(+event.target.value));
         dispatch(setPacksPageAC(1))
-        setSearchParams({page: 1, pageCount: +e.target.value}.toString)
+        setSearchParams({...searchParams, page: '1', pageCount: event.target.value})
     };
 
     const handleChangeCountCards = (event: any, newValue: number | number[]) => {
         const counts = newValue as number []
         dispatch(setMinMaxCardsAC(counts[0], counts[1]))
-        setSearchParams({...searchParams, min:counts[0].toString(),max:counts[1].toString()})
+        setSearchParams({...searchParams, min: counts[0].toString(), max: counts[1].toString()})
     };
     const handleSearchTitleCards = (value: string) => {
         dispatch(setPackNameAC(value))
-        setSearchParams({...searchParams, packName: value})
-        console.log(searchParams)
+        setSearchParams({...searchParams, packName:value})
     }
-
-
-    if (!isLoggedIn) {
-        return <Navigate to={PATH.login}/>
+//Delete Filters
+    const handleDeleteAllFilters=()=>{
+        dispatch(setPackNameAC(''))
+        dispatch(setMyPacksAC(''))
+        dispatch(setMinMaxCardsAC(0, maxCardsCount))
+        setSearchParams({page:'1',
+                                 pageCount: '5',
+                                min: minCardsCount.toString(),
+                                max: maxCardsCount.toString(),
+                                packName:'' as string,
+                                user_id:'' as string})
+    }
+//Sort by my packs
+    const handleSortByMyPacks = () => {
+        dispatch(setMyPacksAC(myID))
+        setSearchParams({...searchParams, user_id:myID as string})
+        setDisabled(true)
+    }
+    const handleSortByAllPacks = () => {
+        dispatch(setMyPacksAC(''))
+        setSearchParams({...searchParams, user_id: ''})
+        setDisabled(false)
     }
     return (
         <div className={s.container}>
@@ -139,25 +154,18 @@ export const Packs = () => {
                 <Button className={styleMU.button}
                         onClick={handleAddPack}
                         variant={'contained'}
-                        disabled={packsLoadingStatus}>Add new pack</Button>
-                <Button color={'primary'}
-                        className={styleMU.button}
-                        variant={'contained'}
-                        onClick={handleDeletePack}
-                        disabled={packsLoadingStatus}
-                >Delete pack</Button>
-                <Button color={'primary'}
-                        className={styleMU.button}
-                        variant={'contained'}
-                        onClick={handleUpdatePack}
-                        disabled={packsLoadingStatus}
-                >Update pack</Button>
+                        disabled={isAppMakeRequest}
+                >
+                    Add new pack
+                </Button>
             </div>
             <div className={s.packsBlock}>
                 <SearchTitleCards handleSendQuery={handleSearchTitleCards}/>
-                <SortComponent/>
+                <SortingByUser handleSortByAllPacks={handleSortByAllPacks}
+                               handleSortByMyPacks={handleSortByMyPacks}
+                               disabled={disabled}/>
                 <FilterCountCards handleChange={handleChangeCountCards}/>
-                <NoFilters/>
+                <NoFilters handleDeleteAllFilters={handleDeleteAllFilters}/>
             </div>
             <div>
                 {cardPacks.length !== 0
@@ -170,7 +178,7 @@ export const Packs = () => {
                                  pageCount={pageCount}
                                  handleChangePage={handleChangePage}
                                  handleChangeRowsPerPage={handleChangeRowsPerPage}/>
-
+            <ErrorSnackbar/>
         </div>
     )
 }
