@@ -5,9 +5,9 @@ import {AllReducersActionType, AppThunk} from "../../../app/types";
 import * as appActions from './../../../app/actions'
 import * as cardsActions from './actions'
 import {errorUtils} from "../../../common/utils/errorUtils";
+import {setAppIsLoadingAC} from "./../../../app/actions";
 
 export const cardsInitialState = {
-    cardsLoadingStatus: false,
     cards: [] as CardsType[],
     cardsTotalCount: 1,
     maxGrade: 1,
@@ -24,8 +24,6 @@ export type CardsInitialStateType = typeof cardsInitialState
 
 export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, action: CardsActionsType): CardsInitialStateType => {
     switch (action.type) {
-        case 'TABLE/SET_CARDS_LOADING_STATUS':
-            return {...state, cardsLoadingStatus: action.payload.cardsLoadingStatus}
         case 'TABLE/SET_CARDS':
             return {
                 ...state, cards: action.payload.cards.map(cards => {
@@ -57,7 +55,7 @@ export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, a
 
 
 export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
-    dispatch(cardsActions.setCardsLoadingStatusAC(true))
+    dispatch(setAppIsLoadingAC(true))
     const {page, pageCount, pack_id, sortCards, cardAnswer} = getState().cards
     const params: CardsParamsType = {
         page,
@@ -77,11 +75,11 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {
-        dispatch(cardsActions.setCardsLoadingStatusAC(false))
+        dispatch(setAppIsLoadingAC(false))
     }
 }
 export const addCardTC = (data: AddCardRequestType): AppThunk<AllReducersActionType> => async (dispatch) => {
-    dispatch(cardsActions.setCardsLoadingStatusAC(true))
+    dispatch(setAppIsLoadingAC(true))
     try {
         await cardsAPI.addCard(data)
         dispatch(getCardsTC())
@@ -90,11 +88,11 @@ export const addCardTC = (data: AddCardRequestType): AppThunk<AllReducersActionT
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {
-        dispatch(cardsActions.setCardsLoadingStatusAC(false))
+        dispatch(setAppIsLoadingAC(false))
     }
 }
 export const deleteCardTC = (id: string): AppThunk<AllReducersActionType> => async (dispatch) => {
-    dispatch(cardsActions.setCardsLoadingStatusAC(true))
+    dispatch(setAppIsLoadingAC(true))
     try {
         await cardsAPI.deleteCard(id)
         dispatch(getCardsTC())
@@ -102,11 +100,11 @@ export const deleteCardTC = (id: string): AppThunk<AllReducersActionType> => asy
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {
-        dispatch(cardsActions.setCardsLoadingStatusAC(false))
+        dispatch(setAppIsLoadingAC(false))
     }
 }
 export const updateCardTC = (data: UpdateCardRequestDataType): AppThunk<AllReducersActionType> => async (dispatch) => {
-    dispatch(cardsActions.setCardsLoadingStatusAC(true))
+    dispatch(setAppIsLoadingAC(true))
     try {
         await cardsAPI.updateCard(data)
         dispatch(getCardsTC())
@@ -114,6 +112,6 @@ export const updateCardTC = (data: UpdateCardRequestDataType): AppThunk<AllReduc
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {
-        dispatch(cardsActions.setCardsLoadingStatusAC(false))
+        dispatch(setAppIsLoadingAC(false))
     }
 }

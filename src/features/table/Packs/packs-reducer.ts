@@ -5,9 +5,9 @@ import * as packsActions from "./actions";
 import {errorUtils} from "../../../common/utils/errorUtils";
 import {AddPackRequestDataType, CardPacksType, packsAPI, UpdatePackRequestDataType} from "../table-api";
 import {dateUtils} from "../../../common/utils/dateUtils";
+import {setAppIsLoadingAC} from "../../../app/actions";
 
 export const packsInitialState = {
-    packsLoadingStatus: false,
     cardPacks: [] as CardPacksType[],
     cardPacksTotalCount: 1,
     maxCardsCount: 1,
@@ -26,8 +26,6 @@ export type PacksInitialStateType = typeof packsInitialState
 
 export const packsReducer = (state: PacksInitialStateType = packsInitialState, action: PacksActionsType): PacksInitialStateType => {
     switch (action.type) {
-        case 'TABLE/SET_PACKS_LOADING_STATUS':
-            return {...state, packsLoadingStatus: action.payload.packsLoadingStatus};
         case 'TABLE/SET_PACKS':
             return {
                 ...state, cardPacks: action.payload.cardPacks.map(pack => {
@@ -64,7 +62,7 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
 //thunks
 
 export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
-    dispatch(packsActions.setPacksLoadingStatusAC(true))
+    dispatch(setAppIsLoadingAC(true))
 
     const {page, pageCount,  sortPacks, packName, user_id, min, max} = getState().packs
 
@@ -105,12 +103,12 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {
-        dispatch(packsActions.setPacksLoadingStatusAC(false))
+        dispatch(setAppIsLoadingAC(false))
     }
 }
 
 export const addPackTC = (data: AddPackRequestDataType): AppThunk<AllReducersActionType> => async dispatch => {
-    dispatch(packsActions.setPacksLoadingStatusAC(true))
+    dispatch(setAppIsLoadingAC(true))
     try {
         await packsAPI.addPack(data)
         dispatch(getPacksTC())
@@ -118,11 +116,11 @@ export const addPackTC = (data: AddPackRequestDataType): AppThunk<AllReducersAct
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {
-        dispatch(packsActions.setPacksLoadingStatusAC(false))
+        dispatch(setAppIsLoadingAC(false))
     }
 }
 export const deletePackTC = (id: string): AppThunk<AllReducersActionType> => async dispatch => {
-    dispatch(packsActions.setPacksLoadingStatusAC(true))
+    dispatch(setAppIsLoadingAC(true))
     try {
         await packsAPI.deletePack(id)
         dispatch(getPacksTC())
@@ -130,11 +128,11 @@ export const deletePackTC = (id: string): AppThunk<AllReducersActionType> => asy
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {
-        dispatch(packsActions.setPacksLoadingStatusAC(false))
+        dispatch(setAppIsLoadingAC(false))
     }
 }
 export const updatePackTC = (data: UpdatePackRequestDataType): AppThunk<AllReducersActionType> => async dispatch => {
-    dispatch(packsActions.setPacksLoadingStatusAC(true))
+    dispatch(setAppIsLoadingAC(true))
     try {
         await packsAPI.updatePack(data)
         dispatch(getPacksTC())
@@ -142,7 +140,7 @@ export const updatePackTC = (data: UpdatePackRequestDataType): AppThunk<AllReduc
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {
-        dispatch(packsActions.setPacksLoadingStatusAC(false))
+        dispatch(setAppIsLoadingAC(false))
     }
 }
 

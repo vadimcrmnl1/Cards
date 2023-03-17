@@ -2,27 +2,26 @@ import React, {useEffect} from 'react';
 import s from './App.module.css';
 import {Header} from "../common/components/Header/Header";
 import {Outlet} from "react-router-dom";
-import {ErrorSnackbar} from "../common/components/ErrorSnackbar/ErrorSnackbar";
 import {useAppDispatch, useAppSelector} from "./store";
-import {CircularProgress} from "@mui/material";
 import {initializeAppTC} from "./app-reducer";
-import {selectAppStatus} from "./selectors";
+import {selectIsAppInitialized} from "./selectors";
+import {Spinner} from "../common/components/Spinner";
 
 
 function App() {
-    const appStatus = useAppSelector(selectAppStatus)
+    const isAppInitialized = useAppSelector(selectIsAppInitialized)
     const dispatch = useAppDispatch()
+
     useEffect(() => {
         dispatch(initializeAppTC())
     }, [])
 
-    if (appStatus) {
-        return <CircularProgress sx={{position: 'fixed', top: '30%', right: '50%',}}/>
+    if (!isAppInitialized) {
+        return <Spinner/>
     }
 
     return (
         <div className={s.App}>
-            <ErrorSnackbar/>
             <Header/>
             <div className={s.appWrapper}>
                 <Outlet/>

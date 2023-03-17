@@ -2,4 +2,5 @@ import {AppRootStateType} from "./store";
 
 export const selectError = (state:AppRootStateType) => state.app.error
 export const selectAppInfo = (state:AppRootStateType) => state.app.appInfo
-export const selectAppStatus = (state:AppRootStateType) => state.app.status
+export const selectIsAppInitialized = (state:AppRootStateType) => state.app.isAppInitialized
+export const selectIsAppMakeRequest = (state:AppRootStateType) => state.app.isLoading

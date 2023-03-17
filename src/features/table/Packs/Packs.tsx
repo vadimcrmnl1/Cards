@@ -14,7 +14,7 @@ import {SortComponent} from "./components/sortingByUser/SortingByUser";
 import {FilterCountCards} from "./components/filterCountCards/FilterCountCards";
 import {NoFilters} from "./components/noFilters/NoFilters";
 import {useEffect} from "react";
-import {selectCardPacks, selectPacksLoadingStatus, selectPacksUserId} from "./selectors";
+import {selectCardPacks,  selectPacksUserId} from "./selectors";
 import {addPackTC} from "./packs-reducer";
 import {AddPackRequestDataType} from '../table-api';
 import {
@@ -30,6 +30,8 @@ import {
     setPacksPageCountAC
 } from "./actions";
 import {getPacksTC} from "./packs-reducer";
+import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
+import {selectIsAppMakeRequest} from "../../../app/selectors";
 
 
 export const Packs = () => {
@@ -45,16 +47,17 @@ export const Packs = () => {
     const page = useAppSelector(selectPacksPage)
     const packName = useAppSelector(selectPacksName)
     const userId = useAppSelector(selectPacksUserId)
-    const packsLoadingStatus = useAppSelector(selectPacksLoadingStatus)
+    const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
 
     const [searchParams, setSearchParams] = useSearchParams()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
     const cardPacks = useAppSelector(selectCardPacks)
+
     // const [isFirstLoading, setIsFirstLoading] = useState(true)
 
 
     useEffect(() => {
-        if (isLoggedIn){
+        if (isLoggedIn) {
             dispatch(getPacksTC())
         }
     }, [dispatch, page, pageCount, packName, sortPacks, userId, minCards, maxCards])
@@ -73,7 +76,7 @@ export const Packs = () => {
         dispatch(setPacksMinCardsCountAC(+params.min || minCardsCount))*/
     }, [])
 
-    console.log('Packs',typeof page,typeof pageCount, 'packName:',typeof packName, 'sortPacks:',typeof sortPacks,typeof userId,typeof minCards,typeof maxCards)
+    console.log('Packs', page, pageCount, 'packName:', packName, 'sortPacks:', sortPacks, userId, minCards, maxCards)
 
 
     const handleAddPack = () => {
@@ -105,7 +108,7 @@ export const Packs = () => {
     const handleChangeCountCards = (event: any, newValue: number | number[]) => {
         const counts = newValue as number []
         dispatch(setMinMaxCardsAC(counts[0], counts[1]))
-        setSearchParams({...searchParams, min:counts[0].toString(),max:counts[1].toString()})
+        setSearchParams({...searchParams, min: counts[0].toString(), max: counts[1].toString()})
     };
     const handleSearchTitleCards = (value: string) => {
         dispatch(setPackNameAC(value))
@@ -124,7 +127,10 @@ export const Packs = () => {
                 <Button className={styleMU.button}
                         onClick={handleAddPack}
                         variant={'contained'}
-                        disabled={packsLoadingStatus}>Add new pack</Button>
+                        disabled={isAppMakeRequest}
+                >
+                    Add new pack
+                </Button>
             </div>
             <div className={s.packsBlock}>
                 <SearchTitleCards handleSendQuery={handleSearchTitleCards}/>
@@ -140,7 +146,7 @@ export const Packs = () => {
                                  pageCount={pageCount}
                                  handleChangePage={handleChangePage}
                                  handleChangeRowsPerPage={handleChangeRowsPerPage}/>
-
+            <ErrorSnackbar/>
         </div>
     )
 }

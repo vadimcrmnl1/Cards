@@ -2,9 +2,8 @@ import * as React from "react";
 import s from './SortCell.module.css'
 import SortIcon from '@mui/icons-material/Sort';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import {useAppSelector} from "../../../../app/store";
-import {selectPacksLoadingStatus} from "../../Packs/selectors";
-import {selectCardsLoadingStatus} from "../../Cards/selectors";
+import { useAppSelector} from "../../../../app/store";
+import {selectIsAppMakeRequest} from "../../../../app/selectors";
 
 type SortCellPropsType = {
     label: string
@@ -14,9 +13,7 @@ type SortCellPropsType = {
 }
 export const SortCell: React.FC<SortCellPropsType> = ({label, sorter, sort, toggleSort}) => {
 
-    const packsLoadingStatus = useAppSelector(selectPacksLoadingStatus)
-    const cardsLoadingStatus = useAppSelector(selectCardsLoadingStatus)
-    const buttonDisabled = packsLoadingStatus || cardsLoadingStatus
+    const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
 
     const handleClick = () => {
         if (sort === null) {
@@ -37,7 +34,7 @@ export const SortCell: React.FC<SortCellPropsType> = ({label, sorter, sort, togg
     return (<div className={s.wrapper}>
             <p> {label}</p>
             <button onClick={handleClick}
-                    disabled={buttonDisabled}
+                    disabled={isAppMakeRequest}
             >
                 {icon}
             </button>

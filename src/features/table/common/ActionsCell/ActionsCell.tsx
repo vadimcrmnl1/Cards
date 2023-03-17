@@ -9,6 +9,7 @@ import {useState} from "react";
 import {deleteCardTC, updateCardTC} from "../../Cards/cards-reducer";
 import {deletePackTC, updatePackTC} from "../../Packs/packs-reducer";
 import {UpdateCardRequestDataType, UpdatePackRequestDataType} from "../../table-api";
+import {selectIsAppMakeRequest} from "../../../../app/selectors";
 
 type ActionsCellPropsType = {
     packOwnerId: string
@@ -20,6 +21,7 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({packOwnerId, packs,
     const dispatch = useAppDispatch()
 
     const userId = useAppSelector(selectUserId)
+    const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
 
     // Это заготовка для 3 недели =======***=======
     const [editModalOpen, setEditModalOpen] = useState(false)
@@ -42,14 +44,14 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({packOwnerId, packs,
         const identifier = Math.random().toFixed(2)
         const cardPack: UpdatePackRequestDataType = {
             cardsPack: {
-                _id:itemId,
-                name: 'Name updated '+identifier
+                _id: itemId,
+                name: 'Name updated ' + identifier
             }
         }
         const data: UpdateCardRequestDataType = {
             card: {
                 _id: itemId,
-                question: 'How do i become a developer? ' +identifier
+                question: 'How do i become a developer? ' + identifier
             }
         }
         const action = packs ? updatePackTC(cardPack) : updateCardTC(data)
@@ -63,10 +65,12 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({packOwnerId, packs,
             </button>}
             {packOwnerId === userId &&
                 <div>
-                    <button onClick={handleUpdateCard}>
+                    <button onClick={handleUpdateCard}
+                            disabled={isAppMakeRequest}>
                         <EditIcon/>
                     </button>
-                    <button onClick={handleDeleteCard}>
+                    <button onClick={handleDeleteCard}
+                            disabled={isAppMakeRequest}>
                         <TrashIcon/>
                     </button>
                 </div>}

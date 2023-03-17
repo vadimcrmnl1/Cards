@@ -1,9 +1,5 @@
 import {CardsType} from "../table-api";
 
-export const setCardsLoadingStatusAC = (cardsLoadingStatus: boolean) => ({
-    type: 'TABLE/SET_CARDS_LOADING_STATUS',
-    payload: {cardsLoadingStatus}
-} as const)
 export const setCardsAC = (cards: CardsType[]) => ({
     type: 'TABLE/SET_CARDS',
     payload: {cards}

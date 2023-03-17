@@ -2,13 +2,14 @@ import {Button} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../../../app/store";
 import { selectUserId} from "../../../../profile/selectors";
 import {setMyPacksAC} from "../../actions";
-import {selectPacksLoadingStatus} from "../../selectors";
+import {selectIsAppMakeRequest} from "../../../../../app/selectors";
 
 
 export const SortComponent = () => {
     const dispatch = useAppDispatch()
     const myID = useAppSelector(selectUserId)
-    const packsLoadingStatus = useAppSelector(selectPacksLoadingStatus)
+    const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
+
     const handleSortByMyPacks = () => {
         dispatch(setMyPacksAC(myID))
     }
@@ -19,10 +20,10 @@ export const SortComponent = () => {
         <div>
             <Button variant="contained"
                     onClick={handleSortByMyPacks}
-                    disabled={packsLoadingStatus}>My</Button>
+                    disabled={isAppMakeRequest}>My</Button>
             <Button variant="contained"
                     onClick={handleSortByAllPacks}
-                    disabled={packsLoadingStatus}>All</Button>
+                    disabled={isAppMakeRequest}>All</Button>
         </div>
     )
 }
