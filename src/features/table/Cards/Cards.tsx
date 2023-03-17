@@ -5,10 +5,9 @@ import {CardsTable} from "./CardsTable/CardsTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
 import {Navigate, useSearchParams} from 'react-router-dom';
 import {PATH} from "../../../common/utils/routes/Routes";
-import {SearchAnswer} from "./components/SearchByCardsName";
 import {LinkToBack} from "../../../common/components/LinkToBack/LinkToBack";
 import {PaginationComponent} from "../Packs/components/pagination/PaginationComponent";
-import {selectCardsPage, selectCardsPageCount, selectCardsTotalCount} from "./selectors";
+import {selectCardsPage, selectCardsPageCount, selectCardsTotalCount, selectPackName} from "./selectors";
 import {setCardsPageAC, setCardsPageCountAC, setCardsSearchByAnswerAC} from "./actions";
 import {useStyles} from "../../styleMU/styleMU";
 import {addCardTC} from "./cards-reducer";
@@ -17,7 +16,8 @@ import {selectCardPacks} from "../Packs/selectors";
 import Button from '@mui/material/Button';
 import {selectIsAppMakeRequest} from "../../../app/selectors";
 import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
-import {setMinMaxCardsAC, setMyPacksAC, setPackNameAC} from "../Packs/actions";
+import { SearchAnswer } from './components/SearchAnswer';
+import {SelectChangeEvent} from "@mui/material";
 
 
 export const Cards = () => {
@@ -25,6 +25,7 @@ export const Cards = () => {
     const pageNumber = useAppSelector(selectCardsPage)
     const pageCount = useAppSelector(selectCardsPageCount)
     const cardsPack_id = useAppSelector(selectCardPacks)
+    const packName=useAppSelector(selectPackName)
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
     const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
@@ -39,15 +40,15 @@ export const Cards = () => {
     if (!isLoggedIn) {
         return <Navigate to={PATH.login}/>
     }
-    const handleChangePage = (e: any, newPage: number) => {
-        dispatch(setCardsPageAC(newPage))
-        setSearchParams({...searchParams, page:newPage.toString()})
-
-    };
-    const handleChangeRowsPerPage = (e: any) => {
-        dispatch(setCardsPageCountAC(+e.target.value));
-        setSearchParams({...searchParams, pageCount:e.target.value})
-
+    //Change pagination
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        dispatch(setCardsPageAC(value))
+        setSearchParams({...searchParams, page:value.toString()})
+    }
+    const handlePageCountChange = (event: SelectChangeEvent) => {
+        dispatch(setCardsPageCountAC(+event.target.value))
+        dispatch(setCardsPageAC(1))
+        setSearchParams({...searchParams, page: '1', pageCount: event.target.value})
     };
     const handleSearchAnswer = (value: string) => {
         dispatch(setCardsSearchByAnswerAC(value))
@@ -68,6 +69,7 @@ export const Cards = () => {
         <div className={s.container}>
 
             <LinkToBack linkPage={PATH.packs} title={'Back to Packs List'}/>
+            <h2>{packName}</h2>
             <SearchAnswer handleSearchAnswer={handleSearchAnswer}/>
 
             <div className={s.packsHeader}>
@@ -83,8 +85,8 @@ export const Cards = () => {
             <PaginationComponent totalCount={totalCount}
                                  pageNumber={pageNumber}
                                  pageCount={pageCount}
-                                 handleChangePage={handleChangePage}
-                                 handleChangeRowsPerPage={handleChangeRowsPerPage}/>
+                                 handleChangePage={handlePageChange}
+                                 handleChangeRowsPerPage={handlePageCountChange}/>
             <ErrorSnackbar/>
         </div>
     );

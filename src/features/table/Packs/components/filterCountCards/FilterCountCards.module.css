@@ -1,8 +1,15 @@
 .wrapper{
     width: 230px;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px
+}
+.sliderBlock{
+    width: 220px;
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
 }

@@ -10,13 +10,12 @@ import {useStyles} from "../../styleMU/styleMU";
 import s from "./Packs.module.css"
 import {PaginationComponent} from "./components/pagination/PaginationComponent";
 import {SearchTitleCards} from './components/searchTitleCards/SearchTitleCards';
-import {SortComponent} from "./components/sortingByUser/SortingByUser";
+import {SortingByUser} from "./components/sortingByUser/SortingByUser";
 import {FilterCountCards} from "./components/filterCountCards/FilterCountCards";
 import {NoFilters} from "./components/noFilters/NoFilters";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {selectCardPacks, selectMaxCardsCount, selectMinCardsCount, selectPacksUserId} from "./selectors";
-import {addPackTC, deletePackTC, getPacksTC, updatePackTC} from "./packs-reducer";
-import {UpdatePackRequestDataType} from '../table-api';
+import {addPackTC, getPacksTC} from "./packs-reducer";
 import {
     selectCardPacksTotalCount,
     selectPacksMaxCards, selectPacksMinCards, selectPacksName,
@@ -33,8 +32,6 @@ import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnack
 import {selectIsAppMakeRequest} from "../../../app/selectors";
 import {selectUserId} from "../../profile/selectors";
 
-
-
 export const Packs = () => {
     const dispatch = useAppDispatch()
     const myID = useAppSelector(selectUserId)
@@ -50,11 +47,9 @@ export const Packs = () => {
     const packName = useAppSelector(selectPacksName)
     const userId = useAppSelector(selectPacksUserId)
     const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
-
-    //const packsLoadingStatus = useAppSelector(selectPacksLoadingStatus)
     const [searchParams, setSearchParams] = useSearchParams()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
-    const cardPacks = useAppSelector(selectCardPacks)
+    const [disabled, setDisabled]=useState(false)
     const styleMU = useStyles();
 
     useEffect(() => {
@@ -136,10 +131,12 @@ export const Packs = () => {
     const handleSortByMyPacks = () => {
         dispatch(setMyPacksAC(myID))
         setSearchParams({...searchParams, user_id:myID as string})
+        setDisabled(true)
     }
     const handleSortByAllPacks = () => {
         dispatch(setMyPacksAC(''))
         setSearchParams({...searchParams, user_id: ''})
+        setDisabled(false)
     }
     return (
         <div className={s.container}>
@@ -155,8 +152,9 @@ export const Packs = () => {
             </div>
             <div className={s.packsBlock}>
                 <SearchTitleCards handleSendQuery={handleSearchTitleCards}/>
-                <SortComponent handleSortByAllPacks={handleSortByAllPacks}
-                               handleSortByMyPacks={handleSortByMyPacks}/>
+                <SortingByUser handleSortByAllPacks={handleSortByAllPacks}
+                               handleSortByMyPacks={handleSortByMyPacks}
+                               disabled={disabled}/>
                 <FilterCountCards handleChange={handleChangeCountCards}/>
                 <NoFilters handleDeleteAllFilters={handleDeleteAllFilters}/>
             </div>

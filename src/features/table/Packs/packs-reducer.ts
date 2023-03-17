@@ -59,14 +59,11 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
     }
 }
 
-
 //thunks
 
 export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
     dispatch(setAppIsLoadingAC(true))
-
-    const {page, pageCount,  sortPacks, packName, user_id, min, max} = getState().packs
-
+    const {page, pageCount, sortPacks, packName, user_id, min, max} = getState().packs
     const params: PacksParamsType = {
         page,
         pageCount,
@@ -89,11 +86,8 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
         dispatch(tableActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))
         dispatch(tableActions.setPacksMinCardsCountAC(res.data.minCardsCount))
         dispatch(tableActions.setPackNameAC(params.packName as string))
-        // dispatch(tableActions.setMinMaxCardsAC(params.min, params.max))
-        // dispatch(tableActions.setMyPacksAC(params.user_id as string))
 
-        if(packName!=='' && res.data.cardPacks.length===0)
-        {
+        if (packName !== '' && res.data.cardPacks.length === 0) {
             dispatch(appActions.setAppErrorAC(`Packs with name ${packName} no search!!!`))
         }
 

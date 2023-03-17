@@ -1,0 +1,15 @@
+.searchAnswerBlock{
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.iconsFilter{
+    width: 35px;
+    height: 35px;
+}
+.iconClose{
+    width: 100%;
+    height: 100%;
+}

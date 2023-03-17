@@ -18,6 +18,7 @@ export const cardsInitialState = {
     packUser_id: '',
     sortCards: null as null | string,
     cardAnswer: '',
+    name:''
 }
 
 export type CardsInitialStateType = typeof cardsInitialState
@@ -48,6 +49,9 @@ export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, a
             return {...state, sortCards: action.payload.sortCards}
         case 'TABLE/SET_CARDS_SEARCH_BY_ANSWER':
             return {...state, cardAnswer: action.payload.answer}
+        case 'TABLE/SET_CARDS_PACK_NAME':
+            return {...state, name: action.payload.name}
+
         default:
             return state;
     }
@@ -75,6 +79,10 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
         // dispatch(cardsActions.setPageAC(res.data.page))
         // dispatch(cardsActions.setPageCountAC(res.data.pageCount))
         // dispatch(appActions.setAppStatusAC('succeeded'))
+        if(cardAnswer!=='' && res.data.cards.length===0)
+        {
+            dispatch(appActions.setAppErrorAC(`Cards with name ${cardAnswer} no search in this pack!!!`))
+        }
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {

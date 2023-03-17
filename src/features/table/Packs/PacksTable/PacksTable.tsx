@@ -18,7 +18,7 @@ import {NavLink} from "react-router-dom";
 import {PATH} from "../../../../common/utils/routes/Routes";
 
 import {StyledTableCell, StyledTableRow} from "../../common/styles";
-import {setCardsPackIdAC, setCardsPackUserIdAC, setCardsPageAC} from "../../Cards/actions";
+import {setCardsPackIdAC, setCardsPackNameAC, setCardsPackUserIdAC, setCardsPageAC} from "../../Cards/actions";
 import {SortCell} from "../../common/SortCell/SortCell";
 import {TableTextCell} from "../../common/TableTextCell/TableTextCell";
 
@@ -83,6 +83,7 @@ export const PacksTable = () => {
                                 //указать какую колоду открываем и её владельца
                                 dispatch(setCardsPackIdAC(cardPack._id))
                                 dispatch(setCardsPackUserIdAC(cardPack.user_id))
+                                dispatch(setCardsPackNameAC(cardPack.name))
                                 //чтобы при переходе с колод на карты всегда была первая страница
                                 dispatch(setCardsPageAC(1))
                             }

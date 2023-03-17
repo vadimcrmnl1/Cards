@@ -29,14 +29,13 @@ export const CardsTable = () => {
     const dispatch = useAppDispatch()
     const cards = useAppSelector(selectCards)
     const page = useAppSelector(selectCardsPage)
-    const totalCount= useAppSelector(selectCardsTotalCount)
     const pageCount = useAppSelector(selectCardsPageCount)
     const answer = useAppSelector(selectCardsAnswer)
     const packUserId = useAppSelector(selectPackUserId)
     const myId = useAppSelector(selectUserId)
     const cardsSort = useAppSelector(selectCardsSort)
 
-    const [searchParams, setSearchParams] = useSearchParams();
+
 
     useEffect(() => {
         dispatch(getCardsTC())
@@ -47,16 +46,7 @@ export const CardsTable = () => {
         page > 0 ? pageCount - cards.length : 0;
     const emptyRowsStyle = {height: 75 * emptyRows}
 
-//Change pagination
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        dispatch(setCardsPageAC(value))
-        setSearchParams({...searchParams, page:value.toString()})
-    }
-    const handlePageCountChange = (event: SelectChangeEvent) => {
-        dispatch(setCardsPageCountAC(+event.target.value))
-        dispatch(setCardsPageAC(1))
-        setSearchParams({...searchParams, page: '1', pageCount: event.target.value})
-    };
+
 
     const handleSort = (sort: string | null) => {
         dispatch(setCardsSortAC(sort))
@@ -123,11 +113,11 @@ export const CardsTable = () => {
                 </Table>
 
             </TableContainer>
-            <PaginationComponent totalCount={totalCount}
+           {/* <PaginationComponent totalCount={totalCount}
                                  pageNumber={page}
                                  pageCount={pageCount}
                                  handleChangePage={handlePageChange}
-                                 handleChangeRowsPerPage={handlePageCountChange}/>
+                                 handleChangeRowsPerPage={handlePageCountChange}/>*/}
            {/* <div className={s.pagination}>
                 <Pagination
                     count={count}

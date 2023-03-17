@@ -1,7 +1,5 @@
 import { CardPacksType} from "../table-api";
 
-
-
 export const setPacksAC = (cardPacks: CardPacksType[]) => ({
     type: 'TABLE/SET_PACKS',
     payload: {cardPacks}
@@ -27,20 +25,24 @@ export const setPacksPageCountAC = (pageCount: number) => ({
     payload: {pageCount},
 } as const)
 
+///ACTION FOR FILTERS
 
-///Actions for filters
+//search by name packs
 export const setPackNameAC = (packName: string | null) => ({
     type: 'TABLE/SET_PACK_NAME',
     payload: {packName}
 } as const)
+// Sort my packs
 export const setMyPacksAC = (id: string | null) => ({
     type: 'TABLE/SET_MY_PACKS',
     payload: {id}
 } as const)
+//Sort min and max count cards in pack (slider)
 export const setMinMaxCardsAC = (min:number, max:number) => ({
     type: 'TABLE/SET_MIN_MAX_CARDS',
     payload: {min, max}
 } as const)
+//Sort inside table
 export const setPacksSortAC = (sortPacks: string|null) => ({
     type: 'TABLE/SET_PACKS_SORT',
     payload: {sortPacks}
