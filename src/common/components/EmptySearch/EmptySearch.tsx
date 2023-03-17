@@ -4,6 +4,7 @@ import s from './EmptySearch.module.css'
 import React from "react";
 import picture from './nothing-found.png'
 
+
 export const EmptySearch = () => {
     return (
         <Paper className={s.container}>

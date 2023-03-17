@@ -24,7 +24,10 @@ export const setPacksPageCountAC = (pageCount: number) => ({
     type: 'TABLE/SET_PACKS_PAGE_COUNT',
     payload: {pageCount},
 } as const)
-
+export const setPacksLoadingStatusAC = (packsLoadingStatus: boolean) => ({
+    type: 'TABLE/SET_PACKS_LOADING_STATUS',
+    payload: {packsLoadingStatus}
+} as const)
 ///ACTION FOR FILTERS
 
 //search by name packs

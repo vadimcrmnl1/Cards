@@ -29,7 +29,7 @@ import {
     setPacksPageAC,
     setPacksPageCountAC
 } from "./actions";
-import {getPacksTC} from "./packs-reducer";
+
 import {EmptySearch} from "../../../common/components/EmptySearch/EmptySearch";
 
 import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
@@ -53,26 +53,46 @@ export const Packs = () => {
     const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
     const [searchParams, setSearchParams] = useSearchParams()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
-    const [disabled, setDisabled]=useState(false)
+    const [disabled, setDisabled] = useState(false)
+    const cardPacks = useAppSelector(selectCardPacks)
     const styleMU = useStyles();
-
+    const [isFirstLoading, setIsFirstLoading] = useState(true)
     useEffect(() => {
-        if (isLoggedIn){
+        if (isLoggedIn && !isFirstLoading) {
             dispatch(getPacksTC())
         }
-    }, [dispatch, page, pageCount, packName, sortPacks, userId, minCards, maxCards])
+    }, [isFirstLoading, dispatch, page, pageCount, packName, sortPacks, userId, minCards, maxCards])
 
     useEffect(() => {
-        // if (isFirstLoading) {
-        // dispatch(getPacksTC())
-        // setSearchParams({...searchParams,sortPacks: sortPacks!})
         const params = Object.fromEntries(searchParams)
-        dispatch(setPacksPageCountAC(+params.pageCount || 5))
-        dispatch(setPacksPageAC(+params.page || 1))
-        dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
-        dispatch(setPackNameAC(params.packName || null))
-        dispatch(setMyPacksAC(params.user_id || ''))
-    },[])
+        if (isFirstLoading) {
+            dispatch(setPacksPageCountAC(+params.pageCount || 5))
+            dispatch(setPacksPageAC(+params.page || 1))
+            dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
+            dispatch(setPackNameAC(params.packName || ''))
+            dispatch(setMyPacksAC(params.user_id || ''))
+            setIsFirstLoading(false)
+        }
+
+    }, [])
+
+    // useEffect(() => {
+    //     if (isLoggedIn && ){
+    //         dispatch(getPacksTC())
+    //     }
+    // }, [dispatch, page, pageCount, packName, sortPacks, userId, minCards, maxCards])
+    //
+    // useEffect(() => {
+    //     // if (isFirstLoading) {
+    //     // dispatch(getPacksTC())
+    //     // setSearchParams({...searchParams,sortPacks: sortPacks!})
+    //     const params = Object.fromEntries(searchParams)
+    //     dispatch(setPacksPageCountAC(+params.pageCount || 5))
+    //     dispatch(setPacksPageAC(+params.page || 1))
+    //     dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
+    //     dispatch(setPackNameAC(params.packName || null))
+    //     dispatch(setMyPacksAC(params.user_id || ''))
+    // },[])
 
     if (!isLoggedIn) {
         return <Navigate to={PATH.login}/>
@@ -88,26 +108,26 @@ export const Packs = () => {
         }
         dispatch(addPackTC(cardPack))
     }
-    const handleDeletePack = () => {
+    // const handleDeletePack = () => {
+    //
+    //     dispatch(deletePackTC(cardPacks[0]._id))
+    // }
+    // const handleUpdatePack = () => {
+    //     const identifier = Math.random().toFixed(2)
+    //     const cardPack: UpdatePackRequestDataType = {
+    //         cardsPack: {
+    //             _id: cardPacks[0]._id,
+    //             name: 'Name updated'+identifier
+    //         }
+    //     }
+    //     dispatch(updatePackTC(cardPack))
+    // }
 
-        dispatch(deletePackTC(cardPacks[0]._id))
-    }
-    const handleUpdatePack = () => {
-        const identifier = Math.random().toFixed(2)
-        const cardPack: UpdatePackRequestDataType = {
-            cardsPack: {
-                _id: cardPacks[0]._id,
-                name: 'Name updated'+identifier
-            }
-        }
-        dispatch(updatePackTC(cardPack))
-    }
-    const styleMU = useStyles();
 
 //Change pagination
-    const handleChangePage = (event: React.ChangeEvent<unknown>, newPage:number) => {
-        dispatch(setPacksPageAC(newPage+1))
-        setSearchParams({...searchParams, page:(newPage+1).toString()})
+    const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
+        dispatch(setPacksPageAC(newPage + 1))
+        setSearchParams({...searchParams, page: (newPage + 1).toString()})
     };
     const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
         dispatch(setPacksPageCountAC(+event.target.value));
@@ -122,24 +142,26 @@ export const Packs = () => {
     };
     const handleSearchTitleCards = (value: string) => {
         dispatch(setPackNameAC(value))
-        setSearchParams({...searchParams, packName:value})
+        setSearchParams({...searchParams, packName: value})
     }
 //Delete Filters
-    const handleDeleteAllFilters=()=>{
+    const handleDeleteAllFilters = () => {
         dispatch(setPackNameAC(''))
         dispatch(setMyPacksAC(''))
         dispatch(setMinMaxCardsAC(0, maxCardsCount))
-        setSearchParams({page:'1',
-                                 pageCount: '5',
-                                min: minCardsCount.toString(),
-                                max: maxCardsCount.toString(),
-                                packName:'' as string,
-                                user_id:'' as string})
+        setSearchParams({
+            page: '1',
+            pageCount: '5',
+            min: minCardsCount.toString(),
+            max: maxCardsCount.toString(),
+            packName: '' as string,
+            user_id: '' as string
+        })
     }
 //Sort by my packs
     const handleSortByMyPacks = () => {
         dispatch(setMyPacksAC(myID))
-        setSearchParams({...searchParams, user_id:myID as string})
+        setSearchParams({...searchParams, user_id: myID as string})
         setDisabled(true)
     }
     const handleSortByAllPacks = () => {
@@ -167,17 +189,22 @@ export const Packs = () => {
                 <FilterCountCards handleChange={handleChangeCountCards}/>
                 <NoFilters handleDeleteAllFilters={handleDeleteAllFilters}/>
             </div>
-            <div>
-                {cardPacks.length !== 0
-                ? <PacksTable/>
+            {cardPacks.length !== 0
+                ? <div>
+                    <PacksTable/>
+                    <PaginationComponent totalCount={totalCount}
+                                         pageNumber={pageNumber}
+                                         pageCount={pageCount}
+                                         handleChangePage={handleChangePage}
+                                         handleChangeRowsPerPage={handleChangeRowsPerPage}/>
+                </div>
                 : <EmptySearch/>}
 
-            </div>
-            <PaginationComponent totalCount={totalCount}
-                                 pageNumber={pageNumber}
-                                 pageCount={pageCount}
-                                 handleChangePage={handleChangePage}
-                                 handleChangeRowsPerPage={handleChangeRowsPerPage}/>
+            {/*<PaginationComponent totalCount={totalCount}*/}
+            {/*                     pageNumber={pageNumber}*/}
+            {/*                     pageCount={pageCount}*/}
+            {/*                     handleChangePage={handleChangePage}*/}
+            {/*                     handleChangeRowsPerPage={handleChangeRowsPerPage}/>*/}
             <ErrorSnackbar/>
         </div>
     )

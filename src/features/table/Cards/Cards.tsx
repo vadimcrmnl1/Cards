@@ -7,8 +7,8 @@ import {Navigate, useSearchParams} from 'react-router-dom';
 import {PATH} from "../../../common/utils/routes/Routes";
 import {LinkToBack} from "../../../common/components/LinkToBack/LinkToBack";
 import {PaginationComponent} from "../Packs/components/pagination/PaginationComponent";
-import {selectCardsPage, selectCardsPageCount, selectCardsTotalCount, selectPackName} from "./selectors";
-import {setCardsPageAC, setCardsPageCountAC, setCardsSearchByAnswerAC} from "./actions";
+import {selectCards, selectCardsPage, selectCardsPageCount, selectCardsTotalCount, selectPackName} from "./selectors";
+import {setCardsPageAC, setCardsPageCountAC, setCardsSearchByQuestionAC} from "./actions";
 import {useStyles} from "../../styleMU/styleMU";
 import {addCardTC} from "./cards-reducer";
 import {AddCardRequestType} from "../table-api";
@@ -16,8 +16,11 @@ import {selectCardPacks} from "../Packs/selectors";
 import Button from '@mui/material/Button';
 import {selectIsAppMakeRequest} from "../../../app/selectors";
 import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
-import { SearchAnswer } from './components/SearchAnswer';
+import {SearchQuestion} from './components/SearchQuestion';
 import {SelectChangeEvent} from "@mui/material";
+import {EmptySearch} from "../../../common/components/EmptySearch/EmptySearch";
+import {EmptyList} from "../../../common/components/EmptyList/EmptyList";
+import {NoFilters} from "../Packs/components/noFilters/NoFilters";
 
 
 export const Cards = () => {
@@ -25,17 +28,17 @@ export const Cards = () => {
     const pageNumber = useAppSelector(selectCardsPage)
     const pageCount = useAppSelector(selectCardsPageCount)
     const cardsPack_id = useAppSelector(selectCardPacks)
-    const packName=useAppSelector(selectPackName)
+    const packName = useAppSelector(selectPackName)
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
     const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
-
+    const cards = useAppSelector(selectCards)
     const styleMU = useStyles();
     const [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(()=>{
         const params = Object.fromEntries(searchParams)
-        dispatch(setCardsSearchByAnswerAC(params.answer || ''))
+        dispatch(setCardsSearchByQuestionAC(params.question || ''))
      },[])
     if (!isLoggedIn) {
         return <Navigate to={PATH.login}/>
@@ -50,9 +53,9 @@ export const Cards = () => {
         dispatch(setCardsPageAC(1))
         setSearchParams({...searchParams, page: '1', pageCount: event.target.value})
     };
-    const handleSearchAnswer = (value: string) => {
-        dispatch(setCardsSearchByAnswerAC(value))
-        setSearchParams({...searchParams, answer:value})
+    const handleSearchQuestion = (value: string) => {
+        dispatch(setCardsSearchByQuestionAC(value))
+        setSearchParams({...searchParams, question:value})
     }
 
     const handleAddCard = () => {
@@ -65,12 +68,14 @@ export const Cards = () => {
         }
         dispatch(addCardTC(data))
     }
+    console.log('totalCount', totalCount, 'cards', cards.length)
     return (
         <div className={s.container}>
 
             <LinkToBack linkPage={PATH.packs} title={'Back to Packs List'}/>
             <h2>{packName}</h2>
-            <SearchAnswer handleSearchAnswer={handleSearchAnswer}/>
+            <SearchQuestion handleSearchQuestion={handleSearchQuestion}/>
+
 
             <div className={s.packsHeader}>
                 <h3>Cards list</h3>

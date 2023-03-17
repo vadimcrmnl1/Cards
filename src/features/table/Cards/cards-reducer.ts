@@ -17,7 +17,7 @@ export const cardsInitialState = {
     pack_id: '',
     packUser_id: '',
     sortCards: null as null | string,
-    cardAnswer: '',
+    cardQuestion: '',
     name:''
 }
 
@@ -47,8 +47,8 @@ export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, a
             return {...state, packUser_id: action.payload.packUser_id}
         case 'TABLE/SET_CARDS_SORT':
             return {...state, sortCards: action.payload.sortCards}
-        case 'TABLE/SET_CARDS_SEARCH_BY_ANSWER':
-            return {...state, cardAnswer: action.payload.answer}
+        case 'TABLE/SET_CARDS_SEARCH_BY_QUESTION':
+            return {...state, cardQuestion: action.payload.question}
         case 'TABLE/SET_CARDS_PACK_NAME':
             return {...state, name: action.payload.name}
 
@@ -59,16 +59,20 @@ export const cardsReducer = (state: CardsInitialStateType = cardsInitialState, a
 
 
 export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+
     dispatch(setAppIsLoadingAC(true))
-    const {page, pageCount, pack_id, sortCards, cardAnswer} = getState().cards
+    const {page, pageCount, pack_id, sortCards, cardQuestion} = getState().cards
     const params: CardsParamsType = {
         page,
         pageCount,
         cardsPack_id: pack_id.toString(),
-        cardAnswer
+        cardQuestion
     }
     if (sortCards !== null) {
         params.sortCards = sortCards
+    }
+    if (cardQuestion !== null) {
+        params.cardQuestion = cardQuestion
     }
     try {
         const res = await cardsAPI.getCards(params)
@@ -76,13 +80,11 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
         dispatch(cardsActions.setCardsTotalCountAC(res.data.cardsTotalCount))
         dispatch(cardsActions.setCardsMaxGradeAC(res.data.maxGrade))
         dispatch(cardsActions.setCardsMinGradeAC(res.data.minGrade))
+        dispatch(cardsActions.setCardsSearchByQuestionAC(params.cardQuestion as string))
         // dispatch(cardsActions.setPageAC(res.data.page))
         // dispatch(cardsActions.setPageCountAC(res.data.pageCount))
         // dispatch(appActions.setAppStatusAC('succeeded'))
-        if(cardAnswer!=='' && res.data.cards.length===0)
-        {
-            dispatch(appActions.setAppErrorAC(`Cards with name ${cardAnswer} no search in this pack!!!`))
-        }
+
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {
