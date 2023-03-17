@@ -1,18 +1,18 @@
 import * as React from "react";
 import {useEffect} from "react";
-import s from './CardsTable.module.css'
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import {FormControl, MenuItem, Pagination, Select, SelectChangeEvent, TableHead} from "@mui/material";
+import {SelectChangeEvent, TableHead} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../../app/store";
 import {getCardsTC} from "../cards-reducer";
 import {
-    selectCards, selectCardsAnswer,
-    selectCardsCountOfPages,
+    selectCards,
+    selectCardsAnswer,
     selectCardsPage,
-    selectCardsPageCount, selectCardsSort,
+    selectCardsPageCount,
+    selectCardsSort,
     selectPackUserId
 } from "../selectors";
 import {ActionsCell} from "../../common/ActionsCell/ActionsCell";
@@ -21,7 +21,7 @@ import {StyledTableCell, StyledTableRow} from "./styles";
 import {Grade} from "./Grade/Grade";
 import {TableTextCell} from "../../common/TableTextCell/TableTextCell";
 import {setCardsPageAC, setCardsPageCountAC, setCardsSortAC} from "../actions";
-import { selectUserId} from "../../../profile/selectors";
+import {selectUserId} from "../../../profile/selectors";
 import {SortCell} from "../../common/SortCell/SortCell";
 import {useSearchParams} from "react-router-dom";
 

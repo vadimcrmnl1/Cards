@@ -18,21 +18,22 @@ import {selectCardPacks} from "../Packs/selectors";
 
 
 export const Cards = () => {
-    const totalCount=useAppSelector(selectCardsTotalCount)
-    const pageNumber= useAppSelector(selectCardsPage)
-    const pageCount= useAppSelector(selectCardsPageCount)
+    const totalCount = useAppSelector(selectCardsTotalCount)
+    const pageNumber = useAppSelector(selectCardsPage)
+    const pageCount = useAppSelector(selectCardsPageCount)
     const cardsPack_id = useAppSelector(selectCardPacks)
     const cards = useAppSelector(selectCards)
-    const dispatch=useAppDispatch()
+    const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
     const styleMU = useStyles();
+
     if (!isLoggedIn) {
         return <Navigate to={PATH.login}/>
     }
-    const handleChangePage = (e:any, newPage:number) => {
+    const handleChangePage = (e: any, newPage: number) => {
         dispatch(setCardsPageAC(newPage))
     };
-    const handleChangeRowsPerPage = (e:any) => {
+    const handleChangeRowsPerPage = (e: any) => {
         dispatch(setCardsPageCountAC(+e.target.value));
 
     };
@@ -81,10 +82,10 @@ export const Cards = () => {
             <SearchByCardsName/>
             <CardsTable/>
             <PaginationComponent totalCount={totalCount}
-                                  pageNumber={pageNumber}
-                                  pageCount={pageCount}
-                                  handleChangePage={handleChangePage}
-                                  handleChangeRowsPerPage={handleChangeRowsPerPage}/>
+                                 pageNumber={pageNumber}
+                                 pageCount={pageCount}
+                                 handleChangePage={handleChangePage}
+                                 handleChangeRowsPerPage={handleChangeRowsPerPage}/>
         </div>
     );
 };

@@ -14,5 +14,6 @@ export const errorUtils = (e: ErrorType, dispatch: Dispatch<AppActionsType>) => 
     } else {
         dispatch(setAppErrorAC(`Native error ${err.message}`))
     }
+    console.log('ERR', e, err)
     dispatch(setAppStatusAC(false))
 }

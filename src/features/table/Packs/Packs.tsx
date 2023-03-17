@@ -30,6 +30,7 @@ import {
     setPacksPageCountAC
 } from "./actions";
 import {getPacksTC} from "./packs-reducer";
+import {EmptySearch} from "../../../common/components/EmptySearch/EmptySearch";
 
 
 export const Packs = () => {
@@ -159,7 +160,10 @@ export const Packs = () => {
                 <NoFilters/>
             </div>
             <div>
-                <PacksTable/>
+                {cardPacks.length !== 0
+                ? <PacksTable/>
+                : <EmptySearch/>}
+
             </div>
             <PaginationComponent totalCount={totalCount}
                                  pageNumber={pageNumber}

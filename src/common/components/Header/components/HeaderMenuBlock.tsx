@@ -33,7 +33,7 @@ export const HeaderMenuBlock = () => {
         <Box sx={{flexGrow: 0}}>
             <span className={s.nameBlock}>{userName}</span>
             <Tooltip title={''}>
-                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                <IconButton size={'small'} onClick={handleOpenUserMenu} sx={{p: 0}}>
                     <Avatar className={s.avatar} alt="avatar" src={avatar}/>
                 </IconButton>
             </Tooltip>

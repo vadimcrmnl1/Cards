@@ -95,15 +95,15 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
         dispatch(packsActions.setPacksMinCardsCountAC(res.data.minCardsCount))
         // dispatch(tableActions.setPacksPageAC(res.data.page))
         // dispatch(tableActions.setPacksPageCountAC(res.data.pageCount))
-        // dispatch(tableActions.setPackNameAC(params.packName as string))
+        dispatch(packsActions.setPackNameAC(params.packName as string))
         dispatch(packsActions.setMinMaxCardsAC(params.min, params.max))
         /* dispatch(tableActions.setPacksMaxCardsAC(res.data.cardPacks))
          dispatch(tableActions.setPacksMinCardsAC(res.data.cardPacks))*/
         // dispatch(packsActions.setMinMaxCardsAC(res.data.cardPacks))
 
-        if (packName !== '' && res.data.cardPacks.length === 0) {
-            dispatch(appActions.setAppErrorAC(`Packs with name ${packName} no search!!!`))
-        }
+        // if (packName !== '' && res.data.cardPacks.length === 0) {
+        //     dispatch(appActions.setAppErrorAC(`Packs with name ${packName} no search!!!`))
+        // }
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {
