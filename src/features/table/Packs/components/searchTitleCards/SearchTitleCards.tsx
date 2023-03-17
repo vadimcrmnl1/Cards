@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../../../../app/store";
+import {useAppSelector} from "../../../../../app/store";
 import {SuperDebouncedInput} from "../../../../../common/components/SuperDebouncedInput/SuperDebouncedInput";
-import {setPackNameAC} from "../../actions";
 import {selectPacksName} from "../../selectors";
+
 
 type SearchTitleCardsPropsType={
     handleSendQuery:(value: string)=>void
@@ -10,17 +10,17 @@ type SearchTitleCardsPropsType={
 export const SearchTitleCards = (props:SearchTitleCardsPropsType) => {
     const packName = useAppSelector(selectPacksName) as string
     const [value, setValue] = useState('')
-    //const dispatch = useAppDispatch()
-   /* const handleSearchTitleCards = (value: string) => {
-        dispatch(setPackNameAC(value))
-    }*/
     const handleOnChangeText = (value: string) => {
         setValue(value)
     }
 
-    // useEffect(() => {
-    //     setValue('')
-    // }, [packName === ''])
+    useEffect(() => {
+        setValue('')
+    }, [packName === ''])
+    useEffect(() => {
+        setValue(packName as string)
+    }, [])
+
     return (
         <div>
             <SuperDebouncedInput

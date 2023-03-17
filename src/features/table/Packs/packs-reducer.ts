@@ -1,7 +1,8 @@
 import {PacksActionsType, PacksParamsType} from "./types";
 import {AllReducersActionType, AppThunk} from "../../../app/types";
 import * as appActions from "../../../app/actions";
-import * as packsActions from "./actions";
+import * as tableActions from './actions'
+import * as packsActions from '../Packs/actions'
 import {errorUtils} from "../../../common/utils/errorUtils";
 import {AddPackRequestDataType, CardPacksType, packsAPI, UpdatePackRequestDataType} from "../table-api";
 import {dateUtils} from "../../../common/utils/dateUtils";
@@ -70,8 +71,6 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
         page,
         pageCount,
     }
-
-
     if (sortPacks !== null) {
         params.sortPacks = sortPacks
     }
@@ -81,25 +80,23 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
     if (user_id !== null) {
         params.user_id = user_id
     }
-
     params.min = min
     params.max = max
-
     try {
         const res = await packsAPI.getPacks(params)
-        dispatch(packsActions.setPacksAC(res.data.cardPacks))
-        dispatch(packsActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
-        dispatch(packsActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))
-        dispatch(packsActions.setPacksMinCardsCountAC(res.data.minCardsCount))
-        // dispatch(tableActions.setPackNameAC(params.packName as string))
-        dispatch(packsActions.setMinMaxCardsAC(params.min, params.max))
-        /* dispatch(tableActions.setPacksMaxCardsAC(res.data.cardPacks))
-         dispatch(tableActions.setPacksMinCardsAC(res.data.cardPacks))*/
-        // dispatch(packsActions.setMinMaxCardsAC(res.data.cardPacks))
+        dispatch(tableActions.setPacksAC(res.data.cardPacks))
+        dispatch(tableActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
+        dispatch(tableActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))
+        dispatch(tableActions.setPacksMinCardsCountAC(res.data.minCardsCount))
+        dispatch(tableActions.setPackNameAC(params.packName as string))
+        // dispatch(tableActions.setMinMaxCardsAC(params.min, params.max))
+        // dispatch(tableActions.setMyPacksAC(params.user_id as string))
 
-        if (packName !== '' && res.data.cardPacks.length === 0) {
+        if(packName!=='' && res.data.cardPacks.length===0)
+        {
             dispatch(appActions.setAppErrorAC(`Packs with name ${packName} no search!!!`))
         }
+
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {

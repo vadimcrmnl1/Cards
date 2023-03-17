@@ -5,6 +5,7 @@ import {selectMaxCardsCount,
 } from "../../selectors";
 import s from './FilterCountCards.module.css'
 import {useStyles} from "../../../../styleMU/styleMU";
+import {setMinMaxCardsAC} from "../../actions";
 
 type FilterCountCardsPropsType={
     handleChange:(event:any, newValue:number | number[])=>void

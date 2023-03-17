@@ -72,6 +72,9 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
         dispatch(cardsActions.setCardsTotalCountAC(res.data.cardsTotalCount))
         dispatch(cardsActions.setCardsMaxGradeAC(res.data.maxGrade))
         dispatch(cardsActions.setCardsMinGradeAC(res.data.minGrade))
+        // dispatch(cardsActions.setPageAC(res.data.page))
+        // dispatch(cardsActions.setPageCountAC(res.data.pageCount))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {

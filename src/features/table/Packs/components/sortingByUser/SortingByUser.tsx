@@ -1,29 +1,23 @@
 import {Button} from "@mui/material";
-import {useAppDispatch, useAppSelector} from "../../../../../app/store";
-import { selectUserId} from "../../../../profile/selectors";
-import {setMyPacksAC} from "../../actions";
-import {selectIsAppMakeRequest} from "../../../../../app/selectors";
+import {useStyles} from "../../../../styleMU/styleMU";
 
-
-export const SortComponent = () => {
-    const dispatch = useAppDispatch()
-    const myID = useAppSelector(selectUserId)
-    const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
-
-    const handleSortByMyPacks = () => {
-        dispatch(setMyPacksAC(myID))
-    }
-    const handleSortByAllPacks = () => {
-        dispatch(setMyPacksAC(''))
-    }
+type SortingByUserPropsType={
+    handleSortByMyPacks:()=>void
+    handleSortByAllPacks:()=>void
+}
+export const SortComponent = (props:SortingByUserPropsType) => {
+    const style=useStyles()
+    //const packsLoadingStatus = useAppSelector(selectPacksLoadingStatus)
     return (
         <div>
             <Button variant="contained"
-                    onClick={handleSortByMyPacks}
-                    disabled={isAppMakeRequest}>My</Button>
+                    onClick={props.handleSortByMyPacks}
+                    //disabled={packsLoadingStatus}
+                    className={style.buttonSave}>My</Button>
             <Button variant="contained"
-                    onClick={handleSortByAllPacks}
-                    disabled={isAppMakeRequest}>All</Button>
+                    onClick={props.handleSortByAllPacks}
+                    //disabled={packsLoadingStatus}
+                    className={style.buttonSave}>All</Button>
         </div>
     )
 }

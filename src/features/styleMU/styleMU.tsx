@@ -38,5 +38,9 @@ export const useStyles = makeStyles((theme) => ({
         },
     slider:{
         width: '150px',
+    },
+    inputForSearch:{
+        display: "inline-block",
+        backgroundColor:'#d5bcbc',
     }
 }));

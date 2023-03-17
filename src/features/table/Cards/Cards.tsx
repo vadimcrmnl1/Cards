@@ -1,26 +1,23 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import s from './../Packs/Packs.module.css'
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {CardsTable} from "./CardsTable/CardsTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
-import {Navigate} from 'react-router-dom';
+import {Navigate, useSearchParams} from 'react-router-dom';
 import {PATH} from "../../../common/utils/routes/Routes";
-import {SearchByCardsName} from "./components/SearchByCardsName";
+import {SearchAnswer} from "./components/SearchByCardsName";
 import {LinkToBack} from "../../../common/components/LinkToBack/LinkToBack";
 import {PaginationComponent} from "../Packs/components/pagination/PaginationComponent";
-import {
-    selectCardsPage,
-    selectCardsPageCount,
-    selectCardsTotalCount
-} from "./selectors";
-import {setCardsPageAC, setCardsPageCountAC} from "./actions";
-import {Button} from "@mui/material";
+import {selectCardsPage, selectCardsPageCount, selectCardsTotalCount} from "./selectors";
+import {setCardsPageAC, setCardsPageCountAC, setCardsSearchByAnswerAC} from "./actions";
 import {useStyles} from "../../styleMU/styleMU";
 import {addCardTC} from "./cards-reducer";
 import {AddCardRequestType} from "../table-api";
 import {selectCardPacks} from "../Packs/selectors";
-import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
+import Button from '@mui/material/Button';
 import {selectIsAppMakeRequest} from "../../../app/selectors";
+import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
+import {setMinMaxCardsAC, setMyPacksAC, setPackNameAC} from "../Packs/actions";
 
 
 export const Cards = () => {
@@ -33,17 +30,30 @@ export const Cards = () => {
     const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
 
     const styleMU = useStyles();
+    const [searchParams, setSearchParams] = useSearchParams()
 
+    useEffect(()=>{
+        const params = Object.fromEntries(searchParams)
+        dispatch(setCardsSearchByAnswerAC(params.answer || ''))
+     },[])
     if (!isLoggedIn) {
         return <Navigate to={PATH.login}/>
     }
     const handleChangePage = (e: any, newPage: number) => {
         dispatch(setCardsPageAC(newPage))
+        setSearchParams({...searchParams, page:newPage.toString()})
+
     };
     const handleChangeRowsPerPage = (e: any) => {
         dispatch(setCardsPageCountAC(+e.target.value));
+        setSearchParams({...searchParams, pageCount:e.target.value})
 
     };
+    const handleSearchAnswer = (value: string) => {
+        dispatch(setCardsSearchByAnswerAC(value))
+        setSearchParams({...searchParams, answer:value})
+    }
+
     const handleAddCard = () => {
         const data: AddCardRequestType = {
             card: {
@@ -58,6 +68,8 @@ export const Cards = () => {
         <div className={s.container}>
 
             <LinkToBack linkPage={PATH.packs} title={'Back to Packs List'}/>
+            <SearchAnswer handleSearchAnswer={handleSearchAnswer}/>
+
             <div className={s.packsHeader}>
                 <h3>Cards list</h3>
                 <Button className={styleMU.button}
@@ -66,7 +78,7 @@ export const Cards = () => {
                         disabled={isAppMakeRequest}
                 >Add new card</Button>
             </div>
-            <SearchByCardsName/>
+
             <CardsTable/>
             <PaginationComponent totalCount={totalCount}
                                  pageNumber={pageNumber}

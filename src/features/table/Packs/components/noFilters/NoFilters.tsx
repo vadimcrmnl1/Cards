@@ -4,20 +4,24 @@ import {useAppDispatch, useAppSelector} from "../../../../../app/store";
 import {setMinMaxCardsAC, setMyPacksAC, setPackNameAC} from "../../actions";
 import {selectMaxCardsCount} from "../../selectors";
 
-export const NoFilters = ()=>{
+type NoFiltersPropsType={
+    handleDeleteAllFilters:()=>void
+}
+export const NoFilters = (props:NoFiltersPropsType)=>{
 
     const dispatch = useAppDispatch()
-
     const maxCountCards=useAppSelector(selectMaxCardsCount)
 
-    const handleDeleteAllFilters=()=>{
+   /* const handleDeleteAllFilters=()=>{
         dispatch(setPackNameAC(''))
         dispatch(setMyPacksAC(''))
         dispatch(setMinMaxCardsAC(0,maxCountCards))
-    }
+    }*/
     return(
         <div className={s.iconsFilter}>
-            <img alt={'icon'} src={filterIcon} className={'icon'} onClick={handleDeleteAllFilters}/>
+            <img alt={'icon'}
+                 src={filterIcon}
+                 onClick={props.handleDeleteAllFilters}/>
         </div>
     )
 }

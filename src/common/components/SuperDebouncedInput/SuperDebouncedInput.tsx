@@ -1,6 +1,6 @@
 import React, {DetailedHTMLProps, InputHTMLAttributes, ReactNode, useState} from 'react'
 import SuperInput from "../SuperInput/SuperInput";
-import {useStyles} from '../../../features/styleMU/styleMU'
+
 
 type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement>
@@ -22,7 +22,7 @@ export const SuperDebouncedInput: React.FC<SuperDebouncedInputPropsType> = (
     }
 ) => {
     const [timerId, setTimerId] = useState<number | undefined>(undefined)
-    const styleMU = useStyles();
+
     const handleOnChangeText = (value: string) => {
         onChangeText?.(value)
         if (onDebouncedChange) {
@@ -34,7 +34,6 @@ export const SuperDebouncedInput: React.FC<SuperDebouncedInputPropsType> = (
     }
     return (
         <SuperInput onChangeText={handleOnChangeText}
-                    className={styleMU.textField}
                     {...restProps}/>
     )
 }

@@ -1,51 +1,62 @@
 import * as React from "react";
 import {useEffect} from "react";
+import s from './CardsTable.module.css'
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import { TableHead} from "@mui/material";
+import {SelectChangeEvent, TableHead} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../../app/store";
 import { getCardsTC} from "../cards-reducer";
 import {
     selectCards, selectCardsAnswer,
     selectCardsPage,
-    selectCardsPageCount, selectCardsSort,
+    selectCardsPageCount, selectCardsSort, selectCardsTotalCount,
     selectPackUserId
 } from "../selectors";
 import {ActionsCell} from "../../common/ActionsCell/ActionsCell";
-
 import {StyledTableCell, StyledTableRow} from "./styles";
 import {Grade} from "./Grade/Grade";
 import {TableTextCell} from "../../common/TableTextCell/TableTextCell";
-import { setCardsSortAC} from "../actions";
+import {setCardsPageAC, setCardsPageCountAC, setCardsSortAC} from "../actions";
 import { selectUserId} from "../../../profile/selectors";
 import {SortCell} from "../../common/SortCell/SortCell";
-
+import {useSearchParams} from "react-router-dom";
+import {PaginationComponent} from "../../Packs/components/pagination/PaginationComponent";
 
 export const CardsTable = () => {
 
     const dispatch = useAppDispatch()
     const cards = useAppSelector(selectCards)
     const page = useAppSelector(selectCardsPage)
+    const totalCount= useAppSelector(selectCardsTotalCount)
     const pageCount = useAppSelector(selectCardsPageCount)
     const answer = useAppSelector(selectCardsAnswer)
     const packUserId = useAppSelector(selectPackUserId)
     const myId = useAppSelector(selectUserId)
     const cardsSort = useAppSelector(selectCardsSort)
 
+    const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         dispatch(getCardsTC())
     }, [dispatch, page, pageCount, cardsSort, answer])
-
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? pageCount - cards.length : 0;
     const emptyRowsStyle = {height: 75 * emptyRows}
 
-
+//Change pagination
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        dispatch(setCardsPageAC(value))
+        setSearchParams({...searchParams, page:value.toString()})
+    }
+    const handlePageCountChange = (event: SelectChangeEvent) => {
+        dispatch(setCardsPageCountAC(+event.target.value))
+        dispatch(setCardsPageAC(1))
+        setSearchParams({...searchParams, page: '1', pageCount: event.target.value})
+    };
 
     const handleSort = (sort: string | null) => {
         dispatch(setCardsSortAC(sort))
@@ -112,6 +123,33 @@ export const CardsTable = () => {
                 </Table>
 
             </TableContainer>
+            <PaginationComponent totalCount={totalCount}
+                                 pageNumber={page}
+                                 pageCount={pageCount}
+                                 handleChangePage={handlePageChange}
+                                 handleChangeRowsPerPage={handlePageCountChange}/>
+           {/* <div className={s.pagination}>
+                <Pagination
+                    count={count}
+                    page={page}
+                    onChange={handlePageChange}
+                    shape="rounded"
+                    showFirstButton
+                    showLastButton
+                />
+                Show
+                <FormControl sx={{m: 1}} variant="outlined" size={'small'}>
+                    <Select
+                        value={'' + pageCount}
+                        onChange={handlePageCountChange}
+                    >
+                        <MenuItem value={5}>5</MenuItem>
+                        <MenuItem value={10}>10</MenuItem>
+                        <MenuItem value={15}>15</MenuItem>
+                    </Select>
+                </FormControl>
+                Cards per Page
+            </div>*/}
         </div>
     );
 }
