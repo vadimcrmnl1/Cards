@@ -93,8 +93,6 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
         dispatch(packsActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
         dispatch(packsActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))
         dispatch(packsActions.setPacksMinCardsCountAC(res.data.minCardsCount))
-        // dispatch(tableActions.setPacksPageAC(res.data.page))
-        // dispatch(tableActions.setPacksPageCountAC(res.data.pageCount))
         // dispatch(tableActions.setPackNameAC(params.packName as string))
         dispatch(packsActions.setMinMaxCardsAC(params.min, params.max))
         /* dispatch(tableActions.setPacksMaxCardsAC(res.data.cardPacks))

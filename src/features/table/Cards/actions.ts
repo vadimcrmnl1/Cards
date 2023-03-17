@@ -1,5 +1,9 @@
 import {CardsType} from "../table-api";
 
+export const setCardsLoadingStatusAC = (cardsLoadingStatus: boolean) => ({
+    type: 'TABLE/SET_CARDS_LOADING_STATUS',
+    payload: {cardsLoadingStatus}
+} as const)
 export const setCardsAC = (cards: CardsType[]) => ({
     type: 'TABLE/SET_CARDS',
     payload: {cards}
@@ -32,7 +36,7 @@ export const setCardsPackUserIdAC = (packUser_id: string) => ({
     type: 'TABLE/SET_CARDS_PACK_USER_ID',
     payload: {packUser_id}
 } as const)
-export const setCardsSortAC = (sortCards: string|null) => ({
+export const setCardsSortAC = (sortCards: string | null) => ({
     type: 'TABLE/SET_CARDS_SORT',
     payload: {sortCards}
 } as const)

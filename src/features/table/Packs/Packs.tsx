@@ -15,8 +15,8 @@ import {FilterCountCards} from "./components/filterCountCards/FilterCountCards";
 import {NoFilters} from "./components/noFilters/NoFilters";
 import {useEffect} from "react";
 import {selectCardPacks, selectPacksLoadingStatus, selectPacksUserId} from "./selectors";
-import {addPackTC, deletePackTC, updatePackTC} from "./packs-reducer";
-import {AddPackRequestDataType, UpdatePackRequestDataType} from '../table-api';
+import {addPackTC} from "./packs-reducer";
+import {AddPackRequestDataType} from '../table-api';
 import {
     selectCardPacksTotalCount,
     selectMaxCardsCount,
@@ -86,20 +86,6 @@ export const Packs = () => {
         }
         dispatch(addPackTC(cardPack))
     }
-    const handleDeletePack = () => {
-
-        dispatch(deletePackTC(cardPacks[0]._id))
-    }
-    const handleUpdatePack = () => {
-        const identifier = Math.random().toFixed(2)
-        const cardPack: UpdatePackRequestDataType = {
-            cardsPack: {
-                _id: cardPacks[0]._id,
-                name: 'Name updated'+identifier
-            }
-        }
-        dispatch(updatePackTC(cardPack))
-    }
     const styleMU = useStyles();
 
 
@@ -139,18 +125,6 @@ export const Packs = () => {
                         onClick={handleAddPack}
                         variant={'contained'}
                         disabled={packsLoadingStatus}>Add new pack</Button>
-                <Button color={'primary'}
-                        className={styleMU.button}
-                        variant={'contained'}
-                        onClick={handleDeletePack}
-                        disabled={packsLoadingStatus}
-                >Delete pack</Button>
-                <Button color={'primary'}
-                        className={styleMU.button}
-                        variant={'contained'}
-                        onClick={handleUpdatePack}
-                        disabled={packsLoadingStatus}
-                >Update pack</Button>
             </div>
             <div className={s.packsBlock}>
                 <SearchTitleCards handleSendQuery={handleSearchTitleCards}/>
