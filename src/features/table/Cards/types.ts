@@ -1,13 +1,13 @@
-import * as actions from "./actions";
-import {InferValueTypes} from "../../../app/types";
+import { InferValueTypes } from '../../../app/types'
+
+import * as actions from './actions'
 
 export type CardsActionsType = ReturnType<InferValueTypes<typeof actions>>
 
 export type CardsParamsType = {
-    page: number
-    pageCount: number
-    cardsPack_id:string
-    sortCards?: string
-    cardQuestion?: string
+  page: number
+  pageCount: number
+  cardsPack_id: string
+  sortCards?: string
+  cardQuestion?: string
 }
-
