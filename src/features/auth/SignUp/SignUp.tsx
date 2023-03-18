@@ -21,42 +21,40 @@ type FormikValuesType = {
     password: string;
     confirmPassword: string
 }
-const initialValues: FormikValuesType = {
-    email: '',
-    password: '',
-    confirmPassword: '',
-}
-const validationSchema = yup.object({
-    email: yup
-        .string()
-        .email('Enter a valid email')
-        .required('Email is required'),
-    password: yup
-        .string()
-        .min(8, 'Password should be of minimum 8 characters length')
-        .required('Password is required'),
-    confirmPassword: yup
-        .string()
-        .required('You should confirm your password')
-        .oneOf([yup.ref('password',/*null*/)], 'Passwords must match'),
-
-});
 
 export const SignUp = () => {
 
     const dispatch = useAppDispatch()
     const isSignedUp = useAppSelector(selectIsSignedUp)
 
-    const onSubmit = (values: FormikValuesType, {setSubmitting}: FormikHelpers<FormikValuesType>) => {
-        dispatch(signUpTC(values.email, values.password))
-        setSubmitting(false);
-    }
 
     const formik = useFormik({
-        initialValues,
-        validationSchema,
-        onSubmit,
+        initialValues: {
+            email: '',
+            password: '',
+            confirmPassword: '',
+        },
+        validationSchema: yup.object({
+            email: yup
+                .string()
+                .email('Enter a valid email')
+                .required('Email is required'),
+            password: yup
+                .string()
+                .min(8, 'Password should be of minimum 8 characters length')
+                .required('Password is required'),
+            confirmPassword: yup
+                .string()
+                .required('You should confirm your password')
+                .oneOf([yup.ref('password',/*null*/)], 'Passwords must match'),
+
+        }),
+        onSubmit: ((values: FormikValuesType, {setSubmitting}: FormikHelpers<FormikValuesType>) => {
+            dispatch(signUpTC(values.email, values.password))
+            setSubmitting(false);
+        }),
     })
+
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -75,7 +73,6 @@ export const SignUp = () => {
             </InputAdornment>
         )
     }
-
 
     if (isSignedUp) {
         return <Navigate to={PATH.login}/>

@@ -4,7 +4,6 @@ import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {setAppErrorAC, setAppInfoAC} from "../../../app/actions";
 import {selectAppInfo, selectError} from "../../../app/selectors";
-import {selectPacksName} from "../../../features/table/Packs/selectors";
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -18,8 +17,6 @@ export const ErrorSnackbar = () => {
     const error = useAppSelector(selectError)
     const appInfo = useAppSelector(selectAppInfo)
 
-
-    console.log(error)
     const severity = appInfo
         ? 'info'
         : 'error'
