@@ -7,7 +7,7 @@ import {errorUtils} from "../common/utils/errorUtils";
 
 const appInitialState: AppInitialStateType = {
     isAppInitialized: false,
-    isLoading: false,
+    isAppMakeRequest: false,
     error: null,
     appInfo: null,
 }
@@ -16,8 +16,8 @@ export const appReducer = (state: AppInitialStateType = appInitialState, action:
     switch (action.type) {
         case 'APP/SET_APP_IS_INITIALIZED':
             return {...state, isAppInitialized: action.isAppInitialized}
-        case 'APP/SET_IS_LOADING':
-            return {...state, isLoading: action.isLoading}
+        case 'APP/SET_IS_APP_MAKE_REQUEST':
+            return {...state, isAppMakeRequest: action.isAppMakeRequest}
         case 'APP/ERROR':
             return {...state, error: action.error}
         case 'APP/INFO':
@@ -37,7 +37,7 @@ export const initializeAppTC = (): AppThunk<AllReducersActionType> => (dispatch)
 
         })
         .catch((error: any) => {
-            //не удалять, избавляет от первой ошибки неаторизованного
+            //не удалять, избавляет от первой ошибки неавторизованного
             if (error.response.status !== 401) { // ошибка неавторизованного пользователя
                 errorUtils(error, dispatch)
             }

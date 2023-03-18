@@ -37,11 +37,6 @@ export const PacksTable = () => {
         page > 0 ? pageCount - cardPacks.length : 0;
     const emptyRowsStyle = {height: 75 * emptyRows}
 
-
-    const handleSort = (sort: string | null) => {
-        dispatch(setPacksSortAC(sort))
-    }
-
     return (
         <div className={s.table}>
             <TableContainer component={Paper}>
@@ -52,25 +47,25 @@ export const PacksTable = () => {
                                 <SortCell label={"Name"}
                                           sorter={'name'}
                                           sort={sortPacks}
-                                          toggleSort={handleSort}/>
+                                         />
                             </StyledTableCell>
                             <StyledTableCell>
                                 <SortCell label={'Cards'}
                                           sorter={'cardsCount'}
                                           sort={sortPacks}
-                                          toggleSort={handleSort}/>
+                                         />
                             </StyledTableCell>
                             <StyledTableCell>
                                 <SortCell label={'Last Updated'}
                                           sorter={'updated'}
                                           sort={sortPacks}
-                                          toggleSort={handleSort}/>
+                                         />
                             </StyledTableCell>
                             <StyledTableCell>
                                 <SortCell label={'Created by'}
                                           sorter={'user_name'}
                                           sort={sortPacks}
-                                          toggleSort={handleSort}/>
+                                       />
                             </StyledTableCell>
                             <StyledTableCell>
                                 Actions

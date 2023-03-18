@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {useAppDispatch, useAppSelector} from "../../../app/store";
-
 import {PacksTable} from "./PacksTable/PacksTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
 import {Navigate, useSearchParams} from 'react-router-dom';
@@ -29,9 +28,7 @@ import {
     setPacksPageAC,
     setPacksPageCountAC
 } from "./actions";
-
 import {EmptySearch} from "../../../common/components/EmptySearch/EmptySearch";
-
 import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
 import {selectIsAppMakeRequest} from "../../../app/selectors";
 import {selectUserId} from "../../profile/selectors";
@@ -40,7 +37,6 @@ export const Packs = () => {
     const dispatch = useAppDispatch()
     const myID = useAppSelector(selectUserId)
     const totalCount = useAppSelector(selectCardPacksTotalCount)
-    const pageNumber = useAppSelector(selectPacksPage)
     const pageCount = useAppSelector(selectPacksPageCount)
     const minCardsCount = useAppSelector(selectMinCardsCount)
     const maxCardsCount = useAppSelector(selectMaxCardsCount)
@@ -57,6 +53,7 @@ export const Packs = () => {
     const cardPacks = useAppSelector(selectCardPacks)
     const styleMU = useStyles();
     const [isFirstLoading, setIsFirstLoading] = useState(true)
+
     useEffect(() => {
         if (isLoggedIn && !isFirstLoading) {
             dispatch(getPacksTC())
@@ -76,27 +73,7 @@ export const Packs = () => {
 
     }, [])
 
-    // useEffect(() => {
-    //     if (isLoggedIn && ){
-    //         dispatch(getPacksTC())
-    //     }
-    // }, [dispatch, page, pageCount, packName, sortPacks, userId, minCards, maxCards])
-    //
-    // useEffect(() => {
-    //     // if (isFirstLoading) {
-    //     // dispatch(getPacksTC())
-    //     // setSearchParams({...searchParams,sortPacks: sortPacks!})
-    //     const params = Object.fromEntries(searchParams)
-    //     dispatch(setPacksPageCountAC(+params.pageCount || 5))
-    //     dispatch(setPacksPageAC(+params.page || 1))
-    //     dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
-    //     dispatch(setPackNameAC(params.packName || null))
-    //     dispatch(setMyPacksAC(params.user_id || ''))
-    // },[])
 
-    if (!isLoggedIn) {
-        return <Navigate to={PATH.login}/>
-    }
 
     const handleAddPack = () => {
         const cardPack: AddPackRequestDataType = {
@@ -108,21 +85,6 @@ export const Packs = () => {
         }
         dispatch(addPackTC(cardPack))
     }
-    // const handleDeletePack = () => {
-    //
-    //     dispatch(deletePackTC(cardPacks[0]._id))
-    // }
-    // const handleUpdatePack = () => {
-    //     const identifier = Math.random().toFixed(2)
-    //     const cardPack: UpdatePackRequestDataType = {
-    //         cardsPack: {
-    //             _id: cardPacks[0]._id,
-    //             name: 'Name updated'+identifier
-    //         }
-    //     }
-    //     dispatch(updatePackTC(cardPack))
-    // }
-
 
 //Change pagination
     const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
@@ -169,6 +131,10 @@ export const Packs = () => {
         setSearchParams({...searchParams, user_id: ''})
         setDisabled(false)
     }
+
+    if (!isLoggedIn) {
+        return <Navigate to={PATH.login}/>
+    }
     return (
         <div className={s.container}>
             <div className={s.packsHeader}>
@@ -193,18 +159,13 @@ export const Packs = () => {
                 ? <div>
                     <PacksTable/>
                     <PaginationComponent totalCount={totalCount}
-                                         pageNumber={pageNumber}
+                                         pageNumber={page}
                                          pageCount={pageCount}
                                          handleChangePage={handleChangePage}
                                          handleChangeRowsPerPage={handleChangeRowsPerPage}/>
                 </div>
                 : <EmptySearch/>}
 
-            {/*<PaginationComponent totalCount={totalCount}*/}
-            {/*                     pageNumber={pageNumber}*/}
-            {/*                     pageCount={pageCount}*/}
-            {/*                     handleChangePage={handleChangePage}*/}
-            {/*                     handleChangeRowsPerPage={handleChangeRowsPerPage}/>*/}
             <ErrorSnackbar/>
         </div>
     )

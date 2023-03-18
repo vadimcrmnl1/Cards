@@ -28,7 +28,7 @@ export type AppActionsType = ReturnType<InferValueTypes<typeof actions>>
 
 export type AppInitialStateType = {
     isAppInitialized: boolean
-    isLoading: boolean
+    isAppMakeRequest: boolean
     error: string | null
     appInfo: string | null
 }

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import s from './../Packs/Packs.module.css'
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {CardsTable} from "./CardsTable/CardsTable";
@@ -7,10 +7,17 @@ import {Navigate, useSearchParams} from 'react-router-dom';
 import {PATH} from "../../../common/utils/routes/Routes";
 import {LinkToBack} from "../../../common/components/LinkToBack/LinkToBack";
 import {PaginationComponent} from "../Packs/components/pagination/PaginationComponent";
-import {selectCards, selectCardsPage, selectCardsPageCount, selectCardsTotalCount, selectPackName} from "./selectors";
-import {setCardsPageAC, setCardsPageCountAC, setCardsSearchByQuestionAC} from "./actions";
+import {
+     selectCardsPackId,
+    selectCardsPage,
+    selectCardsPageCount,
+    selectCardsQuestion, selectCardsSort,
+    selectCardsTotalCount,
+    selectPackName
+} from "./selectors";
+import {setCardsPageAC, setCardsPageCountAC, setCardsSearchByQuestionAC, setCardsSortAC} from "./actions";
 import {useStyles} from "../../styleMU/styleMU";
-import {addCardTC} from "./cards-reducer";
+import {addCardTC, getCardsTC} from "./cards-reducer";
 import {AddCardRequestType} from "../table-api";
 import {selectCardPacks} from "../Packs/selectors";
 import Button from '@mui/material/Button';
@@ -18,35 +25,54 @@ import {selectIsAppMakeRequest} from "../../../app/selectors";
 import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
 import {SearchQuestion} from './components/SearchQuestion';
 import {SelectChangeEvent} from "@mui/material";
-import {EmptySearch} from "../../../common/components/EmptySearch/EmptySearch";
-import {EmptyList} from "../../../common/components/EmptyList/EmptyList";
-import {NoFilters} from "../Packs/components/noFilters/NoFilters";
 
 
 export const Cards = () => {
     const totalCount = useAppSelector(selectCardsTotalCount)
     const pageNumber = useAppSelector(selectCardsPage)
     const pageCount = useAppSelector(selectCardsPageCount)
-    const cardsPack_id = useAppSelector(selectCardPacks)
+    const cardsPack = useAppSelector(selectCardPacks)
     const packName = useAppSelector(selectPackName)
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
     const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
-    const cards = useAppSelector(selectCards)
+    const page = useAppSelector(selectCardsPage)
+    const question = useAppSelector(selectCardsQuestion)
+    const sortCards = useAppSelector(selectCardsSort)
+    const pack_id = useAppSelector(selectCardsPackId)
+
     const styleMU = useStyles();
     const [searchParams, setSearchParams] = useSearchParams()
 
-    useEffect(()=>{
-        const params = Object.fromEntries(searchParams)
-        dispatch(setCardsSearchByQuestionAC(params.question || ''))
-     },[])
-    if (!isLoggedIn) {
-        return <Navigate to={PATH.login}/>
-    }
+    const [isFirstLoading, setIsFirstLoading] = useState(true)
+
+
+    useEffect(() => {
+        if (isLoggedIn && !isFirstLoading) {
+            dispatch(getCardsTC())
+        }
+    }, [dispatch, page, pageCount, question, sortCards, isFirstLoading])
+
+    useEffect(() => {
+        if (isFirstLoading) {
+            // dispatch(getPacksTC())
+            // setSearchParams({...searchParams,sortPacks: sortPacks!})
+            const params = Object.fromEntries(searchParams)
+            dispatch(setCardsPageCountAC(+params.pageCount || 5))
+            dispatch(setCardsPageAC(+params.page || 1))
+            dispatch(setCardsSearchByQuestionAC(params.question || ''))
+            dispatch(setCardsSortAC(params.sortCards || null))
+            // if (!searchParams.get('cardsPack_id')) {
+            //     setSearchParams({cardsPack_id: pack_id})
+            // }
+            setIsFirstLoading(false)
+        }
+    }, [])
+
     //Change pagination
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        dispatch(setCardsPageAC(value))
-        setSearchParams({...searchParams, page:value.toString()})
+    const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
+        dispatch(setCardsPageAC(newPage + 1))
+        setSearchParams({...Object.fromEntries(searchParams), page: (newPage + 1).toString()})
     }
     const handlePageCountChange = (event: SelectChangeEvent) => {
         dispatch(setCardsPageCountAC(+event.target.value))
@@ -55,20 +81,23 @@ export const Cards = () => {
     };
     const handleSearchQuestion = (value: string) => {
         dispatch(setCardsSearchByQuestionAC(value))
-        setSearchParams({...searchParams, question:value})
+        setSearchParams({...searchParams, question: value})
     }
 
     const handleAddCard = () => {
         const data: AddCardRequestType = {
             card: {
-                cardsPack_id: cardsPack_id[0]._id,
+                cardsPack_id: cardsPack[0]._id,
                 question: 'How I meet your mother?',
                 answer: 'No way'
             }
         }
         dispatch(addCardTC(data))
     }
-    console.log('totalCount', totalCount, 'cards', cards.length)
+
+    if (!isLoggedIn) {
+        return <Navigate to={PATH.login}/>
+    }
     return (
         <div className={s.container}>
 

@@ -27,29 +27,20 @@ export const CardsTable = () => {
 
     const dispatch = useAppDispatch()
     const cards = useAppSelector(selectCards)
-    const page = useAppSelector(selectCardsPage)
     const pageCount = useAppSelector(selectCardsPageCount)
-    const question = useAppSelector(selectCardsQuestion)
     const packUserId = useAppSelector(selectPackUserId)
     const myId = useAppSelector(selectUserId)
+    const page = useAppSelector(selectCardsPage)
     const cardsSort = useAppSelector(selectCardsSort)
 
 
 
-    useEffect(() => {
-        dispatch(getCardsTC())
-    }, [dispatch, page, pageCount, cardsSort, question])
+
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? pageCount - cards.length : 0;
     const emptyRowsStyle = {height: 75 * emptyRows}
-
-
-
-    const handleSort = (sort: string | null) => {
-        dispatch(setCardsSortAC(sort))
-    }
 
     return (
         <div>
@@ -61,17 +52,17 @@ export const CardsTable = () => {
                                 <SortCell label={"Question"}
                                           sorter={'question'}
                                           sort={cardsSort}
-                                          toggleSort={handleSort}/>
+                                          />
                             </StyledTableCell>
                             <StyledTableCell>
-                                <SortCell label={"Answer"} sorter={'answer'} sort={cardsSort} toggleSort={handleSort}/>
+                                <SortCell label={"Answer"} sorter={'answer'} sort={cardsSort} />
                             </StyledTableCell>
                             <StyledTableCell>
                                 <SortCell label={"Last Updated"} sorter={'updated'} sort={cardsSort}
-                                          toggleSort={handleSort}/>
+                                          />
                             </StyledTableCell>
                             <StyledTableCell>
-                                <SortCell label={"Grade"} sorter={'grade'} sort={cardsSort} toggleSort={handleSort}/>
+                                <SortCell label={"Grade"} sorter={'grade'} sort={cardsSort} />
                             </StyledTableCell>
                             {packUserId === myId && <StyledTableCell>
                                 Actions
@@ -112,11 +103,6 @@ export const CardsTable = () => {
                 </Table>
 
             </TableContainer>
-           {/* <PaginationComponent totalCount={totalCount}
-                                 pageNumber={page}
-                                 pageCount={pageCount}
-                                 handleChangePage={handlePageChange}
-                                 handleChangeRowsPerPage={handlePageCountChange}/>*/}
            {/* <div className={s.pagination}>
                 <Pagination
                     count={count}
