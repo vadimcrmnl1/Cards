@@ -34,19 +34,22 @@ export const authReducer = (state: AuthInitialStateType = authInitialState, acti
 
 // thunks
 export const loginTC = (data: LoginParamsType): AppThunk<AllReducersActionType> => async (dispatch) => {
-    // dispatch(appActions.setAppStatusAC('loading'))
+    dispatch(appActions.setAppIsLoadingAC(true))
     try {
         const res = await authAPI.login(data)
         dispatch(authActions.setLoggedInAC(true))
         dispatch(profileActions.setProfileAC(res.data))
         dispatch(appActions.setAppInfoAC(`Welcome, ${res.data.name}`))
-        // dispatch(appActions.setAppStatusAC('succeeded'))
+
     } catch (err: any) {
         errorUtils(err, dispatch)
+        console.log(err)
+    } finally {
+        dispatch(appActions.setAppIsLoadingAC(false))
     }
 }
 export const logoutTC = (): AppThunk<AllReducersActionType> => async (dispatch) => {
-    // dispatch(appActions.setAppStatusAC('loading'))
+    dispatch(appActions.setAppIsLoadingAC(true))
     try {
         const res = await authAPI.logout()
         setProfileAC({} as ResponseDataType)
@@ -55,8 +58,10 @@ export const logoutTC = (): AppThunk<AllReducersActionType> => async (dispatch) 
         // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
         errorUtils(err, dispatch)
+
     } finally {
         dispatch(authActions.setLoggedInAC(false))
+        dispatch(appActions.setAppIsLoadingAC(false))
     }
 }
 

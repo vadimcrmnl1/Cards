@@ -24,6 +24,7 @@ export const FilterCountCards = (props: FilterCountCardsPropsType) => {
             <div className={s.sliderBlock}>
                 <span>{minCards}</span>
                 <Slider
+                    color={'secondary'}
                     getAriaLabel={() => 'Temperature range'}
                     value={[minCards, (maxCards === 0 ? maxCardsCount : maxCards)]}
                     onChangeCommitted={props.handleChange}

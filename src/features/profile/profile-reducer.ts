@@ -4,6 +4,7 @@ import * as profileActions from "./actions";
 import {AllReducersActionType, AppThunk} from "../../app/types";
 import * as appActions from './../../app/actions'
 import {profileAPI} from "./profileApi";
+import {setAppIsLoadingAC} from "../../app/actions";
 
 export const profileInitialState: ProfileInitialStateType = {
     _id: '',
@@ -34,10 +35,12 @@ export const profileReducer = (state: ProfileInitialStateType = profileInitialSt
 
 //Изменение nickName
 export const changeNameTC = (name: string): AppThunk<AllReducersActionType> => async (dispatch) => {
+    dispatch(setAppIsLoadingAC(true))
     try{
         const res = await profileAPI.changeName(name)
         dispatch(profileActions.changeNameAC(res.data.updatedUser.name))
         dispatch(appActions.setAppInfoAC(`Name changed to ${res.data.updatedUser.name}`))
+        dispatch(setAppIsLoadingAC(false))
     }
     catch(e: any){
         errorUtils(e, dispatch)

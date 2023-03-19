@@ -1,18 +1,20 @@
 import React from "react";
 import {Avatar, Box, IconButton, Menu, MenuItem, Tooltip} from "@mui/material";
-import {setAppErrorAC} from "../../../../app/actions";
+import {setAppErrorAC, setAppIsLoadingAC} from "../../../../app/actions";
 import {logoutTC} from "../../../../features/auth/auth-reducer";
 import {useAppDispatch, useAppSelector} from "../../../../app/store";
 import {selectIsLoggedIn} from "../../../../features/auth/selectors";
 import avatar from './../../../../features/images/avatar.png'
 import s from './../Header.module.css'
-import {NavLink} from "react-router-dom";
+import {Navigate, NavLink} from "react-router-dom";
 import {PATH} from "../../../utils/routes/Routes";
 import {selectName} from "../../../../features/profile/selectors";
+import {selectIsAppMakeRequest} from "../../../../app/selectors";
 
 export const HeaderMenuBlock = () => {
     const loginStatus = useAppSelector(selectIsLoggedIn)
     const userName = useAppSelector(selectName)
+    const isLoading = useAppSelector(selectIsAppMakeRequest)
 
     const dispatch = useAppDispatch()
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -20,11 +22,17 @@ export const HeaderMenuBlock = () => {
         setAnchorElUser(event.currentTarget);
     };
     const handleCloseUserMenu = () => {
-        if (!loginStatus ) {
+        if (!loginStatus) {
             dispatch(setAppErrorAC('You are not authorised'))
         }
+
         setAnchorElUser(null);
     };
+    const handleToProfile = () => {
+        dispatch(setAppIsLoadingAC(true))
+
+
+    }
     const handleLogout = () => {
         dispatch(logoutTC())
     }
@@ -54,7 +62,9 @@ export const HeaderMenuBlock = () => {
                 onClose={handleCloseUserMenu}
             >
                 <NavLink style={{color: 'black'}} to={PATH.profile}><MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem></NavLink>
-                <NavLink style={{color: 'black'}} to={PATH.packs}><MenuItem onClick={handleCloseUserMenu}>Packs</MenuItem></NavLink>
+                {/*<MenuItem onClick={handleToProfile}>Profile</MenuItem>*/}
+                <NavLink style={{color: 'black'}} to={PATH.packs}><MenuItem
+                    onClick={handleCloseUserMenu}>Packs</MenuItem></NavLink>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
 
             </Menu>

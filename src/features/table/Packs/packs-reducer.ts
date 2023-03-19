@@ -64,7 +64,7 @@ export const packsReducer = (state: PacksInitialStateType = packsInitialState, a
 //thunks
 
 export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
-    dispatch(packsActions.setPacksLoadingStatusAC(true))
+    dispatch(appActions.setAppIsLoadingAC(true))
     const {page, pageCount,  sortPacks, packName, user_id, min, max} = getState().packs
     const params: PacksParamsType = {
         page,
@@ -102,7 +102,7 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
     } catch (err: any) {
         errorUtils(err, dispatch)
     } finally {
-        dispatch(packsActions.setPacksLoadingStatusAC(false))
+        dispatch(appActions.setAppIsLoadingAC(false))
     }
 }
 

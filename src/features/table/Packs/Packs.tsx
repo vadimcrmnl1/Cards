@@ -35,6 +35,7 @@ import {EmptySearch} from "../../../common/components/EmptySearch/EmptySearch";
 import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
 import {selectIsAppMakeRequest} from "../../../app/selectors";
 import {selectUserId} from "../../profile/selectors";
+import {setAppIsLoadingAC} from "../../../app/actions";
 
 export const Packs = () => {
     const dispatch = useAppDispatch()
@@ -57,6 +58,7 @@ export const Packs = () => {
     const cardPacks = useAppSelector(selectCardPacks)
     const styleMU = useStyles();
     const [isFirstLoading, setIsFirstLoading] = useState(true)
+
     useEffect(() => {
         if (isLoggedIn && !isFirstLoading) {
             dispatch(getPacksTC())
@@ -72,9 +74,10 @@ export const Packs = () => {
             dispatch(setPackNameAC(params.packName || ''))
             dispatch(setMyPacksAC(params.user_id || ''))
             setIsFirstLoading(false)
+            dispatch(setAppIsLoadingAC(false))
         }
 
-    }, [])
+    }, [isAppMakeRequest])
 
     // useEffect(() => {
     //     if (isLoggedIn && ){
@@ -99,6 +102,7 @@ export const Packs = () => {
     }
 
     const handleAddPack = () => {
+        dispatch(setAppIsLoadingAC(true))
         const cardPack: AddPackRequestDataType = {
             cardsPack: {
                 name: 'Pack Name',
@@ -169,6 +173,7 @@ export const Packs = () => {
         setSearchParams({...searchParams, user_id: ''})
         setDisabled(false)
     }
+    console.log('cardPacks.length', cardPacks.length)
     return (
         <div className={s.container}>
             <div className={s.packsHeader}>
@@ -189,7 +194,7 @@ export const Packs = () => {
                 <FilterCountCards handleChange={handleChangeCountCards}/>
                 <NoFilters handleDeleteAllFilters={handleDeleteAllFilters}/>
             </div>
-            {cardPacks.length !== 0
+            {cardPacks.length !== 0 && !isFirstLoading
                 ? <div>
                     <PacksTable/>
                     <PaginationComponent totalCount={totalCount}
@@ -205,7 +210,7 @@ export const Packs = () => {
             {/*                     pageCount={pageCount}*/}
             {/*                     handleChangePage={handleChangePage}*/}
             {/*                     handleChangeRowsPerPage={handleChangeRowsPerPage}/>*/}
-            <ErrorSnackbar/>
+            {/*<ErrorSnackbar/>*/}
         </div>
     )
 }
