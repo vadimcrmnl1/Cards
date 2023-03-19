@@ -49,37 +49,50 @@ export const Packs = () => {
   const myID = useAppSelector(selectUserId)
   const totalCount = useAppSelector(selectCardPacksTotalCount)
   const pageCount = useAppSelector(selectPacksPageCount)
-  const minCardsCount = useAppSelector(selectMinCardsCount)
   const maxCardsCount = useAppSelector(selectMaxCardsCount)
+  const minCardsCount = useAppSelector(selectMinCardsCount)
   const minCards = useAppSelector(selectPacksMinCards)
   const maxCards = useAppSelector(selectPacksMaxCards)
   const sortPacks = useAppSelector(selectPacksSort)
   const page = useAppSelector(selectPacksPage)
   const packName = useAppSelector(selectPacksName)
-  const userId = useAppSelector(selectPacksUserId)
+  const packsUser_id = useAppSelector(selectPacksUserId)
   const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
   const [searchParams, setSearchParams] = useSearchParams()
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
-  const [disabled, setDisabled] = useState(false)
+  // const [disabled, setDisabled] = useState(false)
   const cardPacks = useAppSelector(selectCardPacks)
   const styleMU = useStyles()
   const [isFirstLoading, setIsFirstLoading] = useState(true)
+  const params = Object.fromEntries(searchParams)
 
+  console.log('packs')
   useEffect(() => {
     if (isLoggedIn && !isFirstLoading) {
       dispatch(getPacksTC())
     }
-  }, [isFirstLoading, dispatch, page, pageCount, packName, sortPacks, userId, minCards, maxCards])
+  }, [
+    isFirstLoading,
+    dispatch,
+    page,
+    pageCount,
+    packName,
+    sortPacks,
+    packsUser_id,
+    minCards,
+    maxCards,
+  ])
 
   useEffect(() => {
-    const params = Object.fromEntries(searchParams)
-
     if (isFirstLoading) {
       dispatch(setPacksPageCountAC(+params.pageCount || 5))
       dispatch(setPacksPageAC(+params.page || 1))
+      if (params.min) {
+        dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
+      }
       dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
       dispatch(setPackNameAC(params.packName || ''))
-      dispatch(setMyPacksAC(params.user_id || ''))
+      dispatch(setMyPacksAC(params.user_id || null))
       dispatch(setPacksSortAC(params.sortPacks || null))
       setIsFirstLoading(false)
     }
@@ -100,13 +113,13 @@ export const Packs = () => {
   //Change pagination
   const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
     dispatch(setPacksPageAC(page + 1))
-    setSearchParams({ ...Object.fromEntries(searchParams), page: (page + 1).toString() })
+    setSearchParams({ ...params, page: (page + 1).toString() })
   }
   const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
     dispatch(setPacksPageCountAC(+event.target.value))
     dispatch(setPacksPageAC(1))
     setSearchParams({
-      ...Object.fromEntries(searchParams),
+      ...params,
       page: '1',
       pageCount: event.target.value,
     })
@@ -114,43 +127,61 @@ export const Packs = () => {
 
   const handleChangeCountCards = (event: any, newValue: number | number[]) => {
     const counts = newValue as number[]
+    const min = counts[0]
+    const max = counts[1]
 
-    dispatch(setMinMaxCardsAC(counts[0], counts[1]))
+    dispatch(setMinMaxCardsAC(min, max))
+    if (min === 0) {
+      searchParams.delete('min')
+    } else {
+      searchParams.append('min', min.toString())
+    }
+    if (max === maxCardsCount) {
+      searchParams.delete('max')
+    } else {
+      searchParams.append('max', max.toString())
+    }
     setSearchParams({
       ...Object.fromEntries(searchParams),
-      min: counts[0].toString(),
-      max: counts[1].toString(),
     })
   }
 
   const handleSearchTitleCards = (value: string) => {
+    if (value !== '' && value !== null) {
+      setSearchParams({ ...params, packName: value })
+    } else if (value === '') {
+      searchParams.delete('packName')
+      setSearchParams({ ...Object.fromEntries(searchParams) })
+    }
     dispatch(setPackNameAC(value))
-    setSearchParams({ ...Object.fromEntries(searchParams), packName: value })
   }
+
   //Delete Filters
   const handleDeleteAllFilters = () => {
     dispatch(setPackNameAC(''))
     dispatch(setMyPacksAC(null))
     dispatch(setMinMaxCardsAC(0, maxCardsCount))
+    searchParams.delete('min')
+    searchParams.delete('max')
+    searchParams.delete('packName')
+    searchParams.delete('user_id')
     setSearchParams({
       page: '1',
       pageCount: '5',
-      min: minCardsCount.toString(),
-      max: maxCardsCount.toString(),
-      packName: '' as string,
-      user_id: '' as string,
     })
   }
+
   //Sort by my packs
   const handleSortByMyPacks = () => {
     dispatch(setMyPacksAC(myID))
-    setSearchParams({ ...searchParams, user_id: myID as string })
-    setDisabled(true)
+    setSearchParams({ ...params, user_id: myID as string })
+    // setDisabled(true)
   }
   const handleSortByAllPacks = () => {
-    dispatch(setMyPacksAC(''))
-    setSearchParams({ ...searchParams, user_id: '' })
-    setDisabled(false)
+    searchParams.delete('user_id')
+    dispatch(setMyPacksAC(null))
+    setSearchParams({ ...Object.fromEntries(searchParams) })
+    // setDisabled(false)
   }
 
   if (!isLoggedIn) {
@@ -175,9 +206,13 @@ export const Packs = () => {
         <SortingByUser
           handleSortByAllPacks={handleSortByAllPacks}
           handleSortByMyPacks={handleSortByMyPacks}
-          disabled={disabled}
+          // disabled={disabled}
+          packsUser_id={packsUser_id}
         />
-        <FilterCountCards handleChange={handleChangeCountCards} />
+        <FilterCountCards
+          value={[minCards, maxCards === 0 ? maxCardsCount : maxCards]}
+          handleChange={handleChangeCountCards}
+        />
         <NoFilters handleDeleteAllFilters={handleDeleteAllFilters} />
       </div>
       {cardPacks.length !== 0 ? (

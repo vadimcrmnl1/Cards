@@ -19,7 +19,6 @@ import { ActionsCell } from '../../common/ActionsCell/ActionsCell'
 import { SortCell } from '../../common/SortCell/SortCell'
 import { StyledTableCell, StyledTableRow } from '../../common/styles'
 import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
-import { setPacksSortAC } from '../actions'
 import {
   selectCardPacks,
   selectPacksPage,

@@ -38,7 +38,7 @@ export const setPacksLoadingStatusAC = (packsLoadingStatus: boolean) =>
 ///ACTION FOR FILTERS
 
 //search by name packs
-export const setPackNameAC = (packName: string | null) =>
+export const setPackNameAC = (packName: string) =>
   ({
     type: 'TABLE/SET_PACK_NAME',
     payload: { packName },
