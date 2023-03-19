@@ -90,7 +90,7 @@ export const Packs = () => {
       if (params.min) {
         dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
       }
-      dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
+      // dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
       dispatch(setPackNameAC(params.packName || ''))
       dispatch(setMyPacksAC(params.user_id || null))
       dispatch(setPacksSortAC(params.sortPacks || null))
@@ -209,10 +209,7 @@ export const Packs = () => {
           // disabled={disabled}
           packsUser_id={packsUser_id}
         />
-        <FilterCountCards
-          value={[minCards, maxCards === 0 ? maxCardsCount : maxCards]}
-          handleChange={handleChangeCountCards}
-        />
+        <FilterCountCards handleChange={handleChangeCountCards} />
         <NoFilters handleDeleteAllFilters={handleDeleteAllFilters} />
       </div>
       {cardPacks.length !== 0 ? (

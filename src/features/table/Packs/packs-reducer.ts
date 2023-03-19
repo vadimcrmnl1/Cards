@@ -73,6 +73,12 @@ export const packsReducer = (
 
       return { ...state, min: newMin, max: newMax }
     }
+    case 'TABLE/SET_MIN_CARDS': {
+      return { ...state, min: action.payload.min }
+    }
+    case 'TABLE/SET_MAX_CARDS': {
+      return { ...state, max: action.payload.max }
+    }
     case 'TABLE/SET_PACKS_SORT':
       return { ...state, sortPacks: action.payload.sortPacks }
     default:
@@ -114,6 +120,12 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
     dispatch(packsActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
     dispatch(packsActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))
     dispatch(packsActions.setPacksMinCardsCountAC(res.data.minCardsCount))
+    if (max > res.data.maxCardsCount) {
+      dispatch(packsActions.setMaxCardsAC(res.data.maxCardsCount))
+    }
+    if (min > res.data.maxCardsCount) {
+      dispatch(packsActions.setMinCardsAC(0))
+    }
   } catch (err: any) {
     errorUtils(err, dispatch)
   } finally {
