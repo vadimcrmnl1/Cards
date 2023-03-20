@@ -1,24 +1,26 @@
 .container {
-    width: 27%;
-    border: 1px solid gray;
-    background: white;
-    border-radius: 5px;
-    padding: 33px;
+  width: 27%;
+  padding: 33px;
+
+  background: white;
+  border: 1px solid gray;
+  border-radius: 5px;
 }
 
 h1 {
-    font-size: 26px;
-    line-height: 32px;
+  font-size: 26px;
+  line-height: 32px;
 }
 
 .form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-    padding-top: 30px;
-    row-gap: 15px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto;
+  padding-top: 30px;
 }
 
 /*.form > button {*/
@@ -26,23 +28,25 @@ h1 {
 /*    border-radius: 20px;*/
 /*}*/
 
-
 .questionBlock {
-    margin-top: 40px;
-    font-style: normal;
-    font-weight: 600;
-    text-align: center;
-    opacity: 0.5;
+  margin-top: 40px;
+
+  font-weight: 600;
+  font-style: normal;
+  text-align: center;
+
+  opacity: 0.5;
 }
 
 .link {
-    margin-top: 20px;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-    text-align: center;
-    color: #366EFF;
+  margin-top: 20px;
+
+  font-size: 16px;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 24px;
+  color: #366eff;
+  text-align: center;
 }
 
 /*@media screen and (max-width: 1280px) {*/

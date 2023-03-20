@@ -1,26 +1,24 @@
-import {instance} from "../../api/api";
+import { instance } from '../../api/api'
 
 export const profileAPI = {
-    changeName(name: string) {
-        return instance.put<ProfileUserType>('auth/me', {name})
-    }
+  changeName(name: string) {
+    return instance.put<ProfileUserType>('auth/me', { name })
+  },
 }
 
 type ProfileUserType = {
-    updatedUser: UpdateUserType
-    error?: string
+  updatedUser: UpdateUserType
+  error?: string
 }
 type UpdateUserType = {
-    _id: string;
-    email: string;
-    name: string;
-    avatar?: string | null;
-    publicCardPacksCount: number;
-    created: Date;
-    updated: Date;
-    isAdmin: boolean;
-    verified: boolean;
-    rememberMe: boolean;
+  _id: string
+  email: string
+  name: string
+  avatar?: string | null
+  publicCardPacksCount: number
+  created: Date
+  updated: Date
+  isAdmin: boolean
+  verified: boolean
+  rememberMe: boolean
 }
-
-

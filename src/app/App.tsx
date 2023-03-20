@@ -1,19 +1,15 @@
 import React, { useEffect } from 'react'
 
-import { createTheme } from '@mui/material'
-import { green, purple } from '@mui/material/colors'
 import { Outlet } from 'react-router-dom'
 
 import { SimpleBackdrop } from '../common/components/Backdrop/Backdrop'
 import { ErrorSnackbar } from '../common/components/ErrorSnackbar/ErrorSnackbar'
 import { Header } from '../common/components/Header/Header'
 import { InfoSnackbar } from '../common/components/InfoSnackbar/InfoSnackbar'
-import { Spinner } from '../common/components/Spinner'
 
 import { setAppIsLoadingAC } from './actions'
 import { initializeAppTC } from './app-reducer'
 import s from './App.module.css'
-
 import { selectIsAppInitialized, selectIsAppMakeRequest } from './selectors'
 import { useAppDispatch, useAppSelector } from './store'
 

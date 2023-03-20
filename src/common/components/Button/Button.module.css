@@ -1,18 +1,21 @@
 .buttonContainer {
-    font-family: "Montserrat Thin", sans-serif;
-    font-size: 22px;
-    font-weight: bold;
-    width: max-content;
-    height: 30px;
-    border: none;
-    border-radius: 5px;
-    background: #00bbc0;
-    color: white;
+  width: max-content;
+  height: 30px;
+
+  font-family: 'Montserrat Thin', sans-serif;
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+
+  background: #00bbc0;
+  border: none;
+  border-radius: 5px;
 }
 .buttonContainer:hover {
-    background: #009a9f;
+  background: #009a9f;
 }
 .buttonContainer:active {
-    background: white;
-    color: #00bbc0;
+  color: #00bbc0;
+
+  background: white;
 }

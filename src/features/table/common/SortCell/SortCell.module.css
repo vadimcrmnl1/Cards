@@ -1,21 +1,20 @@
-.wrapper{
-
-    display: flex;
-    align-items: center;
-    gap: 2px;
-
+.wrapper {
+  display: flex;
+  gap: 2px;
+  align-items: center;
 }
 .wrapper p {
-    display: inline;
+  display: inline;
 }
 .wrapper button {
-    border: 0;
-    background-color: inherit;
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
+  cursor: pointer;
+
+  margin: 0;
+  padding: 0;
+
+  background-color: inherit;
+  border: 0;
 }
 
-.icon{
-
+.icon {
 }
