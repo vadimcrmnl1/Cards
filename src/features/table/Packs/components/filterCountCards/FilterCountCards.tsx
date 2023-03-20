@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from '../../../../../app/store'
 import useDebounce from '../../../../../common/utils/debounceUtils'
 import { selectUserId } from '../../../../profile/selectors'
 import { useStyles } from '../../../../styleMU/styleMU'
-import { setMinMaxCardsAC } from '../../actions'
 import {
   selectMaxCardsCount,
   selectMinCardsCount,
@@ -20,7 +19,6 @@ type FilterCountCardsPropsType = {
   handleChange: (event: any, newValue: number | number[]) => void
 }
 export const FilterCountCards = (props: FilterCountCardsPropsType) => {
-  const dispatch = useAppDispatch()
   const styleMU = useStyles()
   const minCardsCount = useAppSelector(selectMinCardsCount)
   const maxCardsCount = useAppSelector(selectMaxCardsCount)
@@ -49,7 +47,7 @@ export const FilterCountCards = (props: FilterCountCardsPropsType) => {
     if (minCards === minCardsCount && maxCards === maxCardsCount) {
       setValue([minCards, maxCards])
     }
-  }, [minCards, maxCards])
+  }, [maxCards])
   const handleChange = (event: any, newValue: number | number[], activeThumb: number) => {
     if (activeThumb >= 0) {
       setIsRangeTouched(true)
@@ -61,7 +59,7 @@ export const FilterCountCards = (props: FilterCountCardsPropsType) => {
     <div className={s.wrapper}>
       <div>Number of cards</div>
       <div className={s.sliderBlock}>
-        <span>{minCards !== 0 ? minCards : minCardsCount}</span>
+        <span>{minCardsCount}</span>
         <Slider
           getAriaLabel={() => 'Count of cards'}
           value={value}
@@ -73,7 +71,7 @@ export const FilterCountCards = (props: FilterCountCardsPropsType) => {
           max={maxCardsCount}
           className={styleMU.slider}
         />
-        <span>{maxCards !== maxCardsCount ? maxCardsCount : maxCards}</span>
+        <span>{maxCardsCount}</span>
       </div>
     </div>
   )
