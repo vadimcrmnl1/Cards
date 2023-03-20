@@ -51,19 +51,26 @@ export const Packs = () => {
     const isLoggedIn = useAppSelector(selectIsLoggedIn)
     const [disabled, setDisabled]=useState(false)
     const styleMU = useStyles();
-
+    const [isFirstLoading, setisFirstLoading]=useState(true)
     useEffect(() => {
-        if (isLoggedIn){
-            dispatch(getPacksTC())
+        if (isLoggedIn && !isFirstLoading){
+           dispatch(getPacksTC())
         }
-    }, [dispatch, page, pageCount, packName, sortPacks, userId, minCards, maxCards])
+    }, [isFirstLoading,dispatch, page, pageCount, packName, sortPacks, userId, minCards, maxCards])
+
     useEffect(()=>{
         const params = Object.fromEntries(searchParams)
-        dispatch(setPacksPageCountAC(+params.pageCount || 5))
-        dispatch(setPacksPageAC(+params.page || 1))
-        dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
-        dispatch(setPackNameAC(params.packName || null))
-        dispatch(setMyPacksAC(params.user_id || ''))
+
+        if(isFirstLoading)
+        {
+            dispatch(setPacksPageCountAC(+params.pageCount || 5))
+            dispatch(setPacksPageAC(+params.page || 1))
+            dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
+            dispatch(setPackNameAC(params.packName || ''))
+            dispatch(setMyPacksAC(params.user_id || ''))
+            setisFirstLoading(false)
+        }
+
     },[])
 
     if (!isLoggedIn) {
@@ -121,7 +128,7 @@ export const Packs = () => {
         dispatch(setMyPacksAC(''))
         dispatch(setMinMaxCardsAC(0, maxCardsCount))
         setSearchParams({page:'1',
-                                 pageCount: '5',
+                                pageCount: '5',
                                 min: minCardsCount.toString(),
                                 max: maxCardsCount.toString(),
                                 packName:'' as string,

@@ -41,7 +41,7 @@ export const setCardsPackNameAC = (name: string) => ({
     payload: {name}
 } as const)
 //===Action creator for search=======
-export const setCardsSearchByAnswerAC = (answer: string) => ({
-    type: 'TABLE/SET_CARDS_SEARCH_BY_ANSWER',
-    payload: {answer}
+export const setCardsSearchByQuestionAC = (question: string) => ({
+    type: 'TABLE/SET_CARDS_SEARCH_BY_QUESTION',
+    payload: {question}
 } as const)

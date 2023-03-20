@@ -9,6 +9,7 @@ import {dateUtils} from "../../../common/utils/dateUtils";
 import {setAppIsLoadingAC} from "../../../app/actions";
 
 export const packsInitialState = {
+    packsLoadingStatus:false,
     cardPacks: [] as CardPacksType[],
     cardPacksTotalCount: 1,
     maxCardsCount: 1,
@@ -81,15 +82,14 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
     params.max = max
     try {
         const res = await packsAPI.getPacks(params)
+
         dispatch(tableActions.setPacksAC(res.data.cardPacks))
         dispatch(tableActions.setPacksTotalCountAC(res.data.cardPacksTotalCount))
         dispatch(tableActions.setPacksMaxCardsCountAC(res.data.maxCardsCount))
         dispatch(tableActions.setPacksMinCardsCountAC(res.data.minCardsCount))
         dispatch(tableActions.setPackNameAC(params.packName as string))
 
-        if (packName !== '' && res.data.cardPacks.length === 0) {
-            dispatch(appActions.setAppErrorAC(`Packs with name ${packName} no search!!!`))
-        }
+
 
     } catch (err: any) {
         errorUtils(err, dispatch)

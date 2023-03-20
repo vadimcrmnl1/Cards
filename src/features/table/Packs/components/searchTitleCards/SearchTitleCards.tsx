@@ -10,16 +10,14 @@ type SearchTitleCardsPropsType={
 export const SearchTitleCards = (props:SearchTitleCardsPropsType) => {
     const packName = useAppSelector(selectPacksName) as string
     const [value, setValue] = useState('')
+
     const handleOnChangeText = (value: string) => {
         setValue(value)
     }
 
     useEffect(() => {
-        setValue('')
-    }, [packName === ''])
-    useEffect(() => {
         setValue(packName as string)
-    }, [])
+    }, [packName])
 
     return (
         <div>

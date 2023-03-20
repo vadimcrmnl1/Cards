@@ -1,30 +1,30 @@
 import React, {useState} from "react";
-import {setCardsSearchByAnswerAC} from "../actions";
+import {setCardsSearchByQuestionAC} from "../actions";
 import {useAppDispatch} from "../../../../app/store";
 import {SuperDebouncedInput} from "../../../../common/components/SuperDebouncedInput/SuperDebouncedInput";
-import s from "./SearchAnswer.module.css";
+import s from "./SearchQuestion.module.css";
 import close from "../../../images/close.png";
 
-type SearchByCardsNamePropsType={
-    handleSearchAnswer:(value: string)=>void
+type SearchQuestionPropsType={
+    handleSearchQuestion:(value: string)=>void
 }
-export const SearchAnswer = (props:SearchByCardsNamePropsType) => {
+export const SearchQuestion = (props:SearchQuestionPropsType) => {
     const [value, setValue] = useState('')
     const dispatch = useAppDispatch()
 
     const handleDeleteFilter = () => {
-        dispatch(setCardsSearchByAnswerAC(''))
+        dispatch(setCardsSearchByQuestionAC(''))
         setValue('')
     }
     const handleOnChangeText = (value: string) => {
         setValue(value)
     }
     return (
-        <div className={s.searchAnswerBlock}>
+        <div className={s.searchQuestionBlock}>
             <SuperDebouncedInput
                 value={value}
                 onChangeText={handleOnChangeText}
-                onDebouncedChange={props.handleSearchAnswer}
+                onDebouncedChange={props.handleSearchQuestion}
                 placeholder={'Provide your text'}
             />
             <div className={s.iconsFilter}>

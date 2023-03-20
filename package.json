@@ -63,6 +63,7 @@
     ]
   },
   "devDependencies": {
+    "prettier": "2.8.5",
     "redux-devtools-extension": "^2.13.9"
   }
 }

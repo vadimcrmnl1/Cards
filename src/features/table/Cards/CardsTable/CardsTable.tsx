@@ -1,28 +1,25 @@
 import * as React from "react";
 import {useEffect} from "react";
-import s from './CardsTable.module.css'
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import {SelectChangeEvent, TableHead} from "@mui/material";
+import {TableHead} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../../app/store";
 import { getCardsTC} from "../cards-reducer";
 import {
-    selectCards, selectCardsAnswer,
+    selectCards,
     selectCardsPage,
-    selectCardsPageCount, selectCardsSort, selectCardsTotalCount,
+    selectCardsPageCount, selectCardsQuestion, selectCardsSort,
     selectPackUserId
 } from "../selectors";
 import {ActionsCell} from "../../common/ActionsCell/ActionsCell";
 import {StyledTableCell, StyledTableRow} from "./styles";
 import {Grade} from "./Grade/Grade";
 import {TableTextCell} from "../../common/TableTextCell/TableTextCell";
-import {setCardsPageAC, setCardsPageCountAC, setCardsSortAC} from "../actions";
+import {setCardsSortAC} from "../actions";
 import { selectUserId} from "../../../profile/selectors";
 import {SortCell} from "../../common/SortCell/SortCell";
-import {useSearchParams} from "react-router-dom";
-import {PaginationComponent} from "../../Packs/components/pagination/PaginationComponent";
 
 export const CardsTable = () => {
 
@@ -30,16 +27,15 @@ export const CardsTable = () => {
     const cards = useAppSelector(selectCards)
     const page = useAppSelector(selectCardsPage)
     const pageCount = useAppSelector(selectCardsPageCount)
-    const answer = useAppSelector(selectCardsAnswer)
+    const question = useAppSelector(selectCardsQuestion)
     const packUserId = useAppSelector(selectPackUserId)
     const myId = useAppSelector(selectUserId)
     const cardsSort = useAppSelector(selectCardsSort)
 
 
-
     useEffect(() => {
         dispatch(getCardsTC())
-    }, [dispatch, page, pageCount, cardsSort, answer])
+    }, [dispatch, page, pageCount, cardsSort, question])
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
