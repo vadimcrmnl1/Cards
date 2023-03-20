@@ -61,17 +61,7 @@ export const packsReducer = (
       return { ...state, user_id: action.payload.id }
     }
     case 'TABLE/SET_MIN_MAX_CARDS': {
-      let newMin = action.payload.min
-      let newMax = action.payload.max
-
-      // if (newMin === 0) {
-      //   newMin = null
-      // }
-      // if (newMax === state.maxCardsCount) {
-      //   newMax = null
-      // }
-
-      return { ...state, min: newMin, max: newMax }
+      return { ...state, min: action.payload.min, max: action.payload.max }
     }
     case 'TABLE/SET_MIN_CARDS': {
       return { ...state, min: action.payload.min }

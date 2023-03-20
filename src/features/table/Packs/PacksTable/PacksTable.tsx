@@ -5,7 +5,7 @@ import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { PATH } from '../../../../common/utils/routes/Routes'
@@ -34,6 +34,7 @@ export const PacksTable = () => {
   const page = useAppSelector(selectPacksPage)
   const pageCount = useAppSelector(selectPacksPageCount)
   const sortPacks = useAppSelector(selectPacksSort)
+  const [searchParams, setSearchParams] = useSearchParams()
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? pageCount - cardPacks.length : 0
@@ -63,8 +64,7 @@ export const PacksTable = () => {
           <TableBody>
             {cardPacks.map((cardPack, index) => {
               const handleLinkToCards = () => {
-                //указать какую колоду открываем и её владельца
-                dispatch(setCardsPackIdAC(cardPack._id))
+                //указываем владельца колоды
                 dispatch(setCardsPackUserIdAC(cardPack.user_id))
                 dispatch(setCardsPackNameAC(cardPack.name))
                 //чтобы при переходе с колод на карты всегда была первая страница
@@ -74,7 +74,11 @@ export const PacksTable = () => {
               return (
                 <StyledTableRow key={index} hover>
                   <StyledTableCell scope="row">
-                    <NavLink to={PATH.cards} onClick={handleLinkToCards} className={s.link}>
+                    <NavLink
+                      to={PATH.cards + '?cardsPack_id=' + cardPack._id}
+                      onClick={handleLinkToCards}
+                      className={s.link}
+                    >
                       <TableTextCell text={cardPack.name} />
                     </NavLink>
                   </StyledTableCell>

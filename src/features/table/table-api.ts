@@ -18,7 +18,7 @@ export const packsAPI = {
 }
 export const cardsAPI = {
   getCards(params: CardsRequestDataType) {
-    return instance.get<CardsResponseDataType>(`cards/card?cardsPack_id=${params.cardsPack_id}`, {
+    return instance.get<CardsResponseDataType>(`cards/card`, {
       params,
     })
   },

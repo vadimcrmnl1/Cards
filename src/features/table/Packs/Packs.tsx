@@ -66,7 +66,6 @@ export const Packs = () => {
   const [isFirstLoading, setIsFirstLoading] = useState(true)
   const params = Object.fromEntries(searchParams)
 
-  console.log('packs')
   useEffect(() => {
     if (isLoggedIn && !isFirstLoading) {
       dispatch(getPacksTC())
@@ -87,10 +86,7 @@ export const Packs = () => {
     if (isFirstLoading) {
       dispatch(setPacksPageCountAC(+params.pageCount || 5))
       dispatch(setPacksPageAC(+params.page || 1))
-      if (params.min) {
-        dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
-      }
-      // dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
+      dispatch(setMinMaxCardsAC(+params.min || 0, +params.max || 0))
       dispatch(setPackNameAC(params.packName || ''))
       dispatch(setMyPacksAC(params.user_id || null))
       dispatch(setPacksSortAC(params.sortPacks || null))
@@ -147,7 +143,7 @@ export const Packs = () => {
   }
 
   const handleSearchTitleCards = (value: string) => {
-    if (value !== '' && value !== null) {
+    if (value !== '') {
       setSearchParams({ ...params, packName: value })
     } else if (value === '') {
       searchParams.delete('packName')

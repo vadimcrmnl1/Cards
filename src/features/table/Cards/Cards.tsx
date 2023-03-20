@@ -17,6 +17,7 @@ import { AddCardRequestType } from '../table-api'
 
 import s from './../Packs/Packs.module.css'
 import {
+  setCardsPackIdAC,
   setCardsPageAC,
   setCardsPageCountAC,
   setCardsSearchByQuestionAC,
@@ -53,6 +54,7 @@ export const Cards = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [isFirstLoading, setIsFirstLoading] = useState(true)
+  const params = Object.fromEntries(searchParams)
 
   useEffect(() => {
     if (isLoggedIn && !isFirstLoading) {
@@ -62,17 +64,11 @@ export const Cards = () => {
 
   useEffect(() => {
     if (isFirstLoading) {
-      // dispatch(getPacksTC())
-      // setSearchParams({...searchParams,sortPacks: sortPacks!})
-      const params = Object.fromEntries(searchParams)
-
+      dispatch(setCardsPackIdAC(params.cardsPack_id))
       dispatch(setCardsPageCountAC(+params.pageCount || 5))
       dispatch(setCardsPageAC(+params.page || 1))
       dispatch(setCardsSearchByQuestionAC(params.question || ''))
       dispatch(setCardsSortAC(params.sortCards || null))
-      // if (!searchParams.get('cardsPack_id')) {
-      //     setSearchParams({cardsPack_id: pack_id})
-      // }
       setIsFirstLoading(false)
     }
   }, [])
@@ -80,16 +76,21 @@ export const Cards = () => {
   //Change pagination
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     dispatch(setCardsPageAC(newPage + 1))
-    setSearchParams({ ...Object.fromEntries(searchParams), page: (newPage + 1).toString() })
+    setSearchParams({ ...params, page: (newPage + 1).toString() })
   }
   const handlePageCountChange = (event: SelectChangeEvent) => {
     dispatch(setCardsPageCountAC(+event.target.value))
     dispatch(setCardsPageAC(1))
-    setSearchParams({ ...searchParams, page: '1', pageCount: event.target.value })
+    setSearchParams({ ...params, page: '1', pageCount: event.target.value })
   }
   const handleSearchQuestion = (value: string) => {
+    if (value !== '') {
+      setSearchParams({ ...params, question: value })
+    } else if (value === '') {
+      searchParams.delete('question')
+      setSearchParams({ ...Object.fromEntries(searchParams) })
+    }
     dispatch(setCardsSearchByQuestionAC(value))
-    setSearchParams({ ...searchParams, question: value })
   }
 
   const handleAddCard = () => {

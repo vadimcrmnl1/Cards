@@ -56,12 +56,18 @@ export const HeaderMenuBlock = () => {
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
-        <NavLink style={{ color: 'black' }} to={PATH.profile}>
-          <MenuItem onClick={handleCloseUserMenu}>Profile</MenuItem>
-        </NavLink>
-        <NavLink style={{ color: 'black' }} to={PATH.packs}>
-          <MenuItem onClick={handleCloseUserMenu}>Packs</MenuItem>
-        </NavLink>
+        <MenuItem onClick={handleCloseUserMenu}>
+          <NavLink style={{ color: 'black' }} to={PATH.profile}>
+            Profile
+          </NavLink>
+        </MenuItem>
+
+        <MenuItem onClick={handleCloseUserMenu}>
+          <NavLink style={{ color: 'black' }} to={PATH.packs}>
+            Packs
+          </NavLink>
+        </MenuItem>
+
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </Box>

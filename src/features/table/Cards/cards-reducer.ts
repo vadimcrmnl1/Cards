@@ -69,13 +69,12 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
     page,
     pageCount,
     cardsPack_id: pack_id.toString(),
-    cardQuestion,
   }
 
   if (sortCards !== null) {
     params.sortCards = sortCards
   }
-  if (cardQuestion !== null) {
+  if (cardQuestion !== '') {
     params.cardQuestion = cardQuestion
   }
   try {
@@ -85,10 +84,6 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
     dispatch(cardsActions.setCardsTotalCountAC(res.data.cardsTotalCount))
     dispatch(cardsActions.setCardsMaxGradeAC(res.data.maxGrade))
     dispatch(cardsActions.setCardsMinGradeAC(res.data.minGrade))
-    dispatch(cardsActions.setCardsSearchByQuestionAC(params.cardQuestion as string))
-    // dispatch(cardsActions.setPageAC(res.data.page))
-    // dispatch(cardsActions.setPageCountAC(res.data.pageCount))
-    // dispatch(appActions.setAppStatusAC('succeeded'))
   } catch (err: any) {
     errorUtils(err, dispatch)
   } finally {
