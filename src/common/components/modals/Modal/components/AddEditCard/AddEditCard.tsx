@@ -86,7 +86,7 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
           <Select
             style={{ margin: '10px', backgroundColor: 'white' }}
             id="select"
-            defaultValue={formatQuestion}
+            // defaultValue={formatQuestion}
             value={formatQuestion}
             onChange={handleQuestionChange}
             variant={'outlined'}
