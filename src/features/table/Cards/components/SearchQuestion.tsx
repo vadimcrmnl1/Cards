@@ -4,6 +4,7 @@ import { useAppDispatch } from '../../../../app/store'
 import { SuperDebouncedInput } from '../../../../common/components/SuperDebouncedInput/SuperDebouncedInput'
 import { setCardsSearchByQuestionAC } from '../actions'
 
+import iconClose from './../../../images/close.png'
 import s from './SearchQuestion.module.css'
 
 type SearchQuestionPropsType = {
@@ -29,6 +30,9 @@ export const SearchQuestion = (props: SearchQuestionPropsType) => {
         onDebouncedChange={props.handleSearchQuestion}
         placeholder={'Provide your text'}
       />
+      <div className={s.iconsFilter}>
+        <img src={iconClose} alt={iconClose} className={s.iconClose} />
+      </div>
     </div>
   )
 }

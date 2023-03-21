@@ -1,32 +1,27 @@
-import * as React from 'react'
-
-import { TableHead } from '@mui/material'
-import Paper from '@mui/material/Paper'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableContainer from '@mui/material/TableContainer'
-import { NavLink, useSearchParams } from 'react-router-dom'
-
-import { useAppDispatch, useAppSelector } from '../../../../app/store'
-import { PATH } from '../../../../common/utils/routes/Routes'
-import {
-  setCardsPackIdAC,
-  setCardsPackNameAC,
-  setCardsPackUserIdAC,
-  setCardsPageAC,
-} from '../../Cards/actions'
-import { ActionsCell } from '../../common/ActionsCell/ActionsCell'
-import { SortCell } from '../../common/SortCell/SortCell'
-import { StyledTableCell, StyledTableRow } from '../../common/styles'
-import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
-import {
-  selectCardPacks,
-  selectPacksPage,
-  selectPacksSort,
-  selectPacksPageCount,
-} from '../selectors'
-
+import * as React from "react";
 import s from './PacksTable.module.css'
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import {useAppDispatch, useAppSelector} from "../../../../app/store";
+import {
+    selectCardPacks,
+    selectPacksPage,
+    selectPacksSort,
+    selectPacksPageCount
+} from "../selectors";
+import {setPacksSortAC} from "../actions";
+import {TableHead} from "@mui/material";
+import {ActionsCell} from "../../common/ActionsCell/ActionsCell";
+import {NavLink} from "react-router-dom";
+import {PATH} from "../../../../common/utils/routes/Routes";
+
+import {StyledTableCell, StyledTableRow} from "../../common/styles";
+import {setCardsPackIdAC, setCardsPackNameAC, setCardsPackUserIdAC, setCardsPageAC} from "../../Cards/actions";
+import {SortCell} from "../../common/SortCell/SortCell";
+import {TableTextCell} from "../../common/TableTextCell/TableTextCell";
+
 
 export const PacksTable = () => {
   const dispatch = useAppDispatch()
@@ -93,6 +88,7 @@ export const PacksTable = () => {
                       packOwnerId={cardPack.user_id}
                       itemId={cardPack._id}
                       cardsCount={cardPack.cardsCount}
+                      packName={cardPack.name}
                     />
                   </StyledTableCell>
                 </StyledTableRow>
@@ -109,3 +105,5 @@ export const PacksTable = () => {
     </div>
   )
 }
+
+

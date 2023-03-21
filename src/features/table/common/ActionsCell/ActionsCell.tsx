@@ -1,33 +1,33 @@
-import * as React from 'react'
-
-import { selectIsAppMakeRequest } from '../../../../app/selectors'
-import { useAppDispatch, useAppSelector } from '../../../../app/store'
-import { selectUserId } from '../../../profile/selectors'
-import { deleteCardTC, updateCardTC } from '../../Cards/cards-reducer'
-import { deletePackTC, updatePackTC } from '../../Packs/packs-reducer'
-import { UpdateCardRequestDataType, UpdatePackRequestDataType } from '../../table-api'
-import { EditIcon } from '../icons/EditIcon'
-import { TeacherIcon } from '../icons/TeacherIcon'
-import { TrashIcon } from '../icons/TrashIcon'
-
+import * as React from "react";
+import {useAppDispatch, useAppSelector} from "../../../../app/store";
+import {selectUserId} from "../../../profile/selectors";
+import {TeacherIcon} from "../icons/TeacherIcon";
+import {EditIcon} from "../icons/EditIcon";
+import {TrashIcon} from "../icons/TrashIcon";
 import s from './ActionsCell.module.css'
+import {deleteCardTC, updateCardTC} from "../../Cards/cards-reducer";
+import {deletePackTC, updatePackTC} from "../../Packs/packs-reducer";
+import {UpdateCardRequestDataType, UpdatePackRequestDataType} from "../../table-api";
+import {selectIsAppMakeRequest} from "../../../../app/selectors";
 
 type ActionsCellPropsType = {
   packOwnerId: string
   packs?: boolean
   itemId: string
   cardsCount?: number
+  packName?: string
 }
 export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   packOwnerId,
   packs,
   itemId,
-  cardsCount,
+  packName,
+   cardsCount
 }) => {
   const dispatch = useAppDispatch()
 
-  const userId = useAppSelector(selectUserId)
-  const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
+    const userId = useAppSelector(selectUserId)
+    const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
 
   const handleDeleteCard = () => {
     const action = packs ? deletePackTC(itemId) : deleteCardTC(itemId)
@@ -57,13 +57,16 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
 
     dispatch(action)
   }
-
+    const handleLinkToCards = () => {
+        dispatch(setCardsPackIdAC(itemId))
+        dispatch(setCardsPackNameAC(packName as string))
+    }
   return (
     <div className={s.cell}>
       {packs && (
-        <button disabled={isAppMakeRequest || cardsCount !== 0}>
+          <NavLink to={PATH.learn} disabled={isAppMakeRequest || cardsCount !== 0} onClick={handleLinkToCards}>
           <TeacherIcon />
-        </button>
+          </NavLink>
       )}
       {packOwnerId === userId && (
         <div>
@@ -74,7 +77,5 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
             <TrashIcon />
           </button>
         </div>
-      )}
-    </div>
-  )
+    )
 }

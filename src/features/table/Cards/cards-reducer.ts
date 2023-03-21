@@ -1,12 +1,11 @@
-import { AllReducersActionType, AppThunk } from '../../../app/types'
-import { dateUtils } from '../../../common/utils/dateUtils'
-import { errorUtils } from '../../../common/utils/errorUtils'
-import { AddCardRequestType, cardsAPI, CardsType, UpdateCardRequestDataType } from '../table-api'
-
+import {CardsActionsType, CardsParamsType} from "./types";
+import {AddCardRequestType, cardsAPI, CardsType, UpdateCardRequestDataType} from "../table-api";
+import {dateUtils} from "../../../common/utils/dateUtils";
+import {AllReducersActionType, AppThunk} from "../../../app/types";
 import * as appActions from './../../../app/actions'
-import { setAppIsLoadingAC } from './../../../app/actions'
 import * as cardsActions from './actions'
-import { CardsActionsType, CardsParamsType } from './types'
+import {errorUtils} from "../../../common/utils/errorUtils";
+import {setAppIsLoadingAC} from "./../../../app/actions";
 
 export const cardsInitialState = {
   cards: [] as CardsType[],
@@ -14,7 +13,7 @@ export const cardsInitialState = {
   maxGrade: 1,
   minGrade: 1,
   page: 1,
-  pageCount: 5,
+  pageCount: 100,
   pack_id: '',
   packUser_id: '',
   sortCards: null as null | string,
@@ -33,7 +32,11 @@ export const cardsReducer = (
       return {
         ...state,
         cards: action.payload.cards.map(cards => {
-          return { ...cards, updated: dateUtils(cards.updated), created: dateUtils(cards.created) }
+          return {
+            ...cards,
+            updated: dateUtils(cards.updated),
+            created: dateUtils(cards.created),
+          }
         }),
       }
     case 'TABLE/SET_CARDS_TOTAL_COUNT':
@@ -56,11 +59,21 @@ export const cardsReducer = (
       return { ...state, cardQuestion: action.payload.question }
     case 'TABLE/SET_CARDS_PACK_NAME':
       return { ...state, name: action.payload.name }
+    case 'TABLE/SET_CARDS_UPDATE_GRADE':
+      return {
+        ...state,
+        cards: [
+          ...state.cards.map(el => {
+            return el._id === action.payload.id ? { ...el, grade: action.payload.grade } : el
+          }),
+        ],
+      }
 
-    default:
-      return state
-  }
+        default:
+            return state;
+    }
 }
+
 
 export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
   dispatch(setAppIsLoadingAC(true))
@@ -90,46 +103,53 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
     dispatch(setAppIsLoadingAC(false))
   }
 }
-export const addCardTC =
-  (data: AddCardRequestType): AppThunk<AllReducersActionType> =>
-  async dispatch => {
+export const addCardTC = (data: AddCardRequestType): AppThunk<AllReducersActionType> => async (dispatch) => {
     dispatch(setAppIsLoadingAC(true))
     try {
-      await cardsAPI.addCard(data)
-      dispatch(getCardsTC())
-      dispatch(appActions.setAppInfoAC(`Your card has been added`))
-      // dispatch(appActions.setAppStatusAC('succeeded'))
+        await cardsAPI.addCard(data)
+        dispatch(getCardsTC())
+        dispatch(appActions.setAppInfoAC(`Your card has been added`))
+        // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
-      errorUtils(err, dispatch)
+        errorUtils(err, dispatch)
     } finally {
-      dispatch(setAppIsLoadingAC(false))
+        dispatch(setAppIsLoadingAC(false))
     }
-  }
-export const deleteCardTC =
-  (id: string): AppThunk<AllReducersActionType> =>
-  async dispatch => {
+}
+export const deleteCardTC = (id: string): AppThunk<AllReducersActionType> => async (dispatch) => {
     dispatch(setAppIsLoadingAC(true))
     try {
-      await cardsAPI.deleteCard(id)
-      dispatch(getCardsTC())
-      dispatch(appActions.setAppInfoAC('Your card has been deleted'))
+        await cardsAPI.deleteCard(id)
+        dispatch(getCardsTC())
+        dispatch(appActions.setAppInfoAC('Your card has been deleted'))
     } catch (err: any) {
-      errorUtils(err, dispatch)
+        errorUtils(err, dispatch)
     } finally {
-      dispatch(setAppIsLoadingAC(false))
+        dispatch(setAppIsLoadingAC(false))
     }
-  }
-export const updateCardTC =
-  (data: UpdateCardRequestDataType): AppThunk<AllReducersActionType> =>
-  async dispatch => {
+}
+export const updateCardTC = (data: UpdateCardRequestDataType): AppThunk<AllReducersActionType> => async (dispatch) => {
     dispatch(setAppIsLoadingAC(true))
     try {
-      await cardsAPI.updateCard(data)
-      dispatch(getCardsTC())
-      dispatch(appActions.setAppInfoAC(`Your card has been updated`))
+        await cardsAPI.updateCard(data)
+        dispatch(getCardsTC())
+        dispatch(appActions.setAppInfoAC(`Your card has been updated`))
     } catch (err: any) {
-      errorUtils(err, dispatch)
+        errorUtils(err, dispatch)
     } finally {
-      dispatch(setAppIsLoadingAC(false))
+        dispatch(setAppIsLoadingAC(false))
     }
-  }
+}
+export const updateGradeTC =
+    (data: UpdateGradeDataType): AppThunk<AllReducersActionType> =>
+        async dispatch => {
+            dispatch(setAppIsLoadingAC(true))
+            try {
+                const res = await cardsAPI.updateGrade(data)
+                const a = dispatch(setCardsUpdateGradeAC(res.data.card_id, res.data.grade))
+            } catch (err: any) {
+                errorUtils(err, dispatch)
+            } finally {
+                dispatch(setAppIsLoadingAC(false))
+            }
+        }
