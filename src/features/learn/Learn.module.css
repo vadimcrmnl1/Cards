@@ -1,0 +1,21 @@
+.wrapper{
+    width: 90%;
+    margin: 0 auto;
+}
+.link {
+    width: 30%;
+    /*margin-top: 35px;*/
+    margin-bottom: 35px;
+    text-align: start;
+}
+.learnTitle{
+    font-size: 30px;
+    margin: 0 auto;
+}
+.learnQuestionBlock{
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: center;
+}
