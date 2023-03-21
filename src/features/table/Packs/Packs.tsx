@@ -46,11 +46,9 @@ import {
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
-  const myID = useAppSelector(selectUserId)
   const totalCount = useAppSelector(selectCardPacksTotalCount)
   const pageCount = useAppSelector(selectPacksPageCount)
   const maxCardsCount = useAppSelector(selectMaxCardsCount)
-  const minCardsCount = useAppSelector(selectMinCardsCount)
   const minCards = useAppSelector(selectPacksMinCards)
   const maxCards = useAppSelector(selectPacksMaxCards)
   const sortPacks = useAppSelector(selectPacksSort)
@@ -60,7 +58,6 @@ export const Packs = () => {
   const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
   const [searchParams, setSearchParams] = useSearchParams()
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
-  // const [disabled, setDisabled] = useState(false)
   const cardPacks = useAppSelector(selectCardPacks)
   const styleMU = useStyles()
   const [isFirstLoading, setIsFirstLoading] = useState(true)
@@ -152,34 +149,6 @@ export const Packs = () => {
     dispatch(setPackNameAC(value))
   }
 
-  //Delete Filters
-  const handleDeleteAllFilters = () => {
-    dispatch(setPackNameAC(''))
-    dispatch(setMyPacksAC(null))
-    dispatch(setMinMaxCardsAC(0, maxCardsCount))
-    searchParams.delete('min')
-    searchParams.delete('max')
-    searchParams.delete('packName')
-    searchParams.delete('user_id')
-    setSearchParams({
-      page: '1',
-      pageCount: '5',
-    })
-  }
-
-  //Sort by my packs
-  const handleSortByMyPacks = () => {
-    dispatch(setMyPacksAC(myID))
-    setSearchParams({ ...params, user_id: myID as string })
-    // setDisabled(true)
-  }
-  const handleSortByAllPacks = () => {
-    searchParams.delete('user_id')
-    dispatch(setMyPacksAC(null))
-    setSearchParams({ ...Object.fromEntries(searchParams) })
-    // setDisabled(false)
-  }
-
   if (!isLoggedIn) {
     return <Navigate to={PATH.login} />
   }
@@ -199,14 +168,9 @@ export const Packs = () => {
       </div>
       <div className={s.packsBlock}>
         <SearchTitleCards handleSendQuery={handleSearchTitleCards} />
-        <SortingByUser
-          handleSortByAllPacks={handleSortByAllPacks}
-          handleSortByMyPacks={handleSortByMyPacks}
-          // disabled={disabled}
-          packsUser_id={packsUser_id}
-        />
+        <SortingByUser />
         <FilterCountCards handleChange={handleChangeCountCards} />
-        <NoFilters handleDeleteAllFilters={handleDeleteAllFilters} />
+        <NoFilters />
       </div>
       {cardPacks.length !== 0 ? (
         <div>

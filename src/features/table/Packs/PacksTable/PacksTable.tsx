@@ -88,7 +88,12 @@ export const PacksTable = () => {
                     <TableTextCell text={cardPack.user_name} />
                   </StyledTableCell>
                   <StyledTableCell>
-                    <ActionsCell packs packOwnerId={cardPack.user_id} itemId={cardPack._id} />
+                    <ActionsCell
+                      packs
+                      packOwnerId={cardPack.user_id}
+                      itemId={cardPack._id}
+                      cardsCount={cardPack.cardsCount}
+                    />
                   </StyledTableCell>
                 </StyledTableRow>
               )

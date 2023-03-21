@@ -16,24 +16,18 @@ type ActionsCellPropsType = {
   packOwnerId: string
   packs?: boolean
   itemId: string
+  cardsCount?: number
 }
-export const ActionsCell: React.FC<ActionsCellPropsType> = ({ packOwnerId, packs, itemId }) => {
+export const ActionsCell: React.FC<ActionsCellPropsType> = ({
+  packOwnerId,
+  packs,
+  itemId,
+  cardsCount,
+}) => {
   const dispatch = useAppDispatch()
 
   const userId = useAppSelector(selectUserId)
   const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
-
-  // Это заготовка для 3 недели =======***=======
-  // const [editModalOpen, setEditModalOpen] = useState(false)
-  // const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-  //
-  // const handleEdit = () => {
-  //     setEditModalOpen(editModalOpen => !editModalOpen)
-  // }
-  // const handleDelete = () => {
-  //     setDeleteModalOpen(deleteModalOpen => !deleteModalOpen)
-  // }
-  // Это заготовка для 3 недели =======***=======
 
   const handleDeleteCard = () => {
     const action = packs ? deletePackTC(itemId) : deleteCardTC(itemId)
@@ -67,7 +61,7 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({ packOwnerId, packs
   return (
     <div className={s.cell}>
       {packs && (
-        <button>
+        <button disabled={isAppMakeRequest || cardsCount !== 0}>
           <TeacherIcon />
         </button>
       )}
