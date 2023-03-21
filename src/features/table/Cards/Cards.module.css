@@ -1,35 +1,37 @@
 .container {
-    width: 90%;
-    margin: 0 auto;
+  width: 90%;
+  margin: 0 auto;
 }
-.h2{
-    text-align: left;
-    color: #0066cc;
+.h2 {
+  color: #0066cc;
+  text-align: left;
 }
-.cardsSearchBlock{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+.cardsSearchBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 
+  width: 100%;
 }
-.cardsSearchTitle{
- margin-bottom: -20px;
-    font-size: 14px;
-    opacity: 0.5;
+.cardsSearchTitle {
+  margin-bottom: -20px;
+
+  font-size: 14px;
+
+  opacity: 0.5;
 }
-.cardsHeader{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.cardsHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
-.iconClose{
-    width: 35px;
-    height: 35px;
+.iconClose {
+  width: 35px;
+  height: 35px;
 }
-.iconCloseImg{
-    width: 100%;
-    height: 100%;
+.iconCloseImg {
+  width: 100%;
+  height: 100%;
 }

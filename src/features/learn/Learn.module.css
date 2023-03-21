@@ -1,38 +1,44 @@
-.wrapper{
-    width: 90%;
-    margin: 0 auto;
-    border: 1px solid red;
+.wrapper {
+  width: 90%;
+  margin: 0 auto;
+
+  border: 1px solid red;
 }
 .link {
-    width: 30%;
-    margin-bottom: 35px;
-    text-align: start;
-    border: 1px solid red;
+  width: 30%;
+  margin-bottom: 35px;
+
+  text-align: start;
+
+  border: 1px solid red;
 }
-.learnBlock{
-    width: 40%;
-    margin: 0 auto;
-    border: 1px solid red;
+.learnBlock {
+  width: 40%;
+  margin: 0 auto;
+
+  border: 1px solid red;
 }
-.learnTitle{
-    font-size: 30px;
-    margin: 15px auto;
+.learnTitle {
+  margin: 15px auto;
+
+  font-size: 30px;
 }
-.learnQuestionBlock{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    align-items: center;
-    gap: 15px;
+.learnQuestionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  justify-content: left;
+
+  width: 100%;
 }
-.learnShots{
-    opacity: 0.5;
+.learnShots {
+  opacity: 0.5;
 }
-.learnCheckboxBlock{
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    align-items: flex-start;
-    gap: 10px;
+.learnCheckboxBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: left;
 }

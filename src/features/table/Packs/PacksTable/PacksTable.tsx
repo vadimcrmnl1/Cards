@@ -1,42 +1,44 @@
-import * as React from "react";
-import s from "./PacksTable.module.css";
-import TableContainer from "@mui/material/TableContainer";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import { useAppDispatch, useAppSelector } from "../../../../app/store";
-import {
-  selectCardPacks,
-  selectPacksPage,
-  selectPacksSort,
-  selectPacksPageCount,
-} from "../selectors";
-import { setPacksSortAC } from "../actions";
-import { TableHead } from "@mui/material";
-import { ActionsCell } from "../../common/ActionsCell/ActionsCell";
-import { NavLink } from "react-router-dom";
-import { PATH } from "../../../../common/utils/routes/Routes";
+import * as React from 'react'
 
-import { StyledTableCell, StyledTableRow } from "../../common/styles";
+import { TableHead } from '@mui/material'
+import Paper from '@mui/material/Paper'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableContainer from '@mui/material/TableContainer'
+import { NavLink } from 'react-router-dom'
+
+import { useAppDispatch, useAppSelector } from '../../../../app/store'
+import { PATH } from '../../../../common/utils/routes/Routes'
 import {
   setCardsPackIdAC,
   setCardsPackNameAC,
   setCardsPackUserIdAC,
   setCardsPageAC,
-} from "../../Cards/actions";
-import { SortCell } from "../../common/SortCell/SortCell";
-import { TableTextCell } from "../../common/TableTextCell/TableTextCell";
+} from '../../Cards/actions'
+import { ActionsCell } from '../../common/ActionsCell/ActionsCell'
+import { SortCell } from '../../common/SortCell/SortCell'
+import { StyledTableCell, StyledTableRow } from '../../common/styles'
+import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
+import { setPacksSortAC } from '../actions'
+import {
+  selectCardPacks,
+  selectPacksPage,
+  selectPacksSort,
+  selectPacksPageCount,
+} from '../selectors'
+
+import s from './PacksTable.module.css'
 
 export const PacksTable = () => {
-  const dispatch = useAppDispatch();
-  const cardPacks = useAppSelector(selectCardPacks);
-  const page = useAppSelector(selectPacksPage);
-  const pageCount = useAppSelector(selectPacksPageCount);
-  const sortPacks = useAppSelector(selectPacksSort);
+  const dispatch = useAppDispatch()
+  const cardPacks = useAppSelector(selectCardPacks)
+  const page = useAppSelector(selectPacksPage)
+  const pageCount = useAppSelector(selectPacksPageCount)
+  const sortPacks = useAppSelector(selectPacksSort)
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? pageCount - cardPacks.length : 0;
-  const emptyRowsStyle = { height: 75 * emptyRows };
+  const emptyRows = page > 0 ? pageCount - cardPacks.length : 0
+  const emptyRowsStyle = { height: 75 * emptyRows }
 
   return (
     <div className={s.table}>
@@ -45,28 +47,16 @@ export const PacksTable = () => {
           <TableHead>
             <StyledTableRow>
               <StyledTableCell>
-                <SortCell label={"Name"} sorter={"name"} sort={sortPacks} />
+                <SortCell label={'Name'} sorter={'name'} sort={sortPacks} />
               </StyledTableCell>
               <StyledTableCell>
-                <SortCell
-                  label={"Cards"}
-                  sorter={"cardsCount"}
-                  sort={sortPacks}
-                />
+                <SortCell label={'Cards'} sorter={'cardsCount'} sort={sortPacks} />
               </StyledTableCell>
               <StyledTableCell>
-                <SortCell
-                  label={"Last Updated"}
-                  sorter={"updated"}
-                  sort={sortPacks}
-                />
+                <SortCell label={'Last Updated'} sorter={'updated'} sort={sortPacks} />
               </StyledTableCell>
               <StyledTableCell>
-                <SortCell
-                  label={"Created by"}
-                  sorter={"user_name"}
-                  sort={sortPacks}
-                />
+                <SortCell label={'Created by'} sorter={'user_name'} sort={sortPacks} />
               </StyledTableCell>
               <StyledTableCell>Actions</StyledTableCell>
             </StyledTableRow>
@@ -75,20 +65,17 @@ export const PacksTable = () => {
             {cardPacks.map((cardPack, index) => {
               const handleLinkToCards = () => {
                 //указать какую колоду открываем и её владельца
-                dispatch(setCardsPackIdAC(cardPack._id));
-                dispatch(setCardsPackUserIdAC(cardPack.user_id));
-                dispatch(setCardsPackNameAC(cardPack.name));
+                dispatch(setCardsPackIdAC(cardPack._id))
+                dispatch(setCardsPackUserIdAC(cardPack.user_id))
+                dispatch(setCardsPackNameAC(cardPack.name))
                 //чтобы при переходе с колод на карты всегда была первая страница
-                dispatch(setCardsPageAC(1));
-              };
+                dispatch(setCardsPageAC(1))
+              }
+
               return (
                 <StyledTableRow key={index} hover>
                   <StyledTableCell scope="row">
-                    <NavLink
-                      to={PATH.cards}
-                      onClick={handleLinkToCards}
-                      className={s.link}
-                    >
+                    <NavLink to={PATH.cards} onClick={handleLinkToCards} className={s.link}>
                       <TableTextCell text={cardPack.name} />
                     </NavLink>
                   </StyledTableCell>
@@ -106,7 +93,7 @@ export const PacksTable = () => {
                     />
                   </StyledTableCell>
                 </StyledTableRow>
-              );
+              )
             })}
             {emptyRows > 0 && (
               <StyledTableRow style={emptyRowsStyle}>
@@ -117,5 +104,5 @@ export const PacksTable = () => {
         </Table>
       </TableContainer>
     </div>
-  );
-};
+  )
+}

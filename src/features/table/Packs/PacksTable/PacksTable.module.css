@@ -1,9 +1,8 @@
-.pagination{
-    display: flex;
-    align-items: center;
+.pagination {
+  display: flex;
+  align-items: center;
 }
-.table{
-
+.table {
 }
 /*.link > p{*/
 /*    white-space: nowrap;*/

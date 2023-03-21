@@ -1,25 +1,27 @@
 .radio {
-display: inline-block;
-    margin: 0 0 0 40px;
+  display: inline-block;
+
+  margin: 0 0 0 40px;
 }
 
 .radio::before {
-    color: red;
+  color: red;
 }
 
-
 .radio:checked::before {
-    color: violet;
+  color: violet;
 }
 
 .label {
-    display: block;
-   margin: 0 0 15px 0;
+  display: block;
+
+  margin: 0 0 15px 0;
 }
 
 .options {
 }
 .span {
-    display: inline-block;
-    margin: 0 0 0 10px;
+  display: inline-block;
+
+  margin: 0 0 0 10px;
 }

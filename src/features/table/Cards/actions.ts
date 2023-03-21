@@ -1,64 +1,64 @@
-import { CardsType } from "../table-api";
+import { CardsType } from '../table-api'
 
 export const setCardsAC = (cards: CardsType[]) =>
   ({
-    type: "TABLE/SET_CARDS",
+    type: 'TABLE/SET_CARDS',
     payload: { cards },
-  } as const);
+  } as const)
 export const setCardsTotalCountAC = (cardsTotalCount: number) =>
   ({
-    type: "TABLE/SET_CARDS_TOTAL_COUNT",
+    type: 'TABLE/SET_CARDS_TOTAL_COUNT',
     payload: { cardsTotalCount },
-  } as const);
+  } as const)
 export const setCardsMaxGradeAC = (maxGrade: number) =>
   ({
-    type: "TABLE/SET_CARDS_MAX_GRADE",
+    type: 'TABLE/SET_CARDS_MAX_GRADE',
     payload: { maxGrade },
-  } as const);
+  } as const)
 export const setCardsMinGradeAC = (minGrade: number) =>
   ({
-    type: "TABLE/SET_CARDS_MIN_GRADE",
+    type: 'TABLE/SET_CARDS_MIN_GRADE',
     payload: { minGrade },
-  } as const);
+  } as const)
 export const setCardsPageAC = (page: number) =>
   ({
-    type: "TABLE/SET_CARDS_PAGE",
+    type: 'TABLE/SET_CARDS_PAGE',
     payload: { page },
-  } as const);
+  } as const)
 export const setCardsPageCountAC = (pageCount: number) =>
   ({
-    type: "TABLE/SET_CARDS_PAGE_COUNT",
+    type: 'TABLE/SET_CARDS_PAGE_COUNT',
     payload: { pageCount },
-  } as const);
+  } as const)
 export const setCardsPackIdAC = (pack_id: string) =>
   ({
-    type: "TABLE/SET_CARDS_PACK_ID",
+    type: 'TABLE/SET_CARDS_PACK_ID',
     payload: { pack_id },
-  } as const);
+  } as const)
 export const setCardsPackUserIdAC = (packUser_id: string) =>
   ({
-    type: "TABLE/SET_CARDS_PACK_USER_ID",
+    type: 'TABLE/SET_CARDS_PACK_USER_ID',
     payload: { packUser_id },
-  } as const);
+  } as const)
 export const setCardsSortAC = (sortCards: string | null) =>
   ({
-    type: "TABLE/SET_CARDS_SORT",
+    type: 'TABLE/SET_CARDS_SORT',
     payload: { sortCards },
-  } as const);
+  } as const)
 export const setCardsPackNameAC = (name: string) =>
   ({
-    type: "TABLE/SET_CARDS_PACK_NAME",
+    type: 'TABLE/SET_CARDS_PACK_NAME',
     payload: { name },
-  } as const);
+  } as const)
 //===Action creator for search=======
 export const setCardsSearchByQuestionAC = (question: string) =>
   ({
-    type: "TABLE/SET_CARDS_SEARCH_BY_QUESTION",
+    type: 'TABLE/SET_CARDS_SEARCH_BY_QUESTION',
     payload: { question },
-  } as const);
+  } as const)
 //===Action for LEARN======
 export const setCardsUpdateGradeAC = (id: string, grade: number) =>
   ({
-    type: "TABLE/SET_CARDS_UPDATE_GRADE",
+    type: 'TABLE/SET_CARDS_UPDATE_GRADE',
     payload: { id, grade },
-  } as const);
+  } as const)
