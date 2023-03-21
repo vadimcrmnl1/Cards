@@ -2,6 +2,20 @@
     width: 90%;
     margin: 0 auto;
 }
+.packsSearchBlock{
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: -10px;
+
+}
+.packsSearchTitle{
+    margin-bottom: -30px;
+    font-size: 14px;
+    opacity: 0.5;
+}
 .packsHeader{
     display: flex;
     flex-direction: row;
@@ -9,6 +23,7 @@
     align-items: center;
 }
 .packsBlock{
+    margin-bottom: 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;

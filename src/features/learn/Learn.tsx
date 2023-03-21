@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import s from "./Learn.module.css";
-import { LinkToBack } from "../../common/components/LinkToBack/LinkToBack";
-import { PATH } from "../../common/utils/routes/Routes";
+import { LinkToBack } from "common/components/LinkToBack/LinkToBack";
+import { PATH } from "common/utils/routes/Routes";
 import Button from "@mui/material/Button";
 import {
-  AppRootStateType,
   useAppDispatch,
   useAppSelector,
-} from "../../app/store";
+} from "app/store";
 import {
   selectCards,
   selectCardsPackId,
@@ -15,7 +14,7 @@ import {
 } from "../table/Cards/selectors";
 
 import { CardsType } from "../table/table-api";
-import { getCardsTC, updateGradeTC } from "../table/Cards/cards-reducer";
+import {getCardsTC, updateGradeTC} from "../table/Cards/cards-reducer";
 import { useStyles } from "../styleMU/styleMU";
 
 const grades = [
@@ -39,9 +38,7 @@ const getCard = (cards: CardsType[]) => {
     },
     { sum: 0, id: -1 }
   );
-  console.log("test: ", sum, rand, res);
-
-  return cards[res.id + 1];
+   return cards[res.id + 1];
 };
 
 export const Learn = () => {
@@ -66,27 +63,22 @@ export const Learn = () => {
 
   const dispatch = useAppDispatch();
   useEffect(() => {
-    console.log("LearnContainer useEffect");
-
-    if (first) {
-      dispatch(getCardsTC());
+     if (first) {
+      dispatch(getCardsTC())
       setFirst(false);
     }
-
-    console.log("cards", cards);
-
     if (cards.length > 0) setCard(getCard(cards));
 
-    return () => {
+   /* return () => {
       console.log("LearnContainer useEffect off");
-    };
+    };*/
   }, [dispatch, id, cards, first]);
 
   const handleShowAnswer = () => {
     setIsChecked(true);
   };
   const handleCheckAnswer = (grade: number) => {
-    dispatch(updateGradeTC({ card_id: card._id, grade: grade }));
+    dispatch(updateGradeTC({ card_id: card._id, grade: grade}));
   };
   const handleShowNext = () => {
     setIsChecked(false);
@@ -133,7 +125,6 @@ export const Learn = () => {
                   );
                 })}
               </div>
-
               <Button
                 onClick={handleShowNext}
                 variant={"contained"}

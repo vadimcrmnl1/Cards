@@ -3,6 +3,7 @@ import {setCardsSearchByQuestionAC} from "../actions";
 import {useAppDispatch} from "../../../../app/store";
 import {SuperDebouncedInput} from "../../../../common/components/SuperDebouncedInput/SuperDebouncedInput";
 import s from "./SearchQuestion.module.css";
+import iconClose from "./../../../images/close.png"
 
 type SearchQuestionPropsType={
     handleSearchQuestion:(value: string)=>void
@@ -21,12 +22,15 @@ export const SearchQuestion = (props:SearchQuestionPropsType) => {
 
     return (
         <div className={s.searchQuestionBlock}>
-            <SuperDebouncedInput
+             <SuperDebouncedInput
                 value={value}
                 onChangeText={handleOnChangeText}
                 onDebouncedChange={props.handleSearchQuestion}
                 placeholder={'Provide your text'}
                 />
+            <div className={s.iconsFilter}>
+                <img src={iconClose} alt={iconClose} className={s.iconClose}/>
+            </div>
 
         </div>
     )

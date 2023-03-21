@@ -18,7 +18,7 @@ export const PaginationComponent = (props: PaginationPropsType) => {
     return (
         <TablePagination
             component="div"
-            count={props.totalCount}
+            count={countPages}
             page={props.pageNumber - 1}
             onPageChange={props.handleChangePage}
             rowsPerPage={props.pageCount}

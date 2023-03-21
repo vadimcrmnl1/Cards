@@ -7,13 +7,10 @@ import { TrashIcon } from "../icons/TrashIcon";
 import s from "./ActionsCell.module.css";
 import {
   deleteCardTC,
-  getCardsTC,
   updateCardTC,
 } from "../../Cards/cards-reducer";
 import { deletePackTC, updatePackTC } from "../../Packs/packs-reducer";
 import {
-  CardPacksType,
-  CardsType,
   UpdateCardRequestDataType,
   UpdatePackRequestDataType,
 } from "../../table-api";
@@ -22,11 +19,9 @@ import { PATH } from "../../../../common/utils/routes/Routes";
 import { NavLink } from "react-router-dom";
 
 import {
-  setCardsAC,
   setCardsPackIdAC,
   setCardsPackNameAC,
-  setCardsPackUserIdAC,
-} from "../../Cards/actions";
+  } from "../../Cards/actions";
 
 type ActionsCellPropsType = {
   packOwnerId: string;
@@ -86,17 +81,14 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   const handleLinkToCards = () => {
     dispatch(setCardsPackIdAC(itemId));
     dispatch(setCardsPackNameAC(packName as string));
-    //dispatch(getCardsTC());
-  };
+    };
   return (
     <div className={s.cell}>
       {packs && (
         <NavLink to={PATH.learn} onClick={handleLinkToCards}>
           <TeacherIcon />
         </NavLink>
-        /*<button onClick={handleLearn}>
-          <TeacherIcon />
-        </button>*/
+
       )}
       {packOwnerId === userId && (
         <div>

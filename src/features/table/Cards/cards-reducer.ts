@@ -20,7 +20,7 @@ export const cardsInitialState = {
   maxGrade: 1,
   minGrade: 1,
   page: 1,
-  pageCount: 5,
+  pageCount: 100,
   pack_id: "",
   packUser_id: "",
   sortCards: null as null | string,
@@ -162,14 +162,50 @@ export const updateCardTC =
     }
   };
 
+/*export const getCardsForLearnTC =
+    (packId:string): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
+        dispatch(setAppIsLoadingAC(true));
+       /!* const { page, pageCount, pack_id, sortCards, cardQuestion } =
+            getState().cards;
+        const params: CardsParamsType = {
+            page,
+            pageCount,
+            cardsPack_id: pack_id.toString(),
+            cardQuestion,
+        };
+        if (sortCards !== null) {
+            params.sortCards = sortCards;
+        }
+        if (cardQuestion !== null) {
+            params.cardQuestion = cardQuestion;
+        }*!/
+        try {
+            const res = await cardsAPI.getCardsForLearn(packId);
+            dispatch(cardsActions.setCardsAC(res.data.cards));
+           /!* dispatch(cardsActions.setCardsTotalCountAC(res.data.cardsTotalCount));
+            dispatch(cardsActions.setCardsMaxGradeAC(res.data.maxGrade));
+            dispatch(cardsActions.setCardsMinGradeAC(res.data.minGrade));
+            dispatch(
+                cardsActions.setCardsSearchByQuestionAC(params.cardQuestion as string)
+            );*!/
+            // dispatch(cardsActions.setPageAC(res.data.page))
+            // dispatch(cardsActions.setPageCountAC(res.data.pageCount))
+            // dispatch(appActions.setAppStatusAC('succeeded'))
+        } catch (err: any) {
+            errorUtils(err, dispatch);
+        } finally {
+            dispatch(setAppIsLoadingAC(false));
+        }
+    };*/
+
+
 export const updateGradeTC =
   (data: UpdateGradeDataType): AppThunk<AllReducersActionType> =>
   async (dispatch) => {
     dispatch(setAppIsLoadingAC(true));
     try {
       const res = await cardsAPI.updateGrade(data);
-      dispatch(setCardsUpdateGradeAC(res.data.card_id, res.data.grade));
-      // dispatch(appActions.setAppInfoAC(`Your card has been updated`))
+      const a = dispatch(setCardsUpdateGradeAC(res.data.card_id, res.data.grade));
     } catch (err: any) {
       errorUtils(err, dispatch);
     } finally {

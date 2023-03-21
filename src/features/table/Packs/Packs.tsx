@@ -42,6 +42,7 @@ import { ErrorSnackbar } from "../../../common/components/ErrorSnackbar/ErrorSna
 import { selectIsAppMakeRequest } from "../../../app/selectors";
 import { selectUserId } from "../../profile/selectors";
 
+
 export const Packs = () => {
   const dispatch = useAppDispatch();
   const myID = useAppSelector(selectUserId);
@@ -175,7 +176,11 @@ export const Packs = () => {
         </Button>
       </div>
       <div className={s.packsBlock}>
-        <SearchTitleCards handleSendQuery={handleSearchTitleCards} />
+          <div className={s.packsSearchBlock}>
+              <div className={s.packsSearchTitle}>Search by pack name</div>
+              <SearchTitleCards handleSendQuery={handleSearchTitleCards} />
+          </div>
+
         <SortingByUser
           handleSortByAllPacks={handleSortByAllPacks}
           handleSortByMyPacks={handleSortByMyPacks}

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import s from './../Packs/Packs.module.css'
+import s from './Cards.module.css'
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {CardsTable} from "./CardsTable/CardsTable";
 import {selectIsLoggedIn} from "../../auth/selectors";
@@ -24,7 +24,7 @@ import Button from '@mui/material/Button';
 import {selectIsAppMakeRequest} from "../../../app/selectors";
 import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
 import {SearchQuestion} from './components/SearchQuestion';
-import {SelectChangeEvent} from "@mui/material";
+
 
 
 export const Cards = () => {
@@ -58,19 +58,16 @@ export const Cards = () => {
             // dispatch(getPacksTC())
             // setSearchParams({...searchParams,sortPacks: sortPacks!})
             const params = Object.fromEntries(searchParams)
-            dispatch(setCardsPageCountAC(+params.pageCount || 5))
-            dispatch(setCardsPageAC(+params.page || 1))
+           /* dispatch(setCardsPageCountAC(+params.pageCount || 5))
+            dispatch(setCardsPageAC(+params.page || 1))*/
             dispatch(setCardsSearchByQuestionAC(params.question || ''))
             dispatch(setCardsSortAC(params.sortCards || null))
-            // if (!searchParams.get('cardsPack_id')) {
-            //     setSearchParams({cardsPack_id: pack_id})
-            // }
             setIsFirstLoading(false)
         }
     }, [])
 
     //Change pagination
-    const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
+   /* const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
         dispatch(setCardsPageAC(newPage + 1))
         setSearchParams({...Object.fromEntries(searchParams), page: (newPage + 1).toString()})
     }
@@ -78,7 +75,7 @@ export const Cards = () => {
         dispatch(setCardsPageCountAC(+event.target.value))
         dispatch(setCardsPageAC(1))
         setSearchParams({...searchParams, page: '1', pageCount: event.target.value})
-    };
+    };*/
     const handleSearchQuestion = (value: string) => {
         dispatch(setCardsSearchByQuestionAC(value))
         setSearchParams({...searchParams, question: value})
@@ -103,10 +100,12 @@ export const Cards = () => {
 
             <LinkToBack linkPage={PATH.packs} title={'Back to Packs List'}/>
             <h2>{packName}</h2>
+            <div className={s.cardsSearchBlock}>
+                <div className={s.cardsSearchTitle}>Search for questions</div>
             <SearchQuestion handleSearchQuestion={handleSearchQuestion}/>
+            </div>
 
-
-            <div className={s.packsHeader}>
+            <div className={s.cardsHeader}>
                 <h3>Cards list</h3>
                 <Button className={styleMU.button}
                         onClick={handleAddCard}
@@ -116,11 +115,11 @@ export const Cards = () => {
             </div>
 
             <CardsTable/>
-            <PaginationComponent totalCount={totalCount}
+           {/* <PaginationComponent totalCount={totalCount}
                                  pageNumber={pageNumber}
                                  pageCount={pageCount}
                                  handleChangePage={handlePageChange}
-                                 handleChangeRowsPerPage={handlePageCountChange}/>
+                                 handleChangeRowsPerPage={handlePageCountChange}/>*/}
             <ErrorSnackbar/>
         </div>
     );
