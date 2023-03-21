@@ -15,11 +15,8 @@ import {
 } from "../table/Cards/selectors";
 
 import { CardsType } from "../table/table-api";
-import { useParams } from "react-router-dom";
 import { getCardsTC, updateGradeTC } from "../table/Cards/cards-reducer";
-import { setCardsAC } from "../table/Cards/actions";
-import SuperInput from "../../common/components/SuperInput/SuperInput";
-import SuperCheckbox from "../../common/components/SuperCheckbox/SuperCheckbox";
+import { useStyles } from "../styleMU/styleMU";
 
 const grades = [
   "I didn't know",
@@ -51,7 +48,7 @@ export const Learn = () => {
   const packName = useAppSelector(selectPackName);
   const id = useAppSelector(selectCardsPackId);
   const cards = useAppSelector(selectCards);
-
+  const styleMU = useStyles();
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [first, setFirst] = useState<boolean>(true);
 
@@ -102,31 +99,52 @@ export const Learn = () => {
       <div className={s.link}>
         <LinkToBack linkPage={PATH.packs} title={"Back to Packs List"} />
       </div>
-      <div className={s.learnTitle}>Learn {packName}</div>
-      <div className={s.learnQuestionBlock}>
-        <div>QUESTION:{card.question}</div>
-        <div>Number of attempts to answer the question:{card.shots}</div>
-        <Button onClick={handleShowAnswer}> Show answer</Button>
-        {isChecked && (
-          <>
-            <div>ANSWER:{card.answer}</div>
-            <div className={s.learnCheckboxBlock}>
-              {grades.map((el, index) => {
-                return (
-                  <label key={index}>
-                    <input
-                      type={"checkbox"}
-                      onClick={() => handleCheckAnswer(index + 1)}
-                    />
-                    {el}
-                  </label>
-                );
-              })}
-            </div>
+      <div className={s.learnBlock}>
+        <div className={s.learnTitle}>Learn {packName}</div>
+        <div className={s.learnQuestionBlock}>
+          <div>
+            <b>QUESTION</b>: {card.question}
+          </div>
+          <div className={s.learnShots}>
+            Number of attempts to answer the question: {card.shots}
+          </div>
+          <Button
+            onClick={handleShowAnswer}
+            variant={"contained"}
+            className={styleMU.button}
+          >
+            Show answer
+          </Button>
+          {isChecked && (
+            <>
+              <div>
+                <b>ANSWER</b>: {card.answer}
+              </div>
+              <div className={s.learnCheckboxBlock}>
+                {grades.map((el, index) => {
+                  return (
+                    <label key={index}>
+                      <input
+                        type={"checkbox"}
+                        onClick={() => handleCheckAnswer(index + 1)}
+                      />
+                      {el}
+                    </label>
+                  );
+                })}
+              </div>
 
-            <Button onClick={handleShowNext}> Show next question</Button>
-          </>
-        )}
+              <Button
+                onClick={handleShowNext}
+                variant={"contained"}
+                className={styleMU.button}
+              >
+                {" "}
+                Show next question
+              </Button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
