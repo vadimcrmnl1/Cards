@@ -5,9 +5,10 @@ import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
-import { useAppDispatch, useAppSelector } from '../../../../../../app/store'
-import { selectPackName } from '../../../../../../features/table/Cards/selectors'
+import { setAppIsLoadingAC } from '../../../../../../app/actions'
+import { useAppDispatch } from '../../../../../../app/store'
 import { addPackTC, updatePackTC } from '../../../../../../features/table/Packs/packs-reducer'
+import { modalAddPackIsOpenAC, modalEditPackIsOpenAC } from '../../actions'
 import { MainModal } from '../../MainModal'
 
 const validationSchema = yup.object({
@@ -20,6 +21,7 @@ type AddEditPackModalType = {
   title?: string
   titleButton?: string
   packId?: string
+  packName?: string | undefined
 }
 
 export const AddEditPackModal: React.FC<AddEditPackModalType> = ({
@@ -27,11 +29,10 @@ export const AddEditPackModal: React.FC<AddEditPackModalType> = ({
   titleButton,
   title,
   packId,
+  packName,
 }) => {
   const dispatch = useAppDispatch()
-  const packName = useAppSelector(selectPackName)
 
-  console.log(packName)
   const formik = useFormik({
     initialValues: {
       name: type === 'create' ? '' : packName,
@@ -42,6 +43,9 @@ export const AddEditPackModal: React.FC<AddEditPackModalType> = ({
       type === 'create'
         ? dispatch(addPackTC({ cardsPack: values }))
         : dispatch(updatePackTC({ cardsPack: { _id: packId, ...values } }))
+      dispatch(modalAddPackIsOpenAC(false))
+      dispatch(modalEditPackIsOpenAC(false))
+      dispatch(setAppIsLoadingAC(true))
       formik.resetForm()
     },
   })

@@ -36,7 +36,6 @@ export const Profile = () => {
   if (!isLoggedIn) {
     return <Navigate to={PATH.login} />
   }
-  console.log('isLoading', isLoading)
 
   return (
     <div className={s.profile}>

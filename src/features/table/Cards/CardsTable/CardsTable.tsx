@@ -105,6 +105,8 @@ export const CardsTable = () => {
                 {packUserId === myId && (
                   <StyledTableCell>
                     <ActionsCell
+                      cardAnswer={card.answer}
+                      cardQuestion={card.question}
                       cardsPackId={card.cardsPack_id}
                       packOwnerId={card.user_id}
                       itemId={card._id}

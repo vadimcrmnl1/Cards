@@ -105,6 +105,7 @@ export const PacksTable = () => {
                   </StyledTableCell>
                   <StyledTableCell>
                     <ActionsCell
+                      packName={cardPack.name}
                       packs
                       packOwnerId={cardPack.user_id}
                       itemId={cardPack._id}

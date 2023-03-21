@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Button } from '@material-ui/core'
-import { MenuItem, SelectChangeEvent } from '@mui/material'
-import Select from '@mui/material/Select'
+import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
+import { setAppIsLoadingAC } from '../../../../../../app/actions'
 import { useAppDispatch, useAppSelector } from '../../../../../../app/store'
-import { addCardTC, updateCardTC } from '../../../../../../features/table/Cards/cards-reducer'
+import {
+  addCardTC,
+  getCardsTC,
+  updateCardTC,
+} from '../../../../../../features/table/Cards/cards-reducer'
 import { selectCardsPackId } from '../../../../../../features/table/Cards/selectors'
+import { modalAddCardIsOpenAC, modalEditCardIsOpen } from '../../actions'
 import { MainModal } from '../../MainModal'
+
+import s from './../../MainModal.module.css'
 
 const validationSchema = yup.object({
   question: yup.string().required('Question is required'),
@@ -23,6 +30,8 @@ type AddEditCardType = {
   titleButton?: string
   cardsPackId?: string
   itemId?: string
+  cardAnswer?: string
+  cardQuestion?: string
 }
 
 export const AddEditCardModal: React.FC<AddEditCardType> = ({
@@ -31,15 +40,19 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
   titleButton,
   title,
   cardsPackId,
+  cardAnswer,
+  cardQuestion,
 }) => {
   const dispatch = useAppDispatch()
   const packId = useAppSelector(selectCardsPackId)
-  const [format, setFormat] = React.useState<'Text' | 'Image'>('Text')
+  const [formatQuestion, setFormatQuestion] = React.useState('Text')
+  const [formatAnswer, setFormatAnswer] = React.useState('Text')
 
+  useEffect(() => {}, [cardAnswer, cardQuestion])
   const formik = useFormik({
     initialValues: {
-      question: '',
-      answer: '',
+      question: type === 'createCard' ? '' : cardQuestion,
+      answer: type === 'createCard' ? '' : cardAnswer,
     },
     validationSchema: validationSchema,
     onSubmit: values => {
@@ -47,11 +60,18 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
         ? dispatch(addCardTC({ card: { cardsPack_id: packId, ...values } }))
         : dispatch(updateCardTC({ card: { _id: itemId, ...values } }))
       formik.resetForm()
+      dispatch(modalAddCardIsOpenAC(false))
+      dispatch(modalEditCardIsOpen(false))
+      dispatch(setAppIsLoadingAC(true))
     },
   })
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleQuestionChange = (event: SelectChangeEvent) => {
     // @ts-ignore
-    setFormat(event.target.value as string)
+    setFormatQuestion(event.target.value as string)
+  }
+  const handleAnswerChange = (event: SelectChangeEvent) => {
+    // @ts-ignore
+    setFormatAnswer(event.target.value as string)
   }
 
   return (
@@ -61,20 +81,27 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
       type={type === 'createCard' ? 'createCard' : 'editCard'}
     >
       <form onSubmit={formik.handleSubmit}>
-        <Select
-          fullWidth
-          labelId="format"
-          id="format"
-          value={format}
-          label="Choose a question format"
-          onChange={handleChange}
-        >
-          <MenuItem value={'Text'}>Text</MenuItem>
-          <MenuItem value={'Image'}>Image</MenuItem>
-        </Select>
+        <div className={s.addEditForm}>
+          <p>Choose a question format</p>
+          <Select
+            style={{ margin: '10px', backgroundColor: 'white' }}
+            id="select"
+            defaultValue={formatQuestion}
+            value={formatQuestion}
+            onChange={handleQuestionChange}
+            variant={'outlined'}
+          >
+            <MenuItem value={'Text'} dense={true}>
+              Text
+            </MenuItem>
+            <MenuItem value={'Image'} dense={true}>
+              Image
+            </MenuItem>
+          </Select>
+        </div>
+
         <TextField
           fullWidth
-          style={{ marginTop: '10px' }}
           variant={'standard'}
           id={'question'}
           name={'question'}
@@ -84,9 +111,26 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
           error={formik.touched.question && Boolean(formik.errors.question)}
           helperText={formik.touched.question && formik.errors.question}
         />
+        <div className={s.addEditForm}>
+          <p>Choose a question format</p>
+          <Select
+            style={{ margin: '10px', backgroundColor: 'white' }}
+            id="select"
+            defaultValue={formatAnswer}
+            value={formatAnswer}
+            onChange={handleAnswerChange}
+            variant={'outlined'}
+          >
+            <MenuItem value={'Text'} dense={true}>
+              Text
+            </MenuItem>
+            <MenuItem value={'Image'} dense={true}>
+              Image
+            </MenuItem>
+          </Select>
+        </div>
         <TextField
           fullWidth
-          style={{ marginTop: '10px' }}
           variant={'standard'}
           id={'answer'}
           name={'answer'}

@@ -19,6 +19,9 @@ type ActionsCellPropsType = {
   itemId: string
   type: 'packs' | 'cards'
   cardsPackId?: string
+  cardQuestion?: string
+  packName?: string
+  cardAnswer?: string
 }
 export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   packOwnerId,
@@ -26,29 +29,20 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   itemId,
   type,
   cardsPackId,
+  packName,
+  cardQuestion,
+  cardAnswer,
 }) => {
   const dispatch = useAppDispatch()
 
   const userId = useAppSelector(selectUserId)
   const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
 
-  // Это заготовка для 3 недели =======***=======
-  const [editModalOpen, setEditModalOpen] = useState(false)
-  // const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  // const handleDeleteCard = () => {
+  //   const action = packs ? deletePackTC(itemId) : deleteCardTC(itemId)
   //
-  const handleEdit = () => {
-    setEditModalOpen(editModalOpen => !editModalOpen)
-  }
-  // const handleDelete = () => {
-  //     setDeleteModalOpen(deleteModalOpen => !deleteModalOpen)
+  //   dispatch(action)
   // }
-  // Это заготовка для 3 недели =======***=======
-
-  const handleDeleteCard = () => {
-    const action = packs ? deletePackTC(itemId) : deleteCardTC(itemId)
-
-    dispatch(action)
-  }
 
   return (
     <div className={s.cell}>
@@ -60,24 +54,27 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
       {type === 'packs' && packOwnerId === userId && (
         <div>
           <AddEditPackModal
+            packName={packName}
             packId={itemId}
             titleButton={'Edit'}
             title={'Edit pack'}
             type={'edit'}
           />
-          <DeletePackAndCard handleDelete={handleDeleteCard} type={'pack'} />
+          <DeletePackAndCard itemId={itemId} packName={packName} type={'deletePack'} />
         </div>
       )}
       {type === 'cards' && packOwnerId === userId && (
         <div>
           <AddEditCardModal
+            cardAnswer={cardAnswer}
+            cardQuestion={cardQuestion}
             cardsPackId={cardsPackId}
             itemId={itemId}
             type={'editCard'}
             titleButton={'EditCard'}
             title={'Edit card'}
           />
-          <DeletePackAndCard type={'card'} handleDelete={handleDeleteCard} />
+          <DeletePackAndCard cardQuestion={cardQuestion} type={'deleteCard'} itemId={itemId} />
         </div>
       )}
     </div>

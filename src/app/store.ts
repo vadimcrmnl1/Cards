@@ -3,6 +3,7 @@ import { applyMiddleware, combineReducers, legacy_createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 
+import { modalReducer } from '../common/components/modals/Modal/modal-reducer'
 import { authReducer } from '../features/auth/auth-reducer'
 import { profileReducer } from '../features/profile/profile-reducer'
 import { cardsReducer } from '../features/table/Cards/cards-reducer'
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   app: appReducer,
   packs: packsReducer,
   cards: cardsReducer,
+  modals: modalReducer,
 })
 //localstorage
 // const saveToLocalStorage = (state: AppRootStateType) => {

@@ -6,3 +6,16 @@
 
   height: 30px;
 }
+.addEditForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  margin: 10px;
+
+  color: #ffffff;
+  text-align: center;
+
+  background: #009b87;
+  border-radius: 10px;
+}
