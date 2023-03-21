@@ -1,14 +1,20 @@
-import * as React from "react";
-import {useAppDispatch, useAppSelector} from "../../../../app/store";
-import {selectUserId} from "../../../profile/selectors";
-import {TeacherIcon} from "../icons/TeacherIcon";
-import {EditIcon} from "../icons/EditIcon";
-import {TrashIcon} from "../icons/TrashIcon";
+import * as React from 'react'
+
+import { NavLink } from 'react-router-dom'
+
+import { selectIsAppMakeRequest } from '../../../../app/selectors'
+import { useAppDispatch, useAppSelector } from '../../../../app/store'
+import { PATH } from '../../../../common/utils/routes/Routes'
+import { selectUserId } from '../../../profile/selectors'
+import { setCardsPackIdAC, setCardsPackNameAC } from '../../Cards/actions'
+import { deleteCardTC, updateCardTC } from '../../Cards/cards-reducer'
+import { deletePackTC, updatePackTC } from '../../Packs/packs-reducer'
+import { UpdateCardRequestDataType, UpdatePackRequestDataType } from '../../table-api'
+import { EditIcon } from '../icons/EditIcon'
+import { TeacherIcon } from '../icons/TeacherIcon'
+import { TrashIcon } from '../icons/TrashIcon'
+
 import s from './ActionsCell.module.css'
-import {deleteCardTC, updateCardTC} from "../../Cards/cards-reducer";
-import {deletePackTC, updatePackTC} from "../../Packs/packs-reducer";
-import {UpdateCardRequestDataType, UpdatePackRequestDataType} from "../../table-api";
-import {selectIsAppMakeRequest} from "../../../../app/selectors";
 
 type ActionsCellPropsType = {
   packOwnerId: string
@@ -22,12 +28,12 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   packs,
   itemId,
   packName,
-   cardsCount
+  cardsCount,
 }) => {
   const dispatch = useAppDispatch()
 
-    const userId = useAppSelector(selectUserId)
-    const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
+  const userId = useAppSelector(selectUserId)
+  const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
 
   const handleDeleteCard = () => {
     const action = packs ? deletePackTC(itemId) : deleteCardTC(itemId)
@@ -57,16 +63,21 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
 
     dispatch(action)
   }
-    const handleLinkToCards = () => {
-        dispatch(setCardsPackIdAC(itemId))
-        dispatch(setCardsPackNameAC(packName as string))
-    }
+  const handleLinkToCards = () => {
+    dispatch(setCardsPackIdAC(itemId))
+    dispatch(setCardsPackNameAC(packName as string))
+  }
+
   return (
     <div className={s.cell}>
       {packs && (
-          <NavLink to={PATH.learn} disabled={isAppMakeRequest || cardsCount !== 0} onClick={handleLinkToCards}>
+        <NavLink
+          to={PATH.learn}
+          // disabled={isAppMakeRequest || cardsCount !== 0}
+          onClick={handleLinkToCards}
+        >
           <TeacherIcon />
-          </NavLink>
+        </NavLink>
       )}
       {packOwnerId === userId && (
         <div>
@@ -77,5 +88,7 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
             <TrashIcon />
           </button>
         </div>
-    )
+      )}
+    </div>
+  )
 }

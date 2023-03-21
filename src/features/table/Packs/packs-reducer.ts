@@ -1,10 +1,16 @@
-import {PacksActionsType, PacksParamsType} from "./types";
-import {AllReducersActionType, AppThunk} from "../../../app/types";
-import * as appActions from "../../../app/actions";
+import * as appActions from '../../../app/actions'
+import { AllReducersActionType, AppThunk } from '../../../app/types'
+import { dateUtils } from '../../../common/utils/dateUtils'
+import { errorUtils } from '../../../common/utils/errorUtils'
 import * as packsActions from '../Packs/actions'
-import {errorUtils} from "../../../common/utils/errorUtils";
-import {AddPackRequestDataType, CardPacksType, packsAPI, UpdatePackRequestDataType} from "../table-api";
-import {dateUtils} from "../../../common/utils/dateUtils";
+import {
+  AddPackRequestDataType,
+  CardPacksType,
+  packsAPI,
+  UpdatePackRequestDataType,
+} from '../table-api'
+
+import { PacksActionsType, PacksParamsType } from './types'
 
 export const packsInitialState = {
   packsLoadingStatus: false,
@@ -70,16 +76,16 @@ export const packsReducer = (
   }
 }
 
-
 //thunks
 
 export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
-    dispatch(packsActions.setPacksLoadingStatusAC(true))
-    const {page, pageCount,  sortPacks, packName, user_id, min, max} = getState().packs
-    const params: PacksParamsType = {
-        page,
-        pageCount,
-    }
+  dispatch(packsActions.setPacksLoadingStatusAC(true))
+  const { page, pageCount, sortPacks, packName, user_id, min, max, maxCardsCount } =
+    getState().packs
+  const params: PacksParamsType = {
+    page,
+    pageCount,
+  }
 
   if (sortPacks !== null) {
     params.sortPacks = sortPacks
@@ -117,40 +123,47 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
   }
 }
 
-export const addPackTC = (data: AddPackRequestDataType): AppThunk<AllReducersActionType> => async dispatch => {
+export const addPackTC =
+  (data: AddPackRequestDataType): AppThunk<AllReducersActionType> =>
+  async dispatch => {
     dispatch(packsActions.setPacksLoadingStatusAC(true))
     try {
-        await packsAPI.addPack(data)
-        dispatch(getPacksTC())
-        dispatch(appActions.setAppInfoAC(`Your pack -=${data.cardsPack.name}=- has been successfully added`))
+      await packsAPI.addPack(data)
+      dispatch(getPacksTC())
+      dispatch(
+        appActions.setAppInfoAC(`Your pack -=${data.cardsPack.name}=- has been successfully added`)
+      )
     } catch (err: any) {
-        errorUtils(err, dispatch)
+      errorUtils(err, dispatch)
     } finally {
-        dispatch(packsActions.setPacksLoadingStatusAC(false))
+      dispatch(packsActions.setPacksLoadingStatusAC(false))
     }
-}
-export const deletePackTC = (id: string): AppThunk<AllReducersActionType> => async dispatch => {
+  }
+export const deletePackTC =
+  (id: string): AppThunk<AllReducersActionType> =>
+  async dispatch => {
     dispatch(packsActions.setPacksLoadingStatusAC(true))
     try {
-        await packsAPI.deletePack(id)
-        dispatch(getPacksTC())
-        dispatch(appActions.setAppInfoAC(`Your pack has been deleted`))
+      await packsAPI.deletePack(id)
+      dispatch(getPacksTC())
+      dispatch(appActions.setAppInfoAC(`Your pack has been deleted`))
     } catch (err: any) {
-        errorUtils(err, dispatch)
+      errorUtils(err, dispatch)
     } finally {
-        dispatch(packsActions.setPacksLoadingStatusAC(false))
+      dispatch(packsActions.setPacksLoadingStatusAC(false))
     }
-}
-export const updatePackTC = (data: UpdatePackRequestDataType): AppThunk<AllReducersActionType> => async dispatch => {
+  }
+export const updatePackTC =
+  (data: UpdatePackRequestDataType): AppThunk<AllReducersActionType> =>
+  async dispatch => {
     dispatch(packsActions.setPacksLoadingStatusAC(true))
     try {
-        await packsAPI.updatePack(data)
-        dispatch(getPacksTC())
-        dispatch(appActions.setAppInfoAC(`Your pack -= ${data.cardsPack.name} =- has been updated`))
+      await packsAPI.updatePack(data)
+      dispatch(getPacksTC())
+      dispatch(appActions.setAppInfoAC(`Your pack -= ${data.cardsPack.name} =- has been updated`))
     } catch (err: any) {
-        errorUtils(err, dispatch)
+      errorUtils(err, dispatch)
     } finally {
-        dispatch(packsActions.setPacksLoadingStatusAC(false))
+      dispatch(packsActions.setPacksLoadingStatusAC(false))
     }
-}
-
+  }
