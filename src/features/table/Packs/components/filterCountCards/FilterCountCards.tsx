@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Slider from '@mui/material/Slider'
 
 import { useAppSelector } from '../../../../../app/store'
-import useDebounce from '../../../../../common/utils/debounceUtils'
+import useDebounce from '../../../../../common/hooks/useDebounce'
 import { selectUserId } from '../../../../profile/selectors'
 import { useStyles } from '../../../../styleMU/styleMU'
 import {
