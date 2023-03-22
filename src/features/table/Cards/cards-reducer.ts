@@ -13,7 +13,7 @@ import * as appActions from './../../../app/actions'
 import { setAppIsLoadingAC } from './../../../app/actions'
 import * as cardsActions from './actions'
 import { setCardsUpdateGradeAC } from './actions'
-import { CardsActionsType, CardsParamsType } from './types'
+import { CardsActionsType, CardsParamsType, LearnParamsType } from './types'
 
 export const cardsInitialState = {
   cards: [] as CardsType[],
@@ -100,10 +100,11 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
   try {
     const res = await cardsAPI.getCards(params)
 
+    console.log(res)
     dispatch(cardsActions.setCardsAC(res.data.cards))
     dispatch(cardsActions.setCardsTotalCountAC(res.data.cardsTotalCount))
-    dispatch(cardsActions.setCardsMaxGradeAC(res.data.maxGrade))
-    dispatch(cardsActions.setCardsMinGradeAC(res.data.minGrade))
+    /*dispatch(cardsActions.setCardsMaxGradeAC(res.data.maxGrade))
+    dispatch(cardsActions.setCardsMinGradeAC(res.data.minGrade))*/
   } catch (err: any) {
     errorUtils(err, dispatch)
   } finally {
@@ -118,7 +119,6 @@ export const addCardTC =
       await cardsAPI.addCard(data)
       dispatch(getCardsTC())
       dispatch(appActions.setAppInfoAC(`Your card has been added`))
-      // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
       errorUtils(err, dispatch)
     } finally {
@@ -160,6 +160,27 @@ export const updateGradeTC =
     try {
       const res = await cardsAPI.updateGrade(data)
       const a = dispatch(setCardsUpdateGradeAC(res.data.card_id, res.data.grade))
+    } catch (err: any) {
+      errorUtils(err, dispatch)
+    } finally {
+      dispatch(setAppIsLoadingAC(false))
+    }
+  }
+export const getCardsForLearnTC =
+  (pack_id: string, pageCount: number): AppThunk<AllReducersActionType> =>
+  async dispatch => {
+    dispatch(setAppIsLoadingAC(true))
+
+    const params: LearnParamsType = {
+      page: 1,
+      pageCount: pageCount,
+      cardsPack_id: pack_id.toString(),
+    }
+
+    try {
+      const res = await cardsAPI.getCardsForLearn(params)
+
+      dispatch(cardsActions.setCardsAC(res.data.cards))
     } catch (err: any) {
       errorUtils(err, dispatch)
     } finally {

@@ -34,6 +34,11 @@ export const cardsAPI = {
   updateGrade(data: UpdateGradeDataType) {
     return instance.put<UpdateGradeType>('cards/grade', data)
   },
+  getCardsForLearn(params: CardsLearnRequestDataType) {
+    return instance.get<CardsResponseDataType>(`cards/card?cardsPack_id=${params.cardsPack_id}`, {
+      params,
+    })
+  },
 }
 export type PacksRequestDataType = {
   packName?: string
@@ -44,6 +49,10 @@ export type PacksRequestDataType = {
   pageCount?: number
   userId?: string
   block?: boolean
+}
+export type CardsLearnRequestDataType = {
+  pageCount: number
+  cardsPack_id: string
 }
 export type PacksResponseDataType = {
   cardPacks: CardPacksType[]

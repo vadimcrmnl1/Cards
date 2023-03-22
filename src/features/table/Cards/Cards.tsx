@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-import { SelectChangeEvent } from '@mui/material'
 import Button from '@mui/material/Button'
 import { Navigate, useSearchParams } from 'react-router-dom'
 
@@ -24,6 +23,7 @@ import {
 import { addCardTC, getCardsTC } from './cards-reducer'
 import s from './Cards.module.css'
 import { CardsTable } from './CardsTable/CardsTable'
+import { PaginationCards } from './components/pagination/PaginationCards'
 import { SearchQuestion } from './components/SearchQuestion'
 import {
   selectCardsPackId,
@@ -36,8 +36,6 @@ import {
 } from './selectors'
 
 export const Cards = () => {
-  const totalCount = useAppSelector(selectCardsTotalCount)
-  const pageNumber = useAppSelector(selectCardsPage)
   const pageCount = useAppSelector(selectCardsPageCount)
   const cardsPack = useAppSelector(selectCardPacks)
   const packName = useAppSelector(selectPackName)
@@ -59,7 +57,7 @@ export const Cards = () => {
     if (isLoggedIn && !isFirstLoading) {
       dispatch(getCardsTC())
     }
-  }, [dispatch, page, pageCount, question, sortCards, isFirstLoading])
+  }, [dispatch, page, pageCount, question, sortCards, isFirstLoading, pack_id])
 
   useEffect(() => {
     if (isFirstLoading) {
@@ -71,17 +69,6 @@ export const Cards = () => {
       setIsFirstLoading(false)
     }
   }, [])
-
-  //Change pagination
-  const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
-    dispatch(setCardsPageAC(newPage + 1))
-    setSearchParams({ ...params, page: (newPage + 1).toString() })
-  }
-  const handlePageCountChange = (event: SelectChangeEvent) => {
-    dispatch(setCardsPageCountAC(+event.target.value))
-    dispatch(setCardsPageAC(1))
-    setSearchParams({ ...params, page: '1', pageCount: event.target.value })
-  }
 
   const handleAddCard = () => {
     const data: AddCardRequestType = {
@@ -121,11 +108,7 @@ export const Cards = () => {
       </div>
 
       <CardsTable />
-      {/* <PaginationComponent totalCount={totalCount}
-                                 pageNumber={pageNumber}
-                                 pageCount={pageCount}
-                                 handleChangePage={handlePageChange}
-                                 handleChangeRowsPerPage={handlePageCountChange}/>*/}
+      <PaginationCards />
       <ErrorSnackbar />
     </div>
   )

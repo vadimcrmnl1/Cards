@@ -3,8 +3,14 @@ import React, { useEffect, useState } from 'react'
 import Button from '@mui/material/Button'
 
 import { useStyles } from '../styleMU/styleMU'
-import { getCardsTC, updateGradeTC } from '../table/Cards/cards-reducer'
-import { selectCards, selectCardsPackId, selectPackName } from '../table/Cards/selectors'
+import { setCardsPageCountAC } from '../table/Cards/actions'
+import { getCardsForLearnTC, updateGradeTC } from '../table/Cards/cards-reducer'
+import {
+  selectCards,
+  selectCardsPackId,
+  selectCardsPageCount,
+  selectPackName,
+} from '../table/Cards/selectors'
 import { CardsType } from '../table/table-api'
 
 import s from './Learn.module.css'
@@ -40,6 +46,7 @@ export const Learn = () => {
   const packName = useAppSelector(selectPackName)
   const id = useAppSelector(selectCardsPackId)
   const cards = useAppSelector(selectCards)
+  const pageCount = useAppSelector(selectCardsPageCount)
   const styleMU = useStyles()
   const [isChecked, setIsChecked] = useState<boolean>(false)
   const [first, setFirst] = useState<boolean>(true)
@@ -60,14 +67,11 @@ export const Learn = () => {
 
   useEffect(() => {
     if (first) {
-      dispatch(getCardsTC())
+      dispatch(getCardsForLearnTC(id, 100))
+      dispatch(setCardsPageCountAC(pageCount))
       setFirst(false)
     }
     if (cards.length > 0) setCard(getCard(cards))
-
-    /* return () => {
-      console.log("LearnContainer useEffect off");
-    };*/
   }, [dispatch, id, cards, first])
 
   const handleShowAnswer = () => {

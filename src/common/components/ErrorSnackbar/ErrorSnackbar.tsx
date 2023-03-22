@@ -16,7 +16,6 @@ export const ErrorSnackbar = () => {
   const error = useAppSelector(selectError)
   const appInfo = useAppSelector(selectAppInfo)
 
-  console.log(error)
   const severity = appInfo ? 'info' : 'error'
 
   const handleClose = (event?: React.SyntheticEvent<any> | Event, reason?: string) => {
