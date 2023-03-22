@@ -1,12 +1,12 @@
 import * as React from 'react'
 
-import { NavLink, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { selectIsAppMakeRequest } from '../../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { PATH } from '../../../../common/utils/routes/Routes'
 import { selectUserId } from '../../../profile/selectors'
-import { setCardsPackIdAC, setCardsPackNameAC } from '../../Cards/actions'
+import { setCardsPackNameAC } from '../../Cards/actions'
 import { deleteCardTC, updateCardTC } from '../../Cards/cards-reducer'
 import { deletePackTC, updatePackTC } from '../../Packs/packs-reducer'
 import { UpdateCardRequestDataType, UpdatePackRequestDataType } from '../../table-api'
@@ -65,7 +65,6 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
     dispatch(action)
   }
   const handleLinkToCards = () => {
-    dispatch(setCardsPackIdAC(itemId))
     dispatch(setCardsPackNameAC(packName as string))
     navigate(PATH.packs + `learn/${itemId}`)
   }

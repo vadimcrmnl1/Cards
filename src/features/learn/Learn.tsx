@@ -4,8 +4,9 @@ import Button from '@mui/material/Button'
 import { useParams } from 'react-router-dom'
 
 import { useStyles } from '../styleMU/styleMU'
+import { setCardsPackIdAC } from '../table/Cards/actions'
 import { getCardsTC, updateGradeTC } from '../table/Cards/cards-reducer'
-import { selectCards, selectCardsPackId, selectPackName } from '../table/Cards/selectors'
+import { selectCards, selectPackName } from '../table/Cards/selectors'
 import { CardsType } from '../table/table-api'
 
 import s from './Learn.module.css'
@@ -39,14 +40,12 @@ const getCard = (cards: CardsType[]) => {
 
 export const Learn = () => {
   const packName = useAppSelector(selectPackName)
-  const id = useAppSelector(selectCardsPackId)
   const cards = useAppSelector(selectCards)
   const styleMU = useStyles()
   const [isChecked, setIsChecked] = useState<boolean>(false)
   const [first, setFirst] = useState<boolean>(true)
-  const params = useParams()
+  const { cardPackId } = useParams() as { cardPackId: string }
 
-  console.log(params)
   const [card, setCard] = useState<CardsType>({
     _id: '',
     cardsPack_id: '',
@@ -63,16 +62,16 @@ export const Learn = () => {
 
   useEffect(() => {
     if (first) {
+      dispatch(setCardsPackIdAC(cardPackId))
       dispatch(getCardsTC())
       setFirst(false)
     }
     if (cards.length > 0) setCard(getCard(cards))
 
     /* return () => {
-      console.log("LearnContainer useEffect off");
-    };*/
-  }, [dispatch, id, cards, first])
-
+              console.log("LearnContainer useEffect off");
+            };*/
+  }, [dispatch, cardPackId, cards, first])
   const handleShowAnswer = () => {
     setIsChecked(true)
   }
