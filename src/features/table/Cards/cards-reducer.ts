@@ -118,7 +118,6 @@ export const addCardTC =
       await cardsAPI.addCard(data)
       dispatch(getCardsTC())
       dispatch(appActions.setAppInfoAC(`Your card has been added`))
-      // dispatch(appActions.setAppStatusAC('succeeded'))
     } catch (err: any) {
       errorUtils(err, dispatch)
     } finally {

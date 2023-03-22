@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import Slider from '@mui/material/Slider'
 
-import { useAppDispatch, useAppSelector } from '../../../../../app/store'
+import { useAppSelector } from '../../../../../app/store'
 import useDebounce from '../../../../../common/utils/debounceUtils'
 import { selectUserId } from '../../../../profile/selectors'
 import { useStyles } from '../../../../styleMU/styleMU'

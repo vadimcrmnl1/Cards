@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 import { selectIsAppMakeRequest } from '../../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
@@ -31,6 +31,7 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   cardsCount,
 }) => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const userId = useAppSelector(selectUserId)
   const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
@@ -66,18 +67,20 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   const handleLinkToCards = () => {
     dispatch(setCardsPackIdAC(itemId))
     dispatch(setCardsPackNameAC(packName as string))
+    navigate(PATH.learn)
   }
+  const btnLearnClassName = cardsCount === 0 ? s.buttonLearn : ''
 
   return (
     <div className={s.cell}>
       {packs && (
-        <NavLink
-          to={PATH.learn}
-          // disabled={isAppMakeRequest || cardsCount !== 0}
+        <button
+          className={btnLearnClassName}
           onClick={handleLinkToCards}
+          disabled={isAppMakeRequest || cardsCount === 0}
         >
           <TeacherIcon />
-        </NavLink>
+        </button>
       )}
       {packOwnerId === userId && (
         <div>

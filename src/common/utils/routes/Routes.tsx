@@ -21,7 +21,7 @@ export const PATH = {
   newPassword: '/set-new-password/:token',
   test: '/test',
   packs: '/packs',
-  cards: '/cards',
+  cards: '/cards/:cardPackId',
   learn: '/learn',
 }
 
