@@ -1,9 +1,10 @@
-import {authAPI} from "../api/api";
-import {AllReducersActionType, AppActionsType, AppInitialStateType, AppThunk} from "./types";
-import * as appActions from './actions'
+import { authAPI } from '../api/api'
+import { errorUtils } from '../common/utils/errorUtils'
+
 import * as authAction from './../features/auth/actions'
 import * as profileActions from './../features/profile/actions'
-import {errorUtils} from "../common/utils/errorUtils";
+import * as appActions from './actions'
+import { AllReducersActionType, AppActionsType, AppInitialStateType, AppThunk } from './types'
 
 const appInitialState: AppInitialStateType = {
   isAppInitialized: false,
@@ -51,5 +52,3 @@ export const initializeAppTC = (): AppThunk<AllReducersActionType> => dispatch =
       dispatch(appActions.setAppIsLoadingAC(false))
     })
 }
-
-

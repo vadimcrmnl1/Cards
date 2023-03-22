@@ -1,27 +1,30 @@
-import * as React from "react";
-import {useEffect} from "react";
-import TableContainer from "@mui/material/TableContainer";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import {TableHead} from "@mui/material";
-import {useAppDispatch, useAppSelector} from "../../../../app/store";
-import {getCardsTC} from "../cards-reducer";
-import {ActionsCell} from "../../common/ActionsCell/ActionsCell";
-import {StyledTableCell, StyledTableRow} from "./styles";
-import {Grade} from "./Grade/Grade";
-import {TableTextCell} from "../../common/TableTextCell/TableTextCell";
-import {setCardsSortAC} from "../actions";
-import {selectUserId} from "../../../profile/selectors";
-import {SortCell} from "../../common/SortCell/SortCell";
+import * as React from 'react'
+import { useEffect } from 'react'
+
+import { TableHead } from '@mui/material'
+import Paper from '@mui/material/Paper'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableContainer from '@mui/material/TableContainer'
+
+import { useAppDispatch, useAppSelector } from '../../../../app/store'
+import { selectUserId } from '../../../profile/selectors'
+import { ActionsCell } from '../../common/ActionsCell/ActionsCell'
+import { SortCell } from '../../common/SortCell/SortCell'
+import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
+import { setCardsSortAC } from '../actions'
+import { getCardsTC } from '../cards-reducer'
 import {
-    selectCards,
-    selectCardsPage,
-    selectCardsPageCount,
-    selectCardsQuestion,
-    selectCardsSort,
-    selectPackUserId
-} from "../selectors";
+  selectCards,
+  selectCardsPage,
+  selectCardsPageCount,
+  selectCardsQuestion,
+  selectCardsSort,
+  selectPackUserId,
+} from '../selectors'
+
+import { Grade } from './Grade/Grade'
+import { StyledTableCell, StyledTableRow } from './styles'
 
 export const CardsTable = () => {
   const dispatch = useAppDispatch()
@@ -33,14 +36,9 @@ export const CardsTable = () => {
   const myId = useAppSelector(selectUserId)
   const cardsSort = useAppSelector(selectCardsSort)
 
-
-
-
-
-    // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows =
-        page > 0 ? pageCount - cards.length : 0;
-    const emptyRowsStyle = {height: 75 * emptyRows}
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows = page > 0 ? pageCount - cards.length : 0
+  const emptyRowsStyle = { height: 75 * emptyRows }
 
   const handleSort = (sort: string | null) => {
     dispatch(setCardsSortAC(sort))
@@ -149,8 +147,6 @@ export const CardsTable = () => {
                 </FormControl>
                 Cards per Page
             </div>*/}
-        </div>
-    );
+    </div>
+  )
 }
-
-

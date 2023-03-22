@@ -1,16 +1,12 @@
-import React, {useEffect} from 'react';
-import s from './App.module.css';
-import {Header} from "../common/components/Header/Header";
-import {Outlet} from "react-router-dom";
-import {useAppDispatch, useAppSelector} from "./store";
-import {initializeAppTC} from "./app-reducer";
-import {selectIsAppInitialized} from "./selectors";
-import {Spinner} from "../common/components/Spinner";
+import React, { useEffect } from 'react'
+
+import { Outlet } from 'react-router-dom'
 
 import { SimpleBackdrop } from '../common/components/Backdrop/Backdrop'
 import { ErrorSnackbar } from '../common/components/ErrorSnackbar/ErrorSnackbar'
 import { Header } from '../common/components/Header/Header'
 import { InfoSnackbar } from '../common/components/InfoSnackbar/InfoSnackbar'
+import { Spinner } from '../common/components/Spinner'
 
 import { setAppIsLoadingAC } from './actions'
 import { initializeAppTC } from './app-reducer'
@@ -45,4 +41,4 @@ function App() {
   )
 }
 
-export default App;
+export default App

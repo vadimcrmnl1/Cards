@@ -21,36 +21,24 @@ import { StyledTableCell, StyledTableRow } from '../../common/styles'
 import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
 import { setPacksSortAC } from '../actions'
 import {
-    selectCardPacks,
-    selectPacksPage,
-    selectPacksSort,
-    selectPacksPageCount
-} from "../selectors";
-import {setPacksSortAC} from "../actions";
-import {TableHead} from "@mui/material";
-import {ActionsCell} from "../../common/ActionsCell/ActionsCell";
-import {NavLink} from "react-router-dom";
-import {PATH} from "../../../../common/utils/routes/Routes";
+  selectCardPacks,
+  selectPacksPage,
+  selectPacksSort,
+  selectPacksPageCount,
+} from '../selectors'
 
-import {StyledTableCell, StyledTableRow} from "../../common/styles";
-import {setCardsPackIdAC, setCardsPackNameAC, setCardsPackUserIdAC, setCardsPageAC} from "../../Cards/actions";
-import {SortCell} from "../../common/SortCell/SortCell";
-import {TableTextCell} from "../../common/TableTextCell/TableTextCell";
-
+import s from './PacksTable.module.css'
 
 export const PacksTable = () => {
+  const dispatch = useAppDispatch()
+  const cardPacks = useAppSelector(selectCardPacks)
+  const page = useAppSelector(selectPacksPage)
+  const pageCount = useAppSelector(selectPacksPageCount)
+  const sortPacks = useAppSelector(selectPacksSort)
 
-    const dispatch = useAppDispatch()
-    const cardPacks = useAppSelector(selectCardPacks)
-    const page = useAppSelector(selectPacksPage)
-    const pageCount = useAppSelector(selectPacksPageCount)
-    const sortPacks = useAppSelector(selectPacksSort)
-
-
-// Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows =
-        page > 0 ? pageCount - cardPacks.length : 0;
-    const emptyRowsStyle = {height: 75 * emptyRows}
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows = page > 0 ? pageCount - cardPacks.length : 0
+  const emptyRowsStyle = { height: 75 * emptyRows }
 
   const handleSort = (sort: string | null) => {
     dispatch(setPacksSortAC(sort))
@@ -138,5 +126,3 @@ export const PacksTable = () => {
     </div>
   )
 }
-
-

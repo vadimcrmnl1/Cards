@@ -28,7 +28,7 @@ type AddEditCardType = {
   type: 'createCard' | 'editCard'
   title?: string
   titleButton?: string
-  cardsPackId?: string
+  cardsPackId?: string | undefined
   itemId?: string
   cardAnswer?: string
   cardQuestion?: string

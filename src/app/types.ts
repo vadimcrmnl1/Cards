@@ -8,17 +8,10 @@ import { CardsActionsType } from '../features/table/Cards/types'
 import { PacksActionsType } from '../features/table/Packs/types'
 
 import * as actions from './actions'
-import {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {AnyAction} from "redux";
-import {AuthActionsType} from "../features/auth/types";
-import {ProfileActionsType} from "../features/profile/types";
-import {AppRootStateType} from "./store";
-import {PacksActionsType} from "../features/table/Packs/types";
-import {CardsActionsType} from "../features/table/Cards/types";
+import { AppRootStateType } from './store'
+
 //general application types
-export type InferValueTypes<T> = T extends { [key: string]: infer U }
-    ? U
-    : never;
+export type InferValueTypes<T> = T extends { [key: string]: infer U } ? U : never
 
 export type AppThunkDispatch = ThunkDispatch<AppRootStateType, unknown, AllReducersActionType>
 
@@ -39,7 +32,6 @@ export type AllReducersActionType =
 // APP types
 
 export type AppActionsType = ReturnType<InferValueTypes<typeof actions>>
-
 
 export type AppInitialStateType = {
   isAppInitialized: boolean

@@ -1,22 +1,20 @@
 import * as React from 'react'
 import { useState } from 'react'
 
+import { useNavigate } from 'react-router-dom'
+
 import { selectIsAppMakeRequest } from '../../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
-import { AddEditCardModal } from '../../../../common/components/modals/Modal/components/AddEditCard/AddEditCard'
+import { AddEditCardModal } from '../../../../common/components/modals/Modal/components/AddEditCard/AddEditCardModal'
 import { AddEditPackModal } from '../../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
 import { DeletePackAndCard } from '../../../../common/components/modals/Modal/components/DeleteModal/DeletePackAndCard'
 import { selectUserId } from '../../../profile/selectors'
-import { deleteCardTC } from '../../Cards/cards-reducer'
-import { deletePackTC } from '../../Packs/packs-reducer'
+import { deleteCardTC, updateCardTC } from '../../Cards/cards-reducer'
+import { deletePackTC, updatePackTC } from '../../Packs/packs-reducer'
+import { UpdateCardRequestDataType, UpdatePackRequestDataType } from '../../table-api'
 import { TeacherIcon } from '../icons/TeacherIcon'
 
 import s from './ActionsCell.module.css'
-import {useState} from "react";
-import {deleteCardTC, updateCardTC} from "../../Cards/cards-reducer";
-import {deletePackTC, updatePackTC} from "../../Packs/packs-reducer";
-import {UpdateCardRequestDataType, UpdatePackRequestDataType} from "../../table-api";
-import {selectIsAppMakeRequest} from "../../../../app/selectors";
 
 type ActionsCellPropsType = {
   packOwnerId: string
@@ -33,48 +31,35 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   packs,
   itemId,
   packName,
-  cardsCount,
+  cardQuestion,
+  cardAnswer,
+  type,
+  cardsPackId,
 }) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-    const userId = useAppSelector(selectUserId)
-    const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
+  const userId = useAppSelector(selectUserId)
+  const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
 
-    // Это заготовка для 3 недели =======***=======
-    const [editModalOpen, setEditModalOpen] = useState(false)
-    // const [deleteModalOpen, setDeleteModalOpen] = useState(false)
-    //
-    const handleEdit = () => {
-        setEditModalOpen(editModalOpen => !editModalOpen)
+  const handleUpdateCard = () => {
+    const identifier = Math.random().toFixed(2)
+    const cardPack: UpdatePackRequestDataType = {
+      cardsPack: {
+        _id: itemId,
+        name: 'Name updated ' + identifier,
+      },
     }
-    // const handleDelete = () => {
-    //     setDeleteModalOpen(deleteModalOpen => !deleteModalOpen)
-    // }
-    // Это заготовка для 3 недели =======***=======
+    const data: UpdateCardRequestDataType = {
+      card: {
+        _id: itemId,
+        question: 'How do i become a developer? ' + identifier,
+      },
+    }
+    const action = packs ? updatePackTC(cardPack) : updateCardTC(data)
 
-
-    const handleDeleteCard = () => {
-        const action = packs ? deletePackTC(itemId) : deleteCardTC(itemId)
-        dispatch(action)
-    }
-    const handleUpdateCard = () => {
-        const identifier = Math.random().toFixed(2)
-        const cardPack: UpdatePackRequestDataType = {
-            cardsPack: {
-                _id: itemId,
-                name: 'Name updated ' + identifier
-            }
-        }
-        const data: UpdateCardRequestDataType = {
-            card: {
-                _id: itemId,
-                question: 'How do i become a developer? ' + identifier
-            }
-        }
-        const action = packs ? updatePackTC(cardPack) : updateCardTC(data)
-        dispatch(action)
-    }
+    dispatch(action)
+  }
 
   return (
     <div className={s.cell}>

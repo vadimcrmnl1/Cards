@@ -9,15 +9,13 @@ import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import { FormikHelpers, useFormik } from 'formik'
 import { NavLink, Navigate } from 'react-router-dom'
-
 import * as yup from 'yup'
+
 import { useAppDispatch, useAppSelector } from '../../../app/store'
 import { PATH } from '../../../common/utils/routes/Routes'
-import { selectIsSignedUp } from '../selectors'
 import { signUpTC } from '../auth-reducer'
-
-
 import { boxStyle } from '../Login/Login'
+import { selectIsSignedUp } from '../selectors'
 
 import s from './SignUp.module.css'
 

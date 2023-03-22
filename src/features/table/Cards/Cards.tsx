@@ -1,27 +1,39 @@
-import React, {useEffect} from 'react';
-import s from './../Packs/Packs.module.css'
-import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {CardsTable} from "./CardsTable/CardsTable";
-import {selectIsLoggedIn} from "../../auth/selectors";
-import {Navigate, useSearchParams} from 'react-router-dom';
-import {PATH} from "../../../common/utils/routes/Routes";
-import {LinkToBack} from "../../../common/components/LinkToBack/LinkToBack";
-import {PaginationComponent} from "../Packs/components/pagination/PaginationComponent";
-import {selectCards, selectCardsPage, selectCardsPageCount, selectCardsTotalCount, selectPackName} from "./selectors";
-import {setCardsPageAC, setCardsPageCountAC, setCardsSearchByQuestionAC} from "./actions";
-import {useStyles} from "../../styleMU/styleMU";
-import {addCardTC} from "./cards-reducer";
-import {AddCardRequestType} from "../table-api";
-import {selectCardPacks} from "../Packs/selectors";
-import Button from '@mui/material/Button';
-import {selectIsAppMakeRequest} from "../../../app/selectors";
-import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
-import {SearchQuestion} from './components/SearchQuestion';
-import {SelectChangeEvent} from "@mui/material";
-import {EmptySearch} from "../../../common/components/EmptySearch/EmptySearch";
-import {EmptyList} from "../../../common/components/EmptyList/EmptyList";
-import {NoFilters} from "../Packs/components/noFilters/NoFilters";
+import React, { useEffect, useState } from 'react'
 
+import { SelectChangeEvent } from '@mui/material'
+import { useParams, useSearchParams } from 'react-router-dom'
+
+import { selectIsAppMakeRequest } from '../../../app/selectors'
+import { useAppDispatch, useAppSelector } from '../../../app/store'
+import { ErrorSnackbar } from '../../../common/components/ErrorSnackbar/ErrorSnackbar'
+import { LinkToBack } from '../../../common/components/LinkToBack/LinkToBack'
+import { PATH } from '../../../common/utils/routes/Routes'
+import { selectIsLoggedIn } from '../../auth/selectors'
+import { useStyles } from '../../styleMU/styleMU'
+import { PaginationComponent } from '../Packs/components/pagination/PaginationComponent'
+import { selectCardPacks } from '../Packs/selectors'
+
+import s from './../Packs/Packs.module.css'
+import {
+  setCardsPackIdAC,
+  setCardsPageAC,
+  setCardsPageCountAC,
+  setCardsSearchByQuestionAC,
+  setCardsSortAC,
+} from './actions'
+import { getCardsTC } from './cards-reducer'
+import { CardsTable } from './CardsTable/CardsTable'
+import { SearchQuestion } from './components/SearchQuestion'
+import {
+  selectCardsPage,
+  selectCardsPageCount,
+  selectCardsQuestion,
+  selectCardsSort,
+  selectCardsTotalCount,
+  selectPackName,
+} from './selectors'
+
+import { AddEditCardModal } from 'common/components/modals/Modal/components/AddEditCard/AddEditCardModal'
 
 export const Cards = () => {
   const totalCount = useAppSelector(selectCardsTotalCount)
