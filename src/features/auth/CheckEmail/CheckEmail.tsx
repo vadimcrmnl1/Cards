@@ -1,15 +1,14 @@
-import React from 'react'
-
-import Button from '@material-ui/core/Button'
-import { useNavigate } from 'react-router-dom'
-
-import { PATH } from '../../../common/utils/routes/Routes'
-
+import React from "react";
+import s from "./CheckEmail.module.css";
+import {PATH} from "../../../common/utils/routes/Routes";
+import { useNavigate} from 'react-router-dom'
 import mail from './chackEailImage.png'
-import s from './CheckEmail.module.css'
+import Button from "@material-ui/core/Button";
+
 
 export const CheckEmail = () => {
-  const navigate = useNavigate()
+
+    const navigate = useNavigate()
 
   const handleOnClock = () => {
     navigate(PATH.login)

@@ -1,7 +1,6 @@
-.cell,
-.cell > div {
-  display: flex;
-  gap: 14px;
+.cell,.cell>div {
+    display: flex;
+    gap: 14px;
 }
 
 .cell button {

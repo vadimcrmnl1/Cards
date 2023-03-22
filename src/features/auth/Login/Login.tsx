@@ -1,14 +1,19 @@
-import React, { useEffect } from 'react'
-
-import { Button, Checkbox, FormControlLabel } from '@material-ui/core'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
-import { Box, IconButton, InputAdornment, Paper } from '@mui/material'
+import React, {useEffect} from "react";
+import s from './Login.module.css'
+import {useFormik} from 'formik';
+import * as yup from 'yup';
+import {Button, Checkbox, FormControlLabel} from "@material-ui/core";
+import {Box, IconButton, InputAdornment, Paper,} from "@mui/material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 import TextField from '@mui/material/TextField'
-import { useFormik } from 'formik'
-import { Navigate, NavLink } from 'react-router-dom'
-import * as yup from 'yup'
+import {Navigate, NavLink} from "react-router-dom";
+import {PATH} from "../../../common/utils/routes/Routes";
+import {AppRootStateType, useAppDispatch, useAppSelector} from "../../../app/store";
+import {loginTC} from "../auth-reducer";
+import {selectIsLoggedIn, selectIsPasswordChanged, selectIsSignedUp, selectMailWasSent} from "../selectors";
+import {setIsPasswordChangedAC, setIsSignedUpAC, setMailWasSentAC} from "../actions";
 
-import { AppRootStateType, useAppDispatch, useAppSelector } from '../../../app/store'
+import { useAppDispatch, useAppSelector } from '../../../app/store'
 import { PATH } from '../../../common/utils/routes/Routes'
 import { setIsPasswordChangedAC, setIsSignedUpAC, setMailWasSentAC } from '../actions'
 import { loginTC } from '../auth-reducer'
@@ -22,68 +27,73 @@ import {
 import s from './Login.module.css'
 
 const validationSchema = yup.object({
-  email: yup.string().email('Enter a valid email').required('Email is required'),
-  password: yup
-    .string()
-    .min(8, 'Password should be of minimum 8 characters length')
-    .required('Password is required'),
-  rememberMe: yup.string(),
-})
+    email: yup
+        .string()
+        .email('Enter a valid email')
+        .required('Email is required'),
+    password: yup
+        .string()
+        .min(8, 'Password should be of minimum 8 characters length')
+        .required('Password is required'),
+    rememberMe: yup
+        .string()
+
+});
 
 export const boxStyle = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  '& > :not(style)': {
-    m: 1,
-    width: 413,
-    height: 552,
-  },
+    display: 'flex',
+    flexWrap: 'wrap',
+    '& > :not(style)': {
+        m: 1,
+        width: 413,
+        height: 552,
+    },
 }
 
 export const Login = () => {
-  const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
-  const mailWasSent = useAppSelector(selectMailWasSent)
-  const isSignedUp = useAppSelector(selectIsSignedUp)
-  const isPasswordChanged = useAppSelector(selectIsPasswordChanged)
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+    const mailWasSent = useAppSelector(selectMailWasSent)
+    const isSignedUp = useAppSelector(selectIsSignedUp)
+    const isPasswordChanged = useAppSelector(selectIsPasswordChanged)
 
-  // отключение триггеров редиректа на логин
-  useEffect(() => {
-    if (isSignedUp) {
-      dispatch(setIsSignedUpAC(false))
+// отключение триггеров редиректа на логин
+    useEffect(() => {
+        if (isSignedUp) {
+            dispatch(setIsSignedUpAC(false))
+        }
+        if (mailWasSent) {
+            dispatch(setMailWasSentAC(false))
+        }
+        if (isPasswordChanged) {
+            dispatch(setIsPasswordChangedAC(false))
+        }
+    }, [dispatch])
+
+
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+            rememberMe: false
+        },
+        validationSchema: validationSchema,
+        onSubmit: (values => {
+            dispatch(loginTC(values))
+        })
+    })
+
+    const [showPassword, setShowPassword] = React.useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+    const activeStyle = {
+        textDecoration: 'none'
     }
-    if (mailWasSent) {
-      dispatch(setMailWasSentAC(false))
+    if (isLoggedIn) {
+        return <Navigate to={PATH.packs}/>
     }
-    if (isPasswordChanged) {
-      dispatch(setIsPasswordChangedAC(false))
-    }
-  }, [dispatch])
-
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      password: '',
-      rememberMe: false,
-    },
-    validationSchema: validationSchema,
-    onSubmit: values => {
-      dispatch(loginTC(values))
-    },
-  })
-
-  const [showPassword, setShowPassword] = React.useState(false)
-  const handleClickShowPassword = () => setShowPassword(show => !show)
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
-  const activeStyle = {
-    textDecoration: 'none',
-  }
-
-  if (isLoggedIn) {
-    return <Navigate to={PATH.packs} />
-  }
 
   return (
     <Box sx={boxStyle}>
@@ -167,6 +177,7 @@ export const Login = () => {
                 </NavLink>
               </span>
             </div>
+            {/* eslint-disable-next-line react/no-unescaped-entities */}
             <div className={s.questionBlock}>Don't have an account yet?</div>
             <div className={s.link}>
               <NavLink to={PATH.signUp}>Sign up</NavLink>

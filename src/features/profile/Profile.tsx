@@ -26,32 +26,35 @@ export const Profile = () => {
     dispatch(logoutTC())
   }
 
-  if (!isLoggedIn) {
-    return <Navigate to={PATH.login} />
-  }
+    if (!isLoggedIn) {
+        return <Navigate to={PATH.login}/>
+    }
 
-  return (
-    <div className={s.profile}>
-      <div className={s.container}>
-        <div className={s.link}>
-          <LinkToBack linkPage={PATH.packs} title={'Back to Packs List'} />
+    return (
+        <div className={s.profile}>
+            <div className={s.container}>
+                <div className={s.link}>
+                    <LinkToBack linkPage={PATH.packs} title={'Back to Packs List'}/>
+                 </div>
+                <div className={s.informBlock}>
+                    <h3>Personal Information</h3>
+                    <div className={s.avatar}>
+                         <img src={avatar} alt={'avatar'} className={s.avatarPic}/>
+                    </div>
+                    {editMode
+                        ?
+                        <ProfileEditNameBlock setEditMode={setEditMode}/>
+                        :
+                        <ProfileNameBlock setEditMode={setEditMode}/>
+                    }
+                    <span>{email}</span>
+                    <Button variant={'contained'}
+                            onClick={handleLogout}
+                            className={styleMU.button}>
+                         Log out
+                    </Button>
+                </div>
+            </div>
         </div>
-        <div className={s.informBlock}>
-          <h3>Personal Information</h3>
-          <div className={s.avatar}>
-            <img src={avatar} alt={'avatar'} className={s.avatarPic} />
-          </div>
-          {editMode ? (
-            <ProfileEditNameBlock setEditMode={setEditMode} />
-          ) : (
-            <ProfileNameBlock setEditMode={setEditMode} />
-          )}
-          <span>{email}</span>
-          <Button variant={'contained'} onClick={handleLogout} className={styleMU.button}>
-            Log out
-          </Button>
-        </div>
-      </div>
-    </div>
-  )
+    )
 }

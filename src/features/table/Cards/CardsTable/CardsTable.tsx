@@ -24,14 +24,14 @@ import {
 } from "../selectors";
 
 export const CardsTable = () => {
-
-    const dispatch = useAppDispatch()
-    const cards = useAppSelector(selectCards)
-    const pageCount = useAppSelector(selectCardsPageCount)
-    const packUserId = useAppSelector(selectPackUserId)
-    const myId = useAppSelector(selectUserId)
-    const page = useAppSelector(selectCardsPage)
-    const cardsSort = useAppSelector(selectCardsSort)
+  const dispatch = useAppDispatch()
+  const cards = useAppSelector(selectCards)
+  const page = useAppSelector(selectCardsPage)
+  const pageCount = useAppSelector(selectCardsPageCount)
+  const question = useAppSelector(selectCardsQuestion)
+  const packUserId = useAppSelector(selectPackUserId)
+  const myId = useAppSelector(selectUserId)
+  const cardsSort = useAppSelector(selectCardsSort)
 
 
 
@@ -42,68 +42,92 @@ export const CardsTable = () => {
         page > 0 ? pageCount - cards.length : 0;
     const emptyRowsStyle = {height: 75 * emptyRows}
 
-    return (
-        <div>
-            <TableContainer component={Paper}>
-                <Table aria-label="custom table" stickyHeader>
-                    <TableHead>
-                        <StyledTableRow>
-                            <StyledTableCell>
-                                <SortCell label={"Question"}
-                                          sorter={'question'}
-                                          sort={cardsSort}
-                                          />
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <SortCell label={"Answer"} sorter={'answer'} sort={cardsSort} />
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <SortCell label={"Last Updated"} sorter={'updated'} sort={cardsSort}
-                                          />
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <SortCell label={"Grade"} sorter={'grade'} sort={cardsSort} />
-                            </StyledTableCell>
-                            {packUserId === myId && <StyledTableCell>
-                                Actions
-                            </StyledTableCell>}
-                        </StyledTableRow>
-                    </TableHead>
-                    <TableBody>
-                        {cards.map((card, index) => (
-                            <StyledTableRow key={index}>
-                                <StyledTableCell
-                                    scope="row">
-                                    <TableTextCell text={card.question}/>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <TableTextCell text={card.answer}/>
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    {card.updated}
-                                </StyledTableCell>
-                                <StyledTableCell>
-                                    <Grade grade={card.grade}/>
-                                </StyledTableCell>
-                                {packUserId === myId && <StyledTableCell>
-                                    <ActionsCell
-                                        packOwnerId={card.user_id}
-                                        itemId={card._id}
-                                    />
-                                </StyledTableCell>}
-                            </StyledTableRow>
-                        ))}
-                        {emptyRows > 0 && (
-                            <StyledTableRow style={emptyRowsStyle}>
-                                <StyledTableCell colSpan={5}/>
-                            </StyledTableRow>
-                        )}
+  const handleSort = (sort: string | null) => {
+    dispatch(setCardsSortAC(sort))
+  }
 
-                    </TableBody>
-                </Table>
-
-            </TableContainer>
-           {/* <div className={s.pagination}>
+  return (
+    <div>
+      <TableContainer component={Paper}>
+        <Table aria-label="custom table" stickyHeader>
+          <TableHead>
+            <StyledTableRow>
+              <StyledTableCell>
+                <SortCell
+                  label={'Question'}
+                  sorter={'question'}
+                  sort={cardsSort}
+                  toggleSort={handleSort}
+                />
+              </StyledTableCell>
+              <StyledTableCell>
+                <SortCell
+                  label={'Answer'}
+                  sorter={'answer'}
+                  sort={cardsSort}
+                  toggleSort={handleSort}
+                />
+              </StyledTableCell>
+              <StyledTableCell>
+                <SortCell
+                  label={'Last Updated'}
+                  sorter={'updated'}
+                  sort={cardsSort}
+                  toggleSort={handleSort}
+                />
+              </StyledTableCell>
+              <StyledTableCell>
+                <SortCell
+                  label={'Grade'}
+                  sorter={'grade'}
+                  sort={cardsSort}
+                  toggleSort={handleSort}
+                />
+              </StyledTableCell>
+              {packUserId === myId && <StyledTableCell>Actions</StyledTableCell>}
+            </StyledTableRow>
+          </TableHead>
+          <TableBody>
+            {cards.map((card, index) => (
+              <StyledTableRow key={index}>
+                <StyledTableCell scope="row">
+                  <TableTextCell text={card.question} />
+                </StyledTableCell>
+                <StyledTableCell>
+                  <TableTextCell text={card.answer} />
+                </StyledTableCell>
+                <StyledTableCell>{card.updated}</StyledTableCell>
+                <StyledTableCell>
+                  <Grade grade={card.grade} />
+                </StyledTableCell>
+                {packUserId === myId && (
+                  <StyledTableCell>
+                    <ActionsCell
+                      cardAnswer={card.answer}
+                      cardQuestion={card.question}
+                      cardsPackId={card.cardsPack_id}
+                      packOwnerId={card.user_id}
+                      itemId={card._id}
+                      type={'cards'}
+                    />
+                  </StyledTableCell>
+                )}
+              </StyledTableRow>
+            ))}
+            {emptyRows > 0 && (
+              <StyledTableRow style={emptyRowsStyle}>
+                <StyledTableCell colSpan={5} />
+              </StyledTableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {/* <PaginationComponent totalCount={totalCount}
+                                 pageNumber={page}
+                                 pageCount={pageCount}
+                                 handleChangePage={handlePageChange}
+                                 handleChangeRowsPerPage={handlePageCountChange}/>*/}
+      {/* <div className={s.pagination}>
                 <Pagination
                     count={count}
                     page={page}

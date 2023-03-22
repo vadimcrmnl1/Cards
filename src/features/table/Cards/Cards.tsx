@@ -1,39 +1,27 @@
-import React, { useEffect, useState } from 'react'
-
-import { SelectChangeEvent } from '@mui/material'
-import Button from '@mui/material/Button'
-import { Navigate, useParams, useSearchParams } from 'react-router-dom'
-
-import { selectIsAppMakeRequest } from '../../../app/selectors'
-import { useAppDispatch, useAppSelector } from '../../../app/store'
-import { ErrorSnackbar } from '../../../common/components/ErrorSnackbar/ErrorSnackbar'
-import { LinkToBack } from '../../../common/components/LinkToBack/LinkToBack'
-import { PATH } from '../../../common/utils/routes/Routes'
-import { selectIsLoggedIn } from '../../auth/selectors'
-import { useStyles } from '../../styleMU/styleMU'
-import { selectCardPacks } from '../Packs/selectors'
-import { AddCardRequestType } from '../table-api'
-
+import React, {useEffect} from 'react';
 import s from './../Packs/Packs.module.css'
-import {
-  setCardsPackIdAC,
-  setCardsPageAC,
-  setCardsPageCountAC,
-  setCardsSearchByQuestionAC,
-  setCardsSortAC,
-} from './actions'
-import { addCardTC, getCardsTC } from './cards-reducer'
-import { CardsTable } from './CardsTable/CardsTable'
-import { SearchQuestion } from './components/SearchQuestion'
-import {
-  selectCardsPackId,
-  selectCardsPage,
-  selectCardsPageCount,
-  selectCardsQuestion,
-  selectCardsSort,
-  selectCardsTotalCount,
-  selectPackName,
-} from './selectors'
+import {useAppDispatch, useAppSelector} from "../../../app/store";
+import {CardsTable} from "./CardsTable/CardsTable";
+import {selectIsLoggedIn} from "../../auth/selectors";
+import {Navigate, useSearchParams} from 'react-router-dom';
+import {PATH} from "../../../common/utils/routes/Routes";
+import {LinkToBack} from "../../../common/components/LinkToBack/LinkToBack";
+import {PaginationComponent} from "../Packs/components/pagination/PaginationComponent";
+import {selectCards, selectCardsPage, selectCardsPageCount, selectCardsTotalCount, selectPackName} from "./selectors";
+import {setCardsPageAC, setCardsPageCountAC, setCardsSearchByQuestionAC} from "./actions";
+import {useStyles} from "../../styleMU/styleMU";
+import {addCardTC} from "./cards-reducer";
+import {AddCardRequestType} from "../table-api";
+import {selectCardPacks} from "../Packs/selectors";
+import Button from '@mui/material/Button';
+import {selectIsAppMakeRequest} from "../../../app/selectors";
+import {ErrorSnackbar} from "../../../common/components/ErrorSnackbar/ErrorSnackbar";
+import {SearchQuestion} from './components/SearchQuestion';
+import {SelectChangeEvent} from "@mui/material";
+import {EmptySearch} from "../../../common/components/EmptySearch/EmptySearch";
+import {EmptyList} from "../../../common/components/EmptyList/EmptyList";
+import {NoFilters} from "../Packs/components/noFilters/NoFilters";
+
 
 export const Cards = () => {
   const totalCount = useAppSelector(selectCardsTotalCount)
@@ -92,49 +80,37 @@ export const Cards = () => {
     dispatch(setCardsSearchByQuestionAC(value))
   }
 
-  const handleAddCard = () => {
-    const data: AddCardRequestType = {
-      card: {
-        cardsPack_id: cardsPack[0]._id,
-        question: 'How I meet your mother?',
-        answer: 'No way',
-      },
-    }
-
-    dispatch(addCardTC(data))
-  }
-
-  if (!isLoggedIn) {
-    return <Navigate to={PATH.login} />
-  }
+  // const handleAddCard = () => {
+  //   const data: AddCardRequestType = {
+  //     card: {
+  //       cardsPack_id: cardsPack_id[0]._id,
+  //       question: 'How I meet your mother?',
+  //       answer: 'No way',
+  //     },
+  //   }
+  //
+  //   dispatch(addCardTC(data))
+  // }
 
   return (
     <div className={s.container}>
       <LinkToBack linkPage={PATH.packs} title={'Back to Packs List'} />
       <h2>{packName}</h2>
-      <div className={s.cardsSearchBlock}>
-        <div className={s.cardsSearchTitle}>Search for questions</div>
-        <SearchQuestion handleSearchQuestion={handleSearchQuestion} />
-      </div>
+      <SearchQuestion handleSearchQuestion={handleSearchQuestion} />
 
-      <div className={s.cardsHeader}>
+      <div className={s.packsHeader}>
         <h3>Cards list</h3>
-        <Button
-          className={styleMU.button}
-          onClick={handleAddCard}
-          variant={'contained'}
-          disabled={isAppMakeRequest}
-        >
-          Add new card
-        </Button>
+        <AddEditCardModal type={'createCard'} title={'Add new card'} titleButton={'Add'} />
       </div>
 
       <CardsTable />
-      {/* <PaginationComponent totalCount={totalCount}
-                                 pageNumber={pageNumber}
-                                 pageCount={pageCount}
-                                 handleChangePage={handlePageChange}
-                                 handleChangeRowsPerPage={handlePageCountChange}/>*/}
+      <PaginationComponent
+        totalCount={totalCount}
+        pageNumber={pageNumber}
+        pageCount={pageCount}
+        handleChangePage={handlePageChange}
+        handleChangeRowsPerPage={handlePageCountChange}
+      />
       <ErrorSnackbar />
     </div>
   )

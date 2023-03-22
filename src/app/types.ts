@@ -1,15 +1,24 @@
 import { AnyAction } from 'redux'
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
+import { ModalActionsType } from '../common/components/modals/Modal/types'
 import { AuthActionsType } from '../features/auth/types'
 import { ProfileActionsType } from '../features/profile/types'
 import { CardsActionsType } from '../features/table/Cards/types'
 import { PacksActionsType } from '../features/table/Packs/types'
 
 import * as actions from './actions'
-import { AppRootStateType } from './store'
+import {ThunkAction, ThunkDispatch} from "redux-thunk";
+import {AnyAction} from "redux";
+import {AuthActionsType} from "../features/auth/types";
+import {ProfileActionsType} from "../features/profile/types";
+import {AppRootStateType} from "./store";
+import {PacksActionsType} from "../features/table/Packs/types";
+import {CardsActionsType} from "../features/table/Cards/types";
 //general application types
-export type InferValueTypes<T> = T extends { [key: string]: infer U } ? U : never
+export type InferValueTypes<T> = T extends { [key: string]: infer U }
+    ? U
+    : never;
 
 export type AppThunkDispatch = ThunkDispatch<AppRootStateType, unknown, AllReducersActionType>
 
@@ -25,10 +34,12 @@ export type AllReducersActionType =
   | ProfileActionsType
   | PacksActionsType
   | CardsActionsType
+  | ModalActionsType
 
 // APP types
 
 export type AppActionsType = ReturnType<InferValueTypes<typeof actions>>
+
 
 export type AppInitialStateType = {
   isAppInitialized: boolean
