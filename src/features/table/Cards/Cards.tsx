@@ -14,7 +14,6 @@ import { useStyles } from '../../styleMU/styleMU'
 import { selectCardPacks } from '../Packs/selectors'
 import { AddCardRequestType } from '../table-api'
 
-import s from './../Packs/Packs.module.css'
 import {
   setCardsPackIdAC,
   setCardsPageAC,
@@ -23,6 +22,7 @@ import {
   setCardsSortAC,
 } from './actions'
 import { addCardTC, getCardsTC } from './cards-reducer'
+import s from './Cards.module.css'
 import { CardsTable } from './CardsTable/CardsTable'
 import { SearchQuestion } from './components/SearchQuestion'
 import {
@@ -82,15 +82,6 @@ export const Cards = () => {
     dispatch(setCardsPageAC(1))
     setSearchParams({ ...params, page: '1', pageCount: event.target.value })
   }
-  const handleSearchQuestion = (value: string) => {
-    if (value !== '') {
-      setSearchParams({ ...params, question: value })
-    } else if (value === '') {
-      searchParams.delete('question')
-      setSearchParams({ ...Object.fromEntries(searchParams) })
-    }
-    dispatch(setCardsSearchByQuestionAC(value))
-  }
 
   const handleAddCard = () => {
     const data: AddCardRequestType = {
@@ -114,7 +105,7 @@ export const Cards = () => {
       <h2>{packName}</h2>
       <div className={s.cardsSearchBlock}>
         <div className={s.cardsSearchTitle}>Search for questions</div>
-        <SearchQuestion handleSearchQuestion={handleSearchQuestion} />
+        <SearchQuestion />
       </div>
 
       <div className={s.cardsHeader}>

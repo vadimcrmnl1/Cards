@@ -1,5 +1,14 @@
-.inputForSearch {
-  margin-bottom: 5px;
+.search {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 
-  background-color: #d3b1b1;
+  margin-bottom: -10px;
+}
+.searchTitle{
+  margin-bottom: -30px;
+
+  font-size: 14px;
+
 }
