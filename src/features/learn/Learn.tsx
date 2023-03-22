@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import Button from '@mui/material/Button'
+import { useParams } from 'react-router-dom'
 
 import { useStyles } from '../styleMU/styleMU'
 import { getCardsTC, updateGradeTC } from '../table/Cards/cards-reducer'
@@ -43,7 +44,9 @@ export const Learn = () => {
   const styleMU = useStyles()
   const [isChecked, setIsChecked] = useState<boolean>(false)
   const [first, setFirst] = useState<boolean>(true)
+  const params = useParams()
 
+  console.log(params)
   const [card, setCard] = useState<CardsType>({
     _id: '',
     cardsPack_id: '',

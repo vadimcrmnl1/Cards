@@ -22,7 +22,7 @@ export const PATH = {
   test: '/test',
   packs: '/packs/',
   cards: '/packs/:cardPackId',
-  learn: '/learn',
+  learn: '/packs/learn/:cardPackId',
 }
 
 const router = createHashRouter([

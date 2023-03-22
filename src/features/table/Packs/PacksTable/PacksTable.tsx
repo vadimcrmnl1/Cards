@@ -69,7 +69,7 @@ export const PacksTable = () => {
                 <StyledTableRow key={index} hover>
                   <StyledTableCell scope="row">
                     <NavLink
-                      to={PATH.packs + cardPack._id /*+ '?cardsPack_id=' + cardPack._id*/}
+                      to={PATH.packs + cardPack._id}
                       onClick={handleLinkToCards}
                       className={s.link}
                     >

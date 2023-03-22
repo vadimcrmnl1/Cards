@@ -67,7 +67,7 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   const handleLinkToCards = () => {
     dispatch(setCardsPackIdAC(itemId))
     dispatch(setCardsPackNameAC(packName as string))
-    navigate(PATH.learn)
+    navigate(PATH.packs + `learn/${itemId}`)
   }
   const btnLearnClassName = cardsCount === 0 ? s.buttonLearn : ''
 
