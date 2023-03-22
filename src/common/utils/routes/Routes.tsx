@@ -20,8 +20,8 @@ export const PATH = {
   passwordRecovery: '/password-recovery',
   newPassword: '/set-new-password/:token',
   test: '/test',
-  packs: '/packs',
-  cards: '/cards/:cardPackId',
+  packs: '/packs/',
+  cards: '/packs/:cardPackId',
   learn: '/learn',
 }
 

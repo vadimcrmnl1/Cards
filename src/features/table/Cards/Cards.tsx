@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import { SelectChangeEvent } from '@mui/material'
 import Button from '@mui/material/Button'
-import { Navigate, useSearchParams } from 'react-router-dom'
+import { Navigate, useParams, useSearchParams } from 'react-router-dom'
 
 import { selectIsAppMakeRequest } from '../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../app/store'
@@ -47,13 +47,13 @@ export const Cards = () => {
   const page = useAppSelector(selectCardsPage)
   const question = useAppSelector(selectCardsQuestion)
   const sortCards = useAppSelector(selectCardsSort)
-  const pack_id = useAppSelector(selectCardsPackId)
 
   const styleMU = useStyles()
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [isFirstLoading, setIsFirstLoading] = useState(true)
   const params = Object.fromEntries(searchParams)
+  const { cardPackId } = useParams() as { cardPackId: string }
 
   useEffect(() => {
     if (isLoggedIn && !isFirstLoading) {
@@ -63,7 +63,7 @@ export const Cards = () => {
 
   useEffect(() => {
     if (isFirstLoading) {
-      dispatch(setCardsPackIdAC(params.cardsPack_id))
+      dispatch(setCardsPackIdAC(cardPackId))
       dispatch(setCardsPageCountAC(+params.pageCount || 5))
       dispatch(setCardsPageAC(+params.page || 1))
       dispatch(setCardsSearchByQuestionAC(params.question || ''))
