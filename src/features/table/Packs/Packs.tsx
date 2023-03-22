@@ -8,6 +8,7 @@ import { selectIsAppMakeRequest } from '../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../app/store'
 import { EmptySearch } from '../../../common/components/EmptySearch/EmptySearch'
 import { ErrorSnackbar } from '../../../common/components/ErrorSnackbar/ErrorSnackbar'
+import { AddEditPackModal } from '../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
 import { PATH } from '../../../common/utils/routes/Routes'
 import { selectIsLoggedIn } from '../../auth/selectors'
 import { selectUserId } from '../../profile/selectors'
@@ -91,17 +92,17 @@ export const Packs = () => {
     }
   }, [])
 
-  const handleAddPack = () => {
-    const cardPack: AddPackRequestDataType = {
-      cardsPack: {
-        name: 'Pack Name',
-        deckCover: '',
-        private: false,
-      },
-    }
-
-    dispatch(addPackTC(cardPack))
-  }
+  // const handleAddPack = () => {
+  //   const cardPack: AddPackRequestDataType = {
+  //     cardsPack: {
+  //       name: 'Pack Name',
+  //       deckCover: '',
+  //       private: false,
+  //     },
+  //   }
+  //
+  //   dispatch(addPackTC(cardPack))
+  // }
 
   //Change pagination
   const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
@@ -157,14 +158,15 @@ export const Packs = () => {
     <div className={s.container}>
       <div className={s.packsHeader}>
         <h3>Packs list</h3>
-        <Button
-          className={styleMU.button}
-          onClick={handleAddPack}
-          variant={'contained'}
-          disabled={isAppMakeRequest}
-        >
-          Add new pack
-        </Button>
+        {/*<Button*/}
+        {/*  className={styleMU.button}*/}
+        {/*  onClick={handleAddPack}*/}
+        {/*  variant={'contained'}*/}
+        {/*  disabled={isAppMakeRequest}*/}
+        {/*>*/}
+        {/*  Add new pack*/}
+        {/*</Button>*/}
+        <AddEditPackModal type={'create'} title={'Add new pack'} titleButton={'Add'} />
       </div>
       <div className={s.packsBlock}>
         <SearchTitleCards handleSendQuery={handleSearchTitleCards} />
@@ -187,7 +189,7 @@ export const Packs = () => {
         <EmptySearch />
       )}
 
-      <ErrorSnackbar />
+      {/*<ErrorSnackbar />*/}
     </div>
   )
 }

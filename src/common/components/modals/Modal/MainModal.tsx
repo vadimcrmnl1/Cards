@@ -74,15 +74,20 @@ export const MainModal: React.FC<MainModalPropsType> = React.memo(
       console.log('HANDLE OPEN')
       if (type === 'create') {
         dispatch(modalAddPackIsOpenAC(true))
-      } else if (type === 'createCard') {
+      }
+      if (type === 'createCard') {
         dispatch(modalAddCardIsOpenAC(true))
-      } else if (type === 'edit') {
+      }
+      if (type === 'edit') {
         dispatch(modalEditPackIsOpenAC(true))
-      } else if (type === 'editCard') {
+      }
+      if (type === 'editCard') {
         dispatch(modalEditCardIsOpen(true))
-      } else if (type === 'deletePack') {
+      }
+      if (type === 'deletePack') {
         dispatch(modalDeletePackIsOpenAC(true))
-      } else if (type === 'deleteCard') {
+      }
+      if (type === 'deleteCard') {
         dispatch(modalDeleteCardIsOpenAC(true))
       }
     }
@@ -104,7 +109,12 @@ export const MainModal: React.FC<MainModalPropsType> = React.memo(
     const styleMU = useStyles()
     const packsButtons =
       type === 'create' ? (
-        <Button className={styleMU.button} onClick={handleOpen} variant={'contained'}>
+        <Button
+          disableFocusRipple={true}
+          className={styleMU.button}
+          onClick={handleOpen}
+          variant={'contained'}
+        >
           {titleButton}
         </Button>
       ) : (

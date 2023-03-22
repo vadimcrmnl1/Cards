@@ -79,7 +79,7 @@ export const packsReducer = (
 //thunks
 
 export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch, getState) => {
-  dispatch(packsActions.setPacksLoadingStatusAC(true))
+  dispatch(appActions.setAppIsLoadingAC(true))
   const { page, pageCount, sortPacks, packName, user_id, min, max, maxCardsCount } =
     getState().packs
   const params: PacksParamsType = {
@@ -119,14 +119,14 @@ export const getPacksTC = (): AppThunk<AllReducersActionType> => async (dispatch
   } catch (err: any) {
     errorUtils(err, dispatch)
   } finally {
-    dispatch(packsActions.setPacksLoadingStatusAC(false))
+    dispatch(appActions.setAppIsLoadingAC(false))
   }
 }
 
 export const addPackTC =
   (data: AddPackRequestDataType): AppThunk<AllReducersActionType> =>
   async dispatch => {
-    dispatch(packsActions.setPacksLoadingStatusAC(true))
+    dispatch(appActions.setAppIsLoadingAC(true))
     try {
       await packsAPI.addPack(data)
       dispatch(getPacksTC())
@@ -136,13 +136,13 @@ export const addPackTC =
     } catch (err: any) {
       errorUtils(err, dispatch)
     } finally {
-      dispatch(packsActions.setPacksLoadingStatusAC(false))
+      dispatch(appActions.setAppIsLoadingAC(false))
     }
   }
 export const deletePackTC =
   (id: string): AppThunk<AllReducersActionType> =>
   async dispatch => {
-    dispatch(packsActions.setPacksLoadingStatusAC(true))
+    dispatch(appActions.setAppIsLoadingAC(true))
     try {
       await packsAPI.deletePack(id)
       dispatch(getPacksTC())
@@ -150,13 +150,13 @@ export const deletePackTC =
     } catch (err: any) {
       errorUtils(err, dispatch)
     } finally {
-      dispatch(packsActions.setPacksLoadingStatusAC(false))
+      dispatch(appActions.setAppIsLoadingAC(false))
     }
   }
 export const updatePackTC =
   (data: UpdatePackRequestDataType): AppThunk<AllReducersActionType> =>
   async dispatch => {
-    dispatch(packsActions.setPacksLoadingStatusAC(true))
+    dispatch(appActions.setAppIsLoadingAC(true))
     try {
       await packsAPI.updatePack(data)
       dispatch(getPacksTC())
@@ -164,6 +164,6 @@ export const updatePackTC =
     } catch (err: any) {
       errorUtils(err, dispatch)
     } finally {
-      dispatch(packsActions.setPacksLoadingStatusAC(false))
+      dispatch(appActions.setAppIsLoadingAC(false))
     }
   }

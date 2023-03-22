@@ -71,7 +71,7 @@ export const Cards = () => {
       setIsFirstLoading(false)
     }
   }, [])
-
+  console.log(cardPackId)
   //Change pagination
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     dispatch(setCardsPageAC(newPage + 1))

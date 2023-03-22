@@ -84,7 +84,7 @@ export const PacksTable = () => {
             {cardPacks.map((cardPack, index) => {
               const handleLinkToCards = () => {
                 //указать какую колоду открываем и её владельца
-                dispatch(setCardsPackIdAC(cardPack._id))
+                // dispatch(setCardsPackIdAC(cardPack._id))
                 dispatch(setCardsPackUserIdAC(cardPack.user_id))
                 dispatch(setCardsPackNameAC(cardPack.name))
                 //чтобы при переходе с колод на карты всегда была первая страница
@@ -94,7 +94,11 @@ export const PacksTable = () => {
               return (
                 <StyledTableRow key={index} hover>
                   <StyledTableCell scope="row">
-                    <NavLink to={PATH.cards} onClick={handleLinkToCards} className={s.link}>
+                    <NavLink
+                      to={PATH.packs + cardPack._id}
+                      onClick={handleLinkToCards}
+                      className={s.link}
+                    >
                       <TableTextCell text={cardPack.name} />
                     </NavLink>
                   </StyledTableCell>

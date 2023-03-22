@@ -41,9 +41,7 @@ export const initializeAppTC = (): AppThunk<AllReducersActionType> => dispatch =
       dispatch(profileActions.setProfileAC(res.data))
     })
     .catch((error: any) => {
-      //не удалять, избавляет от первой ошибки неавторизованного
       if (error.response.status !== 401) {
-        // ошибка неавторизованного пользователя
         errorUtils(error, dispatch)
       }
     })

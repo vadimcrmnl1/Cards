@@ -42,24 +42,24 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   const userId = useAppSelector(selectUserId)
   const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
 
-  const handleUpdateCard = () => {
-    const identifier = Math.random().toFixed(2)
-    const cardPack: UpdatePackRequestDataType = {
-      cardsPack: {
-        _id: itemId,
-        name: 'Name updated ' + identifier,
-      },
-    }
-    const data: UpdateCardRequestDataType = {
-      card: {
-        _id: itemId,
-        question: 'How do i become a developer? ' + identifier,
-      },
-    }
-    const action = packs ? updatePackTC(cardPack) : updateCardTC(data)
-
-    dispatch(action)
-  }
+  // const handleUpdateCard = () => {
+  //   const identifier = Math.random().toFixed(2)
+  //   const cardPack: UpdatePackRequestDataType = {
+  //     cardsPack: {
+  //       _id: itemId,
+  //       name: 'Name updated ' + identifier,
+  //     },
+  //   }
+  //   const data: UpdateCardRequestDataType = {
+  //     card: {
+  //       _id: itemId,
+  //       question: 'How do i become a developer? ' + identifier,
+  //     },
+  //   }
+  //   const action = packs ? updatePackTC(cardPack) : updateCardTC(data)
+  //
+  //   dispatch(action)
+  // }
 
   return (
     <div className={s.cell}>
