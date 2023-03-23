@@ -10,6 +10,7 @@ export const selectPackUserId = (state: AppRootStateType) => state.cards.packUse
 export const selectCardsSort = (state: AppRootStateType) => state.cards.sortCards
 export const selectPackName = (state: AppRootStateType) => state.cards.name
 export const selectCardsPackId = (state: AppRootStateType) => state.cards.pack_id
+export const selectCardsForLearn = (state: AppRootStateType) => state.cards.cardsForLearn
 
 export const selectCardsCountOfPages = createSelector(
   [selectCardsTotalCount, selectCardsPageCount],

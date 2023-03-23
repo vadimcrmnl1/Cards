@@ -2,7 +2,7 @@
   width: 90%;
   margin: 0 auto;
 
-  border: 1px solid red;
+
 }
 .link {
   width: 30%;
@@ -10,13 +10,13 @@
 
   text-align: start;
 
-  border: 1px solid red;
+
 }
 .learnBlock {
   width: 40%;
   margin: 0 auto;
 
-  border: 1px solid red;
+  background-color: white;
 }
 .learnTitle {
   margin: 15px auto;

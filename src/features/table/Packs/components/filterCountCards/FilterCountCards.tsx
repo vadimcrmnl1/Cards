@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 
 import Slider from '@mui/material/Slider'
+import { useSearchParams } from 'react-router-dom'
 
-import { useAppSelector } from '../../../../../app/store'
-import useDebounce from '../../../../../common/hooks/useDebounce'
+import useDebounce from '../../../../../common/utils/debounceUtils'
 import { selectUserId } from '../../../../profile/selectors'
 import { useStyles } from '../../../../styleMU/styleMU'
+import { setMinMaxCardsAC } from '../../actions'
 import {
   selectMaxCardsCount,
   selectMinCardsCount,
@@ -15,11 +16,11 @@ import {
 
 import s from './FilterCountCards.module.css'
 
-type FilterCountCardsPropsType = {
-  handleChange: (event: any, newValue: number | number[]) => void
-}
-export const FilterCountCards = (props: FilterCountCardsPropsType) => {
+import { useAppDispatch, useAppSelector } from 'app/store'
+
+export const FilterCountCards = () => {
   const styleMU = useStyles()
+  const dispatch = useAppDispatch()
   const minCardsCount = useAppSelector(selectMinCardsCount)
   const maxCardsCount = useAppSelector(selectMaxCardsCount)
   const minCards = useAppSelector(selectPacksMinCards)
@@ -28,13 +29,34 @@ export const FilterCountCards = (props: FilterCountCardsPropsType) => {
   const debouncedValue = useDebounce<number | number[]>(value, 500)
   const [isRangeTouched, setIsRangeTouched] = useState(false)
   const myID = useAppSelector(selectUserId)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const handleChangeCountCards = (event: any, newValue: number | number[]) => {
+    const counts = newValue as number[]
+    const min = counts[0]
+    const max = counts[1]
+
+    dispatch(setMinMaxCardsAC(min, max))
+    if (min === 0) {
+      searchParams.delete('min')
+    } else {
+      searchParams.append('min', min.toString())
+    }
+    if (max === maxCardsCount) {
+      searchParams.delete('max')
+    } else {
+      searchParams.append('max', max.toString())
+    }
+    setSearchParams({
+      ...Object.fromEntries(searchParams),
+    })
+  }
 
   useEffect(() => {
     if (myID) {
       setIsRangeTouched(false)
     }
     if (isRangeTouched) {
-      props.handleChange(null, debouncedValue)
+      handleChangeCountCards(null, debouncedValue)
     }
     // setValue(debouncedValue)
   }, [debouncedValue, myID])
@@ -54,24 +76,28 @@ export const FilterCountCards = (props: FilterCountCardsPropsType) => {
     }
     setValue(newValue as number[])
   }
+  const handleMaxValue = maxCards === 0 ? maxCardsCount : maxCards
+  const minValue = searchParams.get('min')
+  const maxValue = searchParams.get('max')
+  const sliderMinValue = minValue === null ? minCardsCount : +minValue
+  const sliderMaxValue = maxValue === null ? maxCardsCount : +maxValue
 
   return (
     <div className={s.wrapper}>
       <div>Number of cards</div>
       <div className={s.sliderBlock}>
-        <span>{minCardsCount}</span>
+        <span>{minCards}</span>
         <Slider
           getAriaLabel={() => 'Count of cards'}
-          value={value}
+          value={[sliderMinValue, sliderMaxValue]}
           onChange={handleChange}
-          // onChangeCommitted={props.handleChange}
           valueLabelDisplay="auto"
           step={1}
           min={minCardsCount}
           max={maxCardsCount}
           className={styleMU.slider}
         />
-        <span>{maxCardsCount}</span>
+        <span>{handleMaxValue}</span>
       </div>
     </div>
   )

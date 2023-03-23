@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import { SelectChangeEvent } from '@mui/material'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { IconButton } from '@material-ui/core'
+import { SelectChangeEvent, SpeedDialAction } from '@mui/material'
+import Button from '@mui/material/Button'
+import { Navigate, useParams, useSearchParams } from 'react-router-dom'
 
 import { selectIsAppMakeRequest } from '../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../app/store'
@@ -10,10 +12,9 @@ import { LinkToBack } from '../../../common/components/LinkToBack/LinkToBack'
 import { PATH } from '../../../common/utils/routes/Routes'
 import { selectIsLoggedIn } from '../../auth/selectors'
 import { useStyles } from '../../styleMU/styleMU'
-import { PaginationComponent } from '../Packs/components/pagination/PaginationComponent'
 import { selectCardPacks } from '../Packs/selectors'
+import { AddCardRequestType } from '../table-api'
 
-import s from './../Packs/Packs.module.css'
 import {
   setCardsPackIdAC,
   setCardsPageAC,
@@ -21,10 +22,15 @@ import {
   setCardsSearchByQuestionAC,
   setCardsSortAC,
 } from './actions'
-import { getCardsTC } from './cards-reducer'
+import { addCardTC, getCardsForLearnTC, getCardsTC } from './cards-reducer'
+import s from './Cards.module.css'
 import { CardsTable } from './CardsTable/CardsTable'
+import { PaginationCards } from './components/pagination/PaginationCards'
 import { SearchQuestion } from './components/SearchQuestion'
+import { SpeedDialBasic } from './components/speedDial/SpeedDialBasic'
 import {
+  selectCards,
+  selectCardsPackId,
   selectCardsPage,
   selectCardsPageCount,
   selectCardsQuestion,
@@ -47,7 +53,8 @@ export const Cards = () => {
   const page = useAppSelector(selectCardsPage)
   const question = useAppSelector(selectCardsQuestion)
   const sortCards = useAppSelector(selectCardsSort)
-
+  const pack_id = useAppSelector(selectCardsPackId)
+  const cards = useAppSelector(selectCards)
   const styleMU = useStyles()
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -59,7 +66,7 @@ export const Cards = () => {
     if (isLoggedIn && !isFirstLoading) {
       dispatch(getCardsTC())
     }
-  }, [dispatch, page, pageCount, question, sortCards, isFirstLoading])
+  }, [dispatch, page, pageCount, pack_id, question, sortCards, isFirstLoading])
 
   useEffect(() => {
     if (isFirstLoading) {
@@ -71,58 +78,32 @@ export const Cards = () => {
       setIsFirstLoading(false)
     }
   }, [])
-  console.log(cardPackId)
-  //Change pagination
-  const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
-    dispatch(setCardsPageAC(newPage + 1))
-    setSearchParams({ ...params, page: (newPage + 1).toString() })
-  }
-  const handlePageCountChange = (event: SelectChangeEvent) => {
-    dispatch(setCardsPageCountAC(+event.target.value))
-    dispatch(setCardsPageAC(1))
-    setSearchParams({ ...params, page: '1', pageCount: event.target.value })
-  }
-  const handleSearchQuestion = (value: string) => {
-    if (value !== '') {
-      setSearchParams({ ...params, question: value })
-    } else if (value === '') {
-      searchParams.delete('question')
-      setSearchParams({ ...Object.fromEntries(searchParams) })
-    }
-    dispatch(setCardsSearchByQuestionAC(value))
-  }
 
-  // const handleAddCard = () => {
-  //   const data: AddCardRequestType = {
-  //     card: {
-  //       cardsPack_id: cardsPack_id[0]._id,
-  //       question: 'How I meet your mother?',
-  //       answer: 'No way',
-  //     },
-  //   }
-  //
-  //   dispatch(addCardTC(data))
-  // }
+
+
+  if (!isLoggedIn) {
+    return <Navigate to={PATH.login} />
+  }
 
   return (
     <div className={s.container}>
       <LinkToBack linkPage={PATH.packs} title={'Back to Packs List'} />
-      <h2>{packName}</h2>
-      <SearchQuestion handleSearchQuestion={handleSearchQuestion} />
+      <div className={s.packName}>
+        <h2>{packName}</h2>
+      </div>
 
-      <div className={s.packsHeader}>
+      <div className={s.cardsSearchBlock}>
+        <div className={s.cardsSearchTitle}>Search for questions</div>
+        <SearchQuestion />
+      </div>
+
+      <div className={s.cardsHeader}>
         <h3>Cards list</h3>
         <AddEditCardModal type={'createCard'} title={'Add new card'} titleButton={'Add'} />
       </div>
 
       <CardsTable />
-      <PaginationComponent
-        totalCount={totalCount}
-        pageNumber={pageNumber}
-        pageCount={pageCount}
-        handleChangePage={handlePageChange}
-        handleChangeRowsPerPage={handlePageCountChange}
-      />
+      <PaginationCards />
       <ErrorSnackbar />
     </div>
   )

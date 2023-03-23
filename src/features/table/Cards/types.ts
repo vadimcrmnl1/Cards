@@ -11,3 +11,8 @@ export type CardsParamsType = {
   sortCards?: string
   cardQuestion?: string
 }
+export type LearnParamsType = {
+  page: number
+  pageCount: number
+  cardsPack_id: string
+}

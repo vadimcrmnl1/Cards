@@ -2,7 +2,15 @@
     width: 90%;
     margin: 0 auto;
 }
+.packName{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 .h2 {
+  margin-bottom: -15px;
+
   color: #0066cc;
   text-align: left;
 }
@@ -19,7 +27,6 @@
 
   font-size: 14px;
 
-  opacity: 0.5;
 }
 .cardsHeader {
   display: flex;

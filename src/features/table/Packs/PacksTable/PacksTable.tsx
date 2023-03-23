@@ -5,23 +5,17 @@ import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { AddEditPackModal } from '../../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
 import { PATH } from '../../../../common/utils/routes/Routes'
-import {
-  setCardsPackIdAC,
-  setCardsPackNameAC,
-  setCardsPackUserIdAC,
-  setCardsPageAC,
-} from '../../Cards/actions'
+import { setCardsPackNameAC, setCardsPackUserIdAC, setCardsPageAC } from '../../Cards/actions'
 import { ActionsCell } from '../../common/ActionsCell/ActionsCell'
 import { SortCell } from '../../common/SortCell/SortCell'
 import { StyledTableCell, StyledTableRow } from '../../common/styles'
 import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
 import { setPacksSortAC } from '../actions'
-// import { ActionsCellPacks } from '../components/ActionsCellPacks/ActionsCellPacks'
 import {
   selectCardPacks,
   selectPacksPage,
@@ -37,6 +31,7 @@ export const PacksTable = () => {
   const page = useAppSelector(selectPacksPage)
   const pageCount = useAppSelector(selectPacksPageCount)
   const sortPacks = useAppSelector(selectPacksSort)
+  const [searchParams, setSearchParams] = useSearchParams()
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? pageCount - cardPacks.length : 0
@@ -53,31 +48,16 @@ export const PacksTable = () => {
           <TableHead>
             <StyledTableRow>
               <StyledTableCell>
-                <SortCell label={'Name'} sorter={'name'} sort={sortPacks} toggleSort={handleSort} />
+                <SortCell label={'Name'} sorter={'name'} sort={sortPacks} packs />
               </StyledTableCell>
               <StyledTableCell>
-                <SortCell
-                  label={'Cards'}
-                  sorter={'cardsCount'}
-                  sort={sortPacks}
-                  toggleSort={handleSort}
-                />
+                <SortCell label={'Cards'} sorter={'cardsCount'} sort={sortPacks} packs />
               </StyledTableCell>
               <StyledTableCell>
-                <SortCell
-                  label={'Last Updated'}
-                  sorter={'updated'}
-                  sort={sortPacks}
-                  toggleSort={handleSort}
-                />
+                <SortCell label={'Last Updated'} sorter={'updated'} sort={sortPacks} packs />
               </StyledTableCell>
               <StyledTableCell>
-                <SortCell
-                  label={'Created by'}
-                  sorter={'user_name'}
-                  sort={sortPacks}
-                  toggleSort={handleSort}
-                />
+                <SortCell label={'Created by'} sorter={'user_name'} sort={sortPacks} packs />
               </StyledTableCell>
               <StyledTableCell>Actions</StyledTableCell>
             </StyledTableRow>
@@ -85,8 +65,7 @@ export const PacksTable = () => {
           <TableBody>
             {cardPacks.map((cardPack, index) => {
               const handleLinkToCards = () => {
-                //указать какую колоду открываем и её владельца
-                // dispatch(setCardsPackIdAC(cardPack._id))
+                //указываем владельца колоды
                 dispatch(setCardsPackUserIdAC(cardPack.user_id))
                 dispatch(setCardsPackNameAC(cardPack.name))
                 //чтобы при переходе с колод на карты всегда была первая страница
@@ -111,13 +90,14 @@ export const PacksTable = () => {
                   </StyledTableCell>
                   <StyledTableCell>
                     <ActionsCell
-                      packName={cardPack.name}
                       packs
                       packOwnerId={cardPack.user_id}
+                      itemId={cardPack._id}
+                      cardsCount={cardPack.cardsCount}
+                      packName={cardPack.name}
                       packId={cardPack._id}
                       type={'packs'}
                     />
-                    {/*<ActionsCellPacks packOwnerId={} itemId={} type={} />*/}
                   </StyledTableCell>
                 </StyledTableRow>
               )

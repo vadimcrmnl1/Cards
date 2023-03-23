@@ -167,8 +167,7 @@ export const Login = () => {
                 </NavLink>
               </span>
             </div>
-            {/* eslint-disable-next-line react/no-unescaped-entities */}
-            <div className={s.questionBlock}>Don't have an account yet?</div>
+            <div className={s.questionBlock}>Don&rsquo;t have an account yet?</div>
             <div className={s.link}>
               <NavLink to={PATH.signUp}>Sign up</NavLink>
             </div>

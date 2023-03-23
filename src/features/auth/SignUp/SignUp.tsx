@@ -126,7 +126,7 @@ export const SignUp = () => {
                 Sign up
               </Button>
             </form>
-            <div className={s.questionBlock}>Don't have an account yet?</div>
+            <div className={s.questionBlock}>Don&rsquo;t have an account yet?</div>
             <div className={s.link}>
               <NavLink to={PATH.login}>Sign in</NavLink>
             </div>

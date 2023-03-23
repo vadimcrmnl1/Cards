@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import { useSearchParams } from 'react-router-dom'
+
 import { useAppDispatch } from '../../../../app/store'
 import { SuperDebouncedInput } from '../../../../common/components/SuperDebouncedInput/SuperDebouncedInput'
 import { setCardsSearchByQuestionAC } from '../actions'
@@ -7,16 +9,20 @@ import { setCardsSearchByQuestionAC } from '../actions'
 import iconClose from './../../../images/close.png'
 import s from './SearchQuestion.module.css'
 
-type SearchQuestionPropsType = {
-  handleSearchQuestion: (value: string) => void
-}
-export const SearchQuestion = (props: SearchQuestionPropsType) => {
+export const SearchQuestion = () => {
   const [value, setValue] = useState('')
   const dispatch = useAppDispatch()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const params = Object.fromEntries(searchParams)
 
-  const handleDeleteFilter = () => {
-    dispatch(setCardsSearchByQuestionAC(''))
-    setValue('')
+  const handleSearchQuestion = (value: string) => {
+    if (value !== '') {
+      setSearchParams({ ...params, question: value })
+    } else if (value === '') {
+      searchParams.delete('question')
+      setSearchParams({ ...Object.fromEntries(searchParams) })
+    }
+    dispatch(setCardsSearchByQuestionAC(value))
   }
   const handleOnChangeText = (value: string) => {
     setValue(value)
@@ -27,7 +33,7 @@ export const SearchQuestion = (props: SearchQuestionPropsType) => {
       <SuperDebouncedInput
         value={value}
         onChangeText={handleOnChangeText}
-        onDebouncedChange={props.handleSearchQuestion}
+        onDebouncedChange={handleSearchQuestion}
         placeholder={'Provide your text'}
       />
       <div className={s.iconsFilter}>

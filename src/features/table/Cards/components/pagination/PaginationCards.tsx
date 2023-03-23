@@ -6,27 +6,29 @@ import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../../../app/store'
 import { useStyles } from '../../../../styleMU/styleMU'
-import { setPacksPageAC, setPacksPageCountAC } from '../../actions'
-import { selectCardPacksTotalCount, selectPacksPage, selectPacksPageCount } from '../../selectors'
+import { setCardsPageAC, setCardsPageCountAC } from '../../actions'
+import { selectCardsPage, selectCardsPageCount, selectCardsTotalCount } from '../../selectors'
 
-import s from './PaginationComponent.module.css'
+import s from './PaginationCards.module.css'
 
-export const PaginationComponent = () => {
+export const PaginationCards = () => {
   const dispatch = useAppDispatch()
   const styleMU = useStyles()
-  const totalCount = useAppSelector(selectCardPacksTotalCount)
-  const pageCount = useAppSelector(selectPacksPageCount)
-  const page = useAppSelector(selectPacksPage)
+  const totalCount = useAppSelector(selectCardsTotalCount)
+  const pageNumber = useAppSelector(selectCardsPage)
+  const pageCount = useAppSelector(selectCardsPageCount)
+  const page = useAppSelector(selectCardsPage)
   const [searchParams, setSearchParams] = useSearchParams()
   const params = Object.fromEntries(searchParams)
   const countPages = Math.ceil(totalCount / pageCount)
-  const handlePageChange = (event: any, page: number) => {
-    dispatch(setPacksPageAC(page))
-    setSearchParams({ ...params, page: page.toString() })
+  const handlePageChange = (event: any, newPage: number) => {
+    dispatch(setCardsPageAC(newPage))
+    console.log('newPage=', newPage)
+    setSearchParams({ ...params, page: newPage.toString() })
   }
   const handlePageCountChange = (event: any) => {
-    dispatch(setPacksPageCountAC(+event.target.value))
-    dispatch(setPacksPageAC(1))
+    dispatch(setCardsPageCountAC(+event.target.value))
+    dispatch(setCardsPageAC(1))
     setSearchParams({
       ...params,
       page: '1',

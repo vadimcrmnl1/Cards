@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
 
 import Button from '@mui/material/Button'
-import { useParams } from 'react-router-dom'
 
 import { useStyles } from '../styleMU/styleMU'
-import { setCardsPackIdAC } from '../table/Cards/actions'
-import { getCardsTC, updateGradeTC } from '../table/Cards/cards-reducer'
-import { selectCards, selectPackName } from '../table/Cards/selectors'
+import { setCardsPageCountAC } from '../table/Cards/actions'
+import { getCardsForLearnTC, updateGradeTC } from '../table/Cards/cards-reducer'
+import {
+  selectCards,
+  selectCardsForLearn,
+  selectCardsPackId,
+  selectCardsPageCount,
+  selectPackName,
+} from '../table/Cards/selectors'
 import { CardsType } from '../table/table-api'
 
 import s from './Learn.module.css'
@@ -40,11 +45,13 @@ const getCard = (cards: CardsType[]) => {
 
 export const Learn = () => {
   const packName = useAppSelector(selectPackName)
-  const cards = useAppSelector(selectCards)
+  const id = useAppSelector(selectCardsPackId)
+  const cardsForLearn = useAppSelector(selectCardsForLearn)
+  const pageCount = useAppSelector(selectCardsPageCount)
   const styleMU = useStyles()
+  const cards = useAppSelector(selectCards)
   const [isChecked, setIsChecked] = useState<boolean>(false)
   const [first, setFirst] = useState<boolean>(true)
-  const { cardPackId } = useParams() as { cardPackId: string }
 
   const [card, setCard] = useState<CardsType>({
     _id: '',
@@ -60,18 +67,21 @@ export const Learn = () => {
 
   const dispatch = useAppDispatch()
 
+  console.log(id)
+  console.log(cardsForLearn)
   useEffect(() => {
     if (first) {
-      dispatch(setCardsPackIdAC(cardPackId))
-      dispatch(getCardsTC())
+      dispatch(getCardsForLearnTC(id, 100))
+      if (cardsForLearn.length > 0) {
+        setCard(getCard(cardsForLearn))
+      } else if (cards.length > 0) {
+        setCard(getCard(cards))
+      }
+
       setFirst(false)
     }
-    if (cards.length > 0) setCard(getCard(cards))
+  }, [])
 
-    /* return () => {
-              console.log("LearnContainer useEffect off");
-            };*/
-  }, [dispatch, cardPackId, cards, first])
   const handleShowAnswer = () => {
     setIsChecked(true)
   }
@@ -80,8 +90,8 @@ export const Learn = () => {
   }
   const handleShowNext = () => {
     setIsChecked(false)
-    if (cards.length > 0) {
-      setCard(getCard(cards))
+    if (cardsForLearn.length > 0) {
+      setCard(getCard(cardsForLearn))
     }
   }
 
@@ -111,7 +121,11 @@ export const Learn = () => {
                 {grades.map((el, index) => {
                   return (
                     <label key={index}>
-                      <input type={'checkbox'} onClick={() => handleCheckAnswer(index + 1)} />
+                      <input
+                        type={'radio'}
+                        name={'check'}
+                        onClick={() => handleCheckAnswer(index + 1)}
+                      />
                       {el}
                     </label>
                   )

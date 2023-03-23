@@ -43,4 +43,8 @@ export const useStyles = makeStyles(theme => ({
     display: 'inline-block',
     backgroundColor: '#d5bcbc',
   },
+  select: {
+    width: '80px',
+    height: '40px',
+  },
 }))

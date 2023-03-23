@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 
-import { Button, SelectChangeEvent } from '@mui/material'
+import { Button } from '@mui/material'
 import { Navigate, useSearchParams } from 'react-router-dom'
 
 import { selectIsAppMakeRequest } from '../../../app/selectors'
@@ -11,7 +11,6 @@ import { ErrorSnackbar } from '../../../common/components/ErrorSnackbar/ErrorSna
 import { AddEditPackModal } from '../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
 import { PATH } from '../../../common/utils/routes/Routes'
 import { selectIsLoggedIn } from '../../auth/selectors'
-import { selectUserId } from '../../profile/selectors'
 import { useStyles } from '../../styleMU/styleMU'
 import { AddPackRequestDataType } from '../table-api'
 
@@ -33,10 +32,7 @@ import s from './Packs.module.css'
 import { PacksTable } from './PacksTable/PacksTable'
 import {
   selectCardPacks,
-  selectMaxCardsCount,
-  selectMinCardsCount,
   selectPacksUserId,
-  selectCardPacksTotalCount,
   selectPacksMaxCards,
   selectPacksMinCards,
   selectPacksName,
@@ -47,9 +43,7 @@ import {
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
-  const totalCount = useAppSelector(selectCardPacksTotalCount)
   const pageCount = useAppSelector(selectPacksPageCount)
-  const maxCardsCount = useAppSelector(selectMaxCardsCount)
   const minCards = useAppSelector(selectPacksMinCards)
   const maxCards = useAppSelector(selectPacksMaxCards)
   const sortPacks = useAppSelector(selectPacksSort)
@@ -104,52 +98,6 @@ export const Packs = () => {
   //   dispatch(addPackTC(cardPack))
   // }
 
-  //Change pagination
-  const handleChangePage = (event: React.ChangeEvent<unknown>, page: number) => {
-    dispatch(setPacksPageAC(page + 1))
-    setSearchParams({ ...params, page: (page + 1).toString() })
-  }
-  const handleChangeRowsPerPage = (event: SelectChangeEvent) => {
-    dispatch(setPacksPageCountAC(+event.target.value))
-    dispatch(setPacksPageAC(1))
-    setSearchParams({
-      ...params,
-      page: '1',
-      pageCount: event.target.value,
-    })
-  }
-
-  const handleChangeCountCards = (event: any, newValue: number | number[]) => {
-    const counts = newValue as number[]
-    const min = counts[0]
-    const max = counts[1]
-
-    dispatch(setMinMaxCardsAC(min, max))
-    if (min === 0) {
-      searchParams.delete('min')
-    } else {
-      searchParams.append('min', min.toString())
-    }
-    if (max === maxCardsCount) {
-      searchParams.delete('max')
-    } else {
-      searchParams.append('max', max.toString())
-    }
-    setSearchParams({
-      ...Object.fromEntries(searchParams),
-    })
-  }
-
-  const handleSearchTitleCards = (value: string) => {
-    if (value !== '') {
-      setSearchParams({ ...params, packName: value })
-    } else if (value === '') {
-      searchParams.delete('packName')
-      setSearchParams({ ...Object.fromEntries(searchParams) })
-    }
-    dispatch(setPackNameAC(value))
-  }
-
   if (!isLoggedIn) {
     return <Navigate to={PATH.login} />
   }
@@ -169,21 +117,15 @@ export const Packs = () => {
         <AddEditPackModal type={'create'} title={'Add new pack'} titleButton={'Add'} />
       </div>
       <div className={s.packsBlock}>
-        <SearchTitleCards handleSendQuery={handleSearchTitleCards} />
+        <SearchTitleCards />
         <SortingByUser />
-        <FilterCountCards handleChange={handleChangeCountCards} />
+        <FilterCountCards />
         <NoFilters />
       </div>
       {cardPacks.length !== 0 ? (
         <div>
           <PacksTable />
-          <PaginationComponent
-            totalCount={totalCount}
-            pageNumber={page}
-            pageCount={pageCount}
-            handleChangePage={handleChangePage}
-            handleChangeRowsPerPage={handleChangeRowsPerPage}
-          />
+          <PaginationComponent />
         </div>
       ) : (
         <EmptySearch />
