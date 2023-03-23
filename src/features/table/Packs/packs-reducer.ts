@@ -140,7 +140,7 @@ export const addPackTC =
     }
   }
 export const deletePackTC =
-  (id: string): AppThunk<AllReducersActionType> =>
+  (id: string | undefined): AppThunk<AllReducersActionType> =>
   async dispatch => {
     dispatch(appActions.setAppIsLoadingAC(true))
     try {

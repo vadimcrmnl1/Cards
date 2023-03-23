@@ -8,6 +8,7 @@ import TableContainer from '@mui/material/TableContainer'
 import { NavLink } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
+import { AddEditPackModal } from '../../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
 import { PATH } from '../../../../common/utils/routes/Routes'
 import {
   setCardsPackIdAC,
@@ -20,6 +21,7 @@ import { SortCell } from '../../common/SortCell/SortCell'
 import { StyledTableCell, StyledTableRow } from '../../common/styles'
 import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
 import { setPacksSortAC } from '../actions'
+// import { ActionsCellPacks } from '../components/ActionsCellPacks/ActionsCellPacks'
 import {
   selectCardPacks,
   selectPacksPage,
@@ -112,9 +114,10 @@ export const PacksTable = () => {
                       packName={cardPack.name}
                       packs
                       packOwnerId={cardPack.user_id}
-                      itemId={cardPack._id}
+                      packId={cardPack._id}
                       type={'packs'}
                     />
+                    {/*<ActionsCellPacks packOwnerId={} itemId={} type={} />*/}
                   </StyledTableCell>
                 </StyledTableRow>
               )

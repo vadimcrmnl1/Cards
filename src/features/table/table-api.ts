@@ -9,7 +9,7 @@ export const packsAPI = {
   addPack(data: AddPackRequestDataType) {
     return instance.post<AddPackResponseDataType>('cards/pack', data)
   },
-  deletePack(id: string) {
+  deletePack(id: string | undefined) {
     return instance.delete<AxiosResponse>(`cards/pack?id=${id}`)
   },
   updatePack(data: UpdatePackRequestDataType) {

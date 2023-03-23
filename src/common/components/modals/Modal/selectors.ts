@@ -6,3 +6,9 @@ export const selectEditPackModal = (state: AppRootStateType) => state.modals.edi
 export const selectEditCardModal = (state: AppRootStateType) => state.modals.editCardIsOpen
 export const selectDeletePackModal = (state: AppRootStateType) => state.modals.deletePackIsOpen
 export const selectDeleteCardModal = (state: AppRootStateType) => state.modals.deleteCardIsOpen
+export const selectIsActiveModal = (state: AppRootStateType) => state.modals.isActiveModal
+export const selectPackName = (state: AppRootStateType) => state.modals.name
+export const selectPackId = (state: AppRootStateType) => state.modals.packId
+export const selectCardQuestion = (state: AppRootStateType) => state.modals.question
+export const selectCardAnswer = (state: AppRootStateType) => state.modals.answer
+export const selectCardId = (state: AppRootStateType) => state.modals.cardId

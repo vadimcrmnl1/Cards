@@ -14,10 +14,12 @@ import {
   updateCardTC,
 } from '../../../../../../features/table/Cards/cards-reducer'
 import { selectCardsPackId } from '../../../../../../features/table/Cards/selectors'
-import { modalAddCardIsOpenAC, modalEditCardIsOpen } from '../../actions'
+import { isActiveModalAC, modalAddCardIsOpenAC, modalEditCardIsOpen } from '../../actions'
 import { MainModal } from '../../MainModal'
+import { selectCardQuestion } from '../../selectors'
 
 import s from './../../MainModal.module.css'
+import * as modalsSelectors from './../../selectors'
 
 const validationSchema = yup.object({
   question: yup.string().required('Question is required'),
@@ -29,36 +31,40 @@ type AddEditCardType = {
   title?: string
   titleButton?: string
   cardsPackId?: string | undefined
-  itemId?: string
   cardAnswer?: string
   cardQuestion?: string
+  cardId?: string
 }
 
 export const AddEditCardModal: React.FC<AddEditCardType> = ({
   type,
-  itemId,
   titleButton,
   title,
   cardsPackId,
   cardAnswer,
   cardQuestion,
+  cardId,
 }) => {
   const dispatch = useAppDispatch()
   const packId = useAppSelector(selectCardsPackId)
+  const question = useAppSelector(modalsSelectors.selectCardQuestion)
+  const answer = useAppSelector(modalsSelectors.selectCardAnswer)
   const [formatQuestion, setFormatQuestion] = React.useState('Text')
   const [formatAnswer, setFormatAnswer] = React.useState('Text')
 
-  useEffect(() => {}, [cardAnswer, cardQuestion])
+  useEffect(() => {
+    dispatch(isActiveModalAC(false))
+  }, [cardAnswer, question, packId, cardId])
   const formik = useFormik({
     initialValues: {
-      question: type === 'createCard' ? '' : cardQuestion,
-      answer: type === 'createCard' ? '' : cardAnswer,
+      question: type === 'createCard' ? '' : question,
+      answer: type === 'createCard' ? '' : answer,
     },
     validationSchema: validationSchema,
     onSubmit: values => {
       type === 'createCard'
         ? dispatch(addCardTC({ card: { cardsPack_id: packId, ...values } }))
-        : dispatch(updateCardTC({ card: { _id: itemId, ...values } }))
+        : dispatch(updateCardTC({ card: { _id: cardId, ...values } }))
       formik.resetForm()
       dispatch(modalAddCardIsOpenAC(false))
       dispatch(modalEditCardIsOpen(false))
@@ -73,6 +79,8 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
     // @ts-ignore
     setFormatAnswer(event.target.value as string)
   }
+
+  console.log(cardId)
 
   return (
     <MainModal

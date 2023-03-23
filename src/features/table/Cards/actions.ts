@@ -31,8 +31,6 @@ export const setCardsPageCountAC = (pageCount: number) =>
     payload: { pageCount },
   } as const)
 export const setCardsPackIdAC = (pack_id: string) => {
-  debugger
-
   return {
     type: 'TABLE/SET_CARDS_PACK_ID',
     payload: { pack_id },

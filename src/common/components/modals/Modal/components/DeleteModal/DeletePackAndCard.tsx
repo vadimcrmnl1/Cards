@@ -3,18 +3,25 @@ import React from 'react'
 import { Button } from '@material-ui/core'
 
 import { setAppIsLoadingAC } from '../../../../../../app/actions'
-import { useAppDispatch } from '../../../../../../app/store'
+import { useAppDispatch, useAppSelector } from '../../../../../../app/store'
 import { deleteCardTC } from '../../../../../../features/table/Cards/cards-reducer'
 import { deletePackTC } from '../../../../../../features/table/Packs/packs-reducer'
-import { modalDeleteCardIsOpenAC, modalDeletePackIsOpenAC } from '../../actions'
+import {
+  modalDeleteCardIsOpenAC,
+  modalDeletePackIsOpenAC,
+  modalSetPackIdAC,
+  modalSetPackNameAC,
+} from '../../actions'
 import { MainModal } from '../../MainModal'
+import { selectCardId, selectCardQuestion, selectIsActiveModal } from '../../selectors'
 
+import * as modalsSelectors from './../../selectors'
 type DeletePackAndCardType = {
   type: 'deletePack' | 'deleteCard'
-  // handleDelete: () => void
   packName?: string
   cardQuestion?: string
-  itemId: string
+  cardId?: string
+  packId?: string
 }
 
 export const DeletePackAndCard: React.FC<DeletePackAndCardType> = ({
@@ -22,30 +29,47 @@ export const DeletePackAndCard: React.FC<DeletePackAndCardType> = ({
   // handleDelete,
   packName,
   cardQuestion,
-  itemId,
+  packId,
+  cardId,
 }) => {
   const dispatch = useAppDispatch()
+  const isActive = useAppSelector(modalsSelectors.selectIsActiveModal)
+  const question = useAppSelector(modalsSelectors.selectCardQuestion)
+  const cardIdSelector = useAppSelector(modalsSelectors.selectCardId)
+  const name = useAppSelector(modalsSelectors.selectPackName)
+
+  // useEffect(() => {
+  //   if (isActive) {
+  //     return
+  //   }
+  // }, [itemId])
   const handleDeletePackOrCard = () => {
     if (type === 'deletePack') {
-      dispatch(deletePackTC(itemId))
+      dispatch(deletePackTC(packId))
+      dispatch(modalSetPackIdAC(''))
+      dispatch(modalSetPackNameAC(''))
       dispatch(modalDeletePackIsOpenAC(false))
       dispatch(setAppIsLoadingAC(true))
     } else if (type === 'deleteCard') {
-      dispatch(deleteCardTC(itemId))
+      dispatch(deleteCardTC(cardIdSelector as string))
+      // dispatch(modalSetCardQuestionAC(''))
+      // dispatch(modalSetCardIdAC(''))
+      // dispatch(modalSetCardAnswerAC(''))
       dispatch(modalDeleteCardIsOpenAC(false))
       dispatch(setAppIsLoadingAC(true))
     }
   }
 
-  console.log('DELETE MODAL')
-
   return (
     <MainModal
       title={type === 'deletePack' ? 'Delete pack' : 'Delete card'}
       type={type === 'deletePack' ? 'deletePack' : 'deleteCard'}
+      cardQuestion={cardQuestion}
+      cardId={cardId}
+      packName={packName}
     >
       <div>
-        <p>Do you really want to remove {type === 'deletePack' ? packName : cardQuestion}?</p>
+        <p>Do you really want to remove {type === 'deletePack' ? packName : question}?</p>
         <p>{type === 'deletePack' ? 'All cards will be deleted.' : 'Card will be deleted.'} </p>
         <Button
           color={'secondary'}

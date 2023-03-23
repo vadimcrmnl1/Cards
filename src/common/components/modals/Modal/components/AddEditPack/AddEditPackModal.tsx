@@ -6,10 +6,13 @@ import { useFormik } from 'formik'
 import * as yup from 'yup'
 
 import { setAppIsLoadingAC } from '../../../../../../app/actions'
-import { useAppDispatch } from '../../../../../../app/store'
+import { useAppDispatch, useAppSelector } from '../../../../../../app/store'
 import { addPackTC, updatePackTC } from '../../../../../../features/table/Packs/packs-reducer'
 import { modalAddPackIsOpenAC, modalEditPackIsOpenAC } from '../../actions'
 import { MainModal } from '../../MainModal'
+import { selectPackId } from '../../selectors'
+
+import * as modalsSelectors from './../../selectors'
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
@@ -32,10 +35,13 @@ export const AddEditPackModal: React.FC<AddEditPackModalType> = ({
   packName,
 }) => {
   const dispatch = useAppDispatch()
+  const cardPackId = useAppSelector(modalsSelectors.selectPackId)
+  const name = useAppSelector(modalsSelectors.selectPackName)
 
+  console.log('name', name)
   const formik = useFormik({
     initialValues: {
-      name: type === 'create' ? '' : packName,
+      name: type === 'create' ? '' : name,
       private: false,
     },
     validationSchema: validationSchema,
@@ -56,6 +62,8 @@ export const AddEditPackModal: React.FC<AddEditPackModalType> = ({
       titleButton={type === 'create' ? 'Add new pack' : 'Edit pack'}
       type={type === 'create' ? 'create' : 'edit'}
       table={'pack'}
+      packName={packName}
+      packId={packId}
     >
       <form onSubmit={formik.handleSubmit}>
         <TextField

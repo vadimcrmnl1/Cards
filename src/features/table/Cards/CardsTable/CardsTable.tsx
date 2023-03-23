@@ -10,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { selectUserId } from '../../../profile/selectors'
 import { ActionsCell } from '../../common/ActionsCell/ActionsCell'
+import { ActionsCellCards } from '../../common/ActionsCell/ActionsCellCards'
 import { SortCell } from '../../common/SortCell/SortCell'
 import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
 import { setCardsSortAC } from '../actions'
@@ -100,13 +101,21 @@ export const CardsTable = () => {
                 </StyledTableCell>
                 {packUserId === myId && (
                   <StyledTableCell>
-                    <ActionsCell
-                      cardAnswer={card.answer}
-                      cardQuestion={card.question}
+                    {/*<ActionsCell*/}
+                    {/*  cardAnswer={card.answer}*/}
+                    {/*  cardQuestion={card.question}*/}
+                    {/*  cardsPackId={card.cardsPack_id}*/}
+                    {/*  packOwnerId={card.user_id}*/}
+                    {/*  itemId={card._id}*/}
+                    {/*  type={'cards'}*/}
+                    {/*/>*/}
+                    <ActionsCellCards
+                      type={'cards'}
                       cardsPackId={card.cardsPack_id}
                       packOwnerId={card.user_id}
-                      itemId={card._id}
-                      type={'cards'}
+                      cardId={card._id}
+                      cardAnswer={card.answer}
+                      cardQuestion={card.question}
                     />
                   </StyledTableCell>
                 )}

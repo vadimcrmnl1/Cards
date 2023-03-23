@@ -30,3 +30,34 @@ export const modalDeleteCardIsOpenAC = (deleteCardIsOpen: boolean) =>
     type: 'MODAL/DELETE_CARD_IS_OPEN',
     payload: { deleteCardIsOpen },
   } as const)
+export const isActiveModalAC = (isActiveModal: boolean) =>
+  ({
+    type: 'MODAL/IS_ACTIVE_MODAL',
+    payload: { isActiveModal },
+  } as const)
+
+export const modalSetPackNameAC = (name: string) =>
+  ({
+    type: 'MODAL/SET_PACK_NAME',
+    payload: { name },
+  } as const)
+export const modalSetPackIdAC = (id: string) =>
+  ({
+    type: 'MODAL/SET_PACK_ID',
+    payload: { id },
+  } as const)
+export const modalSetCardQuestionAC = (question: string) =>
+  ({
+    type: 'MODAL/SET_CARD_QUESTION',
+    payload: { question },
+  } as const)
+export const modalSetCardAnswerAC = (answer: string) =>
+  ({
+    type: 'MODAL/SET_CARD_ANSWER',
+    payload: { answer },
+  } as const)
+export const modalSetCardIdAC = (id: string) =>
+  ({
+    type: 'MODAL/SET_CARD_ID',
+    payload: { id },
+  } as const)
