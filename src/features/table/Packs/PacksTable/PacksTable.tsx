@@ -86,7 +86,6 @@ export const PacksTable = () => {
                       packs
                       packOwnerId={cardPack.user_id}
                       itemId={cardPack._id}
-                      cardsCount={cardPack.cardsCount}
                       packName={cardPack.name}
                     />
                   </StyledTableCell>

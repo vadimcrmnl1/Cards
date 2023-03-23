@@ -15,7 +15,6 @@ export const Grade: React.FC<GradePropsType> = ({ grade }) => {
 
 
     const mappedStars = 1*/
-  console.log(grade)
 
   return (
     <div className={s.grade}>

@@ -12,7 +12,7 @@ import {
 import * as appActions from './../../../app/actions'
 import { setAppIsLoadingAC } from './../../../app/actions'
 import * as cardsActions from './actions'
-import { setCardsUpdateGradeAC } from './actions'
+import { setCardsForLearnAC, setCardsUpdateGradeAC } from './actions'
 import { CardsActionsType, CardsParamsType, LearnParamsType } from './types'
 
 export const cardsInitialState = {
@@ -21,12 +21,13 @@ export const cardsInitialState = {
   maxGrade: 1,
   minGrade: 1,
   page: 1,
-  pageCount: 100,
+  pageCount: 5,
   pack_id: '',
   packUser_id: '',
   sortCards: null as null | string,
   cardQuestion: '',
   name: '',
+  cardsForLearn: [] as CardsType[],
 }
 
 export type CardsInitialStateType = typeof cardsInitialState
@@ -72,9 +73,16 @@ export const cardsReducer = (
         ...state,
         cards: [
           ...state.cards.map(el => {
-            return el._id === action.payload.id ? { ...el, grade: action.payload.grade } : el
+            return el._id === action.payload.id
+              ? { ...el, grade: action.payload.grade, shots: action.payload.shots }
+              : el
           }),
         ],
+      }
+    case 'TABLE/SET_CARDS_FOR_LEARN':
+      return {
+        ...state,
+        cardsForLearn: action.payload.cards,
       }
 
     default:
@@ -100,7 +108,6 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
   try {
     const res = await cardsAPI.getCards(params)
 
-    console.log(res)
     dispatch(cardsActions.setCardsAC(res.data.cards))
     dispatch(cardsActions.setCardsTotalCountAC(res.data.cardsTotalCount))
     /*dispatch(cardsActions.setCardsMaxGradeAC(res.data.maxGrade))
@@ -159,7 +166,9 @@ export const updateGradeTC =
     dispatch(setAppIsLoadingAC(true))
     try {
       const res = await cardsAPI.updateGrade(data)
-      const a = dispatch(setCardsUpdateGradeAC(res.data.card_id, res.data.grade))
+
+      dispatch(setCardsUpdateGradeAC(res.data.card_id, res.data.grade, res.data.shots))
+      dispatch(getCardsTC())
     } catch (err: any) {
       errorUtils(err, dispatch)
     } finally {
@@ -180,7 +189,11 @@ export const getCardsForLearnTC =
     try {
       const res = await cardsAPI.getCardsForLearn(params)
 
-      dispatch(cardsActions.setCardsAC(res.data.cards))
+      console.log(res)
+
+      const a = dispatch(cardsActions.setCardsForLearnAC(res.data.cards))
+
+      console.log(a)
     } catch (err: any) {
       errorUtils(err, dispatch)
     } finally {

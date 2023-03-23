@@ -57,8 +57,13 @@ export const setCardsSearchByQuestionAC = (question: string) =>
     payload: { question },
   } as const)
 //===Action for LEARN======
-export const setCardsUpdateGradeAC = (id: string, grade: number) =>
+export const setCardsUpdateGradeAC = (id: string, grade: number, shots: number) =>
   ({
     type: 'TABLE/SET_CARDS_UPDATE_GRADE',
-    payload: { id, grade },
+    payload: { id, grade, shots },
+  } as const)
+export const setCardsForLearnAC = (cards: CardsType[]) =>
+  ({
+    type: 'TABLE/SET_CARDS_FOR_LEARN',
+    payload: { cards },
   } as const)

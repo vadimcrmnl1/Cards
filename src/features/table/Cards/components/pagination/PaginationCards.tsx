@@ -22,8 +22,9 @@ export const PaginationCards = () => {
   const params = Object.fromEntries(searchParams)
   const countPages = Math.ceil(totalCount / pageCount)
   const handlePageChange = (event: any, newPage: number) => {
-    dispatch(setCardsPageAC(newPage + 1))
-    setSearchParams({ ...params, page: (newPage + 1).toString() })
+    dispatch(setCardsPageAC(newPage))
+    console.log('newPage=', newPage)
+    setSearchParams({ ...params, page: newPage.toString() })
   }
   const handlePageCountChange = (event: any) => {
     dispatch(setCardsPageCountAC(+event.target.value))

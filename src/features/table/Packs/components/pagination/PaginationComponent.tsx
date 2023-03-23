@@ -21,8 +21,8 @@ export const PaginationComponent = () => {
   const params = Object.fromEntries(searchParams)
   const countPages = Math.ceil(totalCount / pageCount)
   const handlePageChange = (event: any, page: number) => {
-    dispatch(setPacksPageAC(page + 1))
-    setSearchParams({ ...params, page: (page + 1).toString() })
+    dispatch(setPacksPageAC(page))
+    setSearchParams({ ...params, page: page.toString() })
   }
   const handlePageCountChange = (event: any) => {
     dispatch(setPacksPageCountAC(+event.target.value))

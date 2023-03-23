@@ -20,15 +20,15 @@ type ActionsCellPropsType = {
   packOwnerId: string
   packs?: boolean
   itemId: string
-  cardsCount?: number
   packName?: string
+  cardsPackId?: string
 }
 export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   packOwnerId,
   packs,
   itemId,
   packName,
-  cardsCount,
+  cardsPackId,
 }) => {
   const dispatch = useAppDispatch()
 
@@ -64,21 +64,20 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
     dispatch(action)
   }
   const handleLinkToCards = () => {
-    dispatch(setCardsPackIdAC(itemId))
+    dispatch(setCardsPackIdAC(cardsPackId as string))
     dispatch(setCardsPackNameAC(packName as string))
   }
 
   return (
     <div className={s.cell}>
-      {packs && (
-        <NavLink
-          to={PATH.learn}
-          // disabled={isAppMakeRequest || cardsCount !== 0}
-          onClick={handleLinkToCards}
-        >
+      <NavLink to={PATH.learn} onClick={handleLinkToCards}>
+        <TeacherIcon />
+      </NavLink>
+      {/*{packs && (
+        <NavLink to={PATH.learn} onClick={handleLinkToCards}>
           <TeacherIcon />
         </NavLink>
-      )}
+      )}*/}
       {packOwnerId === userId && (
         <div>
           <button onClick={handleUpdateCard} disabled={isAppMakeRequest}>

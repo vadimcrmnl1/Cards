@@ -11,11 +11,14 @@ import { selectUserId } from '../../../profile/selectors'
 import { ActionsCell } from '../../common/ActionsCell/ActionsCell'
 import { SortCell } from '../../common/SortCell/SortCell'
 import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
+import { selectPacksName } from '../../Packs/selectors'
 import {
   selectCards,
+  selectCardsPackId,
   selectCardsPage,
   selectCardsPageCount,
   selectCardsSort,
+  selectCardsTotalCount,
   selectPackUserId,
 } from '../selectors'
 
@@ -29,6 +32,8 @@ export const CardsTable = () => {
   const myId = useAppSelector(selectUserId)
   const page = useAppSelector(selectCardsPage)
   const cardsSort = useAppSelector(selectCardsSort)
+  const packName = useAppSelector(selectPacksName)
+  const cardsPackId = useAppSelector(selectCardsPackId)
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? pageCount - cards.length : 0
@@ -52,7 +57,8 @@ export const CardsTable = () => {
               <StyledTableCell>
                 <SortCell label={'Grade'} sorter={'grade'} sort={cardsSort} />
               </StyledTableCell>
-              {packUserId === myId && <StyledTableCell>Actions</StyledTableCell>}
+              {/*{packUserId === myId && <StyledTableCell>Actions</StyledTableCell>}*/}
+              <StyledTableCell>Actions</StyledTableCell>
             </StyledTableRow>
           </TableHead>
           <TableBody>
@@ -68,11 +74,16 @@ export const CardsTable = () => {
                 <StyledTableCell>
                   <Grade grade={card.grade} />
                 </StyledTableCell>
-                {packUserId === myId && (
-                  <StyledTableCell>
-                    <ActionsCell packOwnerId={card.user_id} itemId={card._id} />
-                  </StyledTableCell>
-                )}
+                {/*{packUserId === myId && (*/}
+                <StyledTableCell>
+                  <ActionsCell
+                    packOwnerId={card.user_id}
+                    itemId={card._id}
+                    cardsPackId={cardsPackId}
+                    packName={packName}
+                  />
+                </StyledTableCell>
+                {/*)}*/}
               </StyledTableRow>
             ))}
             {emptyRows > 0 && (
