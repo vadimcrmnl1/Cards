@@ -67,7 +67,7 @@ export const Learn = () => {
 
   const dispatch = useAppDispatch()
 
-  console.log(id)
+  console.log('packid', id)
   console.log(cardsForLearn)
   useEffect(() => {
     if (first) {

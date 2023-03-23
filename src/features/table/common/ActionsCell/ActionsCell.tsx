@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom'
 
 import { selectIsAppMakeRequest } from '../../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
+import { AddEditPackModal } from '../../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
+import { DeletePackAndCard } from '../../../../common/components/modals/Modal/components/DeleteModal/DeletePackAndCard'
 import { PATH } from '../../../../common/utils/routes/Routes'
 import { selectUserId } from '../../../profile/selectors'
 import { setCardsPackIdAC, setCardsPackNameAC } from '../../Cards/actions'
@@ -16,6 +18,8 @@ import { TrashIcon } from '../icons/TrashIcon'
 
 import s from './ActionsCell.module.css'
 
+import { isActiveModalAC, modalEditPackIsOpenAC } from 'common/components/modals/Modal/actions'
+
 type ActionsCellPropsType = {
   packOwnerId: string
   packs?: boolean
@@ -24,6 +28,7 @@ type ActionsCellPropsType = {
   packName?: string
   packId?: string
   cardsPackId?: string
+  cardsCount?: number
 }
 export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   packOwnerId,
@@ -46,12 +51,13 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
     dispatch(setCardsPackIdAC(cardsPackId as string))
     dispatch(setCardsPackNameAC(packName as string))
   }
+
   return (
     <div className={s.cell}>
       <NavLink to={PATH.learn} onClick={handleLinkToCards}>
         <TeacherIcon />
       </NavLink>
-           {type === 'packs' && packOwnerId === userId && (
+      {type === 'packs' && packOwnerId === userId && (
         <div>
           <AddEditPackModal
             packName={packName}

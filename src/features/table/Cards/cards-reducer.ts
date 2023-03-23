@@ -1,3 +1,4 @@
+import { setAppIsLoadingAC } from '../../../app/actions'
 import { AllReducersActionType, AppThunk } from '../../../app/types'
 import { dateUtils } from '../../../common/utils/dateUtils'
 import { errorUtils } from '../../../common/utils/errorUtils'
@@ -11,7 +12,7 @@ import {
 
 import * as appActions from './../../../app/actions'
 import * as cardsActions from './actions'
-import { setCardsForLearnAC, setCardsUpdateGradeAC } from './actions'
+import { setCardsUpdateGradeAC } from './actions'
 import { CardsActionsType, CardsParamsType, LearnParamsType } from './types'
 
 export const cardsInitialState = {
@@ -177,6 +178,7 @@ export const updateGradeTC =
 export const getCardsForLearnTC =
   (pack_id: string, pageCount: number): AppThunk<AllReducersActionType> =>
   async dispatch => {
+    debugger
     dispatch(setAppIsLoadingAC(true))
 
     const params: LearnParamsType = {

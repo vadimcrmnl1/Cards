@@ -16,7 +16,7 @@ type SortCellPropsType = {
   sorter: string
   sort: string | null
   packs?: boolean
-  toggleSort: (sort: string | null) => void
+  toggleSort?: (sort: string | null) => void
 }
 export const SortCell: React.FC<SortCellPropsType> = ({ label, sorter, sort, packs }) => {
   const dispatch = useAppDispatch()

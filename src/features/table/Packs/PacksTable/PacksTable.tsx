@@ -48,16 +48,40 @@ export const PacksTable = () => {
           <TableHead>
             <StyledTableRow>
               <StyledTableCell>
-                <SortCell label={'Name'} sorter={'name'} sort={sortPacks} packs />
+                <SortCell
+                  label={'Name'}
+                  sorter={'name'}
+                  sort={sortPacks}
+                  packs
+                  toggleSort={handleSort}
+                />
               </StyledTableCell>
               <StyledTableCell>
-                <SortCell label={'Cards'} sorter={'cardsCount'} sort={sortPacks} packs />
+                <SortCell
+                  label={'Cards'}
+                  sorter={'cardsCount'}
+                  sort={sortPacks}
+                  packs
+                  toggleSort={handleSort}
+                />
               </StyledTableCell>
               <StyledTableCell>
-                <SortCell label={'Last Updated'} sorter={'updated'} sort={sortPacks} packs />
+                <SortCell
+                  label={'Last Updated'}
+                  sorter={'updated'}
+                  sort={sortPacks}
+                  packs
+                  toggleSort={handleSort}
+                />
               </StyledTableCell>
               <StyledTableCell>
-                <SortCell label={'Created by'} sorter={'user_name'} sort={sortPacks} packs />
+                <SortCell
+                  label={'Created by'}
+                  sorter={'user_name'}
+                  sort={sortPacks}
+                  packs
+                  toggleSort={handleSort}
+                />
               </StyledTableCell>
               <StyledTableCell>Actions</StyledTableCell>
             </StyledTableRow>

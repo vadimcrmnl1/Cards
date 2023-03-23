@@ -144,7 +144,7 @@ export const deletePackTC =
   async dispatch => {
     dispatch(appActions.setAppIsLoadingAC(true))
     try {
-      await packsAPI.deletePack(id)
+      await packsAPI.deletePack(id as string)
       dispatch(getPacksTC())
       dispatch(appActions.setAppInfoAC(`Your pack has been deleted`))
     } catch (err: any) {

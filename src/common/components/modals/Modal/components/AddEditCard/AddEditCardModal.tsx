@@ -8,15 +8,10 @@ import * as yup from 'yup'
 
 import { setAppIsLoadingAC } from '../../../../../../app/actions'
 import { useAppDispatch, useAppSelector } from '../../../../../../app/store'
-import {
-  addCardTC,
-  getCardsTC,
-  updateCardTC,
-} from '../../../../../../features/table/Cards/cards-reducer'
+import { addCardTC, updateCardTC } from '../../../../../../features/table/Cards/cards-reducer'
 import { selectCardsPackId } from '../../../../../../features/table/Cards/selectors'
 import { isActiveModalAC, modalAddCardIsOpenAC, modalEditCardIsOpen } from '../../actions'
 import { MainModal } from '../../MainModal'
-import { selectCardQuestion } from '../../selectors'
 
 import s from './../../MainModal.module.css'
 import * as modalsSelectors from './../../selectors'

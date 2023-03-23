@@ -1,13 +1,6 @@
 import * as React from 'react'
 
-import { useNavigate } from 'react-router-dom'
-
-import { selectIsAppMakeRequest } from '../../../../app/selectors'
-import { useAppDispatch, useAppSelector } from '../../../../app/store'
-import {
-  isActiveModalAC,
-  modalEditPackIsOpenAC,
-} from '../../../../common/components/modals/Modal/actions'
+import { useAppSelector } from '../../../../app/store'
 import { AddEditCardModal } from '../../../../common/components/modals/Modal/components/AddEditCard/AddEditCardModal'
 import { DeletePackAndCard } from '../../../../common/components/modals/Modal/components/DeleteModal/DeletePackAndCard'
 import { selectUserId } from '../../../profile/selectors'
