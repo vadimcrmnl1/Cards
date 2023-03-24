@@ -1,22 +1,17 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 
-import { Button } from '@mui/material'
 import { Navigate, useSearchParams } from 'react-router-dom'
 
-import { selectIsAppMakeRequest } from '../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../app/store'
 import { EmptySearch } from '../../../common/components/EmptySearch/EmptySearch'
-import { ErrorSnackbar } from '../../../common/components/ErrorSnackbar/ErrorSnackbar'
 import { AddEditPackModal } from '../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
 import { PATH } from '../../../common/utils/routes/Routes'
 import { selectIsLoggedIn } from '../../auth/selectors'
-import { useStyles } from '../../styleMU/styleMU'
-import { AddPackRequestDataType } from '../table-api'
 
 import {
-  setMyPacksAC,
   setMinMaxCardsAC,
+  setMyPacksAC,
   setPackNameAC,
   setPacksPageAC,
   setPacksPageCountAC,
@@ -27,18 +22,18 @@ import { NoFilters } from './components/noFilters/NoFilters'
 import { PaginationComponent } from './components/pagination/PaginationComponent'
 import { SearchTitleCards } from './components/searchTitleCards/SearchTitleCards'
 import { SortingByUser } from './components/sortingByUser/SortingByUser'
-import { addPackTC, getPacksTC } from './packs-reducer'
+import { getPacksTC } from './packs-reducer'
 import s from './Packs.module.css'
 import { PacksTable } from './PacksTable/PacksTable'
 import {
   selectCardPacks,
-  selectPacksUserId,
   selectPacksMaxCards,
   selectPacksMinCards,
   selectPacksName,
   selectPacksPage,
   selectPacksPageCount,
   selectPacksSort,
+  selectPacksUserId,
 } from './selectors'
 
 export const Packs = () => {
@@ -50,11 +45,9 @@ export const Packs = () => {
   const page = useAppSelector(selectPacksPage)
   const packName = useAppSelector(selectPacksName)
   const packsUser_id = useAppSelector(selectPacksUserId)
-  const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
   const [searchParams, setSearchParams] = useSearchParams()
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const cardPacks = useAppSelector(selectCardPacks)
-  const styleMU = useStyles()
   const [isFirstLoading, setIsFirstLoading] = useState(true)
   const params = Object.fromEntries(searchParams)
 
@@ -86,18 +79,6 @@ export const Packs = () => {
     }
   }, [])
 
-  // const handleAddPack = () => {
-  //   const cardPack: AddPackRequestDataType = {
-  //     cardsPack: {
-  //       name: 'Pack Name',
-  //       deckCover: '',
-  //       private: false,
-  //     },
-  //   }
-  //
-  //   dispatch(addPackTC(cardPack))
-  // }
-
   if (!isLoggedIn) {
     return <Navigate to={PATH.login} />
   }
@@ -106,14 +87,6 @@ export const Packs = () => {
     <div className={s.container}>
       <div className={s.packsHeader}>
         <h3>Packs list</h3>
-        {/*<Button*/}
-        {/*  className={styleMU.button}*/}
-        {/*  onClick={handleAddPack}*/}
-        {/*  variant={'contained'}*/}
-        {/*  disabled={isAppMakeRequest}*/}
-        {/*>*/}
-        {/*  Add new pack*/}
-        {/*</Button>*/}
         <AddEditPackModal type={'create'} title={'Add new pack'} titleButton={'Add'} />
       </div>
       <div className={s.packsBlock}>
@@ -130,8 +103,6 @@ export const Packs = () => {
       ) : (
         <EmptySearch />
       )}
-
-      {/*<ErrorSnackbar />*/}
     </div>
   )
 }

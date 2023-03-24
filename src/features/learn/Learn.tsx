@@ -69,9 +69,6 @@ export const Learn = () => {
 
   const dispatch = useAppDispatch()
 
-  console.log('id=', id)
-
-  console.log('cards=', cards)
   useEffect(() => {
     debugger
     if (first) {
@@ -82,7 +79,6 @@ export const Learn = () => {
     }
     if (card._id === '' && cards.length > 0) setCard(getCard(cards))
   }, [dispatch, id, cards, first])
-  console.log('card=', card)
   const handleShowAnswer = () => {
     setIsChecked(true)
   }

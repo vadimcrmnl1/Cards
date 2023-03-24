@@ -10,7 +10,6 @@ import { useAppDispatch, useAppSelector } from '../../../../../../app/store'
 import { addPackTC, updatePackTC } from '../../../../../../features/table/Packs/packs-reducer'
 import { modalAddPackIsOpenAC, modalEditPackIsOpenAC } from '../../actions'
 import { MainModal } from '../../MainModal'
-import { selectPackId } from '../../selectors'
 
 import * as modalsSelectors from './../../selectors'
 

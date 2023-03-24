@@ -77,11 +77,6 @@ export const MainModal: React.FC<MainModalPropsType> = ({
 
   const dispatch = useAppDispatch()
 
-  // useEffect(() => {
-  //   dispatch(getCardsTC())
-  //   dispatch(getPacksTC())
-  // }, [addPack, addCard, editCard, editPack, deleteCard, deletePack])
-  // const [open, setOpen] = React.useState(false)
   const handleOpen = () => {
     if (type === 'create') {
       dispatch(isActiveModalAC(true))

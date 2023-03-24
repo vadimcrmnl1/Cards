@@ -89,10 +89,8 @@ export const PacksTable = () => {
           <TableBody>
             {cardPacks.map((cardPack, index) => {
               const handleLinkToCards = () => {
-                //указываем владельца колоды
                 dispatch(setCardsPackUserIdAC(cardPack.user_id))
                 dispatch(setCardsPackNameAC(cardPack.name))
-                //чтобы при переходе с колод на карты всегда была первая страница
                 dispatch(setCardsPageAC(1))
               }
 
