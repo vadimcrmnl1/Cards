@@ -7,9 +7,10 @@ import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import { NavLink } from 'react-router-dom'
 
-import { useAppDispatch, useAppSelector } from '../../../../app/store'
+import { AppRootStateType, useAppDispatch, useAppSelector } from '../../../../app/store'
 import { PATH } from '../../../../common/utils/routes/Routes'
 import { setCardsPackNameAC, setCardsPackUserIdAC, setCardsPageAC } from '../../Cards/actions'
+import { selectCardsPackId } from '../../Cards/selectors'
 import { ActionsCell } from '../../common/ActionsCell/ActionsCell'
 import { SortCell } from '../../common/SortCell/SortCell'
 import { StyledTableCell, StyledTableRow } from '../../common/styles'
@@ -29,6 +30,7 @@ export const PacksTable = () => {
   const page = useAppSelector(selectPacksPage)
   const pageCount = useAppSelector(selectPacksPageCount)
   const sortPacks = useAppSelector(selectPacksSort)
+  const cardsPackId = useAppSelector(selectCardsPackId)
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? pageCount - cardPacks.length : 0
@@ -83,10 +85,11 @@ export const PacksTable = () => {
                   </StyledTableCell>
                   <StyledTableCell>
                     <ActionsCell
-                      packs
+                      type={'packs'}
                       packOwnerId={cardPack.user_id}
                       itemId={cardPack._id}
                       packName={cardPack.name}
+                      cardsPackId={cardsPackId}
                     />
                   </StyledTableCell>
                 </StyledTableRow>

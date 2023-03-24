@@ -77,6 +77,7 @@ export const CardsTable = () => {
                 {/*{packUserId === myId && (*/}
                 <StyledTableCell>
                   <ActionsCell
+                    type={'cards'}
                     packOwnerId={card.user_id}
                     itemId={card._id}
                     cardsPackId={cardsPackId}

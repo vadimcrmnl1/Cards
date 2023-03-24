@@ -73,7 +73,8 @@ export const Cards = () => {
   useEffect(() => {
     if (isFirstLoading) {
       dispatch(setCardsPackIdAC(params.cardsPack_id))
-      dispatch(setCardsPageCountAC(pageCount))
+      /*dispatch(setCardsPageCountAC(pageCount))*/
+      dispatch(setCardsPageCountAC(100))
       dispatch(setCardsPageAC(+params.page || 1))
       dispatch(setCardsSearchByQuestionAC(params.question || ''))
       dispatch(setCardsSortAC(params.sortCards || null))
@@ -123,7 +124,7 @@ export const Cards = () => {
       </div>
 
       <CardsTable />
-      <PaginationCards />
+      {/*<PaginationCards />*/}
       <ErrorSnackbar />
     </div>
   )

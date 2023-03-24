@@ -21,7 +21,7 @@ export const cardsInitialState = {
   maxGrade: 1,
   minGrade: 1,
   page: 1,
-  pageCount: 5,
+  pageCount: 100,
   pack_id: '',
   packUser_id: '',
   sortCards: null as null | string,
@@ -105,6 +105,7 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
   if (cardQuestion !== '') {
     params.cardQuestion = cardQuestion
   }
+  console.log('params=', params)
   try {
     const res = await cardsAPI.getCards(params)
 
@@ -190,10 +191,8 @@ export const getCardsForLearnTC =
       const res = await cardsAPI.getCardsForLearn(params)
 
       console.log(res)
-
-      const a = dispatch(cardsActions.setCardsForLearnAC(res.data.cards))
-
-      console.log(a)
+      /*dispatch(getCardsTC())*/
+      dispatch(cardsActions.setCardsForLearnAC(res.data.cards))
     } catch (err: any) {
       errorUtils(err, dispatch)
     } finally {
