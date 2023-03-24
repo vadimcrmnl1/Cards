@@ -2,7 +2,6 @@ import * as React from 'react'
 
 import { NavLink } from 'react-router-dom'
 
-import { selectIsAppMakeRequest } from '../../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import {
   isActiveModalAC,
@@ -13,18 +12,16 @@ import { DeletePackAndCard } from '../../../../common/components/modals/Modal/co
 import { PATH } from '../../../../common/utils/routes/Routes'
 import { selectUserId } from '../../../profile/selectors'
 import { setCardsPackIdAC, setCardsPackNameAC, setCardsPageAC } from '../../Cards/actions'
-import { deleteCardTC, getCardsTC, updateCardTC } from '../../Cards/cards-reducer'
-import { deletePackTC, updatePackTC } from '../../Packs/packs-reducer'
-import { UpdateCardRequestDataType, UpdatePackRequestDataType } from '../../table-api'
+import { getCardsTC } from '../../Cards/cards-reducer'
 import { TeacherIcon } from '../icons/TeacherIcon'
 
 import s from './ActionsCell.module.css'
 
 type ActionsCellPropsType = {
   packOwnerId: string
-  packs?: boolean
-  type: 'packs' | 'cards'
   itemId: string
+  type?: 'packs' | 'cards'
+  cardQuestion?: string
   packName?: string
   packId?: string
   cardsPackId?: string
@@ -32,7 +29,6 @@ type ActionsCellPropsType = {
 }
 export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   packOwnerId,
-  packs,
   itemId,
   packName,
   type,
@@ -42,18 +38,18 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   const dispatch = useAppDispatch()
 
   const userId = useAppSelector(selectUserId)
-  const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
+  /* const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
   const handleOpenEditPack = () => {
     dispatch(isActiveModalAC(true))
     dispatch(modalEditPackIsOpenAC(true))
-  }
+  }*/
   const handleLinkToCards = () => {
+    dispatch(setCardsPackNameAC(packName as string))
+
     if (type === 'cards') {
-      dispatch(setCardsPackNameAC(packName as string))
       dispatch(setCardsPackIdAC(cardsPackId as string))
     } else if (type === 'packs') {
       dispatch(setCardsPackIdAC(itemId))
-      dispatch(setCardsPackNameAC(packName as string))
       dispatch(setCardsPageAC(1))
       dispatch(getCardsTC())
     }
