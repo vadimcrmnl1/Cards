@@ -39,8 +39,6 @@ import {
   selectPackName,
 } from './selectors'
 
-import { AddEditCardModal } from 'common/components/modals/Modal/components/AddEditCard/AddEditCardModal'
-
 export const Cards = () => {
   const totalCount = useAppSelector(selectCardsTotalCount)
   const pageNumber = useAppSelector(selectCardsPage)
@@ -62,16 +60,21 @@ export const Cards = () => {
   const params = Object.fromEntries(searchParams)
   const { cardPackId } = useParams() as { cardPackId: string }
 
+  /*useEffect(() => {
+    dispatch(getCardsForLearnTC(pack_id, 100))
+  }, [])*/
   useEffect(() => {
     if (isLoggedIn && !isFirstLoading) {
       dispatch(getCardsTC())
+      /* dispatch(getCardsForLearnTC(pack_id, 100))*/
     }
-  }, [dispatch, page, pageCount, pack_id, question, sortCards, isFirstLoading])
+  }, [dispatch, page, pageCount, pack_id, question, sortCards, isFirstLoading, packName])
 
   useEffect(() => {
     if (isFirstLoading) {
-      dispatch(setCardsPackIdAC(cardPackId))
-      dispatch(setCardsPageCountAC(+params.pageCount || 5))
+      dispatch(setCardsPackIdAC(params.cardsPack_id))
+      /*dispatch(setCardsPageCountAC(pageCount))*/
+      dispatch(setCardsPageCountAC(100))
       dispatch(setCardsPageAC(+params.page || 1))
       dispatch(setCardsSearchByQuestionAC(params.question || ''))
       dispatch(setCardsSortAC(params.sortCards || null))
@@ -103,7 +106,7 @@ export const Cards = () => {
       </div>
 
       <CardsTable />
-      <PaginationCards />
+      {/*<PaginationCards />*/}
       <ErrorSnackbar />
     </div>
   )

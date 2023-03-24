@@ -12,13 +12,9 @@ import { setCardsPackIdAC, setCardsPackNameAC } from '../../Cards/actions'
 import { deleteCardTC, updateCardTC } from '../../Cards/cards-reducer'
 import { deletePackTC, updatePackTC } from '../../Packs/packs-reducer'
 import { UpdateCardRequestDataType, UpdatePackRequestDataType } from '../../table-api'
-import { EditIcon } from '../icons/EditIcon'
 import { TeacherIcon } from '../icons/TeacherIcon'
-import { TrashIcon } from '../icons/TrashIcon'
 
 import s from './ActionsCell.module.css'
-
-import { isActiveModalAC, modalEditPackIsOpenAC } from 'common/components/modals/Modal/actions'
 
 type ActionsCellPropsType = {
   packOwnerId: string
@@ -37,9 +33,13 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   packName,
   type,
   packId,
+  cardQuestion,
+  cardAnswer,
+  type,
   cardsPackId,
 }) => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const userId = useAppSelector(selectUserId)
   const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
@@ -48,8 +48,17 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
     dispatch(modalEditPackIsOpenAC(true))
   }
   const handleLinkToCards = () => {
-    dispatch(setCardsPackIdAC(cardsPackId as string))
-    dispatch(setCardsPackNameAC(packName as string))
+    if (type === 'cards') {
+      dispatch(setCardsPackNameAC(packName as string))
+      dispatch(setCardsPackIdAC(cardsPackId as string))
+    } else if (type === 'packs') {
+      dispatch(setCardsPackIdAC(itemId))
+      dispatch(setCardsPackNameAC(packName as string))
+      dispatch(setCardsPageAC(1))
+      dispatch(getCardsTC())
+    }
+
+    /*dispatch(setCardsPackNameAC(packName as string))*/
   }
 
   return (

@@ -6,7 +6,7 @@ import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 
-import { useAppDispatch, useAppSelector } from '../../../../app/store'
+import { useAppSelector } from '../../../../app/store'
 import { selectUserId } from '../../../profile/selectors'
 import { ActionsCell } from '../../common/ActionsCell/ActionsCell'
 import { ActionsCellCards } from '../../common/ActionsCell/ActionsCellCards'
@@ -19,8 +19,8 @@ import {
   selectCardsPackId,
   selectCardsPage,
   selectCardsPageCount,
-  selectCardsQuestion,
   selectCardsSort,
+  selectCardsTotalCount,
   selectPackUserId,
 } from '../selectors'
 
@@ -28,18 +28,14 @@ import { Grade } from './Grade/Grade'
 import { StyledTableCell, StyledTableRow } from './styles'
 
 export const CardsTable = () => {
-  const packName = useAppSelector(selectPacksName)
-  const cardsPackId = useAppSelector(selectCardsPackId)
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const dispatch = useAppDispatch()
   const cards = useAppSelector(selectCards)
-  const page = useAppSelector(selectCardsPage)
   const pageCount = useAppSelector(selectCardsPageCount)
-  const question = useAppSelector(selectCardsQuestion)
   const packUserId = useAppSelector(selectPackUserId)
   const myId = useAppSelector(selectUserId)
+  const page = useAppSelector(selectCardsPage)
   const cardsSort = useAppSelector(selectCardsSort)
+  const packName = useAppSelector(selectPacksName)
+  const cardsPackId = useAppSelector(selectCardsPackId)
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? pageCount - cards.length : 0
@@ -91,13 +87,13 @@ export const CardsTable = () => {
                 </StyledTableCell>
                 {/*{packUserId === myId && (*/}
                 <StyledTableCell>
-                  {/*<ActionsCell*/}
-                  {/*  cardsPackId={cardsPackId}*/}
-                  {/*  packName={packName}*/}
-                  {/*  packOwnerId={card.user_id}*/}
-                  {/*  itemId={card._id}*/}
-                  {/*  type={'cards'}*/}
-                  {/*/>*/}
+                  <ActionsCell
+                    cardsPackId={cardsPackId}
+                    packName={packName}
+                    packOwnerId={card.user_id}
+                    itemId={card._id}
+                    type={'cards'}
+                  />
                   <ActionsCellCards
                     type={'cards'}
                     cardsPackId={card.cardsPack_id}
