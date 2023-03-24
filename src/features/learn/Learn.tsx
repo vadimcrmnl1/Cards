@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import Button from '@mui/material/Button'
 
 import { useStyles } from '../styleMU/styleMU'
-import { setCardsPackIdAC, setCardsPageCountAC } from '../table/Cards/actions'
-import { getCardsForLearnTC, getCardsTC, updateGradeTC } from '../table/Cards/cards-reducer'
+import { setCardsPackIdAC } from '../table/Cards/actions'
+import { updateGradeTC } from '../table/Cards/cards-reducer'
 import {
   selectCards,
   selectCardsForLearn,
@@ -73,6 +73,7 @@ export const Learn = () => {
 
   console.log('cards=', cards)
   useEffect(() => {
+    debugger
     if (first) {
       dispatch(setCardsPackIdAC(id))
       /*dispatch(getCardsTC())*/

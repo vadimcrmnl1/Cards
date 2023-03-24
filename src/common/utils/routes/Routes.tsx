@@ -20,9 +20,9 @@ export const PATH = {
   passwordRecovery: '/password-recovery',
   newPassword: '/set-new-password/:token',
   test: '/test',
-  packs: '/packs/',
-  cards: '/packs/:cardPackId',
-  learn: '/packs/learn/:cardPackId',
+  packs: '/packs',
+  cards: '/cards',
+  learn: '/learn',
 }
 
 const router = createHashRouter([

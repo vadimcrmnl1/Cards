@@ -7,8 +7,7 @@ import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import { NavLink } from 'react-router-dom'
 
-import { AddEditPackModal } from '../../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
-import { AppRootStateType, useAppDispatch, useAppSelector } from '../../../../app/store'
+import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { PATH } from '../../../../common/utils/routes/Routes'
 import { setCardsPackNameAC, setCardsPackUserIdAC, setCardsPageAC } from '../../Cards/actions'
 import { selectCardsPackId } from '../../Cards/selectors'
@@ -20,8 +19,8 @@ import { setPacksSortAC } from '../actions'
 import {
   selectCardPacks,
   selectPacksPage,
-  selectPacksSort,
   selectPacksPageCount,
+  selectPacksSort,
 } from '../selectors'
 
 import s from './PacksTable.module.css'
@@ -33,7 +32,6 @@ export const PacksTable = () => {
   const pageCount = useAppSelector(selectPacksPageCount)
   const sortPacks = useAppSelector(selectPacksSort)
   const cardsPackId = useAppSelector(selectCardsPackId)
-  const [searchParams, setSearchParams] = useSearchParams()
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? pageCount - cardPacks.length : 0
@@ -102,7 +100,7 @@ export const PacksTable = () => {
                 <StyledTableRow key={index} hover>
                   <StyledTableCell scope="row">
                     <NavLink
-                      to={PATH.packs + cardPack._id}
+                      to={PATH.cards + '?cardsPack_id=' + cardPack._id}
                       onClick={handleLinkToCards}
                       className={s.link}
                     >

@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-import { IconButton } from '@material-ui/core'
-import { SelectChangeEvent, SpeedDialAction } from '@mui/material'
-import Button from '@mui/material/Button'
 import { Navigate, useParams, useSearchParams } from 'react-router-dom'
 
 import { selectIsAppMakeRequest } from '../../../app/selectors'
@@ -13,7 +10,6 @@ import { PATH } from '../../../common/utils/routes/Routes'
 import { selectIsLoggedIn } from '../../auth/selectors'
 import { useStyles } from '../../styleMU/styleMU'
 import { selectCardPacks } from '../Packs/selectors'
-import { AddCardRequestType } from '../table-api'
 
 import {
   setCardsPackIdAC,
@@ -22,12 +18,10 @@ import {
   setCardsSearchByQuestionAC,
   setCardsSortAC,
 } from './actions'
-import { addCardTC, getCardsForLearnTC, getCardsTC } from './cards-reducer'
+import { getCardsTC } from './cards-reducer'
 import s from './Cards.module.css'
 import { CardsTable } from './CardsTable/CardsTable'
-import { PaginationCards } from './components/pagination/PaginationCards'
 import { SearchQuestion } from './components/SearchQuestion'
-import { SpeedDialBasic } from './components/speedDial/SpeedDialBasic'
 import {
   selectCards,
   selectCardsPackId,
@@ -38,6 +32,8 @@ import {
   selectCardsTotalCount,
   selectPackName,
 } from './selectors'
+
+import { AddEditCardModal } from 'common/components/modals/Modal/components/AddEditCard/AddEditCardModal'
 
 export const Cards = () => {
   const totalCount = useAppSelector(selectCardsTotalCount)
@@ -81,8 +77,6 @@ export const Cards = () => {
       setIsFirstLoading(false)
     }
   }, [])
-
-
 
   if (!isLoggedIn) {
     return <Navigate to={PATH.login} />

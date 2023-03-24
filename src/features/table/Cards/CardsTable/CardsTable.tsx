@@ -6,7 +6,7 @@ import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 
-import { useAppSelector } from '../../../../app/store'
+import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { selectUserId } from '../../../profile/selectors'
 import { ActionsCell } from '../../common/ActionsCell/ActionsCell'
 import { ActionsCellCards } from '../../common/ActionsCell/ActionsCellCards'
@@ -28,6 +28,7 @@ import { Grade } from './Grade/Grade'
 import { StyledTableCell, StyledTableRow } from './styles'
 
 export const CardsTable = () => {
+  const dispatch = useAppDispatch()
   const cards = useAppSelector(selectCards)
   const pageCount = useAppSelector(selectCardsPageCount)
   const packUserId = useAppSelector(selectPackUserId)

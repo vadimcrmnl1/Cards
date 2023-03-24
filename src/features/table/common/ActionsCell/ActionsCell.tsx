@@ -4,12 +4,16 @@ import { NavLink } from 'react-router-dom'
 
 import { selectIsAppMakeRequest } from '../../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
+import {
+  isActiveModalAC,
+  modalEditPackIsOpenAC,
+} from '../../../../common/components/modals/Modal/actions'
 import { AddEditPackModal } from '../../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
 import { DeletePackAndCard } from '../../../../common/components/modals/Modal/components/DeleteModal/DeletePackAndCard'
 import { PATH } from '../../../../common/utils/routes/Routes'
 import { selectUserId } from '../../../profile/selectors'
-import { setCardsPackIdAC, setCardsPackNameAC } from '../../Cards/actions'
-import { deleteCardTC, updateCardTC } from '../../Cards/cards-reducer'
+import { setCardsPackIdAC, setCardsPackNameAC, setCardsPageAC } from '../../Cards/actions'
+import { deleteCardTC, getCardsTC, updateCardTC } from '../../Cards/cards-reducer'
 import { deletePackTC, updatePackTC } from '../../Packs/packs-reducer'
 import { UpdateCardRequestDataType, UpdatePackRequestDataType } from '../../table-api'
 import { TeacherIcon } from '../icons/TeacherIcon'
@@ -33,13 +37,9 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   packName,
   type,
   packId,
-  cardQuestion,
-  cardAnswer,
-  type,
   cardsPackId,
 }) => {
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
 
   const userId = useAppSelector(selectUserId)
   const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
@@ -70,12 +70,13 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
         <div>
           <AddEditPackModal
             packName={packName}
-            packId={packId}
+            // packId={packId}
+            packId={itemId}
             titleButton={'Edit'}
             title={'Edit pack'}
             type={'edit'}
           />
-          <DeletePackAndCard packId={packId} packName={packName} type={'deletePack'} />
+          <DeletePackAndCard packId={itemId} packName={packName} type={'deletePack'} />
         </div>
       )}
     </div>
