@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, MouseEvent } from 'react'
 
 import Button from '@material-ui/core/Button'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
@@ -9,15 +9,13 @@ import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import { FormikHelpers, useFormik } from 'formik'
 import { NavLink, Navigate } from 'react-router-dom'
-
 import * as yup from 'yup'
+
 import { useAppDispatch, useAppSelector } from '../../../app/store'
 import { PATH } from '../../../common/utils/routes/Routes'
-import { selectIsSignedUp } from '../selectors'
 import { signUpTC } from '../auth-reducer'
-
-
 import { boxStyle } from '../Login/Login'
+import { selectIsSignedUp } from '../selectors'
 
 import s from './SignUp.module.css'
 
@@ -54,9 +52,9 @@ export const SignUp = () => {
     },
   })
 
-  const [showPassword, setShowPassword] = React.useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const handleClickShowPassword = () => setShowPassword(show => !show)
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
   }
   const inputProps = {
@@ -128,7 +126,7 @@ export const SignUp = () => {
                 Sign up
               </Button>
             </form>
-            <div className={s.questionBlock}>Don't have an account yet?</div>
+            <div className={s.questionBlock}>Already have an account?</div>
             <div className={s.link}>
               <NavLink to={PATH.login}>Sign in</NavLink>
             </div>
