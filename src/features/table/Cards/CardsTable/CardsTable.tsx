@@ -39,6 +39,7 @@ export const CardsTable = () => {
   const emptyRows = page > 0 ? pageCount - cards.length : 0
   const emptyRowsStyle = { height: 75 * emptyRows }
 
+  //some very important changes
   return (
     <div>
       <TableContainer component={Paper}>
