@@ -8,7 +8,7 @@ import { useFormik } from 'formik'
 import { Navigate, NavLink } from 'react-router-dom'
 import * as yup from 'yup'
 
-import { AppRootStateType, useAppDispatch, useAppSelector } from '../../../app/store'
+import { useAppDispatch, useAppSelector } from '../../../app/store'
 import { PATH } from '../../../common/utils/routes/Routes'
 import { setIsPasswordChangedAC, setIsSignedUpAC, setMailWasSentAC } from '../actions'
 import { loginTC } from '../auth-reducer'
@@ -167,7 +167,7 @@ export const Login = () => {
                 </NavLink>
               </span>
             </div>
-            <div className={s.questionBlock}>Don't have an account yet?</div>
+            <div className={s.questionBlock}>Don&apos;t have an account yet?</div>
             <div className={s.link}>
               <NavLink to={PATH.signUp}>Sign up</NavLink>
             </div>
