@@ -113,7 +113,6 @@ export const PacksTable = () => {
                   <StyledTableCell>
                     <ActionsCell
                       type={'packs'}
-                      packs
                       packOwnerId={cardPack.user_id}
                       itemId={cardPack._id}
                       cardsCount={cardPack.cardsCount}

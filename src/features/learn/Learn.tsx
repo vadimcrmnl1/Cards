@@ -70,7 +70,6 @@ export const Learn = () => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    debugger
     if (first) {
       dispatch(setCardsPackIdAC(id))
       /*dispatch(getCardsTC())*/
