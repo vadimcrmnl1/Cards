@@ -21,11 +21,14 @@ import {
   selectCardsPageCount,
   selectCardsSort,
   selectCardsTotalCount,
+  selectPackName,
   selectPackUserId,
 } from '../selectors'
 
 import { Grade } from './Grade/Grade'
 import { StyledTableCell, StyledTableRow } from './styles'
+
+import { ActionsCellCards } from 'features/table/common/ActionsCell/ActionsCellCards'
 
 export const CardsTable = () => {
   const dispatch = useAppDispatch()
@@ -35,7 +38,7 @@ export const CardsTable = () => {
   const myId = useAppSelector(selectUserId)
   const page = useAppSelector(selectCardsPage)
   const cardsSort = useAppSelector(selectCardsSort)
-  const packName = useAppSelector(selectPacksName)
+  const packName = useAppSelector(selectPackName)
   const cardsPackId = useAppSelector(selectCardsPackId)
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -107,16 +110,15 @@ export const CardsTable = () => {
                 {/*)}*/}
               </StyledTableRow>
             ))}
-            {emptyRows > 0 && (
-              <StyledTableRow style={emptyRowsStyle}>
-                <StyledTableCell colSpan={5} />
-              </StyledTableRow>
-            )}
+            {/*//задизейблил, чтоб таблица с картами на километр вниз не уходила*/}
+            {/*{emptyRows > 0 && (*/}
+            {/*  <StyledTableRow style={emptyRowsStyle}>*/}
+            {/*    <StyledTableCell colSpan={5} />*/}
+            {/*  </StyledTableRow>*/}
+            {/*)}*/}
           </TableBody>
         </Table>
       </TableContainer>
     </div>
   )
 }
-
-

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { Button } from '@material-ui/core'
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import { Menu, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -45,7 +45,6 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
   const question = useAppSelector(modalsSelectors.selectCardQuestion)
   const answer = useAppSelector(modalsSelectors.selectCardAnswer)
   const [formatQuestion, setFormatQuestion] = React.useState('Text')
-  const [formatAnswer, setFormatAnswer] = React.useState('Text')
 
   useEffect(() => {
     dispatch(isActiveModalAC(false))
@@ -93,10 +92,10 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
             onChange={handleQuestionChange}
             variant={'outlined'}
           >
-            <MenuItem value={'Text'} dense={true}>
+            <MenuItem style={{ position: 'initial' }} value={'Text'}>
               Text
             </MenuItem>
-            <MenuItem value={'Image'} dense={true}>
+            <MenuItem style={{ position: 'initial' }} value={'Image'}>
               Image
             </MenuItem>
           </Select>
@@ -113,24 +112,7 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
           error={formik.touched.question && Boolean(formik.errors.question)}
           helperText={formik.touched.question && formik.errors.question}
         />
-        <div className={s.addEditForm}>
-          <p>Choose a question format</p>
-          <Select
-            style={{ margin: '10px', backgroundColor: 'white' }}
-            id="select"
-            defaultValue={formatAnswer}
-            value={formatAnswer}
-            onChange={handleAnswerChange}
-            variant={'outlined'}
-          >
-            <MenuItem value={'Text'} dense={true}>
-              Text
-            </MenuItem>
-            <MenuItem value={'Image'} dense={true}>
-              Image
-            </MenuItem>
-          </Select>
-        </div>
+
         <TextField
           fullWidth
           variant={'standard'}
