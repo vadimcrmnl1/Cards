@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, MouseEvent } from 'react'
 
 import Button from '@material-ui/core/Button'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
@@ -52,9 +52,9 @@ export const SignUp = () => {
     },
   })
 
-  const [showPassword, setShowPassword] = React.useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const handleClickShowPassword = () => setShowPassword(show => !show)
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
   }
   const inputProps = {
@@ -126,7 +126,7 @@ export const SignUp = () => {
                 Sign up
               </Button>
             </form>
-            <div className={s.questionBlock}>Don&rsquo;t have an account yet?</div>
+            <div className={s.questionBlock}>Already have an account?</div>
             <div className={s.link}>
               <NavLink to={PATH.login}>Sign in</NavLink>
             </div>

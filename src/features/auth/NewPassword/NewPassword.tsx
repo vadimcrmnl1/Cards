@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, MouseEvent } from 'react'
 
 import Button from '@material-ui/core/Button'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
@@ -37,9 +37,9 @@ export const NewPassword = () => {
   const token = location.pathname.slice(18)
   const isPasswordChanged = useAppSelector(selectIsPasswordChanged)
 
-  const [showPassword, setShowPassword] = React.useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const handleClickShowPassword = () => setShowPassword(show => !show)
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
   }
   const inputProps = {

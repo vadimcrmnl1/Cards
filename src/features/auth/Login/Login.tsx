@@ -8,7 +8,7 @@ import { useFormik } from 'formik'
 import { Navigate, NavLink } from 'react-router-dom'
 import * as yup from 'yup'
 
-import { AppRootStateType, useAppDispatch, useAppSelector } from '../../../app/store'
+import { useAppDispatch, useAppSelector } from '../../../app/store'
 import { PATH } from '../../../common/utils/routes/Routes'
 import { setIsPasswordChangedAC, setIsSignedUpAC, setMailWasSentAC } from '../actions'
 import { loginTC } from '../auth-reducer'

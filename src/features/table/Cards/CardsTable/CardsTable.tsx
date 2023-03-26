@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useEffect } from 'react'
 
 import { TableHead } from '@mui/material'
 import Paper from '@mui/material/Paper'
@@ -9,11 +10,10 @@ import TableContainer from '@mui/material/TableContainer'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { selectUserId } from '../../../profile/selectors'
 import { ActionsCell } from '../../common/ActionsCell/ActionsCell'
-import { ActionsCellCards } from '../../common/ActionsCell/ActionsCellCards'
 import { SortCell } from '../../common/SortCell/SortCell'
 import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
-import { selectPacksName } from '../../Packs/selectors'
 import { setCardsSortAC } from '../actions'
+import { getCardsTC } from '../cards-reducer'
 import {
   selectCards,
   selectCardsPackId,
@@ -118,3 +118,5 @@ export const CardsTable = () => {
     </div>
   )
 }
+
+
