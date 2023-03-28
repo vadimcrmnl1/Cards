@@ -54,6 +54,7 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
       dispatch(setCardsPageAC(1))
       dispatch(getCardsTC())
     }
+    console.log('cardsPackId = itemId: ', cardsPackId === itemId)
 
     /*dispatch(setCardsPackNameAC(packName as string))*/
   }

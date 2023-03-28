@@ -10,32 +10,19 @@ import { NavLink } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { PATH } from '../../../../common/utils/routes/Routes'
 import { setCardsPackNameAC, setCardsPackUserIdAC, setCardsPageAC } from '../../Cards/actions'
-import { selectCardsPackId } from '../../Cards/selectors'
 import { ActionsCell } from '../../common/ActionsCell/ActionsCell'
 import { SortCell } from '../../common/SortCell/SortCell'
 import { StyledTableCell, StyledTableRow } from '../../common/styles'
 import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
 import { setPacksSortAC } from '../actions'
-import {
-  selectCardPacks,
-  selectPacksPage,
-  selectPacksPageCount,
-  selectPacksSort,
-} from '../selectors'
+import { selectCardPacks, selectPacksSort } from '../selectors'
 
 import s from './PacksTable.module.css'
 
 export const PacksTable = () => {
   const dispatch = useAppDispatch()
   const cardPacks = useAppSelector(selectCardPacks)
-  const page = useAppSelector(selectPacksPage)
-  const pageCount = useAppSelector(selectPacksPageCount)
   const sortPacks = useAppSelector(selectPacksSort)
-  const cardsPackId = useAppSelector(selectCardsPackId)
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? pageCount - cardPacks.length : 0
-  const emptyRowsStyle = { height: 75 * emptyRows }
 
   const handleSort = (sort: string | null) => {
     dispatch(setPacksSortAC(sort))
@@ -117,17 +104,11 @@ export const PacksTable = () => {
                       itemId={cardPack._id}
                       cardsCount={cardPack.cardsCount}
                       packName={cardPack.name}
-                      cardsPackId={cardsPackId}
                     />
                   </StyledTableCell>
                 </StyledTableRow>
               )
             })}
-            {emptyRows > 0 && (
-              <StyledTableRow style={emptyRowsStyle}>
-                <StyledTableCell colSpan={5} />
-              </StyledTableRow>
-            )}
           </TableBody>
         </Table>
       </TableContainer>
