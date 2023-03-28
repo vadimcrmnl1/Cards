@@ -7,10 +7,11 @@ import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
+import { selectUserId } from '../../../profile/selectors'
 import { SortCell } from '../../common/SortCell/SortCell'
 import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
 import { setCardsSortAC } from '../actions'
-import { selectCards, selectCardsSort } from '../selectors'
+import { selectCards, selectCardsSort, selectPackUserId } from '../selectors'
 
 import { Grade } from './Grade/Grade'
 import { StyledTableCell, StyledTableRow } from './styles'
@@ -21,7 +22,9 @@ export const CardsTable = () => {
   const dispatch = useAppDispatch()
   const cards = useAppSelector(selectCards)
   const cardsSort = useAppSelector(selectCardsSort)
-
+  const packUserId = useAppSelector(selectPackUserId)
+  const myId = useAppSelector(selectUserId)
+  const isOwner = packUserId === myId
   const handleSort = (sort: string | null) => {
     dispatch(setCardsSortAC(sort))
   }
@@ -49,8 +52,7 @@ export const CardsTable = () => {
               <StyledTableCell>
                 <SortCell label={'Grade'} sorter={'grade'} sort={cardsSort} />
               </StyledTableCell>
-              {/*{packUserId === myId &&*/}
-              <StyledTableCell>Actions</StyledTableCell>
+              {isOwner && <StyledTableCell>Actions</StyledTableCell>}
             </StyledTableRow>
           </TableHead>
           <TableBody>
@@ -66,18 +68,18 @@ export const CardsTable = () => {
                 <StyledTableCell>
                   <Grade grade={card.grade} />
                 </StyledTableCell>
-                {/*{packUserId === myId && (*/}
-                <StyledTableCell>
-                  <ActionsCellCards
-                    type={'cards'}
-                    cardsPackId={card.cardsPack_id}
-                    packOwnerId={card.user_id}
-                    cardId={card._id}
-                    cardAnswer={card.answer}
-                    cardQuestion={card.question}
-                  />
-                </StyledTableCell>
-                {/*)}*/}
+                {isOwner && (
+                  <StyledTableCell>
+                    <ActionsCellCards
+                      type={'cards'}
+                      cardsPackId={card.cardsPack_id}
+                      packOwnerId={card.user_id}
+                      cardId={card._id}
+                      cardAnswer={card.answer}
+                      cardQuestion={card.question}
+                    />
+                  </StyledTableCell>
+                )}
               </StyledTableRow>
             ))}
           </TableBody>

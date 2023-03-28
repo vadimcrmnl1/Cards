@@ -105,7 +105,6 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
   if (cardQuestion !== '') {
     params.cardQuestion = cardQuestion
   }
-  console.log('params=', params)
   try {
     const res = await cardsAPI.getCards(params)
 
