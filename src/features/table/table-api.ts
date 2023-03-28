@@ -73,7 +73,7 @@ export type CardPacksType = {
 }
 export type AddPackRequestDataType = {
   cardsPack: {
-    name: string
+    name: string | undefined
     deckCover?: string
     private: boolean
   }
@@ -84,7 +84,7 @@ export type AddPackResponseDataType = {
 export type UpdatePackRequestDataType = {
   cardsPack: {
     _id: string | undefined
-    name: string
+    name: string | undefined
   }
 }
 
@@ -121,8 +121,8 @@ export type CardsType = {
 export type AddCardRequestType = {
   card: {
     cardsPack_id: string
-    question: string
-    answer: string
+    question: string | undefined
+    answer: string | undefined
     grade?: number
     shots?: number
     answerImg?: string

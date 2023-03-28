@@ -8,6 +8,7 @@ import * as yup from 'yup'
 import { setAppIsLoadingAC } from '../../../../../../app/actions'
 import { useAppDispatch, useAppSelector } from '../../../../../../app/store'
 import { addPackTC, updatePackTC } from '../../../../../../features/table/Packs/packs-reducer'
+import { ImageInput } from '../../../../ImageInput/ImageInput'
 import { modalAddPackIsOpenAC, modalEditPackIsOpenAC } from '../../actions'
 import { MainModal } from '../../MainModal'
 
@@ -15,7 +16,7 @@ import * as modalsSelectors from './../../selectors'
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),
-  private: yup.string(),
+  // private: yup.string(),
 })
 
 type AddEditPackModalType = {
@@ -23,7 +24,7 @@ type AddEditPackModalType = {
   title?: string
   titleButton?: string
   packId?: string
-  packName?: string | undefined
+  packName?: string
 }
 
 export const AddEditPackModal: React.FC<AddEditPackModalType> = ({
@@ -34,20 +35,19 @@ export const AddEditPackModal: React.FC<AddEditPackModalType> = ({
   packName,
 }) => {
   const dispatch = useAppDispatch()
-  const cardPackId = useAppSelector(modalsSelectors.selectPackId)
-  const name = useAppSelector(modalsSelectors.selectPackName)
 
-  console.log('name', name)
   const formik = useFormik({
     initialValues: {
-      name: type === 'create' ? '' : name,
+      name: type === 'edit' ? packName : '',
       private: false,
     },
     validationSchema: validationSchema,
     onSubmit: values => {
-      type === 'create'
-        ? dispatch(addPackTC({ cardsPack: values }))
-        : dispatch(updatePackTC({ cardsPack: { _id: packId, ...values } }))
+      {
+        type === 'create'
+          ? dispatch(addPackTC({ cardsPack: values }))
+          : dispatch(updatePackTC({ cardsPack: { _id: packId, ...values } }))
+      }
       dispatch(modalAddPackIsOpenAC(false))
       dispatch(modalEditPackIsOpenAC(false))
       dispatch(setAppIsLoadingAC(true))
@@ -65,6 +65,7 @@ export const AddEditPackModal: React.FC<AddEditPackModalType> = ({
       packId={packId}
     >
       <form onSubmit={formik.handleSubmit}>
+        <ImageInput />
         <TextField
           fullWidth
           autoFocus={true}

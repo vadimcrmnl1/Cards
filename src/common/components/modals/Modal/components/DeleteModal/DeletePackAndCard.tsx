@@ -9,40 +9,36 @@ import { deletePackTC } from '../../../../../../features/table/Packs/packs-reduc
 import {
   modalDeleteCardIsOpenAC,
   modalDeletePackIsOpenAC,
+  modalSetCardAnswerAC,
+  modalSetCardIdAC,
+  modalSetCardQuestionAC,
   modalSetPackIdAC,
   modalSetPackNameAC,
 } from '../../actions'
 import { MainModal } from '../../MainModal'
-import { selectCardId, selectCardQuestion, selectIsActiveModal } from '../../selectors'
 
 import * as modalsSelectors from './../../selectors'
+
 type DeletePackAndCardType = {
   type: 'deletePack' | 'deleteCard'
   packName?: string
   cardQuestion?: string
   cardId?: string
   packId?: string
+  itemId?: string
 }
 
 export const DeletePackAndCard: React.FC<DeletePackAndCardType> = ({
   type,
-  // handleDelete,
   packName,
   cardQuestion,
   packId,
   cardId,
 }) => {
   const dispatch = useAppDispatch()
-  const isActive = useAppSelector(modalsSelectors.selectIsActiveModal)
   const question = useAppSelector(modalsSelectors.selectCardQuestion)
   const cardIdSelector = useAppSelector(modalsSelectors.selectCardId)
-  const name = useAppSelector(modalsSelectors.selectPackName)
 
-  // useEffect(() => {
-  //   if (isActive) {
-  //     return
-  //   }
-  // }, [itemId])
   const handleDeletePackOrCard = () => {
     if (type === 'deletePack') {
       dispatch(deletePackTC(packId))
@@ -52,9 +48,9 @@ export const DeletePackAndCard: React.FC<DeletePackAndCardType> = ({
       dispatch(setAppIsLoadingAC(true))
     } else if (type === 'deleteCard') {
       dispatch(deleteCardTC(cardIdSelector as string))
-      // dispatch(modalSetCardQuestionAC(''))
-      // dispatch(modalSetCardIdAC(''))
-      // dispatch(modalSetCardAnswerAC(''))
+      dispatch(modalSetCardQuestionAC(''))
+      dispatch(modalSetCardIdAC(''))
+      dispatch(modalSetCardAnswerAC(''))
       dispatch(modalDeleteCardIsOpenAC(false))
       dispatch(setAppIsLoadingAC(true))
     }
@@ -65,6 +61,7 @@ export const DeletePackAndCard: React.FC<DeletePackAndCardType> = ({
       title={type === 'deletePack' ? 'Delete pack' : 'Delete card'}
       type={type === 'deletePack' ? 'deletePack' : 'deleteCard'}
       cardQuestion={cardQuestion}
+      packId={packId}
       cardId={cardId}
       packName={packName}
     >

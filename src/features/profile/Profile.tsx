@@ -39,6 +39,7 @@ export const Profile = () => {
         </div>
         <div className={s.informBlock}>
           <h3>Personal Information</h3>
+
           <div className={s.avatar}>
             {/*<img src={avatar} alt={'avatar'} className={s.avatarPic} />*/}
             <Avatar />

@@ -1,12 +1,9 @@
 import * as React from 'react'
 
-import { NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
+import { selectIsAppMakeRequest } from '../../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
-import {
-  isActiveModalAC,
-  modalEditPackIsOpenAC,
-} from '../../../../common/components/modals/Modal/actions'
 import { AddEditPackModal } from '../../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
 import { DeletePackAndCard } from '../../../../common/components/modals/Modal/components/DeleteModal/DeletePackAndCard'
 import { PATH } from '../../../../common/utils/routes/Routes'
@@ -34,17 +31,18 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   type,
   packId,
   cardsPackId,
+  cardsCount,
 }) => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const userId = useAppSelector(selectUserId)
-  /* const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
-  const handleOpenEditPack = () => {
-    dispatch(isActiveModalAC(true))
-    dispatch(modalEditPackIsOpenAC(true))
-  }*/
+  const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
+
   const handleLinkToCards = () => {
     dispatch(setCardsPackNameAC(packName as string))
+    // navigate(PATH.packs + `learn/${itemId}`)
+    navigate(PATH.learn)
 
     if (type === 'cards') {
       dispatch(setCardsPackIdAC(cardsPackId as string))
@@ -53,20 +51,24 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
       dispatch(setCardsPageAC(1))
       dispatch(getCardsTC())
     }
-
-    /*dispatch(setCardsPackNameAC(packName as string))*/
   }
+  const btnLearnClassName = cardsCount === 0 ? s.buttonLearn : ''
 
   return (
     <div className={s.cell}>
-      <NavLink to={PATH.learn} onClick={handleLinkToCards}>
-        <TeacherIcon />
-      </NavLink>
+      {type === 'packs' && (
+        <button
+          className={btnLearnClassName}
+          onClick={handleLinkToCards}
+          disabled={isAppMakeRequest || cardsCount === 0}
+        >
+          <TeacherIcon />
+        </button>
+      )}
       {type === 'packs' && packOwnerId === userId && (
         <div>
           <AddEditPackModal
             packName={packName}
-            // packId={packId}
             packId={itemId}
             titleButton={'Edit'}
             title={'Edit pack'}
