@@ -11,15 +11,7 @@ import { selectUserId } from '../../../profile/selectors'
 import { SortCell } from '../../common/SortCell/SortCell'
 import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
 import { setCardsSortAC } from '../actions'
-import {
-  selectCards,
-  selectCardsPackId,
-  selectCardsPage,
-  selectCardsPageCount,
-  selectCardsSort,
-  selectPackName,
-  selectPackUserId,
-} from '../selectors'
+import { selectCards, selectCardsSort, selectPackUserId } from '../selectors'
 
 import { Grade } from './Grade/Grade'
 import { StyledTableCell, StyledTableRow } from './styles'
@@ -29,14 +21,10 @@ import { ActionsCellCards } from 'features/table/common/ActionsCell/ActionsCellC
 export const CardsTable = () => {
   const dispatch = useAppDispatch()
   const cards = useAppSelector(selectCards)
-  const pageCount = useAppSelector(selectCardsPageCount)
-  const page = useAppSelector(selectCardsPage)
   const cardsSort = useAppSelector(selectCardsSort)
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? pageCount - cards.length : 0
-  const emptyRowsStyle = { height: 75 * emptyRows }
-
+  const packUserId = useAppSelector(selectPackUserId)
+  const myId = useAppSelector(selectUserId)
+  const owner = packUserId === myId
   const handleSort = (sort: string | null) => {
     dispatch(setCardsSortAC(sort))
   }
@@ -64,7 +52,7 @@ export const CardsTable = () => {
               <StyledTableCell>
                 <SortCell label={'Grade'} sorter={'grade'} sort={cardsSort} />
               </StyledTableCell>
-              <StyledTableCell>Actions</StyledTableCell>
+              {owner && <StyledTableCell>Actions</StyledTableCell>}
             </StyledTableRow>
           </TableHead>
           <TableBody>
@@ -80,16 +68,18 @@ export const CardsTable = () => {
                 <StyledTableCell>
                   <Grade grade={card.grade} />
                 </StyledTableCell>
-                <StyledTableCell>
-                  <ActionsCellCards
-                    type={'cards'}
-                    cardsPackId={card.cardsPack_id}
-                    packOwnerId={card.user_id}
-                    cardId={card._id}
-                    cardAnswer={card.answer}
-                    cardQuestion={card.question}
-                  />
-                </StyledTableCell>
+                {owner && (
+                  <StyledTableCell>
+                    <ActionsCellCards
+                      type={'cards'}
+                      cardsPackId={card.cardsPack_id}
+                      packOwnerId={card.user_id}
+                      cardId={card._id}
+                      cardAnswer={card.answer}
+                      cardQuestion={card.question}
+                    />
+                  </StyledTableCell>
+                )}
               </StyledTableRow>
             ))}
           </TableBody>

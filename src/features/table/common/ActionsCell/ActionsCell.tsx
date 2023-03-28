@@ -1,7 +1,8 @@
 import * as React from 'react'
 
-import { NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
+import { selectIsAppMakeRequest } from '../../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { AddEditPackModal } from '../../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
 import { DeletePackAndCard } from '../../../../common/components/modals/Modal/components/DeleteModal/DeletePackAndCard'
@@ -30,13 +31,19 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   type,
   packId,
   cardsPackId,
+  cardsCount,
 }) => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
 
   const userId = useAppSelector(selectUserId)
+  const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
 
   const handleLinkToCards = () => {
     dispatch(setCardsPackNameAC(packName as string))
+    // navigate(PATH.packs + `learn/${itemId}`)
+    navigate(PATH.learn)
+
     if (type === 'cards') {
       dispatch(setCardsPackIdAC(cardsPackId as string))
     } else if (type === 'packs') {
@@ -45,12 +52,19 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
       dispatch(getCardsTC())
     }
   }
+  const btnLearnClassName = cardsCount === 0 ? s.buttonLearn : ''
 
   return (
     <div className={s.cell}>
-      <NavLink to={PATH.learn} onClick={handleLinkToCards}>
-        <TeacherIcon />
-      </NavLink>
+      {type === 'packs' && (
+        <button
+          className={btnLearnClassName}
+          onClick={handleLinkToCards}
+          disabled={isAppMakeRequest || cardsCount === 0}
+        >
+          <TeacherIcon />
+        </button>
+      )}
       {type === 'packs' && packOwnerId === userId && (
         <div>
           <AddEditPackModal
