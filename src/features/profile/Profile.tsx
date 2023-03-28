@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../app/store'
 import { LinkToBack } from '../../common/components/LinkToBack/LinkToBack'
 import { PATH } from '../../common/utils/routes/Routes'
 import { logoutTC } from '../auth/auth-reducer'
+import { Avatar } from '../avatar/Avatar'
 import { useStyles } from '../styleMU/styleMU'
 
 import avatar from './../images/avatar.webp'
@@ -39,7 +40,8 @@ export const Profile = () => {
         <div className={s.informBlock}>
           <h3>Personal Information</h3>
           <div className={s.avatar}>
-            <img src={avatar} alt={'avatar'} className={s.avatarPic} />
+            {/*<img src={avatar} alt={'avatar'} className={s.avatarPic} />*/}
+            <Avatar />
           </div>
           {editMode ? (
             <ProfileEditNameBlock setEditMode={setEditMode} />

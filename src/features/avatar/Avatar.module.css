@@ -1,0 +1,17 @@
+.avatar{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+}
+.avatarPic {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 50%;
+}
+.iconAddPhoto{
+  margin-top: 80px;
+  margin-left: -20px;
+}

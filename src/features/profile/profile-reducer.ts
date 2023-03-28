@@ -29,6 +29,8 @@ export const profileReducer = (
       return { ...state, ...action.payload.data }
     case 'PROFILE/CHANGE_NAME':
       return { ...state, name: action.payload.name }
+    case 'PROFILE/CHANGE_AVA':
+      return { ...state, avatar: action.payload.avatar }
     default:
       return state
   }
@@ -36,7 +38,7 @@ export const profileReducer = (
 
 //thunks
 
-//Изменение nickName
+//Change nickName
 export const changeNameTC =
   (name: string): AppThunk<AllReducersActionType> =>
   async dispatch => {
@@ -45,6 +47,20 @@ export const changeNameTC =
 
       dispatch(profileActions.changeNameAC(res.data.updatedUser.name))
       dispatch(appActions.setAppInfoAC(`Name changed to ${res.data.updatedUser.name}`))
+    } catch (e: any) {
+      errorUtils(e, dispatch)
+    }
+  }
+//=========Change Avatar
+export const changeAvaTC =
+  (name: string, avatar: string): AppThunk<AllReducersActionType> =>
+  async dispatch => {
+    try {
+      const res = await profileAPI.changeAva(name, avatar)
+
+      // dispatch(profileActions.changeNameAC(res.data.updatedUser.name))
+      dispatch(profileActions.changeAvaAC(res.data.updatedUser.avatar as string))
+      //dispatch(appActions.setAppInfoAC(`Avatar changed to ${res.data.updatedUser.name}`))
     } catch (e: any) {
       errorUtils(e, dispatch)
     }

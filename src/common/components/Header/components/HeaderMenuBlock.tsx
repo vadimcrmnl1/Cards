@@ -7,7 +7,8 @@ import { setAppErrorAC } from '../../../../app/actions'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { logoutTC } from '../../../../features/auth/auth-reducer'
 import { selectIsLoggedIn } from '../../../../features/auth/selectors'
-import { selectName } from '../../../../features/profile/selectors'
+import defaultAva from '../../../../features/images/avatar.webp'
+import { selectAvatar, selectName } from '../../../../features/profile/selectors'
 import { PATH } from '../../../utils/routes/Routes'
 
 import avatar from './../../../../features/images/avatar.png'
@@ -16,6 +17,7 @@ import s from './../Header.module.css'
 export const HeaderMenuBlock = () => {
   const loginStatus = useAppSelector(selectIsLoggedIn)
   const userName = useAppSelector(selectName)
+  const ava = useAppSelector(selectAvatar)
 
   const dispatch = useAppDispatch()
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null)
@@ -37,7 +39,7 @@ export const HeaderMenuBlock = () => {
       <span className={s.nameBlock}>{userName}</span>
       <Tooltip title={''}>
         <IconButton size={'small'} onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar className={s.avatar} alt="avatar" src={avatar} />
+          <img className={s.avatar} alt="avatar" src={ava || defaultAva} />
         </IconButton>
       </Tooltip>
       <Menu
