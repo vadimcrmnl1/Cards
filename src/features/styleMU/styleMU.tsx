@@ -16,7 +16,7 @@ export const useStyles = makeStyles(theme => ({
     color: '#fff',
   },
   buttonSave: {
-    width: '100px',
+    minWidth: '100px',
     height: '30px',
     fontSize: '0.875rem',
     fontWeight: 500,

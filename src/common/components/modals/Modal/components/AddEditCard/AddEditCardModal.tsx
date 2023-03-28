@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { Button } from '@material-ui/core'
-import { Menu, MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -14,7 +14,6 @@ import { isActiveModalAC, modalAddCardIsOpenAC, modalEditCardIsOpen } from '../.
 import { MainModal } from '../../MainModal'
 
 import s from './../../MainModal.module.css'
-import * as modalsSelectors from './../../selectors'
 
 const validationSchema = yup.object({
   question: yup.string().required('Question is required'),
@@ -26,33 +25,28 @@ type AddEditCardType = {
   title?: string
   titleButton?: string
   cardsPackId?: string | undefined
-  cardAnswer?: string
-  cardQuestion?: string
+  cardAnswer?: string | undefined
+  cardQuestion?: string | undefined
   cardId?: string
 }
 
 export const AddEditCardModal: React.FC<AddEditCardType> = ({
   type,
-  titleButton,
-  title,
-  cardsPackId,
   cardAnswer,
   cardQuestion,
   cardId,
 }) => {
   const dispatch = useAppDispatch()
   const packId = useAppSelector(selectCardsPackId)
-  const question = useAppSelector(modalsSelectors.selectCardQuestion)
-  const answer = useAppSelector(modalsSelectors.selectCardAnswer)
   const [formatQuestion, setFormatQuestion] = React.useState('Text')
 
   useEffect(() => {
     dispatch(isActiveModalAC(false))
-  }, [cardAnswer, question, packId, cardId])
+  }, [cardAnswer, cardQuestion, cardId])
   const formik = useFormik({
     initialValues: {
-      question: type === 'createCard' ? '' : question,
-      answer: type === 'createCard' ? '' : answer,
+      question: type === 'createCard' ? '' : cardQuestion,
+      answer: type === 'createCard' ? '' : cardAnswer,
     },
     validationSchema: validationSchema,
     onSubmit: values => {
@@ -69,18 +63,15 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
     // @ts-ignore
     setFormatQuestion(event.target.value as string)
   }
-  const handleAnswerChange = (event: SelectChangeEvent) => {
-    // @ts-ignore
-    setFormatAnswer(event.target.value as string)
-  }
-
-  console.log(cardId)
 
   return (
     <MainModal
       title={type === 'createCard' ? 'Create new card' : 'Edit card'}
       titleButton={'Add new card'}
       type={type === 'createCard' ? 'createCard' : 'editCard'}
+      cardId={cardId}
+      cardQuestion={cardQuestion}
+      cardAnswer={cardAnswer}
     >
       <form onSubmit={formik.handleSubmit}>
         <div className={s.addEditForm}>

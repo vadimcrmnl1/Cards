@@ -20,6 +20,7 @@ import {
   modalDeletePackIsOpenAC,
   modalEditCardIsOpen,
   modalEditPackIsOpenAC,
+  modalSetCardAnswerAC,
   modalSetCardIdAC,
   modalSetCardQuestionAC,
   modalSetPackIdAC,
@@ -63,18 +64,17 @@ export const MainModal: React.FC<MainModalPropsType> = ({
   packName,
   packId,
   cardQuestion,
+  cardAnswer,
   cardId,
 }) => {
-  const isActiveModal = useAppSelector(modalsSelectors.selectIsActiveModal)
   const addPack = useAppSelector(modalsSelectors.selectAddPackModal)
   const addCard = useAppSelector(modalsSelectors.selectAddCardModal)
   const editPack = useAppSelector(modalsSelectors.selectEditPackModal)
   const editCard = useAppSelector(modalsSelectors.selectEditCardModal)
   const deletePack = useAppSelector(modalsSelectors.selectDeletePackModal)
   const deleteCard = useAppSelector(modalsSelectors.selectDeleteCardModal)
-  const question = useAppSelector(modalsSelectors.selectCardQuestion)
-  const cardIdSelector = useAppSelector(modalsSelectors.selectCardId)
-
+  const cardItemId = useAppSelector(modalsSelectors.selectCardId)
+  const cardPackId = useAppSelector(modalsSelectors.selectPackId)
   const dispatch = useAppDispatch()
 
   const handleOpen = () => {
@@ -89,10 +89,12 @@ export const MainModal: React.FC<MainModalPropsType> = ({
       dispatch(modalEditPackIsOpenAC(true))
     } else if (type === 'editCard') {
       dispatch(modalSetCardQuestionAC(cardQuestion as string))
+      dispatch(modalSetCardAnswerAC(cardAnswer as string))
       dispatch(modalSetCardIdAC(cardId as string))
       dispatch(modalEditCardIsOpen(true))
     } else if (type === 'deletePack') {
       dispatch(modalDeletePackIsOpenAC(true))
+      dispatch(modalSetPackIdAC(packId as string))
     } else if (type === 'deleteCard') {
       dispatch(modalSetCardIdAC(cardId as string))
       dispatch(modalSetCardQuestionAC(cardQuestion as string))
@@ -105,8 +107,6 @@ export const MainModal: React.FC<MainModalPropsType> = ({
     } else if (type === 'createCard') {
       dispatch(modalAddCardIsOpenAC(false))
     } else if (type === 'edit') {
-      dispatch(modalSetPackIdAC(''))
-      dispatch(modalSetPackNameAC(''))
       dispatch(modalEditPackIsOpenAC(false))
     } else if (type === 'editCard') {
       dispatch(modalEditCardIsOpen(false))
@@ -138,7 +138,7 @@ export const MainModal: React.FC<MainModalPropsType> = ({
     ) : (
       <button onClick={handleOpen}>{type === 'editCard' ? <EditIcon /> : <TrashIcon />}</button>
     )
-  const openModal =
+  let openModal =
     // eslint-disable-next-line no-nested-ternary
     type === 'create'
       ? addPack
@@ -155,10 +155,22 @@ export const MainModal: React.FC<MainModalPropsType> = ({
       ? deletePack
       : deleteCard
 
+  if (type === 'deletePack') {
+    openModal = deletePack && packId === cardPackId
+  }
+  if (type === 'deleteCard') {
+    openModal = deleteCard && cardId === cardItemId
+  }
+  if (type === 'editCard') {
+    openModal = editCard && cardId === cardItemId
+  }
+  if (type === 'edit') {
+    openModal = editPack && packId === cardPackId
+  }
+
   return (
     <div>
       {table === 'pack' ? packsButtons : cardsButtons}
-
       <Modal
         open={openModal}
         onClose={handleClose}

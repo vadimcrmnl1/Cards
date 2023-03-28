@@ -3,10 +3,6 @@ import * as React from 'react'
 import { NavLink } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
-import {
-  isActiveModalAC,
-  modalEditPackIsOpenAC,
-} from '../../../../common/components/modals/Modal/actions'
 import { AddEditPackModal } from '../../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
 import { DeletePackAndCard } from '../../../../common/components/modals/Modal/components/DeleteModal/DeletePackAndCard'
 import { PATH } from '../../../../common/utils/routes/Routes'
@@ -38,14 +34,9 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
   const dispatch = useAppDispatch()
 
   const userId = useAppSelector(selectUserId)
-  /* const isAppMakeRequest = useAppSelector(selectIsAppMakeRequest)
-  const handleOpenEditPack = () => {
-    dispatch(isActiveModalAC(true))
-    dispatch(modalEditPackIsOpenAC(true))
-  }*/
+
   const handleLinkToCards = () => {
     dispatch(setCardsPackNameAC(packName as string))
-
     if (type === 'cards') {
       dispatch(setCardsPackIdAC(cardsPackId as string))
     } else if (type === 'packs') {
@@ -53,8 +44,6 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
       dispatch(setCardsPageAC(1))
       dispatch(getCardsTC())
     }
-
-    /*dispatch(setCardsPackNameAC(packName as string))*/
   }
 
   return (
@@ -66,7 +55,6 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
         <div>
           <AddEditPackModal
             packName={packName}
-            // packId={packId}
             packId={itemId}
             titleButton={'Edit'}
             title={'Edit pack'}

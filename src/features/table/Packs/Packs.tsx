@@ -89,6 +89,7 @@ export const Packs = () => {
         <h3>Packs list</h3>
         <AddEditPackModal type={'create'} title={'Add new pack'} titleButton={'Add'} />
       </div>
+
       <div className={s.packsBlock}>
         <SearchTitleCards />
         <SortingByUser />
