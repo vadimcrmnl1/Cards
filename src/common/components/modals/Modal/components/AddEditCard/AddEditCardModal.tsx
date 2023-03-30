@@ -1,23 +1,46 @@
 import React, { useEffect } from 'react'
 
 import { Button } from '@material-ui/core'
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
+import BackspaceSharpIcon from '@mui/icons-material/BackspaceSharp'
+import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault'
+import HighlightOffIcon from '@mui/icons-material/HighlightOff'
+import {
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
 import { setAppIsLoadingAC } from '../../../../../../app/actions'
 import { useAppDispatch, useAppSelector } from '../../../../../../app/store'
+import { useStyles } from '../../../../../../features/styleMU/styleMU'
+import {
+  setCardsAddAnswerImageAC,
+  setCardsAddQuestionImageAC,
+} from '../../../../../../features/table/Cards/actions'
 import { addCardTC, updateCardTC } from '../../../../../../features/table/Cards/cards-reducer'
-import { selectCardsPackId } from '../../../../../../features/table/Cards/selectors'
+import { InputTypeFile } from '../../../../../../features/table/Cards/components/InputImageFile/InputImageFile'
+import {
+  selectCardsAnswerImage,
+  selectCardsPackId,
+  selectCardsQuestionImage,
+} from '../../../../../../features/table/Cards/selectors'
+import { ImageInput } from '../../../../ImageInput/ImageInput'
 import { isActiveModalAC, modalAddCardIsOpenAC, modalEditCardIsOpen } from '../../actions'
 import { MainModal } from '../../MainModal'
 
 import s from './../../MainModal.module.css'
 
 const validationSchema = yup.object({
-  question: yup.string().required('Question is required'),
-  answer: yup.string().required('Answer is required'),
+  // question: yup.string().required('Question is required'),
+  // answer: yup.string().required('Answer is required'),
 })
 
 type AddEditCardType = {
@@ -28,6 +51,8 @@ type AddEditCardType = {
   cardAnswer?: string | undefined
   cardQuestion?: string | undefined
   cardId?: string
+  cardAnswerImg?: string
+  cardQuestionImg?: string
 }
 
 export const AddEditCardModal: React.FC<AddEditCardType> = ({
@@ -35,33 +60,76 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
   cardAnswer,
   cardQuestion,
   cardId,
+  cardAnswerImg,
+  cardQuestionImg,
 }) => {
   const dispatch = useAppDispatch()
   const packId = useAppSelector(selectCardsPackId)
-  const [formatQuestion, setFormatQuestion] = React.useState('Text')
+  const qImg = useAppSelector(selectCardsQuestionImage)
+  const aImg = useAppSelector(selectCardsAnswerImage)
+  let [formatQuestion, setFormatQuestion] = React.useState<'Text' | 'Image'>('Text')
+  let [formatAnswer, setFormatAnswer] = React.useState<'Text' | 'Image'>('Text')
+
+  const styleMU = useStyles()
+  let focusQuestion = false
 
   useEffect(() => {
     dispatch(isActiveModalAC(false))
-  }, [cardAnswer, cardQuestion, cardId])
+    // setFormatAnswer('Text')
+    // setFormatQuestion('Text')
+    if (cardQuestionImg !== '' && type === 'editCard') {
+      setFormatQuestion('Image')
+    }
+    if (cardAnswerImg !== '' && type === 'editCard') {
+      setFormatAnswer('Image')
+    }
+  }, [cardAnswer, cardQuestion, cardId, qImg, aImg, formatQuestion, formatAnswer])
   const formik = useFormik({
     initialValues: {
       question: type === 'createCard' ? '' : cardQuestion,
       answer: type === 'createCard' ? '' : cardAnswer,
+      questionImg: type === 'createCard' && formatQuestion === 'Image' ? cardQuestionImg : '',
+      answerImg: type === 'createCard' && formatAnswer === 'Image' ? cardAnswerImg : '',
     },
     validationSchema: validationSchema,
     onSubmit: values => {
       type === 'createCard'
-        ? dispatch(addCardTC({ card: { cardsPack_id: packId, ...values } }))
-        : dispatch(updateCardTC({ card: { _id: cardId, ...values } }))
+        ? dispatch(
+            addCardTC({
+              card: { cardsPack_id: packId, ...values, answerImg: aImg, questionImg: qImg },
+            })
+          )
+        : dispatch(
+            updateCardTC({ card: { _id: cardId, ...values, answerImg: aImg, questionImg: qImg } })
+          )
       formik.resetForm()
       dispatch(modalAddCardIsOpenAC(false))
       dispatch(modalEditCardIsOpen(false))
       dispatch(setAppIsLoadingAC(true))
+      dispatch(setCardsAddQuestionImageAC(''))
+      dispatch(setCardsAddAnswerImageAC(''))
+      setFormatQuestion('Text')
+      setFormatAnswer('Text')
     },
   })
   const handleQuestionChange = (event: SelectChangeEvent) => {
     // @ts-ignore
     setFormatQuestion(event.target.value as string)
+  }
+  const handleAnswerChange = (event: SelectChangeEvent) => {
+    // @ts-ignore
+    setFormatAnswer(event.target.value as string)
+  }
+  const handleResetQuestion = () => {
+    focusQuestion = true
+    formik.resetForm({
+      values: { answer: formik.values.answer, question: '', answerImg: '', questionImg: '' },
+    })
+  }
+  const handleResetAnswer = () => {
+    formik.resetForm({
+      values: { answer: '', question: formik.values.question, answerImg: '', questionImg: '' },
+    })
   }
 
   return (
@@ -77,44 +145,93 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
         <div className={s.addEditForm}>
           <p>Choose a question format</p>
           <Select
-            style={{ margin: '10px', backgroundColor: 'white' }}
+            className={styleMU.selectForm}
             id="select"
             value={formatQuestion}
+            defaultValue={formatQuestion}
             onChange={handleQuestionChange}
             variant={'outlined'}
           >
-            <MenuItem style={{ position: 'initial' }} value={'Text'}>
+            <MenuItem className={styleMU.menuItem} value={'Text'}>
               Text
             </MenuItem>
-            <MenuItem style={{ position: 'initial' }} value={'Image'}>
+            <MenuItem className={styleMU.menuItem} value={'Image'}>
               Image
             </MenuItem>
           </Select>
         </div>
-
-        <TextField
-          fullWidth
-          variant={'standard'}
-          id={'question'}
-          name={'question'}
-          label={'Question'}
-          value={formik.values.question}
-          onChange={formik.handleChange}
-          error={formik.touched.question && Boolean(formik.errors.question)}
-          helperText={formik.touched.question && formik.errors.question}
-        />
-
-        <TextField
-          fullWidth
-          variant={'standard'}
-          id={'answer'}
-          name={'answer'}
-          label={'Answer'}
-          value={formik.values.answer}
-          onChange={formik.handleChange}
-          error={formik.touched.answer && Boolean(formik.errors.answer)}
-          helperText={formik.touched.answer && formik.errors.answer}
-        />
+        <div>
+          <p className={s.description}>Question:</p>
+        </div>
+        {formatQuestion === 'Text' ? (
+          <TextField
+            fullWidth
+            variant={'standard'}
+            id={'question'}
+            name={'question'}
+            autoFocus={focusQuestion}
+            InputProps={{
+              endAdornment: (
+                <span className={s.clearInputButton} onClick={handleResetQuestion}>
+                  <BackspaceSharpIcon />
+                </span>
+              ),
+            }}
+            placeholder={'Question'}
+            value={formik.values.question}
+            onChange={formik.handleChange}
+            error={formik.touched.question && Boolean(formik.errors.question)}
+            helperText={formik.touched.question && formik.errors.question}
+          />
+        ) : (
+          <div className={s.imageBlock}>
+            <InputTypeFile action={type} type={'question'} cardQuestionImg={cardQuestionImg} />
+          </div>
+        )}
+        <div className={s.addEditForm}>
+          <p>Choose a answer format</p>
+          <Select
+            className={styleMU.selectForm}
+            id="select"
+            value={formatAnswer}
+            onChange={handleAnswerChange}
+            variant={'outlined'}
+          >
+            <MenuItem className={styleMU.menuItem} value={'Text'}>
+              Text
+            </MenuItem>
+            <MenuItem className={styleMU.menuItem} value={'Image'}>
+              Image
+            </MenuItem>
+          </Select>
+        </div>
+        <div>
+          <p className={s.description}>Answer:</p>
+        </div>
+        {formatAnswer === 'Text' ? (
+          <TextField
+            fullWidth
+            variant={'standard'}
+            id={'answer'}
+            name={'answer'}
+            placeholder={'Answer'}
+            value={formik.values.answer}
+            InputProps={{
+              endAdornment: (
+                <span className={s.clearInputButton} onClick={handleResetAnswer}>
+                  <BackspaceSharpIcon />
+                </span>
+              ),
+            }}
+            onChange={formik.handleChange}
+            error={formik.touched.answer && Boolean(formik.errors.answer)}
+            helperText={formik.touched.answer && formik.errors.answer}
+          />
+        ) : (
+          <div className={s.imageBlock}>
+            <InputTypeFile action={type} type={'answer'} cardAnswerImg={cardAnswerImg} />
+          </div>
+        )}
         <Button
           color={'primary'}
           fullWidth

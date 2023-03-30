@@ -37,7 +37,8 @@ const style = {
   width: 400,
   minHeight: 280,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  border: 'none',
+  borderRadius: '10px',
   boxShadow: 24,
   p: 4,
 }

@@ -11,7 +11,12 @@ import { selectUserId } from '../../../profile/selectors'
 import { SortCell } from '../../common/SortCell/SortCell'
 import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
 import { setCardsSortAC } from '../actions'
-import { selectCards, selectCardsSort, selectPackUserId } from '../selectors'
+import {
+  selectCards,
+  selectCardsQuestionImage,
+  selectCardsSort,
+  selectPackUserId,
+} from '../selectors'
 
 import { Grade } from './Grade/Grade'
 import { StyledTableCell, StyledTableRow } from './styles'
@@ -25,6 +30,7 @@ export const CardsTable = () => {
   const packUserId = useAppSelector(selectPackUserId)
   const myId = useAppSelector(selectUserId)
   const owner = packUserId === myId
+  const questImg = useAppSelector(selectCardsQuestionImage)
   const handleSort = (sort: string | null) => {
     dispatch(setCardsSortAC(sort))
   }
@@ -59,10 +65,14 @@ export const CardsTable = () => {
             {cards.map((card, index) => (
               <StyledTableRow key={card._id}>
                 <StyledTableCell scope="row">
-                  <TableTextCell text={card.question} />
+                  <TableTextCell
+                    type={'question'}
+                    imageQuestion={card.questionImg}
+                    text={card.question}
+                  />
                 </StyledTableCell>
                 <StyledTableCell>
-                  <TableTextCell text={card.answer} />
+                  <TableTextCell type={'answer'} imageAnswer={card.answerImg} text={card.answer} />
                 </StyledTableCell>
                 <StyledTableCell>{card.updated}</StyledTableCell>
                 <StyledTableCell>
@@ -77,6 +87,8 @@ export const CardsTable = () => {
                       cardId={card._id}
                       cardAnswer={card.answer}
                       cardQuestion={card.question}
+                      cardAnswerImg={card.answerImg}
+                      cardQuestionImg={card.questionImg}
                     />
                   </StyledTableCell>
                 )}

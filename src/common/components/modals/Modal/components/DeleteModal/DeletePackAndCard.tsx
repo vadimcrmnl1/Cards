@@ -17,6 +17,7 @@ import {
 } from '../../actions'
 import { MainModal } from '../../MainModal'
 
+import s from './../../MainModal.module.css'
 import * as modalsSelectors from './../../selectors'
 
 type DeletePackAndCardType = {
@@ -26,6 +27,7 @@ type DeletePackAndCardType = {
   cardId?: string
   packId?: string
   itemId?: string
+  cardQuestionImg?: string
 }
 
 export const DeletePackAndCard: React.FC<DeletePackAndCardType> = ({
@@ -34,6 +36,7 @@ export const DeletePackAndCard: React.FC<DeletePackAndCardType> = ({
   cardQuestion,
   packId,
   cardId,
+  cardQuestionImg,
 }) => {
   const dispatch = useAppDispatch()
   const question = useAppSelector(modalsSelectors.selectCardQuestion)
@@ -66,7 +69,17 @@ export const DeletePackAndCard: React.FC<DeletePackAndCardType> = ({
       packName={packName}
     >
       <div>
-        <p>Do you really want to remove {type === 'deletePack' ? packName : question}?</p>
+        <p>
+          Do you really want to remove {/* eslint-disable-next-line no-nested-ternary */}
+          {type === 'deletePack' ? (
+            packName
+          ) : cardQuestionImg !== '' ? (
+            <img className={s.deleteCardImg} src={cardQuestionImg} alt={'question'} />
+          ) : (
+            question
+          )}
+          ?
+        </p>
         <p>{type === 'deletePack' ? 'All cards will be deleted.' : 'Card will be deleted.'} </p>
         <Button
           color={'secondary'}

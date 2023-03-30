@@ -28,6 +28,8 @@ export const cardsInitialState = {
   cardQuestion: '',
   name: '',
   cardsForLearn: [] as CardsType[],
+  questionImg: '',
+  answerImg: '',
 }
 
 export type CardsInitialStateType = typeof cardsInitialState
@@ -84,7 +86,13 @@ export const cardsReducer = (
         ...state,
         cardsForLearn: action.payload.cards,
       }
-
+    case 'TABLE/SET_CARDS_QUESTION_IMAGE':
+      return {
+        ...state,
+        questionImg: action.payload.questionImage,
+      }
+    case 'TABLE/SET_CARDS_ANSWER_IMAGE':
+      return { ...state, answerImg: action.payload.answerImage }
     default:
       return state
   }
@@ -105,7 +113,6 @@ export const getCardsTC = (): AppThunk<AllReducersActionType> => async (dispatch
   if (cardQuestion !== '') {
     params.cardQuestion = cardQuestion
   }
-  console.log('params=', params)
   try {
     const res = await cardsAPI.getCards(params)
 

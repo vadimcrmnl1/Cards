@@ -4,6 +4,7 @@ import { useAppSelector } from '../../../../app/store'
 import { AddEditCardModal } from '../../../../common/components/modals/Modal/components/AddEditCard/AddEditCardModal'
 import { DeletePackAndCard } from '../../../../common/components/modals/Modal/components/DeleteModal/DeletePackAndCard'
 import { selectUserId } from '../../../profile/selectors'
+import { SpeedDialBasic } from '../../Cards/components/speedDial/SpeedDialBasic'
 
 import s from './ActionsCell.module.css'
 
@@ -14,6 +15,8 @@ type ActionsCellPropsType = {
   cardId: string
   cardAnswer: string
   cardQuestion: string
+  cardAnswerImg: string
+  cardQuestionImg: string
 }
 export const ActionsCellCards: React.FC<ActionsCellPropsType> = ({
   type,
@@ -22,6 +25,8 @@ export const ActionsCellCards: React.FC<ActionsCellPropsType> = ({
   cardId,
   cardQuestion,
   cardAnswer,
+  cardAnswerImg,
+  cardQuestionImg,
 }) => {
   const userId = useAppSelector(selectUserId)
 
@@ -31,6 +36,8 @@ export const ActionsCellCards: React.FC<ActionsCellPropsType> = ({
         <div>
           <AddEditCardModal
             cardAnswer={cardAnswer}
+            cardAnswerImg={cardAnswerImg}
+            cardQuestionImg={cardQuestionImg}
             cardQuestion={cardQuestion}
             cardsPackId={cardsPackId}
             cardId={cardId}
@@ -38,7 +45,12 @@ export const ActionsCellCards: React.FC<ActionsCellPropsType> = ({
             titleButton={'EditCard'}
             title={'Edit card'}
           />
-          <DeletePackAndCard cardQuestion={cardQuestion} type={'deleteCard'} cardId={cardId} />
+          <DeletePackAndCard
+            cardQuestion={cardQuestion}
+            type={'deleteCard'}
+            cardId={cardId}
+            cardQuestionImg={cardQuestionImg}
+          />
         </div>
       )}
     </div>

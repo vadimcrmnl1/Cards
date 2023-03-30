@@ -67,3 +67,14 @@ export const setCardsForLearnAC = (cards: CardsType[]) =>
     type: 'TABLE/SET_CARDS_FOR_LEARN',
     payload: { cards },
   } as const)
+//===Action for cards IMAGES===
+export const setCardsAddQuestionImageAC = (questionImage: string) =>
+  ({
+    type: 'TABLE/SET_CARDS_QUESTION_IMAGE',
+    payload: { questionImage },
+  } as const)
+export const setCardsAddAnswerImageAC = (answerImage: string) =>
+  ({
+    type: 'TABLE/SET_CARDS_ANSWER_IMAGE',
+    payload: { answerImage },
+  } as const)

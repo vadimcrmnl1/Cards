@@ -47,4 +47,14 @@ export const useStyles = makeStyles(theme => ({
     width: '80px',
     height: '40px',
   },
+  selectForm: {
+    margin: '10px',
+    height: '40px',
+    backgroundColor: 'white',
+  },
+  menuItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: '5px',
+  },
 }))

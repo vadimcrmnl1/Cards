@@ -109,7 +109,9 @@ export type CardsResponseDataType = {
 }
 export type CardsType = {
   answer: string
+  answerImg: string
   question: string
+  questionImg: string
   cardsPack_id: string
   grade: number
   shots: number
@@ -136,6 +138,8 @@ export type UpdateCardRequestDataType = {
     _id: string | undefined
     question?: string
     answer?: string
+    questionImg?: string
+    answerImg?: string
   }
 }
 export type UpdateGradeDataType = {
