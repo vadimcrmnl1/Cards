@@ -83,7 +83,7 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
     if (cardAnswerImg !== '' && type === 'editCard') {
       setFormatAnswer('Image')
     }
-  }, [cardAnswer, cardQuestion, cardId, qImg, aImg, formatQuestion, formatAnswer])
+  }, [cardAnswer, cardQuestion, cardId, qImg, aImg])
   const formik = useFormik({
     initialValues: {
       question: type === 'createCard' ? '' : cardQuestion,
@@ -185,7 +185,12 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
           />
         ) : (
           <div className={s.imageBlock}>
-            <InputTypeFile action={type} type={'question'} cardQuestionImg={cardQuestionImg} />
+            <InputTypeFile
+              formatQuestion={formatQuestion}
+              action={type}
+              type={'question'}
+              cardQuestionImg={cardQuestionImg}
+            />
           </div>
         )}
         <div className={s.addEditForm}>
@@ -229,7 +234,12 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
           />
         ) : (
           <div className={s.imageBlock}>
-            <InputTypeFile action={type} type={'answer'} cardAnswerImg={cardAnswerImg} />
+            <InputTypeFile
+              formatAnswer={formatAnswer}
+              action={type}
+              type={'answer'}
+              cardAnswerImg={cardAnswerImg}
+            />
           </div>
         )}
         <Button

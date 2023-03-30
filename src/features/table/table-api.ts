@@ -123,8 +123,8 @@ export type CardsType = {
 export type AddCardRequestType = {
   card: {
     cardsPack_id: string
-    question: string | undefined
-    answer: string | undefined
+    question?: string | undefined
+    answer?: string | undefined
     grade?: number
     shots?: number
     answerImg?: string

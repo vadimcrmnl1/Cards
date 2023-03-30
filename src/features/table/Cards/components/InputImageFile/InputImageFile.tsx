@@ -14,6 +14,8 @@ type InputImageFileType = {
   cardQuestionImg?: string
   cardAnswerImg?: string
   action?: 'createCard' | 'editCard'
+  formatAnswer?: 'Text' | 'Image'
+  formatQuestion?: 'Text' | 'Image'
 }
 
 export const InputTypeFile: React.FC<InputImageFileType> = ({
@@ -21,6 +23,8 @@ export const InputTypeFile: React.FC<InputImageFileType> = ({
   cardAnswerImg,
   cardQuestionImg,
   action,
+  formatQuestion,
+  formatAnswer,
 }) => {
   const dispatch = useAppDispatch()
   const [question, setQuestion] = useState(defaultImage)
@@ -29,14 +33,20 @@ export const InputTypeFile: React.FC<InputImageFileType> = ({
 
   useEffect(() => {
     if (action === 'editCard') {
-      setQuestion(cardQuestionImg as string)
-      setAnswer(cardAnswerImg as string)
+      if (formatQuestion === 'Image' && cardQuestionImg !== '') {
+        setQuestion(cardQuestionImg as string)
+      }
+      if (formatAnswer === 'Image') {
+        setAnswer(cardAnswerImg as string)
+      }
+      setQuestion(defaultImage)
     }
+
     // if (action === 'createCard') {
     //   setQuestion(defaultImage)
     //   setAnswer(defaultImage)
     // }
-  }, [cardAnswerImg, cardQuestionImg])
+  }, [cardAnswerImg, cardQuestionImg, formatQuestion, formatAnswer])
 
   const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length) {
@@ -88,18 +98,25 @@ export const InputTypeFile: React.FC<InputImageFileType> = ({
   }
   const imageInputField =
     // eslint-disable-next-line no-nested-ternary
-    action === 'editCard' && type === 'question'
+    action === 'editCard' && type === 'question' && formatQuestion === 'Image'
       ? question
       : // eslint-disable-next-line no-nested-ternary
+      action === 'editCard' && type === 'question'
+      ? defaultImage
+      : // eslint-disable-next-line no-nested-ternary
       action === 'createCard' && type === 'question'
-      ? question // eslint-disable-next-line no-nested-ternary
+      ? defaultImage // eslint-disable-next-line no-nested-ternary
       : action === 'createCard' && type === 'answer'
-      ? answer // action === 'editCard' && type === 'answer'
+      ? defaultImage // action === 'editCard' && type === 'answer'
       : // ? cardAnswerImg
       // : // eslint-disable-next-line no-nested-ternary
-      action === 'editCard' && type === 'answer'
+      // eslint-disable-next-line no-nested-ternary
+      action === 'editCard' && type === 'answer' && formatAnswer === 'Image'
       ? answer
+      : action === 'editCard' && type === 'answer'
+      ? defaultImage
       : defaultImage
+
   // action === 'createCard' && type === 'question'
   // ? question
   // : action === 'createCard' && type === 'answer'
