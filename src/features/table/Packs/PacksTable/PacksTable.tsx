@@ -15,6 +15,7 @@ import { SortCell } from '../../common/SortCell/SortCell'
 import { StyledTableCell, StyledTableRow } from '../../common/styles'
 import { TableTextCell } from '../../common/TableTextCell/TableTextCell'
 import { setPacksSortAC } from '../actions'
+import { PacksTableTextCell } from '../components/PacksTableTextCell/PacksTableTextCell'
 import { selectCardPacks, selectPacksSort } from '../selectors'
 
 import s from './PacksTable.module.css'
@@ -89,7 +90,7 @@ export const PacksTable = () => {
                       onClick={handleLinkToCards}
                       className={s.link}
                     >
-                      <TableTextCell text={cardPack.name} />
+                      <PacksTableTextCell text={cardPack.name} />
                     </NavLink>
                   </StyledTableCell>
                   <StyledTableCell>{cardPack.cardsCount}</StyledTableCell>
