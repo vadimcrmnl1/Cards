@@ -2,11 +2,15 @@
     overflow: hidden;
     display: -webkit-box;
 
+    text-overflow: ellipsis;
+
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
 }
 
 .img {
+    flex: 0 0 auto;
+
     width: 57px;
     height: 36px;
 

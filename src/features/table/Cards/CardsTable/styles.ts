@@ -9,7 +9,7 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   '&:nth-of-type(2)': {
     width: '40%',
-    minWidth: '45px',
+    maxWidth: '45px',
   },
   '&:nth-of-type(3)': {
     width: '10%',

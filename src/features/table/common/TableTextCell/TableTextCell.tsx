@@ -20,6 +20,7 @@ export const TableTextCell: React.FC<TableTextCellPropsType> = ({
   //     webkitBoxOrient: 'vertical',
   //     overflow: 'hidden',
   // }
+  console.log(imageQuestion)
 
   return (
     <div>
