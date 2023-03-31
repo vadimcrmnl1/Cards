@@ -3,6 +3,7 @@ import { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 import { ModalActionsType } from '../common/components/modals/Modal/types'
 import { AuthActionsType } from '../features/auth/types'
+import { LearnActionsType } from '../features/learn/types'
 import { ProfileActionsType } from '../features/profile/types'
 import { CardsActionsType } from '../features/table/Cards/types'
 import { PacksActionsType } from '../features/table/Packs/types'
@@ -28,6 +29,7 @@ export type AllReducersActionType =
   | PacksActionsType
   | CardsActionsType
   | ModalActionsType
+  | LearnActionsType
 
 // APP types
 

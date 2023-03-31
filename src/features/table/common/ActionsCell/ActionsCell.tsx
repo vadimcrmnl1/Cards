@@ -7,6 +7,8 @@ import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { AddEditPackModal } from '../../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
 import { DeletePackAndCard } from '../../../../common/components/modals/Modal/components/DeleteModal/DeletePackAndCard'
 import { PATH } from '../../../../common/utils/routes/Routes'
+import { setCardsPackIdForLearnAC } from '../../../learn/actions'
+import { getCardsForLearnTC } from '../../../learn/learn-reducer'
 import { selectUserId } from '../../../profile/selectors'
 import { setCardsPackIdAC, setCardsPackNameAC, setCardsPageAC } from '../../Cards/actions'
 import { getCardsTC } from '../../Cards/cards-reducer'
@@ -47,9 +49,9 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
     if (type === 'cards') {
       dispatch(setCardsPackIdAC(cardsPackId as string))
     } else if (type === 'packs') {
-      dispatch(setCardsPackIdAC(itemId))
-      dispatch(setCardsPageAC(1))
-      dispatch(getCardsTC())
+      console.log('ACTION CELL')
+      dispatch(setCardsPackIdForLearnAC(itemId))
+      dispatch(getCardsForLearnTC())
     }
   }
   const btnLearnClassName = cardsCount === 0 ? s.buttonLearn : ''

@@ -51,6 +51,7 @@ export type PacksRequestDataType = {
   block?: boolean
 }
 export type CardsLearnRequestDataType = {
+  page: number
   pageCount: number
   cardsPack_id: string
 }

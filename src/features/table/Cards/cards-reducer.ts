@@ -12,7 +12,6 @@ import {
 
 import * as appActions from './../../../app/actions'
 import * as cardsActions from './actions'
-import { setCardsUpdateGradeAC } from './actions'
 import { CardsActionsType, CardsParamsType, LearnParamsType } from './types'
 
 export const cardsInitialState = {
@@ -68,23 +67,6 @@ export const cardsReducer = (
       return { ...state, cardQuestion: action.payload.question }
     case 'TABLE/SET_CARDS_PACK_NAME':
       return { ...state, name: action.payload.name }
-    case 'TABLE/SET_CARDS_UPDATE_GRADE':
-      return {
-        ...state,
-        cards: [
-          ...state.cards.map(el => {
-            return el._id === action.payload.id
-              ? { ...el, grade: action.payload.grade, shots: action.payload.shots }
-              : el
-          }),
-        ],
-      }
-    case 'TABLE/SET_CARDS_FOR_LEARN':
-      return {
-        ...state,
-        cardsForLearn: action.payload.cards,
-      }
-
     default:
       return state
   }
@@ -161,42 +143,4 @@ export const updateCardTC =
       dispatch(appActions.setAppIsLoadingAC(false))
     }
   }
-export const updateGradeTC =
-  (data: UpdateGradeDataType): AppThunk<AllReducersActionType> =>
-  async dispatch => {
-    dispatch(appActions.setAppIsLoadingAC(true))
-    try {
-      const res = await cardsAPI.updateGrade(data)
 
-      dispatch(setCardsUpdateGradeAC(res.data.card_id, res.data.grade, res.data.shots))
-      dispatch(getCardsTC())
-    } catch (err: any) {
-      errorUtils(err, dispatch)
-    } finally {
-      dispatch(setAppIsLoadingAC(false))
-    }
-  }
-export const getCardsForLearnTC =
-  (pack_id: string, pageCount: number): AppThunk<AllReducersActionType> =>
-  async dispatch => {
-    debugger
-    dispatch(setAppIsLoadingAC(true))
-
-    const params: LearnParamsType = {
-      page: 1,
-      pageCount: pageCount,
-      cardsPack_id: pack_id.toString(),
-    }
-
-    try {
-      const res = await cardsAPI.getCardsForLearn(params)
-
-      console.log(res)
-      /*dispatch(getCardsTC())*/
-      dispatch(cardsActions.setCardsForLearnAC(res.data.cards))
-    } catch (err: any) {
-      errorUtils(err, dispatch)
-    } finally {
-      dispatch(appActions.setAppIsLoadingAC(false))
-    }
-  }

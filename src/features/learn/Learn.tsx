@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 
 import Button from '@mui/material/Button'
 
 import { useStyles } from '../styleMU/styleMU'
-import { setCardsPackIdAC } from '../table/Cards/actions'
-import { updateGradeTC } from '../table/Cards/cards-reducer'
-import {
-  selectCards,
-  selectCardsForLearn,
-  selectCardsPackId,
-  selectCardsPageCount,
-  selectPackName,
-} from '../table/Cards/selectors'
+import { selectPackName } from '../table/Cards/selectors'
 import { CardsType } from '../table/table-api'
 
+import { setCardsPackIdForLearnAC } from './actions'
+import { updateGradeTC } from './learn-reducer'
 import s from './Learn.module.css'
+import { selectCardsForLearn, selectCardsPackIdForLearn } from './selectors'
 
 import { useAppDispatch, useAppSelector } from 'app/store'
 import { LinkToBack } from 'common/components/LinkToBack/LinkToBack'
@@ -43,17 +38,16 @@ const getCard = (cards: CardsType[]) => {
   return cards[res.id + 1]
 }
 
-export const Learn = () => {
+export const Learn = memo(() => {
   const packName = useAppSelector(selectPackName)
-  const id = useAppSelector(selectCardsPackId)
-  const cardsForLearn = useAppSelector(selectCardsForLearn)
-  const pageCount = useAppSelector(selectCardsPageCount)
+  const id = useAppSelector(selectCardsPackIdForLearn)
   const styleMU = useStyles()
-  const cards = useAppSelector(selectCards)
-
+  const cards = useAppSelector(selectCardsForLearn)
+  const [showNext, setShowNext] = useState(false)
   const [isChecked, setIsChecked] = useState<boolean>(false)
-  /*const grade = useAppSelector()*/
   const [first, setFirst] = useState<boolean>(true)
+
+  let newGrade = 0
 
   const [card, setCard] = useState<CardsType>({
     _id: '',
@@ -71,25 +65,42 @@ export const Learn = () => {
 
   useEffect(() => {
     if (first) {
-      dispatch(setCardsPackIdAC(id))
-      /*dispatch(getCardsTC())*/
+      dispatch(setCardsPackIdForLearnAC(id))
       setFirst(false)
-      if (cards.length > 0) setCard(getCard(cards))
     }
-    if (card._id === '' && cards.length > 0) setCard(getCard(cards))
+
+    if (cards[0] !== undefined && !showNext) {
+      if (cards[0].cardsPack_id === id && cards.length > 0) {
+        setCard(getCard(cards))
+      }
+    }
   }, [dispatch, id, cards, first])
+
   const handleShowAnswer = () => {
     setIsChecked(true)
+    setShowNext(false)
   }
   const handleCheckAnswer = (grade: number) => {
-    dispatch(updateGradeTC({ card_id: card._id, grade: grade }))
+    newGrade = grade
   }
   const handleShowNext = () => {
     setIsChecked(false)
+
     if (cards.length > 0) {
-      setCard(getCard(cards))
+      dispatch(updateGradeTC({ card_id: card._id, grade: newGrade }))
+      setShowNext(true)
     }
   }
+
+  useEffect(() => {
+    if (cards[0] !== undefined && showNext) {
+      if (cards[0].cardsPack_id === id && cards.length > 0) {
+        setCard(getCard(cards))
+      }
+    }
+  }, [showNext])
+
+  console.log('card.question=', card.question)
 
   return (
     <div className={s.wrapper}>
@@ -137,4 +148,4 @@ export const Learn = () => {
       </div>
     </div>
   )
-}
+})
