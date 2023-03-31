@@ -65,14 +65,10 @@ export const CardsTable = () => {
             {cards.map((card, index) => (
               <StyledTableRow key={card._id}>
                 <StyledTableCell scope="row">
-                  <TableTextCell
-                    type={'question'}
-                    imageQuestion={card.questionImg}
-                    text={card.question}
-                  />
+                  <TableTextCell image={card.questionImg} text={card.question} />
                 </StyledTableCell>
                 <StyledTableCell>
-                  <TableTextCell type={'answer'} imageAnswer={card.answerImg} text={card.answer} />
+                  <TableTextCell image={card.answerImg} text={card.answer} />
                 </StyledTableCell>
                 <StyledTableCell>{card.updated}</StyledTableCell>
                 <StyledTableCell>
