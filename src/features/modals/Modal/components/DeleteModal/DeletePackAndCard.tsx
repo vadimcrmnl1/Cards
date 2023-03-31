@@ -2,10 +2,10 @@ import React from 'react'
 
 import { Button } from '@material-ui/core'
 
-import { setAppIsLoadingAC } from '../../../../../../app/actions'
-import { useAppDispatch, useAppSelector } from '../../../../../../app/store'
-import { deleteCardTC } from '../../../../../../features/table/Cards/cards-reducer'
-import { deletePackTC } from '../../../../../../features/table/Packs/packs-reducer'
+import { setAppIsLoadingAC } from '../../../../../app/actions'
+import { useAppDispatch, useAppSelector } from '../../../../../app/store'
+import { deleteCardTC } from '../../../../table/Cards/cards-reducer'
+import { deletePackTC } from '../../../../table/Packs/packs-reducer'
 import {
   modalDeleteCardIsOpenAC,
   modalDeletePackIsOpenAC,
@@ -16,9 +16,8 @@ import {
   modalSetPackNameAC,
 } from '../../actions'
 import { MainModal } from '../../MainModal'
-
-import s from './../../MainModal.module.css'
-import * as modalsSelectors from './../../selectors'
+import s from '../../MainModal.module.css'
+import * as modalsSelectors from '../../selectors'
 
 type DeletePackAndCardType = {
   type: 'deletePack' | 'deleteCard'

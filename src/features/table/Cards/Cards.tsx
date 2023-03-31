@@ -28,7 +28,7 @@ import {
   selectPackName,
 } from './selectors'
 
-import { AddEditCardModal } from 'common/components/modals/Modal/components/AddEditCard/AddEditCardModal'
+import { AddEditCardModal } from 'features/modals/Modal/components/AddEditCard/AddEditCardModal'
 
 export const Cards = () => {
   const pageCount = useAppSelector(selectCardsPageCount)

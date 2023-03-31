@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useAppSelector } from '../../../app/store'
-import editIcon from '../../../common/components/SuperEditableSpan/editIcon.svg'
+import editIcon from '../../../common/images/editIcon.svg'
 import s from '../Profile.module.css'
 import { selectName } from '../selectors'
 

@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../../../app/store'
-import filterIcon from '../../../../images/Group 1496.png'
+import filterIcon from '../../../../../common/images/Group 1496.png'
 import { setMinMaxCardsAC, setMyPacksAC, setPackNameAC, setPacksSortAC } from '../../actions'
 import { selectMaxCardsCount } from '../../selectors'
 

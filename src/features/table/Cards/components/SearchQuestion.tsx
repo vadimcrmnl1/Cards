@@ -4,9 +4,9 @@ import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch } from '../../../../app/store'
 import { SuperDebouncedInput } from '../../../../common/components/SuperDebouncedInput/SuperDebouncedInput'
+import iconClose from '../../../../common/images/close.png'
 import { setCardsSearchByQuestionAC } from '../actions'
 
-import iconClose from './../../../images/close.png'
 import s from './SearchQuestion.module.css'
 
 export const SearchQuestion = () => {

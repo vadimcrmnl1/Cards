@@ -5,9 +5,9 @@ import { Navigate, useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../../app/store'
 import { EmptySearch } from '../../../common/components/EmptySearch/EmptySearch'
-import { AddEditPackModal } from '../../../common/components/modals/Modal/components/AddEditPack/AddEditPackModal'
 import { PATH } from '../../../common/utils/routes/Routes'
 import { selectIsLoggedIn } from '../../auth/selectors'
+import { AddEditPackModal } from '../../modals/Modal/components/AddEditPack/AddEditPackModal'
 
 import {
   setMinMaxCardsAC,

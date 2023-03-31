@@ -1,4 +1,4 @@
-import { InferValueTypes } from '../../../../app/types'
+import { InferValueTypes } from '../../../app/types'
 
 import * as actions from './actions'
 

@@ -5,14 +5,13 @@ import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
-import { setAppIsLoadingAC } from '../../../../../../app/actions'
-import { useAppDispatch, useAppSelector } from '../../../../../../app/store'
-import { addPackTC, updatePackTC } from '../../../../../../features/table/Packs/packs-reducer'
-import { ImageInput } from '../../../../ImageInput/ImageInput'
+import { setAppIsLoadingAC } from '../../../../../app/actions'
+import { useAppDispatch, useAppSelector } from '../../../../../app/store'
+import { ImageInput } from '../../../../../common/components/ImageInput/ImageInput'
+import { addPackTC, updatePackTC } from '../../../../table/Packs/packs-reducer'
 import { modalAddPackIsOpenAC, modalEditPackIsOpenAC } from '../../actions'
 import { MainModal } from '../../MainModal'
-
-import * as modalsSelectors from './../../selectors'
+import * as modalsSelectors from '../../selectors'
 
 const validationSchema = yup.object({
   name: yup.string().required('Name is required'),

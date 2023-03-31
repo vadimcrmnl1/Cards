@@ -10,7 +10,6 @@ import { Profile } from '../../../features/profile/Profile'
 import { Cards } from '../../../features/table/Cards/Cards'
 import { Packs } from '../../../features/table/Packs/Packs'
 import { ErrorPage } from '../../components/ErrorPage/ErrorPage'
-import { Test } from '../../components/Test/Test'
 
 export const PATH = {
   login: '/login',
@@ -19,7 +18,6 @@ export const PATH = {
   pageNotFound: '/404',
   passwordRecovery: '/password-recovery',
   newPassword: '/set-new-password/:token',
-  test: '/test',
   packs: '/packs',
   cards: '/cards',
   learn: '/learn',
@@ -55,10 +53,6 @@ const router = createHashRouter([
           {
             path: PATH.newPassword,
             element: <NewPassword />,
-          },
-          {
-            path: PATH.test,
-            element: <Test />,
           },
           {
             path: PATH.packs,

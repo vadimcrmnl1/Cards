@@ -7,10 +7,10 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
 
-import { useAppDispatch, useAppSelector } from '../../../../app/store'
-import { useStyles } from '../../../../features/styleMU/styleMU'
-import { EditIcon } from '../../../../features/table/common/icons/EditIcon'
-import { TrashIcon } from '../../../../features/table/common/icons/TrashIcon'
+import { useAppDispatch, useAppSelector } from '../../../app/store'
+import { useStyles } from '../../styleMU/styleMU'
+import { EditIcon } from '../../table/common/icons/EditIcon'
+import { TrashIcon } from '../../table/common/icons/TrashIcon'
 
 import {
   isActiveModalAC,

@@ -2,8 +2,8 @@ import React from 'react'
 
 import { NavLink } from 'react-router-dom'
 
-import arrow from '../../../features/images/Group 240.svg'
 import s from '../../../features/profile/Profile.module.css'
+import arrow from '../../images/Group 240.svg'
 
 type ProfileLinkToBackPropsType = {
   title: string

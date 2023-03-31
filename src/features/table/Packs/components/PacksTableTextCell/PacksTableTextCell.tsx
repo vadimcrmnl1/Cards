@@ -1,6 +1,7 @@
 import * as React from 'react'
 
-import mask from './../../../../images/Mask.png'
+import mask from '../../../../../common/images/Mask.png'
+
 import s from './PacksTableTextCell.module.css'
 
 type PacksTableTextCellPropsType = {

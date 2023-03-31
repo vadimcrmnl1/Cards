@@ -1,4 +1,4 @@
-import { AppRootStateType } from '../../../../app/store'
+import { AppRootStateType } from '../../../app/store'
 
 export const selectAddCardModal = (state: AppRootStateType) => state.modals.addCardIsOpen
 export const selectAddPackModal = (state: AppRootStateType) => state.modals.addPackIsOpen

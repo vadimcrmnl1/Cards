@@ -5,12 +5,12 @@ import { Navigate } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
 import { LinkToBack } from '../../common/components/LinkToBack/LinkToBack'
+import avatar from '../../common/images/avatar.webp'
 import { PATH } from '../../common/utils/routes/Routes'
 import { logoutTC } from '../auth/auth-reducer'
 import { Avatar } from '../avatar/Avatar'
 import { useStyles } from '../styleMU/styleMU'
 
-import avatar from './../images/avatar.webp'
 import { ProfileEditNameBlock } from './components/ProfileEditNameBlock'
 import { ProfileNameBlock } from './components/ProfileNameBlock'
 import s from './Profile.module.css'

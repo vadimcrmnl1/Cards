@@ -4,8 +4,8 @@ import AddAPhotoIcon from '@material-ui/icons/AddAPhoto'
 import { IconButton } from '@mui/material'
 
 import { useAppDispatch, useAppSelector } from '../../app/store'
+import defaultAva from '../../common/images/avatar.webp'
 import { convertFileToBase64 } from '../../common/utils/converFile'
-import defaultAva from '../images/avatar.webp'
 import { changeAvaTC } from '../profile/profile-reducer'
 import { selectAvatar, selectName } from '../profile/selectors'
 

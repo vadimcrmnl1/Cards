@@ -4,7 +4,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import { IconButton } from '@mui/material'
 
 import { useAppDispatch } from '../../../../../app/store'
-import defaultImage from '../../../../images/defaultImage.png'
+import defaultImage from '../../../../../common/images/defaultImage.png'
 import { setCardsAddAnswerImageAC, setCardsAddQuestionImageAC } from '../../actions'
 
 import s from './InputImageFile.module.css'

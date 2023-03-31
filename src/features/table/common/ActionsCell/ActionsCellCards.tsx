@@ -1,8 +1,8 @@
 import * as React from 'react'
 
 import { useAppSelector } from '../../../../app/store'
-import { AddEditCardModal } from '../../../../common/components/modals/Modal/components/AddEditCard/AddEditCardModal'
-import { DeletePackAndCard } from '../../../../common/components/modals/Modal/components/DeleteModal/DeletePackAndCard'
+import { AddEditCardModal } from '../../../modals/Modal/components/AddEditCard/AddEditCardModal'
+import { DeletePackAndCard } from '../../../modals/Modal/components/DeleteModal/DeletePackAndCard'
 import { selectUserId } from '../../../profile/selectors'
 import { SpeedDialBasic } from '../../Cards/components/speedDial/SpeedDialBasic'
 

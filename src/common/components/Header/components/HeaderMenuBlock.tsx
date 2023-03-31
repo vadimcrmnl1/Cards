@@ -7,11 +7,11 @@ import { setAppErrorAC } from '../../../../app/actions'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { logoutTC } from '../../../../features/auth/auth-reducer'
 import { selectIsLoggedIn } from '../../../../features/auth/selectors'
-import defaultAva from '../../../../features/images/avatar.webp'
 import { selectAvatar, selectName } from '../../../../features/profile/selectors'
+import avatar from '../../../images/avatar.png'
+import defaultAva from '../../../images/avatar.webp'
 import { PATH } from '../../../utils/routes/Routes'
 
-import avatar from './../../../../features/images/avatar.png'
 import s from './../Header.module.css'
 
 export const HeaderMenuBlock = () => {

@@ -18,25 +18,24 @@ import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
-import { setAppIsLoadingAC } from '../../../../../../app/actions'
-import { useAppDispatch, useAppSelector } from '../../../../../../app/store'
-import { useStyles } from '../../../../../../features/styleMU/styleMU'
+import { setAppIsLoadingAC } from '../../../../../app/actions'
+import { useAppDispatch, useAppSelector } from '../../../../../app/store'
+import { ImageInput } from '../../../../../common/components/ImageInput/ImageInput'
+import { useStyles } from '../../../../styleMU/styleMU'
 import {
   setCardsAddAnswerImageAC,
   setCardsAddQuestionImageAC,
-} from '../../../../../../features/table/Cards/actions'
-import { addCardTC, updateCardTC } from '../../../../../../features/table/Cards/cards-reducer'
-import { InputTypeFile } from '../../../../../../features/table/Cards/components/InputImageFile/InputImageFile'
+} from '../../../../table/Cards/actions'
+import { addCardTC, updateCardTC } from '../../../../table/Cards/cards-reducer'
+import { InputTypeFile } from '../../../../table/Cards/components/InputImageFile/InputImageFile'
 import {
   selectCardsAnswerImage,
   selectCardsPackId,
   selectCardsQuestionImage,
-} from '../../../../../../features/table/Cards/selectors'
-import { ImageInput } from '../../../../ImageInput/ImageInput'
+} from '../../../../table/Cards/selectors'
 import { isActiveModalAC, modalAddCardIsOpenAC, modalEditCardIsOpen } from '../../actions'
 import { MainModal } from '../../MainModal'
-
-import s from './../../MainModal.module.css'
+import s from '../../MainModal.module.css'
 
 const validationSchema = yup.object({
   // question: yup.string().required('Question is required'),
