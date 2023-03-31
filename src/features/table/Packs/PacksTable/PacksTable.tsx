@@ -90,7 +90,7 @@ export const PacksTable = () => {
                       onClick={handleLinkToCards}
                       className={s.link}
                     >
-                      <PacksTableTextCell text={cardPack.name} />
+                      <PacksTableTextCell text={cardPack.name} imageQuestion={cardPack.deckCover} />
                     </NavLink>
                   </StyledTableCell>
                   <StyledTableCell>{cardPack.cardsCount}</StyledTableCell>

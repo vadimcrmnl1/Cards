@@ -71,6 +71,7 @@ export type CardPacksType = {
   created: string
   updated: string
   user_name: string
+  deckCover: string
 }
 export type AddPackRequestDataType = {
   cardsPack: {

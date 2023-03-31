@@ -26,7 +26,6 @@ export const PacksTableTextCell: React.FC<PacksTableTextCellPropsType> = ({
   return (
     <div className={s.cell}>
       <div className={s.img} style={{ backgroundImage: `url(${imageQuestion1})` }} />
-      {/*<img src={mask} alt={'image'} className={s.img} />*/}
       <p className={s.name}>{text}</p>
     </div>
   )
