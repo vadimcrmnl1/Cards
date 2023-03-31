@@ -29,8 +29,8 @@ export const CardsTable = () => {
   const cardsSort = useAppSelector(selectCardsSort)
   const packUserId = useAppSelector(selectPackUserId)
   const myId = useAppSelector(selectUserId)
-  const owner = packUserId === myId
   const questImg = useAppSelector(selectCardsQuestionImage)
+  const isOwner = packUserId === myId
   const handleSort = (sort: string | null) => {
     dispatch(setCardsSortAC(sort))
   }
@@ -58,7 +58,7 @@ export const CardsTable = () => {
               <StyledTableCell>
                 <SortCell label={'Grade'} sorter={'grade'} sort={cardsSort} />
               </StyledTableCell>
-              {owner && <StyledTableCell>Actions</StyledTableCell>}
+              {isOwner && <StyledTableCell>Actions</StyledTableCell>}
             </StyledTableRow>
           </TableHead>
           <TableBody>
@@ -78,7 +78,7 @@ export const CardsTable = () => {
                 <StyledTableCell>
                   <Grade grade={card.grade} />
                 </StyledTableCell>
-                {owner && (
+                {isOwner && (
                   <StyledTableCell>
                     <ActionsCellCards
                       type={'cards'}

@@ -61,6 +61,7 @@ export type PacksResponseDataType = {
   minCardsCount: number
   page: number
   pageCount: number
+  deckCover: string
 }
 export type CardPacksType = {
   _id: string
@@ -70,6 +71,7 @@ export type CardPacksType = {
   created: string
   updated: string
   user_name: string
+  deckCover: string
 }
 export type AddPackRequestDataType = {
   cardsPack: {

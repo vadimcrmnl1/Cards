@@ -1,0 +1,22 @@
+.name {
+    overflow: hidden;
+    display: -webkit-box;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+.img {
+    width: 57px;
+    height: 36px;
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+.cell {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
