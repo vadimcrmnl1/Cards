@@ -1,8 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import BackspaceSharpIcon from '@mui/icons-material/BackspaceSharp'
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
-import { IconButton } from '@mui/material'
 
 import { useAppDispatch, useAppSelector } from '../../../../../app/store'
 import defaultImage from '../../../../../common/images/defaultImage.png'
@@ -29,16 +27,16 @@ export const InputTypeFile: React.FC<InputImageFileType> = ({ image, type }) => 
     if (e.target.files && e.target.files.length) {
       const file = e.target.files[0]
 
-      if (file.size < 4000000 && type === 'answer') {
-        convertFileToBase64(file, (file64: string) => {
-          setAnswer(file64)
-          dispatch(setCardsAddAnswerImageAC(file64))
-        })
-      }
       if (file.size < 4000000 && type === 'question') {
         convertFileToBase64(file, (file64: string) => {
           setQuestion(file64)
           dispatch(setCardsAddQuestionImageAC(file64))
+        })
+      }
+      if (file.size < 4000000 && type === 'answer') {
+        convertFileToBase64(file, (file64: string) => {
+          setAnswer(file64)
+          dispatch(setCardsAddAnswerImageAC(file64))
         })
       } else {
         console.error('Error: ', 'Файл слишком большого размера')

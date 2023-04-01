@@ -2,25 +2,13 @@ import React, { useEffect } from 'react'
 
 import { Button } from '@material-ui/core'
 import BackspaceSharpIcon from '@mui/icons-material/BackspaceSharp'
-import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault'
-import HighlightOffIcon from '@mui/icons-material/HighlightOff'
-import {
-  InputAdornment,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from '@mui/material'
+import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
 import { setAppIsLoadingAC } from '../../../../../app/actions'
 import { useAppDispatch, useAppSelector } from '../../../../../app/store'
-import { ImageInput } from '../../../../../common/components/ImageInput/ImageInput'
 import { useStyles } from '../../../../styleMU/styleMU'
 import {
   setCardsAddAnswerImageAC,

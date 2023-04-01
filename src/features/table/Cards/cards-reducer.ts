@@ -1,19 +1,11 @@
-import { setAppIsLoadingAC } from '../../../app/actions'
 import { AllReducersActionType, AppThunk } from '../../../app/types'
 import { dateUtils } from '../../../common/utils/dateUtils'
 import { errorUtils } from '../../../common/utils/errorUtils'
-import {
-  AddCardRequestType,
-  cardsAPI,
-  CardsType,
-  UpdateCardRequestDataType,
-  UpdateGradeDataType,
-} from '../table-api'
+import { AddCardRequestType, cardsAPI, CardsType, UpdateCardRequestDataType } from '../table-api'
 
 import * as appActions from './../../../app/actions'
 import * as cardsActions from './actions'
-import { setCardsUpdateGradeAC } from './actions'
-import { CardsActionsType, CardsParamsType, LearnParamsType } from './types'
+import { CardsActionsType, CardsParamsType } from './types'
 
 export const cardsInitialState = {
   cards: [] as CardsType[],
@@ -162,45 +154,6 @@ export const updateCardTC =
       await cardsAPI.updateCard(data)
       dispatch(getCardsTC())
       dispatch(appActions.setAppInfoAC(`Your card has been updated`))
-    } catch (err: any) {
-      errorUtils(err, dispatch)
-    } finally {
-      dispatch(appActions.setAppIsLoadingAC(false))
-    }
-  }
-export const updateGradeTC =
-  (data: UpdateGradeDataType): AppThunk<AllReducersActionType> =>
-  async dispatch => {
-    dispatch(appActions.setAppIsLoadingAC(true))
-    try {
-      const res = await cardsAPI.updateGrade(data)
-
-      dispatch(setCardsUpdateGradeAC(res.data.card_id, res.data.grade, res.data.shots))
-      dispatch(getCardsTC())
-    } catch (err: any) {
-      errorUtils(err, dispatch)
-    } finally {
-      dispatch(setAppIsLoadingAC(false))
-    }
-  }
-export const getCardsForLearnTC =
-  (pack_id: string, pageCount: number): AppThunk<AllReducersActionType> =>
-  async dispatch => {
-    debugger
-    dispatch(setAppIsLoadingAC(true))
-
-    const params: LearnParamsType = {
-      page: 1,
-      pageCount: pageCount,
-      cardsPack_id: pack_id.toString(),
-    }
-
-    try {
-      const res = await cardsAPI.getCardsForLearn(params)
-
-      console.log(res)
-      /*dispatch(getCardsTC())*/
-      dispatch(cardsActions.setCardsForLearnAC(res.data.cards))
     } catch (err: any) {
       errorUtils(err, dispatch)
     } finally {

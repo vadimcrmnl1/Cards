@@ -102,8 +102,6 @@ export const Learn = memo(() => {
     }
   }, [showNext])
 
-  console.log('card.question=', card.question)
-
   return (
     <div className={s.wrapper}>
       <div className={s.link}>
