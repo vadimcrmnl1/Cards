@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import { selectIsAppMakeRequest } from '../../../../app/selectors'
 import { useAppDispatch, useAppSelector } from '../../../../app/store'
 import { PATH } from '../../../../common/utils/routes/Routes'
+import { setCardsPackIdForLearnAC } from '../../../learn/actions'
+import { getCardsForLearnTC } from '../../../learn/learn-reducer'
 import { AddEditPackModal } from '../../../modals/Modal/components/AddEditPack/AddEditPackModal'
 import { DeletePackAndCard } from '../../../modals/Modal/components/DeleteModal/DeletePackAndCard'
 import { selectUserId } from '../../../profile/selectors'
@@ -47,9 +49,9 @@ export const ActionsCell: React.FC<ActionsCellPropsType> = ({
     if (type === 'cards') {
       dispatch(setCardsPackIdAC(cardsPackId as string))
     } else if (type === 'packs') {
-      dispatch(setCardsPackIdAC(itemId))
-      dispatch(setCardsPageAC(1))
-      dispatch(getCardsTC())
+      console.log('ACTION CELL')
+      dispatch(setCardsPackIdForLearnAC(itemId))
+      dispatch(getCardsForLearnTC())
     }
   }
   const btnLearnClassName = cardsCount === 0 ? s.buttonLearn : ''

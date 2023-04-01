@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 
 import { authReducer } from '../features/auth/auth-reducer'
 import { modalReducer } from '../features/modals/Modal/modal-reducer'
+import { learnReducer } from '../features/learn/learn-reducer'
 import { profileReducer } from '../features/profile/profile-reducer'
 import { cardsReducer } from '../features/table/Cards/cards-reducer'
 import { packsReducer } from '../features/table/Packs/packs-reducer'
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   packs: packsReducer,
   cards: cardsReducer,
   modals: modalReducer,
+  learn: learnReducer,
 })
 //localstorage
 // const saveToLocalStorage = (state: AppRootStateType) => {
