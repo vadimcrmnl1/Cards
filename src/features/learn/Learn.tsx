@@ -127,7 +127,7 @@ export const Learn = memo(() => {
               <div className={s.learnCheckboxBlock}>
                 {grades.map((el, index) => {
                   return (
-                    <label key={index}>
+                    <label key={card._id}>
                       <input
                         type={'radio'}
                         name={'check'}

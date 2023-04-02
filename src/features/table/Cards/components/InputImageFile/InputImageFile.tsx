@@ -5,23 +5,25 @@ import BackspaceSharpIcon from '@mui/icons-material/BackspaceSharp'
 import { useAppDispatch, useAppSelector } from '../../../../../app/store'
 import defaultImage from '../../../../../common/images/defaultImage.png'
 import { setCardsAddAnswerImageAC, setCardsAddQuestionImageAC } from '../../actions'
-import { selectCardsQuestionImage } from '../../selectors'
+import { selectCardsAnswerImage, selectCardsQuestionImage } from '../../selectors'
 
 import s from './InputImageFile.module.css'
 
 type InputImageFileType = {
   image?: string
   type?: 'answer' | 'question'
+  action?: 'createCard' | 'editCard'
 }
 
-export const InputTypeFile: React.FC<InputImageFileType> = ({ image, type }) => {
+export const InputTypeFile: React.FC<InputImageFileType> = ({ image, type, action }) => {
   const dispatch = useAppDispatch()
   const cardQuestionImg = useAppSelector(selectCardsQuestionImage)
+  const cardAnswerImg = useAppSelector(selectCardsAnswerImage)
   const [question, setQuestion] = useState(defaultImage)
   const [answer, setAnswer] = useState(defaultImage)
   const [isImageBroken, setIsImageBroken] = useState(false)
 
-  useEffect(() => {}, [dispatch, cardQuestionImg])
+  useEffect(() => {}, [dispatch, cardQuestionImg, cardAnswerImg, image, answer, question])
 
   const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length) {
@@ -62,7 +64,7 @@ export const InputTypeFile: React.FC<InputImageFileType> = ({ image, type }) => 
 
   let imageInputField
 
-  if (!image && !cardQuestionImg) {
+  if (!image) {
     if (type === 'question') {
       imageInputField = question
     }
@@ -70,7 +72,7 @@ export const InputTypeFile: React.FC<InputImageFileType> = ({ image, type }) => 
       imageInputField = answer
     }
   }
-  if (image) {
+  if (image && action === 'createCard') {
     if (type === 'question' && image !== question && question !== defaultImage) {
       imageInputField = question
     } else if (type === 'answer' && image !== answer && answer !== defaultImage) {
@@ -79,12 +81,25 @@ export const InputTypeFile: React.FC<InputImageFileType> = ({ image, type }) => 
       imageInputField = image
     }
   }
+  if (image && action === 'editCard') {
+    if (type === 'question' && image !== question && question !== defaultImage) {
+      imageInputField = question
+    } else if (type === 'answer' && image !== answer && answer !== defaultImage) {
+      imageInputField = answer
+    } else {
+      imageInputField = image
+    }
+  }
+
   const handleResetImage = () => {
     if (type === 'question') {
       dispatch(setCardsAddQuestionImageAC(''))
+      setQuestion(defaultImage)
+      imageInputField = question
     }
     if (type === 'answer') {
       dispatch(setCardsAddAnswerImageAC(''))
+      setAnswer(defaultImage)
     }
   }
 

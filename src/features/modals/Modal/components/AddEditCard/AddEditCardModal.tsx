@@ -172,7 +172,7 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
           />
         ) : (
           <div className={s.imageBlock}>
-            <InputTypeFile type={'question'} image={cardQuestionImg} />
+            <InputTypeFile action={type} type={'question'} image={cardQuestionImg} />
           </div>
         )}
         <div className={s.addEditForm}>
@@ -216,7 +216,7 @@ export const AddEditCardModal: React.FC<AddEditCardType> = ({
           />
         ) : (
           <div className={s.imageBlock}>
-            <InputTypeFile type={'answer'} image={cardAnswerImg} />
+            <InputTypeFile action={type} type={'answer'} image={cardAnswerImg} />
           </div>
         )}
         <Button
